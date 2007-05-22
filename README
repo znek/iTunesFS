@@ -18,6 +18,17 @@ DetailedTrackNames | BOOL | NO     | If YES, use very detailed information
                                      track number, etc.)
 
 
+TODO / IDEAS
+============
+
+- Expose Library and iPods at root mount point
+  - need to be able to identify (easy) and parse (more difficult, but already
+    did that for PodLifter) iPod databases
+  - abstract iTunesLibrary (superclass: Library) and add iPodLibrary
+- Refresh libraries upon changes (need watchdog for this)
+  - Listen for attached/detached iPods
+
+
 References
 ==========
 

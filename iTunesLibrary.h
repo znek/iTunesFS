@@ -37,24 +37,23 @@
 
 @interface iTunesLibrary : NSObject
 {
-  NSDictionary        *lib;
-  NSArray             *playlists; // retained by lib!
-  NSDictionary        *tracks;    // retained by lib!
   NSMutableDictionary *plMap;
 }
 
 - (void)reload;
 
 - (NSString *)libraryPath;
+
 - (NSArray *)playlistNames;
 - (NSArray *)trackNamesForPlaylistNamed:(NSString *)_plName;
 
-- (BOOL)isValidTrackName:(NSString *)_ptn;
-- (NSString *)trackIDForPrettyTrackName:(NSString *)_ptn
+- (BOOL)isValidTrackName:(NSString *)_ptn inPlaylistNamed:(NSString *)_plName;
+
+- (NSData *)fileContentForTrackWithPrettyName:(NSString *)_ptn
   inPlaylistNamed:(NSString *)_plName;
 
-- (NSData *)dataForTrackWithID:(NSString *)_trackID;
-- (NSDictionary *)fileAttributesForTrackWithID:(NSString *)_trackID;
+- (NSDictionary *)fileAttributesForTrackWithPrettyName:(NSString *)_ptn
+  inPlaylistNamed:(NSString *)_plName;
 
 @end /* iTunesLibrary */
 

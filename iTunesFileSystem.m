@@ -91,35 +91,36 @@ static NSString *fsIconPath = nil;
   else if (count == 2) { /* playlist */
     return [[self->lib playlistNames] containsObject:[components lastObject]];
   }
-  return [self->lib isValidTrackName:[components objectAtIndex:2]];
+  return [self->lib isValidTrackName:[components objectAtIndex:2]
+                    inPlaylistNamed:[components objectAtIndex:1]];
 }
 
 - (NSDictionary *)fileAttributesAtPath:(NSString *)_path {
   NSArray  *components;
   unsigned count;
-  NSString *plName, *name, *trackID;
+  NSString *plName, *name;
   
   components = [_path pathComponents];
   count      = [components count];
   if (count < 3) return [super fileAttributesAtPath:_path];
   plName     = [components objectAtIndex:1];
   name       = [components lastObject];
-  trackID    = [self->lib trackIDForPrettyTrackName:name inPlaylistNamed:plName];
-  return [self->lib fileAttributesForTrackWithID:trackID];
+  return [self->lib fileAttributesForTrackWithPrettyName:name
+                    inPlaylistNamed:plName];
 }
 
 - (NSData *)contentsAtPath:(NSString *)_path {
   NSArray  *components;
   unsigned count;
-  NSString *plName, *name, *trackID;
+  NSString *plName, *name;
 
   components = [_path pathComponents];
   count      = [components count];
   if (count < 3) return nil;
   plName     = [components objectAtIndex:1];
   name       = [components lastObject];
-  trackID    = [self->lib trackIDForPrettyTrackName:name inPlaylistNamed:plName];
-  return [self->lib dataForTrackWithID:trackID];
+  return [self->lib fileContentForTrackWithPrettyName:name
+                    inPlaylistNamed:plName];
 }
 
 /* optional */
@@ -135,8 +136,7 @@ static NSString *fsIconPath = nil;
 }
 
 - (NSString *)iconFileForPath:(NSString *)_path {
-  if ([_path isEqualToString:@"/"])
-    return fsIconPath;
+  if ([_path isEqualToString:@"/"]) return fsIconPath;
   return nil;
 }
 

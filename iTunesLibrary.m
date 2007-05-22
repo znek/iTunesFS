@@ -33,10 +33,12 @@
 #import "common.h"
 #import "iTunesLibrary.h"
 #import "NSString+Extensions.h"
+#import "iTunesPlaylist.h"
+#import "iTunesTrack.h"
 
 @interface iTunesLibrary (Private)
-- (NSString *)prettyTrackNameForTrackWithID:(NSString *)_trackID
-  index:(unsigned)_idx;
+- (iTunesTrack *)trackWithPrettyName:(NSString *)_ptn
+  inPlaylistNamed:(NSString *)_plName;
 @end
 
 @implementation iTunesLibrary
@@ -58,18 +60,19 @@ static BOOL     detailedNames = NO;
                                       copy];
   }
   detailedNames = [ud boolForKey:@"DetailedTrackNames"];
+  [iTunesTrack setUseDetailedInformationInNames:detailedNames];
 }
 
 - (id)init {
   self = [super init];
   if (self) {
+    self->plMap = [[NSMutableDictionary alloc] initWithCapacity:128];
     [self reload];
   }
   return self;
 }
 
 - (void)dealloc {
-  [self->lib   release];
   [self->plMap release];
   [super dealloc];
 }
@@ -77,36 +80,37 @@ static BOOL     detailedNames = NO;
 /* setup */
 
 - (void)reload {
-  NSData              *plist;
-  NSMutableDictionary *map;
-  unsigned            i, count;
-  
+  NSData        *plist;
+  NSDictionary  *lib;
+  NSArray       *playlists;
+  NSDictionary  *tracks;
+  unsigned      i, count;
+
+  [self->plMap removeAllObjects];
   plist = [NSData dataWithContentsOfFile:[self libraryPath]];
   NSAssert1(plist != nil, @"Couldn't read contents of %@!",
                           [self libraryPath]);
 
-  self->lib = [[NSPropertyListSerialization propertyListFromData:plist
-                                            mutabilityOption:NSPropertyListImmutable
-                                            format:NULL
-                                            errorDescription:NULL] retain];
-  NSAssert1(self->lib != nil, @"Couldn't parse contents of %@ - wrong format?!",
-                              [self libraryPath]);
+  lib = [NSPropertyListSerialization propertyListFromData:plist
+                                     mutabilityOption:NSPropertyListImmutable
+                                     format:NULL
+                                     errorDescription:NULL];
+  NSAssert1(lib != nil, @"Couldn't parse contents of %@ - wrong format?!",
+                        [self libraryPath]);
 
-  self->playlists = [self->lib objectForKey:@"Playlists"];
-  self->tracks    = [self->lib objectForKey:@"Tracks"];
-  [self->plMap release];
-  
-  count = [self->playlists count];
-  map   = [[NSMutableDictionary alloc] initWithCapacity:count];
+  playlists = [lib objectForKey:@"Playlists"];
+  tracks    = [lib objectForKey:@"Tracks"];
+  count     = [playlists count];
   for (i = 0; i < count; i++) {
-    NSDictionary *list;
-    NSString     *name;
+    NSDictionary   *plRep;
+    iTunesPlaylist *pl;
 
-    list = [self->playlists objectAtIndex:i];
-    name = [list objectForKey:@"Name"];
-    [map setObject:list forKey:[name properlyEscapedFSRepresentation]];
+    plRep = [playlists objectAtIndex:i];
+    pl    = [[iTunesPlaylist alloc] initWithITunesRepresentation:plRep
+                                    tracks:tracks];
+    [self->plMap setObject:pl forKey:[pl name]];
+    [pl release];
   }
-  self->plMap = map;
 }
 
 /* accessors */
@@ -120,84 +124,10 @@ static BOOL     detailedNames = NO;
 }
 
 - (NSArray *)trackNamesForPlaylistNamed:(NSString *)_plName {
-  NSDictionary   *list;
-  NSArray        *items;
-  NSMutableArray *names;
-  unsigned       i, count;
-
-  list = [self->plMap objectForKey:_plName];
-  if (!list) return nil;
-
-  items = [list objectForKey:@"Playlist Items"];
-  count = [items count];
-  names = [[NSMutableArray alloc] initWithCapacity:count];
-  for (i = 0; i < count; i++) {
-    NSDictionary *item;
-    id           trackID;
-    NSString     *name;
-
-    item    = [items objectAtIndex:i];
-    trackID = [[item objectForKey:@"Track ID"] description];
-    name    = [self prettyTrackNameForTrackWithID:trackID index:i];
-    [names addObject:name];
-  }
-  return [names autorelease];
+  return [[self->plMap objectForKey:_plName] trackNames];
 }
 
-- (NSString *)prettyTrackNameForTrackWithID:(NSString *)_trackID
-  index:(unsigned)_idx
-{
-  NSDictionary    *track;
-  NSString        *name, *artist, *album;
-  NSNumber        *trackNumber;
-  NSString        *location;
-  NSMutableString *prettyName;
-
-  track = [self->tracks objectForKey:_trackID];
-  if (!track) return nil;
-
-  prettyName = [[NSMutableString alloc] initWithCapacity:128];
-  [prettyName appendFormat:@"%03d ", _idx + 1];
-
-  if (detailedNames) {
-    artist = [track objectForKey:@"Artist"];
-    if (artist) {
-      [prettyName appendString:artist];
-      [prettyName appendString:@"_"];
-    }
-    album = [track objectForKey:@"Album"];
-    if (album) {
-      [prettyName appendString:album];
-      [prettyName appendString:@"_"];
-    }
-    trackNumber = [track objectForKey:@"Track Number"];
-    if (trackNumber) {
-      [prettyName appendString:[trackNumber description]];
-      [prettyName appendString:@" "];
-    }
-  }
-  name = [track objectForKey:@"Name"];
-  [prettyName appendString:[name properlyEscapedFSRepresentation]];
-#if 0
-  [prettyName appendString:@" ["];
-  [prettyName appendString:_trackID];
-  [prettyName appendString:@"]"];
-#endif
-  location = [track objectForKey:@"Location"];
-  if (location) {
-    [prettyName appendString:@"."];
-    if ([location hasPrefix:@"file"]) {
-      [prettyName appendString:[location pathExtension]];
-    }
-    else {
-      /* http:// stream address... */
-      [prettyName appendString:@"webloc"];
-    }
-  }
-  return [prettyName autorelease];
-}
-
-- (BOOL)isValidTrackName:(NSString *)_ptn {
+- (BOOL)isValidTrackName:(NSString *)_ptn inPlaylistNamed:(NSString *)_plName {
 #if 0
   if(![_ptn isValidTrackName]) {
     NSLog(@"NOT valid track name! -> %@", _ptn);
@@ -209,62 +139,27 @@ static BOOL     detailedNames = NO;
 #endif
 }
 
-- (NSString *)trackIDForPrettyTrackName:(NSString *)_ptn
+- (iTunesTrack *)trackWithPrettyName:(NSString *)_ptn inPlaylistNamed:(NSString *)_plName {
+  iTunesPlaylist *pl;
+  unsigned       idx;
+  
+  pl = [self->plMap objectForKey:_plName];
+  if (!pl) return nil;
+  idx = [_ptn playlistIndex];
+  return [pl trackAtIndex:idx];
+}
+
+- (NSData *)fileContentForTrackWithPrettyName:(NSString *)_ptn
   inPlaylistNamed:(NSString *)_plName
 {
-#if 1
-  NSDictionary *list, *item;
-  NSArray      *items;
-
-  list = [self->plMap objectForKey:_plName];
-  if (!list) return nil;
-  
-  items   = [list objectForKey:@"Playlist Items"];
-  item    = [items objectAtIndex:[_ptn playlistIndex]];
-  return [[item objectForKey:@"Track ID"] description];
-#else
-  NSRange close, open, cover;
-  
-  close = [_ptn rangeOfString:@"]" options:NSBackwardsSearch];
-  cover = NSMakeRange(0, close.location - 1);
-  open  = [_ptn rangeOfString:@"[" options:NSBackwardsSearch range:cover];
-  cover = NSMakeRange(NSMaxRange(open), close.location - open.location - 1);
-  return [_ptn substringWithRange:cover];
-#endif
+  return [[self trackWithPrettyName:_ptn inPlaylistNamed:_plName] fileContent];
 }
 
-- (NSData *)dataForTrackWithID:(NSString *)_trackID {
-  NSDictionary *track;
-  NSString     *location;
-  NSURL        *url;
-  NSData       *data;
-
-  track    = [self->tracks objectForKey:_trackID];
-  location = [track objectForKey:@"Location"];
-  if (!location) return nil;
-  url  = [NSURL URLWithString:location];
-  if (!url) return nil;
-  if (![url isFileURL]) { /* http based audio stream... */
-    return [location dataUsingEncoding:NSUTF8StringEncoding];
-  }
-  data = [NSData dataWithContentsOfURL:url
-                 options:NSMappedRead|NSUncachedRead
-                 error:NULL];
-  return data;
-}
-
-- (NSDictionary *)fileAttributesForTrackWithID:(NSString *)_trackID {
-  NSDictionary *track;
-  NSString     *location;
-  NSURL        *url;
-  
-  track    = [self->tracks objectForKey:_trackID];
-  location = [track objectForKey:@"Location"];
-  if (!location) return nil;
-  url  = [NSURL URLWithString:location];
-  if (![url isFileURL]) return nil;
-  return [[NSFileManager defaultManager] fileAttributesAtPath:[url path]
-                                         traverseLink:YES];
+- (NSDictionary *)fileAttributesForTrackWithPrettyName:(NSString *)_ptn
+  inPlaylistNamed:(NSString *)_plName
+{
+  return [[self trackWithPrettyName:_ptn inPlaylistNamed:_plName]
+                fileAttributes];
 }
 
 @end /* iTunesLibrary */

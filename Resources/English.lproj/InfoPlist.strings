@@ -1,6 +1,6 @@
 /* Localized versions of Info.plist keys */
 
 CFBundleName = "iTunesFS";
-CFBundleShortVersionString = "1.0.1";
-CFBundleGetInfoString = "iTunesFS version 1.0.1, Copyright 2007 Mulle kybernetiK.";
+CFBundleShortVersionString = "1.0.2";
+CFBundleGetInfoString = "iTunesFS version 1.0.2, Copyright 2007 Mulle kybernetiK.";
 NSHumanReadableCopyright = "Copyright 2007 Mulle kybernetiK.";
