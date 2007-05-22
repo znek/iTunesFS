@@ -1,0 +1,25 @@
+What is it?
+===========
+
+iTunesFS allows you to mount the "iTunes Music Library.xml" file as a file
+system, using the excellent MacFUSE (http://code.google.com/p/macfuse/).
+All playlists are exposed as directories, with their respective entries.
+Order of tracks within the playlists is maintained by prefixing the tracks
+with their playlist index.
+
+
+Defaults
+========
+
+Name               | Type | DefVal | Description
+------------------------------------------------------------------------------
+DetailedTrackNames | BOOL | NO     | If YES, use very detailed information
+                                     in track names (Album title, Artist,
+                                     track number, etc.)
+
+
+References
+==========
+
+MacFUSE  - http://code.google.com/p/macfuse/
+FUSEObjC - http://macfuse.googlecode.com/svn/trunk/filesystems-objc/FUSEObjC

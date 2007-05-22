@@ -1,0 +1,54 @@
+iTunes Music Library.xml
+========================
+
+Music Folder" = "file://localhost/Local/Music/";
+Tracks = {
+    7571 = {
+        Album = Karma; 
+        Artist = Moshcircus; 
+        "Artwork Count" = 1; 
+        BPM = 232; 
+        "Bit Rate" = 128; 
+        "Date Added" = 2006-03-11 11:42:23 +0100; 
+        "Date Modified" = 2006-03-27 17:35:22 +0200; 
+        "File Creator" = 1752133483; 
+        "File Folder Count" = 4; 
+        "File Type" = 1295270176; 
+        Genre = Metal; 
+        Kind = "AAC audio file"; 
+        "Library Folder Count" = 1; 
+        Location = "file://localhost/Local/Music/Moshcircus/Karma/04%20Karma.m4a"; 
+        Name = Karma; 
+        "Persistent ID" = DA09BE8A0BA99515; 
+        "Play Count" = 60; 
+        "Play Date" = 3247846331; 
+        "Play Date UTC" = 2006-12-01 18:32:11 +0100; 
+        "Sample Rate" = 44100; 
+        Size = 4082013; 
+        "Total Time" = 245270; 
+        "Track Count" = 11; 
+        "Track ID" = 7571; 
+        "Track Number" = 4; 
+        "Track Type" = File; 
+        Year = 2006; 
+    }; 
+    
+Playlists = (
+    {
+        "All Items" = 1; 
+        Master = 1; 
+        Name = Library; 
+        "Playlist ID" = 9181; 
+        "Playlist Items" = ({"Track ID" = 9059; }); 
+        "Playlist Persistent ID" = 800DBB44BA8E31C5; 
+        Visible = 0; 
+    },
+    {
+        "All Items" = 1; 
+        Name = "Moshcircus - Karma (orig)"; 
+        "Parent Persistent ID" = E7FF551986B26ED8; 
+        "Playlist ID" = 26121; 
+        "Playlist Items" = ({"Track ID" = 7571; }); 
+        "Playlist Persistent ID" = 7A0FE2A0B4C1DDFA;
+    }
+); 
