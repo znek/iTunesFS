@@ -69,7 +69,7 @@ static NSString *fsIconPath = nil;
   
   components = [_path pathComponents];
   count      = [components count];
-  if (count < 3) return nil;
+  if (count < 3) return [super fileAttributesAtPath:_path];
   plName     = [components objectAtIndex:1];
   name       = [components lastObject];
   trackID    = [self->lib trackIDForPrettyTrackName:name inPlaylistNamed:plName];

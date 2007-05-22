@@ -2,6 +2,7 @@
 
 #import "common.h"
 #import "iTunesLibrary.h"
+#import "NSString+Extensions.h"
 
 @interface iTunesLibrary (Private)
 - (NSString *)prettyTrackNameForTrackWithID:(NSString *)_trackID
@@ -73,7 +74,7 @@ static BOOL     detailedNames = NO;
 
     list = [self->playlists objectAtIndex:i];
     name = [list objectForKey:@"Name"];
-    [map setObject:list forKey:name];
+    [map setObject:list forKey:[name properlyEscapedFSRepresentation]];
   }
   self->plMap = map;
 }
@@ -146,7 +147,7 @@ static BOOL     detailedNames = NO;
     }
   }
   name = [track objectForKey:@"Name"];
-  [prettyName appendString:name];
+  [prettyName appendString:[name properlyEscapedFSRepresentation]];
 #if 0
   [prettyName appendString:@" ["];
   [prettyName appendString:_trackID];
@@ -155,23 +156,26 @@ static BOOL     detailedNames = NO;
   location = [track objectForKey:@"Location"];
   if (location) {
     [prettyName appendString:@"."];
-    [prettyName appendString:[location pathExtension]];
+    if ([location hasPrefix:@"file"]) {
+      [prettyName appendString:[location pathExtension]];
+    }
+    else {
+      /* http:// stream address... */
+      [prettyName appendString:@"webloc"];
+    }
   }
   return [prettyName autorelease];
 }
 
 - (BOOL)isValidTrackName:(NSString *)_ptn {
-#if 1
-  unichar c;
-
-  if ([_ptn length] < 4) return NO;
-  if ([_ptn characterAtIndex:3] != ' ') return NO;
-  if ((c = [_ptn characterAtIndex:2]) < '0' || c > '9') return NO;
-  if ((c = [_ptn characterAtIndex:1]) < '0' || c > '9') return NO;
-  if ((c = [_ptn characterAtIndex:0]) < '0' || c > '9') return NO;
+#if 0
+  if(![_ptn isValidTrackName]) {
+    NSLog(@"NOT valid track name! -> %@", _ptn);
+    return NO;
+  }
   return YES;
 #else
-  return [_ptn rangeOfString:@"]" options:NSBackwardsSearch].location != NSNotFound;
+  return [_ptn isValidTrackName];
 #endif
 }
 
@@ -181,17 +185,13 @@ static BOOL     detailedNames = NO;
 #if 1
   NSDictionary *list, *item;
   NSArray      *items;
-  NSString     *trackID;
-  unsigned     i;
 
   list = [self->plMap objectForKey:_plName];
   if (!list) return nil;
   
   items   = [list objectForKey:@"Playlist Items"];
-  i       = [[_ptn substringToIndex:3] intValue] - 1;
-  item    = [items objectAtIndex:i];
-  trackID = [[item objectForKey:@"Track ID"] description];
-  return trackID;
+  item    = [items objectAtIndex:[_ptn playlistIndex]];
+  return [[item objectForKey:@"Track ID"] description];
 #else
   NSRange close, open, cover;
   
@@ -213,6 +213,10 @@ static BOOL     detailedNames = NO;
   location = [track objectForKey:@"Location"];
   if (!location) return nil;
   url  = [NSURL URLWithString:location];
+  if (!url) return nil;
+  if (![url isFileURL]) { /* http based audio stream... */
+    return [location dataUsingEncoding:NSUTF8StringEncoding];
+  }
   data = [NSData dataWithContentsOfURL:url
                  options:NSMappedRead|NSUncachedRead
                  error:NULL];

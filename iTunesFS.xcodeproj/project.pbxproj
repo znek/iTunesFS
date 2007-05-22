@@ -23,6 +23,7 @@
 		ADBDA9200C02CF48004CF795 /* Version in Resources */ = {isa = PBXBuildFile; fileRef = ADBDA91F0C02CF48004CF795 /* Version */; };
 		ADBDA9CC0C02E7A5004CF795 /* iTunesFS.icns in Resources */ = {isa = PBXBuildFile; fileRef = ADBDA9CB0C02E7A5004CF795 /* iTunesFS.icns */; };
 		ADBDAB460C02FAC8004CF795 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = ADBDAB450C02FAC8004CF795 /* InfoPlist.strings */; };
+		ADBDABA90C02FF10004CF795 /* NSString+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = ADBDABA80C02FF10004CF795 /* NSString+Extensions.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +59,8 @@
 		ADBDA9CB0C02E7A5004CF795 /* iTunesFS.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = iTunesFS.icns; sourceTree = "<group>"; };
 		ADBDAB050C02F678004CF795 /* create-itunesfs-binary-package.sh */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.script.sh; path = "create-itunesfs-binary-package.sh"; sourceTree = "<group>"; };
 		ADBDAB410C02FAC3004CF795 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		ADBDABA70C02FF10004CF795 /* NSString+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Extensions.h"; sourceTree = "<group>"; };
+		ADBDABA80C02FF10004CF795 /* NSString+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Extensions.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +107,8 @@
 				7F74EF2C0B4C1BEC00CFA0C0 /* iTunesFileSystem.m */,
 				AD37A2950C01C87E00DF1291 /* iTunesLibrary.h */,
 				AD37A2960C01C87E00DF1291 /* iTunesLibrary.m */,
+				ADBDABA70C02FF10004CF795 /* NSString+Extensions.h */,
+				ADBDABA80C02FF10004CF795 /* NSString+Extensions.m */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -265,6 +270,7 @@
 				7F3627710B8521EE0020679E /* IconFamily.m in Sources */,
 				7F3627720B8521EE0020679E /* NSString+CarbonFSRefCreation.m in Sources */,
 				AD37A2970C01C87E00DF1291 /* iTunesLibrary.m in Sources */,
+				ADBDABA90C02FF10004CF795 /* NSString+Extensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
