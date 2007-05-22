@@ -22,6 +22,7 @@
 		AD37A2970C01C87E00DF1291 /* iTunesLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = AD37A2960C01C87E00DF1291 /* iTunesLibrary.m */; };
 		ADBDA9200C02CF48004CF795 /* Version in Resources */ = {isa = PBXBuildFile; fileRef = ADBDA91F0C02CF48004CF795 /* Version */; };
 		ADBDA9CC0C02E7A5004CF795 /* iTunesFS.icns in Resources */ = {isa = PBXBuildFile; fileRef = ADBDA9CB0C02E7A5004CF795 /* iTunesFS.icns */; };
+		ADBDAB460C02FAC8004CF795 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = ADBDAB450C02FAC8004CF795 /* InfoPlist.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,6 +56,8 @@
 		ADBDA9310C02CFA0004CF795 /* COPYING */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
 		ADBDA9320C02CFA0004CF795 /* COPYRIGHT */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; path = COPYRIGHT; sourceTree = "<group>"; };
 		ADBDA9CB0C02E7A5004CF795 /* iTunesFS.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = iTunesFS.icns; sourceTree = "<group>"; };
+		ADBDAB050C02F678004CF795 /* create-itunesfs-binary-package.sh */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.script.sh; path = "create-itunesfs-binary-package.sh"; sourceTree = "<group>"; };
+		ADBDAB410C02FAC3004CF795 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +88,7 @@
 				08FB7795FE84155DC02AAC07 /* Source */,
 				7FEA82C10B456A36001441DE /* Resources */,
 				7FEAC1C30B446B70008EF420 /* FUSEObjC */,
+				ADBDAB040C02F664004CF795 /* Scripts */,
 				08FB779DFE84155DC02AAC07 /* External Frameworks and Libraries */,
 				1AB674ADFE9D54B511CA2CBB /* Products */,
 			);
@@ -159,6 +163,7 @@
 				AD37A2030C01C58000DF1291 /* MainMenu.nib */,
 				ADBDA9CB0C02E7A5004CF795 /* iTunesFS.icns */,
 				7F3DBD070B4422C200A48059 /* Info.plist */,
+				ADBDAB450C02FAC8004CF795 /* InfoPlist.strings */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -172,6 +177,14 @@
 				7F3627620B8521EE0020679E /* external */,
 			);
 			path = FUSEObjC;
+			sourceTree = "<group>";
+		};
+		ADBDAB040C02F664004CF795 /* Scripts */ = {
+			isa = PBXGroup;
+			children = (
+				ADBDAB050C02F678004CF795 /* create-itunesfs-binary-package.sh */,
+			);
+			name = Scripts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -218,6 +231,7 @@
 				AD37A2040C01C58000DF1291 /* MainMenu.nib in Resources */,
 				ADBDA9200C02CF48004CF795 /* Version in Resources */,
 				ADBDA9CC0C02E7A5004CF795 /* iTunesFS.icns in Resources */,
+				ADBDAB460C02FAC8004CF795 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -263,6 +277,14 @@
 				AD37A1FB0C01C57400DF1291 /* English */,
 			);
 			name = MainMenu.nib;
+			sourceTree = "<group>";
+		};
+		ADBDAB450C02FAC8004CF795 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				ADBDAB410C02FAC3004CF795 /* English */,
+			);
+			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -335,14 +357,24 @@
 		7F3DBD0A0B4422C300A48059 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
 				COPY_PHASE_STRIP = YES;
+				DEBUGGING_SYMBOLS = NO;
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DSTROOT = /;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = common.h;
 				INFOPLIST_FILE = Info.plist;
+				INSTALL_MODE_FLAG = "go-w,a+rX,u+w";
 				INSTALL_PATH = "$(HOME)/Applications";
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				OTHER_LDFLAGS = (
 					"-framework",
 					Foundation,
@@ -351,6 +383,9 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = iTunesFS;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				SYMROOT = /tmp/MulleDeploymentProducts;
+				TEMP_DIR = "$(SYMROOT)/$(PROJECT_NAME).build/$(TARGET_NAME).build";
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = NO;
 			};
