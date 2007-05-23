@@ -6,6 +6,16 @@
 	<string>English</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
+  <key>CFBundleName</key>
+	<string>iTunesFS</string>
+	<key>CFBundleVersion</key>
+	<string>1.0.2</string>
+  <key>CFBundleShortVersionString</key>
+	<string>1.0.2</string>
+  <key>CFBundleGetInfoString</key>
+	<string>iTunesFS version 1.0.2, Copyright 2007 Mulle kybernetiK.</string>
+  <key>NSHumanReadableCopyright</key>
+	<string>Copyright 2007 Mulle kybernetiK.</string>
 	<key>CFBundleIconFile</key>
 	<string>iTunesFS</string>
 	<key>CFBundleIdentifier</key>
@@ -16,8 +26,6 @@
 	<string>APPL</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
-	<key>CFBundleVersion</key>
-	<string>1.0.2</string>
 	<key>FUSEFileSystemClass</key>
 	<string>iTunesFileSystem</string>
 	<key>NSMainNibFile</key>

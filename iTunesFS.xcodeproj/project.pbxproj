@@ -24,7 +24,6 @@
 		AD37A2970C01C87E00DF1291 /* iTunesLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = AD37A2960C01C87E00DF1291 /* iTunesLibrary.m */; };
 		ADBDA9200C02CF48004CF795 /* Version in Resources */ = {isa = PBXBuildFile; fileRef = ADBDA91F0C02CF48004CF795 /* Version */; };
 		ADBDA9CC0C02E7A5004CF795 /* iTunesFS.icns in Resources */ = {isa = PBXBuildFile; fileRef = ADBDA9CB0C02E7A5004CF795 /* iTunesFS.icns */; };
-		ADBDAB460C02FAC8004CF795 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = ADBDAB450C02FAC8004CF795 /* InfoPlist.strings */; };
 		ADBDABA90C02FF10004CF795 /* NSString+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = ADBDABA80C02FF10004CF795 /* NSString+Extensions.m */; };
 /* End PBXBuildFile section */
 
@@ -64,7 +63,6 @@
 		ADBDA9320C02CFA0004CF795 /* COPYRIGHT */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; path = COPYRIGHT; sourceTree = "<group>"; };
 		ADBDA9CB0C02E7A5004CF795 /* iTunesFS.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = iTunesFS.icns; sourceTree = "<group>"; };
 		ADBDAB050C02F678004CF795 /* create-itunesfs-binary-package.sh */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.script.sh; path = "create-itunesfs-binary-package.sh"; sourceTree = "<group>"; };
-		ADBDAB410C02FAC3004CF795 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		ADBDABA70C02FF10004CF795 /* NSString+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Extensions.h"; sourceTree = "<group>"; };
 		ADBDABA80C02FF10004CF795 /* NSString+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Extensions.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -178,7 +176,6 @@
 				AD37A2030C01C58000DF1291 /* MainMenu.nib */,
 				ADBDA9CB0C02E7A5004CF795 /* iTunesFS.icns */,
 				7F3DBD070B4422C200A48059 /* Info.plist */,
-				ADBDAB450C02FAC8004CF795 /* InfoPlist.strings */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -246,7 +243,6 @@
 				AD37A2040C01C58000DF1291 /* MainMenu.nib in Resources */,
 				ADBDA9200C02CF48004CF795 /* Version in Resources */,
 				ADBDA9CC0C02E7A5004CF795 /* iTunesFS.icns in Resources */,
-				ADBDAB460C02FAC8004CF795 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -264,7 +260,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "umount /Volumes/Hello\nmkdir -p /Volumes/Hello\nexit 0";
+			shellScript = "TMP_SUBST_FILE_PATH=/tmp/${INFOPLIST_FILE}.$$\n\ncp ${INFOPLIST_FILE} ${TMP_SUBST_FILE_PATH}\n# retrieve the current version information\n. Version\nsed -e \"s/\\([1234567890]\\)\\.\\([1234567890]\\)\\.\\([1234567890]\\)/${MAJOR_VERSION}\\.${MINOR_VERSION}\\.${SUBMINOR_VERSION}/g\" ${TMP_SUBST_FILE_PATH} > ${INFOPLIST_FILE}\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -295,14 +291,6 @@
 				AD37A1FB0C01C57400DF1291 /* English */,
 			);
 			name = MainMenu.nib;
-			sourceTree = "<group>";
-		};
-		ADBDAB450C02FAC8004CF795 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				ADBDAB410C02FAC3004CF795 /* English */,
-			);
-			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
