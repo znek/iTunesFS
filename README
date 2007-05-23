@@ -8,6 +8,17 @@ Order of tracks within the playlists is maintained by prefixing the tracks
 with their playlist index.
 
 
+Further information
+===================
+
+The iTunesFS homepage is at http://www.mulle-kybernetik.com/software/iTunesFS.
+Sourcecode is available via anonymous Subversion (svn) access at
+http://svn.mulle-kybernetik.com/iTunesFS. For license information have a look
+at the 'COPYING' file.
+In case you have further questions, feel free to write an email to
+Marcus Mueller <znek@mulle-kybernetik.com>.
+
+
 Defaults
 ========
 
@@ -25,7 +36,6 @@ TODO / IDEAS
   - need to be able to identify (easy) and parse (more difficult, but already
     did that for PodLifter) iPod databases
   - abstract iTunesLibrary (superclass: Library) and add iPodLibrary
-- Refresh libraries upon changes (need watchdog for this)
   - Listen for attached/detached iPods
 
 
@@ -34,3 +44,4 @@ References
 
 MacFUSE  - http://code.google.com/p/macfuse/
 FUSEObjC - http://macfuse.googlecode.com/svn/trunk/filesystems-objc/FUSEObjC
+iTunesFS - http://www.mulle-kybernetik.com/software/iTunesFS

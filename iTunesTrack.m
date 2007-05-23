@@ -55,7 +55,7 @@ static BOOL detailedNames = NO;
 {
   self = [super init];
   if (self) {
-    NSString        *artist, *album;
+    NSString        *trackName, *artist, *album;
     NSNumber        *trackNumber;
     NSString        *location;
     NSMutableString *prettyName;
@@ -80,8 +80,14 @@ static BOOL detailedNames = NO;
         [prettyName appendString:@" "];
       }
     }
-    [prettyName appendString:[[_track objectForKey:@"Name"]
-                                      properlyEscapedFSRepresentation]];
+    trackName = [_track objectForKey:@"Name"];
+    if (trackName) {
+      [prettyName appendString:[trackName properlyEscapedFSRepresentation]];
+    }
+    else {
+      NSLog(@"WARN: track without name! REP:%@", _track);
+      [prettyName appendString:@"Empty"];
+    }
 #if 0
     [prettyName appendString:@" ["];
     [prettyName appendString:_trackID];

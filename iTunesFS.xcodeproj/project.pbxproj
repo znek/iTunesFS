@@ -22,10 +22,8 @@
 		AD15A22C0C03248C00345C9E /* iTunesTrack.m in Sources */ = {isa = PBXBuildFile; fileRef = AD15A22B0C03248C00345C9E /* iTunesTrack.m */; };
 		AD15A4D40C04433D00345C9E /* Watchdog.m in Sources */ = {isa = PBXBuildFile; fileRef = AD15A4D30C04433D00345C9E /* Watchdog.m */; };
 		AD15A57E0C04540500345C9E /* NSArray+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = AD15A57D0C04540500345C9E /* NSArray+Extensions.m */; };
-		AD15A6530C0462ED00345C9E /* ChangeLog in Resources */ = {isa = PBXBuildFile; fileRef = AD15A6520C0462ED00345C9E /* ChangeLog */; };
 		AD37A2040C01C58000DF1291 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = AD37A2030C01C58000DF1291 /* MainMenu.nib */; };
 		AD37A2970C01C87E00DF1291 /* iTunesLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = AD37A2960C01C87E00DF1291 /* iTunesLibrary.m */; };
-		ADBDA9200C02CF48004CF795 /* Version in Resources */ = {isa = PBXBuildFile; fileRef = ADBDA91F0C02CF48004CF795 /* Version */; };
 		ADBDA9CC0C02E7A5004CF795 /* iTunesFS.icns in Resources */ = {isa = PBXBuildFile; fileRef = ADBDA9CB0C02E7A5004CF795 /* iTunesFS.icns */; };
 		ADBDABA90C02FF10004CF795 /* NSString+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = ADBDABA80C02FF10004CF795 /* NSString+Extensions.m */; };
 /* End PBXBuildFile section */
@@ -254,9 +252,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AD37A2040C01C58000DF1291 /* MainMenu.nib in Resources */,
-				ADBDA9200C02CF48004CF795 /* Version in Resources */,
 				ADBDA9CC0C02E7A5004CF795 /* iTunesFS.icns in Resources */,
-				AD15A6530C0462ED00345C9E /* ChangeLog in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,5 +1,19 @@
 2007-05-23  Marcus Mueller  <znek@mulle-kybernetik.com>
 
+	* v1.0.4
+
+	* iTunesTrack.m: added safeguard against nameless tracks - not as
+	  impossible to encounter as I'd hoped.
+
+	* iTunesPlaylist.m: in case playlists sport track ids which have
+	  disappeared from the library, skip the creation of those tracks and
+	  adjust playlist index accordingly. This effect has been observed
+	  with Podcasts only, yet.
+
+	* create-itunesfs-binary-package.sh: remove 'Version' file from .dmg
+
+	* README: updated
+
 	* v1.0.3
 
 	* ChangeLog: added

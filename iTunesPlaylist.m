@@ -49,7 +49,7 @@
   if (self) {
     NSArray        *items;
     NSMutableArray *ts;
-    unsigned       i, count;
+    unsigned       i, count, offset = 0;
 
     [self setName:[_list objectForKey:@"Name"]];
     
@@ -64,8 +64,19 @@
       item    = [items objectAtIndex:i];
       trackID = [[item objectForKey:@"Track ID"] description];
       item    = [_tracks objectForKey:trackID];
+      if (!item) {
+#if 0
+        /* NOTE: Rolf's library really sports these effects, seems to be
+         * limited to Podcasts only.
+         */
+        NSLog(@"INFO Playlist[%@]: found no track item for #%@",
+              self->name, trackID);
+#endif
+        offset += 1;
+        continue;
+      }
       track   = [[iTunesTrack alloc] initWithITunesRepresentation:item
-                                     playlistIndex:i];
+                                     playlistIndex:i - offset];
       [ts addObject:track];
       [track release];
     }

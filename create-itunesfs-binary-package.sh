@@ -29,7 +29,7 @@ gnutar cf - ${BIN_DIR##*/} | ( cd $DST_DIR ; gnutar xf - )
 
 # copy READMEs
 cd $SOURCE_DIR
-gnutar cf - README AUTHORS COPYING COPYRIGHT Version | ( cd $DST_DIR; gnutar xf - )
+gnutar cf - README AUTHORS COPYING COPYRIGHT | ( cd $DST_DIR; gnutar xf - )
 
 # remove extra garbage
 cd $DST_DIR
