@@ -30,26 +30,35 @@
   POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef	__iTunesFS_iTunesTrack_H
-#define	__iTunesFS_iTunesTrack_H
+#import "common.h"
+#import "NSArray+Extensions.h"
 
-#import <Foundation/Foundation.h>
+@implementation NSArray (iTunesFSPathExtensions)
 
-@interface iTunesTrack : NSObject
-{
-  NSString *name;
-  NSURL    *url;
+- (NSString *)libraryName {
+  return [self objectAtIndex:1];
+}
+- (NSString *)playlistName {
+  return [self objectAtIndex:2];
+}
+- (NSString *)trackName {
+  return [self objectAtIndex:3];
 }
 
-+ (void)setUseDetailedInformationInNames:(BOOL)_yn;
+- (BOOL)isRootDirectory {
+  return [self count] == 1;
+}
+- (BOOL)isLibraryDirectory {
+  return [self count] == 2;
+}
+- (BOOL)isPlaylistDirectory {
+  return [self count] == 3;
+}
+- (BOOL)isDirectoryPath {
+  return [self count] < 4;
+}
+- (BOOL)isFilePath {
+  return [self count] == 4;
+}
 
-- (id)initWithITunesRepresentation:(NSDictionary *)_track
-  playlistIndex:(unsigned)_idx;
-
-- (NSString *)name;
-- (NSDictionary *)fileAttributes;
-- (NSData *)fileContent;
-  
-@end /* iTunesTrack */
-
-#endif	/* __iTunesFS_iTunesTrack_H */
+@end /* NSArray (iTunesFSPathExtensions) */

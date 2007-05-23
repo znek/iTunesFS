@@ -35,10 +35,15 @@
 
 #import <Foundation/Foundation.h>
 
+@class NSImage;
+
 @interface iTunesLibrary : NSObject
 {
   NSMutableDictionary *plMap;
 }
+
+- (NSString *)name;
+- (NSImage *)icon;
 
 - (void)reload;
 

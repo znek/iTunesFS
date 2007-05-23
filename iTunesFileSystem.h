@@ -30,6 +30,9 @@
   POSSIBILITY OF SUCH DAMAGE.
 */
 
+#ifndef	__iTunesFS_iTunesFileSystem_H
+#define	__iTunesFS_iTunesFileSystem_H
+
 #import <Foundation/Foundation.h>
 #import "FUSEFileSystem.h"
 
@@ -37,7 +40,12 @@
 
 @interface iTunesFileSystem : FUSEFileSystem
 {
-  iTunesLibrary *lib;
+  NSMutableArray      *libs;
+  NSMutableDictionary *libMap;
 }
 
+- (void)addLibrary:(iTunesLibrary *)_lib;
+
 @end
+
+#endif	/* __iTunesFS_iTunesFileSystem_H */

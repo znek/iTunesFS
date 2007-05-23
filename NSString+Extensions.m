@@ -48,7 +48,7 @@
     unichar  c;
     
     c = [self characterAtIndex:i];
-    if (c < '0' || c > '9') {NSLog(@"%@ [%d]-> NO", self, i); return NO;}
+    if (c < '0' || c > '9') return NO;
   }
   return YES;
 #else
@@ -82,4 +82,4 @@
   return [proper autorelease];
 }
 
-@end /* NSString+Extensions */
+@end /* NSString (iTunesFSExtensions) */

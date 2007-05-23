@@ -32,9 +32,11 @@
 
 #import "common.h"
 #import "iTunesLibrary.h"
+#import <AppKit/AppKit.h>
 #import "NSString+Extensions.h"
 #import "iTunesPlaylist.h"
 #import "iTunesTrack.h"
+#import "Watchdog.h"
 
 @interface iTunesLibrary (Private)
 - (iTunesTrack *)trackWithPrettyName:(NSString *)_ptn
@@ -44,6 +46,7 @@
 @implementation iTunesLibrary
 
 static NSString *libraryPath  = nil;
+static NSImage  *libraryIcon  = nil;
 static BOOL     detailedNames = NO;
 
 + (void)initialize {
@@ -51,14 +54,17 @@ static BOOL     detailedNames = NO;
   NSUserDefaults *ud;
   
   if (didInit) return;
-  didInit       = YES;
-  ud            = [NSUserDefaults standardUserDefaults];
-  libraryPath   = [[ud stringForKey:@"Library"] copy];
+  didInit     = YES;
+  ud          = [NSUserDefaults standardUserDefaults];
+  libraryPath = [[ud stringForKey:@"Library"] copy];
   if (!libraryPath) {
     libraryPath = [[NSHomeDirectory() stringByAppendingString:
                                       @"/Music/iTunes/iTunes Music Library.xml"]
                                       copy];
   }
+  libraryIcon   = [[[NSWorkspace sharedWorkspace]
+                                 iconForFile:@"/Applications/iTunes.app"]
+                                 copy];
   detailedNames = [ud boolForKey:@"DetailedTrackNames"];
   [iTunesTrack setUseDetailedInformationInNames:detailedNames];
 }
@@ -68,11 +74,13 @@ static BOOL     detailedNames = NO;
   if (self) {
     self->plMap = [[NSMutableDictionary alloc] initWithCapacity:128];
     [self reload];
+    [[Watchdog sharedWatchdog] watchLibrary:self];
   }
   return self;
 }
 
 - (void)dealloc {
+  [[Watchdog sharedWatchdog] forgetLibrary:self];
   [self->plMap release];
   [super dealloc];
 }
@@ -85,6 +93,10 @@ static BOOL     detailedNames = NO;
   NSArray       *playlists;
   NSDictionary  *tracks;
   unsigned      i, count;
+
+#if 0
+  NSLog(@"%s", __PRETTY_FUNCTION__);
+#endif
 
   [self->plMap removeAllObjects];
   plist = [NSData dataWithContentsOfFile:[self libraryPath]];
@@ -115,6 +127,14 @@ static BOOL     detailedNames = NO;
 
 /* accessors */
 
+- (NSString *)name {
+  return @"iTunes";
+}
+
+- (NSImage *)icon {
+  return libraryIcon;
+}
+
 - (NSString *)libraryPath {
   return libraryPath;
 }
@@ -139,7 +159,9 @@ static BOOL     detailedNames = NO;
 #endif
 }
 
-- (iTunesTrack *)trackWithPrettyName:(NSString *)_ptn inPlaylistNamed:(NSString *)_plName {
+- (iTunesTrack *)trackWithPrettyName:(NSString *)_ptn
+  inPlaylistNamed:(NSString *)_plName
+{
   iTunesPlaylist *pl;
   unsigned       idx;
   

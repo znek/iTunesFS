@@ -20,6 +20,9 @@
 		7FEAC1D30B446B70008EF420 /* FUSEMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FEAC1C80B446B70008EF420 /* FUSEMain.m */; };
 		AD15A2190C03208500345C9E /* iTunesPlaylist.m in Sources */ = {isa = PBXBuildFile; fileRef = AD15A2180C03208500345C9E /* iTunesPlaylist.m */; };
 		AD15A22C0C03248C00345C9E /* iTunesTrack.m in Sources */ = {isa = PBXBuildFile; fileRef = AD15A22B0C03248C00345C9E /* iTunesTrack.m */; };
+		AD15A4D40C04433D00345C9E /* Watchdog.m in Sources */ = {isa = PBXBuildFile; fileRef = AD15A4D30C04433D00345C9E /* Watchdog.m */; };
+		AD15A57E0C04540500345C9E /* NSArray+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = AD15A57D0C04540500345C9E /* NSArray+Extensions.m */; };
+		AD15A6530C0462ED00345C9E /* ChangeLog in Resources */ = {isa = PBXBuildFile; fileRef = AD15A6520C0462ED00345C9E /* ChangeLog */; };
 		AD37A2040C01C58000DF1291 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = AD37A2030C01C58000DF1291 /* MainMenu.nib */; };
 		AD37A2970C01C87E00DF1291 /* iTunesLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = AD37A2960C01C87E00DF1291 /* iTunesLibrary.m */; };
 		ADBDA9200C02CF48004CF795 /* Version in Resources */ = {isa = PBXBuildFile; fileRef = ADBDA91F0C02CF48004CF795 /* Version */; };
@@ -52,13 +55,18 @@
 		AD15A2180C03208500345C9E /* iTunesPlaylist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTunesPlaylist.m; sourceTree = "<group>"; };
 		AD15A22A0C03248C00345C9E /* iTunesTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTunesTrack.h; sourceTree = "<group>"; };
 		AD15A22B0C03248C00345C9E /* iTunesTrack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTunesTrack.m; sourceTree = "<group>"; };
+		AD15A4D20C04433D00345C9E /* Watchdog.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = Watchdog.h; sourceTree = "<group>"; };
+		AD15A4D30C04433D00345C9E /* Watchdog.m */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.objc; path = Watchdog.m; sourceTree = "<group>"; };
+		AD15A57C0C04540500345C9E /* NSArray+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Extensions.h"; sourceTree = "<group>"; };
+		AD15A57D0C04540500345C9E /* NSArray+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Extensions.m"; sourceTree = "<group>"; };
+		AD15A6520C0462ED00345C9E /* ChangeLog */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 8; lastKnownFileType = text; path = ChangeLog; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
 		AD37A1FB0C01C57400DF1291 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		AD37A2950C01C87E00DF1291 /* iTunesLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTunesLibrary.h; sourceTree = "<group>"; };
 		AD37A2960C01C87E00DF1291 /* iTunesLibrary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTunesLibrary.m; sourceTree = "<group>"; };
 		AD37A2BE0C01CFA800DF1291 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		AD37A2C20C01CFB400DF1291 /* NOTES */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = NOTES; sourceTree = "<group>"; };
 		ADBDA9170C02CF28004CF795 /* AUTHORS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AUTHORS; sourceTree = "<group>"; };
-		ADBDA91F0C02CF48004CF795 /* Version */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Version; sourceTree = "<group>"; };
+		ADBDA91F0C02CF48004CF795 /* Version */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; path = Version; sourceTree = "<group>"; };
 		ADBDA9310C02CFA0004CF795 /* COPYING */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
 		ADBDA9320C02CFA0004CF795 /* COPYRIGHT */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; path = COPYRIGHT; sourceTree = "<group>"; };
 		ADBDA9CB0C02E7A5004CF795 /* iTunesFS.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = iTunesFS.icns; sourceTree = "<group>"; };
@@ -91,6 +99,7 @@
 				ADBDA9170C02CF28004CF795 /* AUTHORS */,
 				ADBDA9310C02CFA0004CF795 /* COPYING */,
 				ADBDA9320C02CFA0004CF795 /* COPYRIGHT */,
+				AD15A6520C0462ED00345C9E /* ChangeLog */,
 				ADBDA91F0C02CF48004CF795 /* Version */,
 				08FB7795FE84155DC02AAC07 /* Source */,
 				7FEA82C10B456A36001441DE /* Resources */,
@@ -115,8 +124,12 @@
 				AD15A2180C03208500345C9E /* iTunesPlaylist.m */,
 				AD15A22A0C03248C00345C9E /* iTunesTrack.h */,
 				AD15A22B0C03248C00345C9E /* iTunesTrack.m */,
+				AD15A4D20C04433D00345C9E /* Watchdog.h */,
+				AD15A4D30C04433D00345C9E /* Watchdog.m */,
 				ADBDABA70C02FF10004CF795 /* NSString+Extensions.h */,
 				ADBDABA80C02FF10004CF795 /* NSString+Extensions.m */,
+				AD15A57C0C04540500345C9E /* NSArray+Extensions.h */,
+				AD15A57D0C04540500345C9E /* NSArray+Extensions.m */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -206,7 +219,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7F3DBD080B4422C300A48059 /* Build configuration list for PBXNativeTarget "iTunes" */;
 			buildPhases = (
-				7F3DBE0B0B44325A00A48059 /* ShellScript */,
+				7F3DBE0B0B44325A00A48059 /* Update Version Information */,
 				7F3DBD010B4422C200A48059 /* Resources */,
 				7F3DBD020B4422C200A48059 /* Sources */,
 				7F3DBD030B4422C200A48059 /* Frameworks */,
@@ -243,24 +256,26 @@
 				AD37A2040C01C58000DF1291 /* MainMenu.nib in Resources */,
 				ADBDA9200C02CF48004CF795 /* Version in Resources */,
 				ADBDA9CC0C02E7A5004CF795 /* iTunesFS.icns in Resources */,
+				AD15A6530C0462ED00345C9E /* ChangeLog in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		7F3DBE0B0B44325A00A48059 /* ShellScript */ = {
+		7F3DBE0B0B44325A00A48059 /* Update Version Information */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Update Version Information";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "TMP_SUBST_FILE_PATH=/tmp/${INFOPLIST_FILE}.$$\n\ncp ${INFOPLIST_FILE} ${TMP_SUBST_FILE_PATH}\n# retrieve the current version information\n. Version\nsed -e \"s/\\([1234567890]\\)\\.\\([1234567890]\\)\\.\\([1234567890]\\)/${MAJOR_VERSION}\\.${MINOR_VERSION}\\.${SUBMINOR_VERSION}/g\" ${TMP_SUBST_FILE_PATH} > ${INFOPLIST_FILE}\n";
+			shellScript = "TMP_SUBST_FILE_PATH=/tmp/${INFOPLIST_FILE}.$$\n\ncp ${INFOPLIST_FILE} ${TMP_SUBST_FILE_PATH}\n# retrieve the current version information\n. Version\nsed -e \"s/\\([1234567890]*\\)\\.\\([1234567890]*\\)\\.\\([1234567890]*\\)/${MAJOR_VERSION}\\.${MINOR_VERSION}\\.${SUBMINOR_VERSION}/g\" ${TMP_SUBST_FILE_PATH} > ${INFOPLIST_FILE}\nrm -f ${TMP_SUBST_FILE_PATH}\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -279,6 +294,8 @@
 				ADBDABA90C02FF10004CF795 /* NSString+Extensions.m in Sources */,
 				AD15A2190C03208500345C9E /* iTunesPlaylist.m in Sources */,
 				AD15A22C0C03248C00345C9E /* iTunesTrack.m in Sources */,
+				AD15A4D40C04433D00345C9E /* Watchdog.m in Sources */,
+				AD15A57E0C04540500345C9E /* NSArray+Extensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

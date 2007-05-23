@@ -33,6 +33,7 @@
 #import "common.h"
 #import "iTunesFileSystem.h"
 #import "iTunesLibrary.h"
+#import "NSArray+Extensions.h"
 
 @implementation iTunesFileSystem
 
@@ -52,75 +53,86 @@ static NSString *fsIconPath = nil;
 /* notifications */
 
 - (void)fuseWillMount {
-  self->lib = [[iTunesLibrary alloc] init];
+  iTunesLibrary *lib;
+
+  self->libs   = [[NSMutableArray alloc] initWithCapacity:3];
+  self->libMap = [[NSMutableDictionary alloc] initWithCapacity:3];
+
+  // add default library
+  lib = [[iTunesLibrary alloc] init];
+  [self addLibrary:lib];
+  [lib release];
 }
 
 - (void)fuseDidUnmount {
-  [self->lib release];
+  [self->libs release];
+}
+
+- (void)addLibrary:(iTunesLibrary *)_lib {
+  [self->libs addObject:_lib];
+  [self->libMap setObject:_lib forKey:[_lib name]];
 }
 
 /* required stuff */
 
+/* currently we have this scheme:
+ * Libraries / Playlists / Tracks
+ */
 - (NSArray *)directoryContentsAtPath:(NSString *)_path {
-  NSArray  *components;
-  unsigned count;
-  NSString *plName;
+  NSArray       *path;
+  iTunesLibrary *lib;
 
-  components = [_path pathComponents];
-  count      = [components count];
-  if (count < 2) /* root dir */
-    return [self->lib playlistNames];
-#if 0
-  NSLog(@"components (%d): %@", count, components);
-#endif
-  plName = [components objectAtIndex:1];
-  return [self->lib trackNamesForPlaylistNamed:plName];
+  path = [_path pathComponents];
+  if ([path isRootDirectory])
+    return [self->libMap allKeys];
+
+  lib = [self->libMap objectForKey:[path libraryName]];
+  if ([path isLibraryDirectory])
+    return [lib playlistNames];
+  return [lib trackNamesForPlaylistNamed:[path playlistName]];
 }
 
-- (BOOL)fileExistsAtPath:(NSString *)path isDirectory:(BOOL *)isDirectory {
-  NSArray  *components;
-  unsigned count;
+- (BOOL)fileExistsAtPath:(NSString *)_path isDirectory:(BOOL *)isDirectory {
+  NSArray       *path;
+  iTunesLibrary *lib;
 
-  components = [path pathComponents];
-  count      = [components count];
-#if 0
-  NSLog(@"components (%d): %@", count, components);
-#endif
-  *isDirectory = [components count] < 3 ? YES : NO;
-  if (count == 1) return YES; /* root dir */
-  else if (count == 2) { /* playlist */
-    return [[self->lib playlistNames] containsObject:[components lastObject]];
-  }
-  return [self->lib isValidTrackName:[components objectAtIndex:2]
-                    inPlaylistNamed:[components objectAtIndex:1]];
+  path         = [_path pathComponents];
+  *isDirectory = [path isDirectoryPath];
+
+  if ([path isRootDirectory]) return YES;
+
+  lib = [self->libMap objectForKey:[path libraryName]];
+  if ([path isLibraryDirectory]) return lib != nil;
+  else if([path isPlaylistDirectory])
+    return [[lib playlistNames] containsObject:[path playlistName]];
+  else
+    return [lib isValidTrackName:[path trackName]
+                inPlaylistNamed:[path playlistName]];
 }
 
 - (NSDictionary *)fileAttributesAtPath:(NSString *)_path {
-  NSArray  *components;
-  unsigned count;
-  NSString *plName, *name;
+  NSArray       *path;
+  iTunesLibrary *lib;
   
-  components = [_path pathComponents];
-  count      = [components count];
-  if (count < 3) return [super fileAttributesAtPath:_path];
-  plName     = [components objectAtIndex:1];
-  name       = [components lastObject];
-  return [self->lib fileAttributesForTrackWithPrettyName:name
-                    inPlaylistNamed:plName];
+  path = [_path pathComponents];
+  if ([path isDirectoryPath])
+    return [super fileAttributesAtPath:_path];
+
+  lib = [self->libMap objectForKey:[path libraryName]];
+  return [lib fileAttributesForTrackWithPrettyName:[path trackName]
+              inPlaylistNamed:[path playlistName]];
 }
 
 - (NSData *)contentsAtPath:(NSString *)_path {
-  NSArray  *components;
-  unsigned count;
-  NSString *plName, *name;
+  NSArray       *path;
+  iTunesLibrary *lib;
+  
+  path = [_path pathComponents];
+  if ([path isDirectoryPath]) return nil;
 
-  components = [_path pathComponents];
-  count      = [components count];
-  if (count < 3) return nil;
-  plName     = [components objectAtIndex:1];
-  name       = [components lastObject];
-  return [self->lib fileContentForTrackWithPrettyName:name
-                    inPlaylistNamed:plName];
+  lib = [self->libMap objectForKey:[path libraryName]];
+  return [lib fileContentForTrackWithPrettyName:[path trackName]
+              inPlaylistNamed:[path playlistName]];
 }
 
 /* optional */
@@ -137,6 +149,15 @@ static NSString *fsIconPath = nil;
 
 - (NSString *)iconFileForPath:(NSString *)_path {
   if ([_path isEqualToString:@"/"]) return fsIconPath;
+  return nil;
+}
+
+- (NSImage *)iconForPath:(NSString *)_path {
+  NSArray *path;
+  
+  path = [_path pathComponents];
+  if ([path isLibraryDirectory])
+    return [[self->libMap objectForKey:[path libraryName]] icon];
   return nil;
 }
 

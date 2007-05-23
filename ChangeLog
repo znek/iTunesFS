@@ -1,0 +1,24 @@
+2007-05-23  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v1.0.3
+
+	* ChangeLog: added
+
+	* Watchdog.[hm]: added kqueue observer capable of reloading libraries
+	  in case their underlying database files changed.
+
+	* NSArray+Extensions.[hm]: added category for all things specific to
+	  path handling, enhances code readability in most places.
+
+	* iTunesFileSystem.[hm]: Added new top level hierarchy, enabling
+	  more than one library to be displayed beneath the root directory.
+	  The intended purpose is to also allow traversal of mounted iPods
+	  in the similar fashion as is with the iTunes library.
+
+	* iTunesLibrary.[hm]: Library exposes its name and associated icon now.
+	  Also, the library uses the shared watchdog to watch its database
+	  file and reload upon change.
+
+	* iTunesTrack.[hm], iTunesPlaylist.[hm]: added copyright notice.
+
+	* NSString+Extensions.m: removed debug log message.

@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2007, Marcus MÃ¼ller <znek@mulle-kybernetik.com>.
+  Copyright (c) 2007, Marcus Müller <znek@mulle-kybernetik.com>.
   All rights reserved.
 
 
@@ -30,26 +30,26 @@
   POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef	__iTunesFS_iTunesTrack_H
-#define	__iTunesFS_iTunesTrack_H
+#ifndef	__iTunesFS_Watchdog__H
+#define	__iTunesFS_Watchdog__H
 
 #import <Foundation/Foundation.h>
 
-@interface iTunesTrack : NSObject
+@class iTunesLibrary;
+
+@interface Watchdog : NSObject
 {
-  NSString *name;
-  NSURL    *url;
+  NSMutableArray *paths;
+  NSMutableArray *fds;
+  NSMutableArray *clients;
+  int            kqueueHandle;
 }
 
-+ (void)setUseDetailedInformationInNames:(BOOL)_yn;
++ (id)sharedWatchdog;
 
-- (id)initWithITunesRepresentation:(NSDictionary *)_track
-  playlistIndex:(unsigned)_idx;
+- (void)watchLibrary:(iTunesLibrary *)_lib;
+- (void)forgetLibrary:(iTunesLibrary *)_lib;
 
-- (NSString *)name;
-- (NSDictionary *)fileAttributes;
-- (NSData *)fileContent;
-  
-@end /* iTunesTrack */
+@end
 
-#endif	/* __iTunesFS_iTunesTrack_H */
+#endif	/* __iTunesFS_Watchdog__H */
