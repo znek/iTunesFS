@@ -110,6 +110,10 @@ static BOOL     detailedNames = NO;
   NSAssert1(lib != nil, @"Couldn't parse contents of %@ - wrong format?!",
                         [self libraryPath]);
 
+  [self->name release];
+  self->name = [[NSString stringWithFormat:@"iTunes (v%@)",
+                          [lib objectForKey:@"Application Version"]] copy];
+
   playlists = [lib objectForKey:@"Playlists"];
   tracks    = [lib objectForKey:@"Tracks"];
   count     = [playlists count];
@@ -128,7 +132,7 @@ static BOOL     detailedNames = NO;
 /* accessors */
 
 - (NSString *)name {
-  return @"iTunes";
+  return self->name;
 }
 
 - (NSImage *)icon {

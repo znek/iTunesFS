@@ -39,6 +39,7 @@
 
 @interface iTunesLibrary : NSObject
 {
+  NSString            *name;
   NSMutableDictionary *plMap;
 }
 
