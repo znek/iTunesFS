@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.4dtd">
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.5dtd">
 <plist version="1.0">
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
@@ -9,11 +9,11 @@
   <key>CFBundleName</key>
 	<string>iTunesFS</string>
 	<key>CFBundleVersion</key>
-	<string>1.0.4</string>
+	<string>1.0.5</string>
   <key>CFBundleShortVersionString</key>
-	<string>1.0.4</string>
+	<string>1.0.5</string>
   <key>CFBundleGetInfoString</key>
-	<string>iTunesFS version 1.0.4, Copyright 2007 Mulle kybernetiK.</string>
+	<string>iTunesFS version 1.0.5, Copyright 2007 Mulle kybernetiK.</string>
   <key>NSHumanReadableCopyright</key>
 	<string>Copyright 2007 Mulle kybernetiK.</string>
 	<key>CFBundleIconFile</key>

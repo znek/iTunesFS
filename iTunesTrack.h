@@ -37,16 +37,15 @@
 
 @interface iTunesTrack : NSObject
 {
-  NSString *name;
+  NSString *prettyName;
   NSURL    *url;
 }
 
 + (void)setUseDetailedInformationInNames:(BOOL)_yn;
 
-- (id)initWithITunesRepresentation:(NSDictionary *)_track
-  playlistIndex:(unsigned)_idx;
+- (id)initWithITunesRepresentation:(NSDictionary *)_track;
 
-- (NSString *)name;
+- (NSString *)prettyName;
 - (NSDictionary *)fileAttributes;
 - (NSData *)fileContent;
   

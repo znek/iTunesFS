@@ -72,7 +72,8 @@ static BOOL     detailedNames = NO;
 - (id)init {
   self = [super init];
   if (self) {
-    self->plMap = [[NSMutableDictionary alloc] initWithCapacity:128];
+    self->plMap    = [[NSMutableDictionary alloc] initWithCapacity:128];
+    self->trackMap = [[NSMutableDictionary alloc] initWithCapacity:10000];
     [self reload];
     [[Watchdog sharedWatchdog] watchLibrary:self];
   }
@@ -81,7 +82,8 @@ static BOOL     detailedNames = NO;
 
 - (void)dealloc {
   [[Watchdog sharedWatchdog] forgetLibrary:self];
-  [self->plMap release];
+  [self->plMap    release];
+  [self->trackMap release];
   [super dealloc];
 }
 
@@ -92,13 +94,15 @@ static BOOL     detailedNames = NO;
   NSDictionary  *lib;
   NSArray       *playlists;
   NSDictionary  *tracks;
+  NSArray       *trackIDs;
   unsigned      i, count;
 
 #if 0
   NSLog(@"%s", __PRETTY_FUNCTION__);
 #endif
 
-  [self->plMap removeAllObjects];
+  [self->plMap    removeAllObjects];
+  [self->trackMap removeAllObjects];
   plist = [NSData dataWithContentsOfFile:[self libraryPath]];
   NSAssert1(plist != nil, @"Couldn't read contents of %@!",
                           [self libraryPath]);
@@ -114,8 +118,22 @@ static BOOL     detailedNames = NO;
   self->name = [[NSString stringWithFormat:@"iTunes (v%@)",
                           [lib objectForKey:@"Application Version"]] copy];
 
-  playlists = [lib objectForKey:@"Playlists"];
   tracks    = [lib objectForKey:@"Tracks"];
+  trackIDs  = [tracks allKeys];
+  count     = [trackIDs count];
+  for (i = 0; i < count; i++) {
+    NSString     *trackID;
+    NSDictionary *rep;
+    iTunesTrack  *track;
+
+    trackID = [trackIDs objectAtIndex:i];
+    rep     = [tracks objectForKey:trackID];
+    track   = [[iTunesTrack alloc] initWithITunesRepresentation:rep];
+    [self->trackMap setObject:track forKey:trackID];
+    [track release];
+  }
+  
+  playlists = [lib objectForKey:@"Playlists"];
   count     = [playlists count];
   for (i = 0; i < count; i++) {
     NSDictionary   *plRep;
@@ -123,7 +141,7 @@ static BOOL     detailedNames = NO;
 
     plRep = [playlists objectAtIndex:i];
     pl    = [[iTunesPlaylist alloc] initWithITunesRepresentation:plRep
-                                    tracks:tracks];
+                                    lib:self];
     [self->plMap setObject:pl forKey:[pl name]];
     [pl release];
   }
@@ -149,6 +167,10 @@ static BOOL     detailedNames = NO;
 
 - (NSArray *)trackNamesForPlaylistNamed:(NSString *)_plName {
   return [[self->plMap objectForKey:_plName] trackNames];
+}
+
+- (iTunesTrack *)trackWithID:(NSString *)_trackID {
+  return [self->trackMap objectForKey:_trackID];
 }
 
 - (BOOL)isValidTrackName:(NSString *)_ptn inPlaylistNamed:(NSString *)_plName {

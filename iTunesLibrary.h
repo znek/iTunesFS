@@ -36,11 +36,13 @@
 #import <Foundation/Foundation.h>
 
 @class NSImage;
+@class iTunesTrack;
 
 @interface iTunesLibrary : NSObject
 {
   NSString            *name;
   NSMutableDictionary *plMap;
+  NSMutableDictionary *trackMap;
 }
 
 - (NSString *)name;
@@ -60,6 +62,10 @@
 
 - (NSDictionary *)fileAttributesForTrackWithPrettyName:(NSString *)_ptn
   inPlaylistNamed:(NSString *)_plName;
+
+/* helpers */
+
+- (iTunesTrack *)trackWithID:(NSString *)_trackID;
 
 @end /* iTunesLibrary */
 

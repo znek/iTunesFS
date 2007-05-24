@@ -32,39 +32,41 @@
 
 #import "common.h"
 #import "iTunesPlaylist.h"
+#import "iTunesLibrary.h"
 #import "iTunesTrack.h"
 #import "NSString+Extensions.h"
 
 @interface iTunesPlaylist (Private)
 - (void)setName:(NSString *)_name;
 - (void)setTracks:(NSArray *)_tracks;
+- (void)setTrackNames:(NSArray *)_trackNames;
 @end
 
 @implementation iTunesPlaylist
 
 - (id)initWithITunesRepresentation:(NSDictionary *)_list
-  tracks:(NSDictionary *)_tracks
+  lib:(iTunesLibrary *)_lib
 {
   self = [super init];
   if (self) {
     NSArray        *items;
-    NSMutableArray *ts;
-    unsigned       i, count, offset = 0;
+    NSMutableArray *ma;
+    unsigned       i, count;
 
     [self setName:[_list objectForKey:@"Name"]];
     
     items = [_list objectForKey:@"Playlist Items"];
     count = [items count];
-    ts = [[NSMutableArray alloc] initWithCapacity:count];
+    ma = [[NSMutableArray alloc] initWithCapacity:count];
     for (i = 0; i < count; i++) {
       NSDictionary *item;
-      id           trackID;
+      NSString     *trackID;
       iTunesTrack  *track;
-      
+
       item    = [items objectAtIndex:i];
       trackID = [[item objectForKey:@"Track ID"] description];
-      item    = [_tracks objectForKey:trackID];
-      if (!item) {
+      track   = [_lib trackWithID:trackID];
+      if (!track) {
 #if 0
         /* NOTE: Rolf's library really sports these effects, seems to be
          * limited to Podcasts only.
@@ -72,23 +74,34 @@
         NSLog(@"INFO Playlist[%@]: found no track item for #%@",
               self->name, trackID);
 #endif
-        offset += 1;
         continue;
       }
-      track   = [[iTunesTrack alloc] initWithITunesRepresentation:item
-                                     playlistIndex:i - offset];
-      [ts addObject:track];
-      [track release];
+      [ma addObject:track];
     }
-    [self setTracks:ts];
-    [ts release];
+    [self setTracks:ma];
+    [ma release];
+    
+    count = [self->tracks count];
+    ma    = [[NSMutableArray alloc] initWithCapacity:count];
+    for (i = 0; i < count; i++) {
+      NSString    *tn;
+      iTunesTrack *track;
+      
+      track = [self trackAtIndex:i];
+      tn    = [NSString stringWithFormat:@"%03d %@",
+                                         i + 1, [track prettyName]];
+      [ma addObject:tn];
+    }
+    [self setTrackNames:ma];
+    [ma release];
   }
   return self;
 }
 
 - (void)dealloc {
-  [self->name   release];
-  [self->tracks release];
+  [self->name       release];
+  [self->tracks     release];
+  [self->trackNames release];
   [super dealloc];
 }
 
@@ -120,19 +133,13 @@
   return [self->tracks objectAtIndex:_idx];
 }
 
+- (void)setTrackNames:(NSArray *)_trackNames {
+  _trackNames = [_trackNames copy];
+  [self->trackNames release];
+  self->trackNames = _trackNames;
+}
 - (NSArray *)trackNames {
-  NSMutableArray *names;
-  unsigned       i, count;
-  
-  count = [self->tracks count];
-  names = [[NSMutableArray alloc] initWithCapacity:count];
-  for (i = 0; i < count; i++) {
-    iTunesTrack *track;
-    
-    track = [self->tracks objectAtIndex:i];
-    [names addObject:[track name]];
-  }
-  return [names autorelease];
+  return self->trackNames;
 }
 
 @end /* iTunesPlaylist */

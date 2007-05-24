@@ -35,16 +35,18 @@
 
 #import <Foundation/Foundation.h>
 
+@class iTunesLibrary;
 @class iTunesTrack;
 
 @interface iTunesPlaylist : NSObject
 {
   NSString *name;
   NSArray  *tracks;
+  NSArray  *trackNames;
 }
 
 - (id)initWithITunesRepresentation:(NSDictionary *)_list
-  tracks:(NSDictionary *)_tracks;
+  lib:(iTunesLibrary *)_lib;
 
 - (NSString *)name;
 - (NSArray *)tracks;

@@ -35,7 +35,7 @@
 #import "NSString+Extensions.h"
 
 @interface iTunesTrack (Private)
-- (void)setName:(NSString *)_name;
+- (void)setPrettyName:(NSString *)_prettyName;
 - (void)setUrl:(NSURL *)_url;
 - (NSURL *)url;
 @end
@@ -50,82 +50,77 @@ static BOOL detailedNames = NO;
 
 /* init & dealloc */
 
-- (id)initWithITunesRepresentation:(NSDictionary *)_track
-  playlistIndex:(unsigned)_idx;
-{
+- (id)initWithITunesRepresentation:(NSDictionary *)_track {
   self = [super init];
   if (self) {
-    NSString        *trackName, *artist, *album;
+    NSString        *name, *artist, *album;
     NSNumber        *trackNumber;
     NSString        *location;
-    NSMutableString *prettyName;
+    NSMutableString *pn;
 
-    prettyName = [[NSMutableString alloc] initWithCapacity:128];
-    [prettyName appendFormat:@"%03d ", _idx + 1];
-    
+    pn = [[NSMutableString alloc] initWithCapacity:128];
     if (detailedNames) {
       artist = [_track objectForKey:@"Artist"];
       if (artist) {
-        [prettyName appendString:[artist properlyEscapedFSRepresentation]];
-        [prettyName appendString:@"_"];
+        [pn appendString:[artist properlyEscapedFSRepresentation]];
+        [pn appendString:@"_"];
       }
       album = [_track objectForKey:@"Album"];
       if (album) {
-        [prettyName appendString:[album properlyEscapedFSRepresentation]];
-        [prettyName appendString:@"_"];
+        [pn appendString:[album properlyEscapedFSRepresentation]];
+        [pn appendString:@"_"];
       }
       trackNumber = [_track objectForKey:@"Track Number"];
       if (trackNumber) {
-        [prettyName appendString:[trackNumber description]];
-        [prettyName appendString:@" "];
+        [pn appendString:[trackNumber description]];
+        [pn appendString:@" "];
       }
     }
-    trackName = [_track objectForKey:@"Name"];
-    if (trackName) {
-      [prettyName appendString:[trackName properlyEscapedFSRepresentation]];
+    name = [_track objectForKey:@"Name"];
+    if (name) {
+      [pn appendString:[name properlyEscapedFSRepresentation]];
     }
     else {
       NSLog(@"WARN: track without name! REP:%@", _track);
-      [prettyName appendString:@"Empty"];
+      [pn appendString:@"Empty"];
     }
 #if 0
-    [prettyName appendString:@" ["];
-    [prettyName appendString:_trackID];
-    [prettyName appendString:@"]"];
+    [pn appendString:@" ["];
+    [pn appendString:_trackID];
+    [pn appendString:@"]"];
 #endif
     location = [_track objectForKey:@"Location"];
     if (location) {
-      [prettyName appendString:@"."];
+      [pn appendString:@"."];
       if ([location hasPrefix:@"file"]) {
-        [prettyName appendString:[location pathExtension]];
+        [pn appendString:[location pathExtension]];
       }
       else {
         /* http:// stream address... */
-        [prettyName appendString:@"webloc"];
+        [pn appendString:@"webloc"];
       }
       [self setUrl:[NSURL URLWithString:location]];
     }
-    [self setName:prettyName];
-    [prettyName release];
+    [self setPrettyName:pn];
   }
   return self;
 }
   
 - (void)dealloc {
-  [self->name release];
-  [self->url  release];
+  [self->prettyName release];
+  [self->url        release];
   [super dealloc];
 }
 
 /* accessors */
 
-- (void)setName:(NSString *)_name {
-  _name = [[_name properlyEscapedFSRepresentation] copy];
-  [self->name release];
-  self->name = _name;
+- (void)setPrettyName:(NSString *)_prettyName {
+  _prettyName = [_prettyName copy];
+  [self->prettyName release];
+  self->prettyName = _prettyName;
 }
-- (NSString *)name {
-  return self->name;
+- (NSString *)prettyName {
+  return self->prettyName;
 }
 
 - (void)setUrl:(NSURL *)_url {

@@ -1,3 +1,20 @@
+2007-05-24  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v1.0.5 (IN PROGRESS)
+
+	* iTunesTrack.[hm]: remove name (including playlist index) from
+	  track, instead provide just the prettyName stub.
+	  
+	* iTunesPlaylist.[hm]: store the trackNames locally, including the
+	  proper playlist index. Changed API to initialize using the
+	  respective library. Use this library now to retrieve tracks via
+	  their ID.
+
+	* iTunesLibrary.[hm]: create a cache for tracks which works
+	  universally in all playlists. Doing so reduces memory footprint
+	  significantly. Changed API to allow access to cached tracks via
+	  their ID.
+
 2007-05-23  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* v1.0.4
