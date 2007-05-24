@@ -3,18 +3,24 @@ What is it?
 
 iTunesFS allows you to mount the "iTunes Music Library.xml" file as a file
 system, using the excellent MacFUSE (http://code.google.com/p/macfuse/).
-All playlists are exposed as directories, with their respective entries.
-Order of tracks within the playlists is maintained by prefixing the tracks
-with their playlist index.
+As of version 1.1, all local iPods will also be mounted in the similar
+fashion. All playlists of either iTunes or the iPods are exposed as
+directories, with their respective entries. The order of tracks within the
+playlists is maintained by prefixing the tracks with their playlist index.
+
+Please note that you have to install MacFUSE Core 0.3.0 before you can use
+iTunesFS! MacFUSE Core is available at http://code.google.com/p/macfuse/.
 
 
 Further information
 ===================
 
-The iTunesFS homepage is at http://www.mulle-kybernetik.com/software/iTunesFS.
+The iTunesFS homepage is at
+http://www.mulle-kybernetik.com/software/iTunesFS.
+
 Sourcecode is available via anonymous Subversion (svn) access at
-http://svn.mulle-kybernetik.com/iTunesFS. For license information have a look
-at the 'COPYING' file.
+http://svn.mulle-kybernetik.com/iTunesFS. For license information have a
+look at the 'COPYING' file.
 In case you have further questions, feel free to write an email to
 Marcus Mueller <znek@mulle-kybernetik.com>.
 
@@ -23,7 +29,7 @@ Defaults
 ========
 
 Name               | Type | DefVal | Description
-------------------------------------------------------------------------------
+---------------------------------------------------------------------------
 DetailedTrackNames | BOOL | NO     | If YES, use very detailed information
                                      in track names (Album title, Artist,
                                      track number, etc.)
@@ -32,11 +38,9 @@ DetailedTrackNames | BOOL | NO     | If YES, use very detailed information
 TODO / IDEAS
 ============
 
-- Expose Library and iPods at root mount point
-  - need to be able to identify (easy) and parse (more difficult, but already
-    did that for PodLifter) iPod databases
-  - abstract iTunesLibrary (superclass: Library) and add iPodLibrary
-  - Listen for attached/detached iPods
+- expose iTunesTrack metadata to Spotlight
+  - would need to gather that metadata (Artist, Album, etc.) first
+    (but that's trivial)
 
 
 References

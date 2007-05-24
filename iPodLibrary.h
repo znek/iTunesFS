@@ -30,33 +30,23 @@
   POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef	__iTunesFS_iTunesPlaylist_H
-#define	__iTunesFS_iTunesPlaylist_H
+#ifndef	__iTunesFS_iPodLibrary_H
+#define	__iTunesFS_iPodLibrary_H
 
-#import <Foundation/Foundation.h>
+#import "iTunesLibrary.h"
 
-@class iTunesLibrary;
-@class iTunesTrack;
-
-@interface iTunesPlaylist : NSObject
+@interface iPodLibrary : iTunesLibrary
 {
-  NSString *name;
-  NSArray  *tracks;
-  NSArray  *trackNames;
+  NSString *mountPoint;
+
+  /* required by iTunesDB parsing */
+  id       currentObject; // not retained
 }
 
-- (id)initWithITunesLibraryRepresentation:(NSDictionary *)_list
-  lib:(iTunesLibrary *)_lib;
-- (id)initWithIPodLibraryRepresentation:(NSDictionary *)_list
-  lib:(iTunesLibrary *)_lib;
++ (BOOL)isIPodAtMountPoint:(NSString *)_path;
 
-- (NSString *)name;
-- (NSArray *)tracks;
+- (id)initWithMountPoint:(NSString *)_path;
 
-- (unsigned)count;
-- (iTunesTrack *)trackAtIndex:(unsigned)_idx;
-- (NSArray *)trackNames;
+@end /* iPodLibrary */
 
-@end /* iTunesPlaylist */
-
-#endif	/* __iTunesFS_iTunesPlaylist_H */
+#endif	/* __iTunesFS_iPodLibrary_H */

@@ -51,6 +51,7 @@
 - (void)reload;
 
 - (NSString *)libraryPath;
+- (NSString *)mountPoint;
 
 - (NSArray *)playlistNames;
 - (NSArray *)trackNamesForPlaylistNamed:(NSString *)_plName;

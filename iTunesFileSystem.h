@@ -36,15 +36,11 @@
 #import <Foundation/Foundation.h>
 #import "FUSEFileSystem.h"
 
-@class iTunesLibrary;
-
 @interface iTunesFileSystem : FUSEFileSystem
 {
-  NSMutableArray      *libs;
   NSMutableDictionary *libMap;
+  NSMutableDictionary *volMap; // iPods only
 }
-
-- (void)addLibrary:(iTunesLibrary *)_lib;
 
 @end
 

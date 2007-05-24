@@ -44,13 +44,19 @@
 
 static BOOL detailedNames = NO;
 
-+ (void)setUseDetailedInformationInNames:(BOOL)_yn {
-  detailedNames = _yn;
++ (void)initialize {
+  static BOOL    didInit = NO;
+  NSUserDefaults *ud;
+  
+  if (didInit) return;
+  didInit       = YES;
+  ud            = [NSUserDefaults standardUserDefaults];
+  detailedNames = [ud boolForKey:@"DetailedTrackNames"];
 }
 
 /* init & dealloc */
 
-- (id)initWithITunesRepresentation:(NSDictionary *)_track {
+- (id)initWithITunesLibraryRepresentation:(NSDictionary *)_track {
   self = [super init];
   if (self) {
     NSString        *name, *artist, *album;
@@ -105,7 +111,62 @@ static BOOL detailedNames = NO;
   }
   return self;
 }
-  
+
+- (id)initWithIPodLibraryRepresentation:(NSDictionary *)_track {
+  self = [super init];
+  if (self) {
+    NSString        *name, *artist, *album;
+    NSNumber        *trackNumber;
+    NSURL           *location;
+    NSMutableString *pn;
+    
+    pn = [[NSMutableString alloc] initWithCapacity:128];
+    if (detailedNames) {
+      artist = [_track objectForKey:@"Artist"];
+      if (artist) {
+        [pn appendString:[artist properlyEscapedFSRepresentation]];
+        [pn appendString:@"_"];
+      }
+      album = [_track objectForKey:@"Album"];
+      if (album) {
+        [pn appendString:[album properlyEscapedFSRepresentation]];
+        [pn appendString:@"_"];
+      }
+      trackNumber = [_track objectForKey:@"Track Number"];
+      if (trackNumber) {
+        [pn appendString:[trackNumber description]];
+        [pn appendString:@" "];
+      }
+    }
+    name = [_track objectForKey:@"name"];
+    if (name) {
+      [pn appendString:[name properlyEscapedFSRepresentation]];
+    }
+    else {
+      NSLog(@"WARN: track without name! REP:%@", _track);
+      [pn appendString:@"Empty"];
+    }
+#if 0
+    [pn appendString:@" ["];
+    [pn appendString:_trackID];
+    [pn appendString:@"]"];
+#endif
+    location = [_track objectForKey:@"location"];
+    if (location) {
+      [pn appendString:@"."];
+      if ([location isFileURL]) {
+        [pn appendString:[[location path] pathExtension]];
+      }
+      else {
+        [pn appendString:@"webloc"];
+      }
+      [self setUrl:location];
+    }
+    [self setPrettyName:pn];
+  }
+  return self;
+}
+
 - (void)dealloc {
   [self->prettyName release];
   [self->url        release];

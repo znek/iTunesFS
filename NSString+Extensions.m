@@ -83,3 +83,21 @@
 }
 
 @end /* NSString (iTunesFSExtensions) */
+
+@implementation NSString (iTunesFSLittleEndianUnicode)
+
+static char littleEndianUnicodeBom[2] = {0xFF, 0xFE};
+
+- (id)initWithLittleEndianUnicodeData:(NSData *)_leData {
+  NSMutableData *leRep;
+  
+  leRep = [[NSMutableData alloc] initWithCapacity:[_leData length] + 2];
+  [leRep appendBytes:&littleEndianUnicodeBom length:2];
+  [leRep appendData:_leData];
+  
+  self = [self initWithData:leRep encoding:NSUnicodeStringEncoding];
+  [leRep release];
+  return self;
+}
+
+@end /* NSString (iTunesFSLittleEndianUnicode) */

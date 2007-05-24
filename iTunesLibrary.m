@@ -47,7 +47,6 @@
 
 static NSString *libraryPath  = nil;
 static NSImage  *libraryIcon  = nil;
-static BOOL     detailedNames = NO;
 
 + (void)initialize {
   static BOOL    didInit = NO;
@@ -62,11 +61,9 @@ static BOOL     detailedNames = NO;
                                       @"/Music/iTunes/iTunes Music Library.xml"]
                                       copy];
   }
-  libraryIcon   = [[[NSWorkspace sharedWorkspace]
-                                 iconForFile:@"/Applications/iTunes.app"]
-                                 copy];
-  detailedNames = [ud boolForKey:@"DetailedTrackNames"];
-  [iTunesTrack setUseDetailedInformationInNames:detailedNames];
+  libraryIcon = [[[NSWorkspace sharedWorkspace]
+                               iconForFile:@"/Applications/iTunes.app"]
+                               copy];
 }
 
 - (id)init {
@@ -128,7 +125,7 @@ static BOOL     detailedNames = NO;
 
     trackID = [trackIDs objectAtIndex:i];
     rep     = [tracks objectForKey:trackID];
-    track   = [[iTunesTrack alloc] initWithITunesRepresentation:rep];
+    track   = [[iTunesTrack alloc] initWithITunesLibraryRepresentation:rep];
     [self->trackMap setObject:track forKey:trackID];
     [track release];
   }
@@ -140,7 +137,7 @@ static BOOL     detailedNames = NO;
     iTunesPlaylist *pl;
 
     plRep = [playlists objectAtIndex:i];
-    pl    = [[iTunesPlaylist alloc] initWithITunesRepresentation:plRep
+    pl    = [[iTunesPlaylist alloc] initWithITunesLibraryRepresentation:plRep
                                     lib:self];
     [self->plMap setObject:pl forKey:[pl name]];
     [pl release];
@@ -159,6 +156,10 @@ static BOOL     detailedNames = NO;
 
 - (NSString *)libraryPath {
   return libraryPath;
+}
+
+- (NSString *)mountPoint {
+  return nil;
 }
 
 - (NSArray *)playlistNames {

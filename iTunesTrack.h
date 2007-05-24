@@ -41,9 +41,8 @@
   NSURL    *url;
 }
 
-+ (void)setUseDetailedInformationInNames:(BOOL)_yn;
-
-- (id)initWithITunesRepresentation:(NSDictionary *)_track;
+- (id)initWithITunesLibraryRepresentation:(NSDictionary *)_track;
+- (id)initWithIPodLibraryRepresentation:(NSDictionary *)_track;
 
 - (NSString *)prettyName;
 - (NSDictionary *)fileAttributes;

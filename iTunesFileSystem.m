@@ -33,7 +33,15 @@
 #import "common.h"
 #import "iTunesFileSystem.h"
 #import "iTunesLibrary.h"
+#import "iPodLibrary.h"
 #import "NSArray+Extensions.h"
+
+@interface iTunesFileSystem (Private)
+- (void)addLibrary:(iTunesLibrary *)_lib;
+- (void)removeLibrary:(iTunesLibrary *)_lib;
+- (void)didMountRemovableDevice:(NSNotification *)_notif;
+- (void)didUnmountRemovableDevice:(NSNotification *)_notif;
+@end
 
 @implementation iTunesFileSystem
 
@@ -53,24 +61,96 @@ static NSString *fsIconPath = nil;
 /* notifications */
 
 - (void)fuseWillMount {
-  iTunesLibrary *lib;
+  iTunesLibrary        *lib;
+  NSArray              *volPaths;
+  unsigned             i, count;
+  NSNotificationCenter *nc;
 
-  self->libs   = [[NSMutableArray alloc] initWithCapacity:3];
   self->libMap = [[NSMutableDictionary alloc] initWithCapacity:3];
+  self->volMap = [[NSMutableDictionary alloc] initWithCapacity:3];
 
   // add default library
   lib = [[iTunesLibrary alloc] init];
   [self addLibrary:lib];
   [lib release];
+
+  // add mounted iPods
+  volPaths = [[NSWorkspace sharedWorkspace] mountedRemovableMedia];
+  count    = [volPaths count];
+  for (i = 0; i < count; i++) {
+    NSString *path;
+    
+    path = [volPaths objectAtIndex:i];
+    if ([iPodLibrary isIPodAtMountPoint:path]) {
+      lib = [[iPodLibrary alloc] initWithMountPoint:path];
+      [self addLibrary:lib];
+      [lib release];
+    }
+  }
+  
+  // mount/unmount registration
+  nc = [[NSWorkspace sharedWorkspace] notificationCenter];
+  [nc addObserver:self
+      selector:@selector(didMountRemovableDevice:)
+      name:NSWorkspaceDidMountNotification
+      object:nil];
+  [nc addObserver:self
+      selector:@selector(didUnmountRemovableDevice:)
+      name:NSWorkspaceDidUnmountNotification
+      object:nil];
 }
 
 - (void)fuseDidUnmount {
-  [self->libs release];
+  NSNotificationCenter *nc;
+
+  nc = [[NSWorkspace sharedWorkspace] notificationCenter];
+  [nc removeObserver:self];
+
+  [self->libMap release];
+  [self->volMap release];
 }
 
+- (void)didMountRemovableDevice:(NSNotification *)_notif {
+  NSString *path;
+
+  path = [[_notif userInfo] objectForKey:@"NSDevicePath"];
+  if ([iPodLibrary isIPodAtMountPoint:path]) {
+    iTunesLibrary *lib;
+
+    lib = [[iPodLibrary alloc] initWithMountPoint:path];
+    [self addLibrary:lib];
+    [lib release];
+  }
+}
+
+- (void)didUnmountRemovableDevice:(NSNotification *)_notif {
+  NSString      *path;
+  iTunesLibrary *lib;
+
+  path = [[_notif userInfo] objectForKey:@"NSDevicePath"];
+  lib  = [self->volMap objectForKey:path];
+  if (lib)
+    [self removeLibrary:lib];
+}
+
+/* adding/removing libraries */
+
 - (void)addLibrary:(iTunesLibrary *)_lib {
-  [self->libs addObject:_lib];
+  NSString *path;
+
+  path = [_lib mountPoint];
+  if (path)
+    [self->volMap setObject:_lib forKey:path];
   [self->libMap setObject:_lib forKey:[_lib name]];
+}
+
+- (void)removeLibrary:(iTunesLibrary *)_lib {
+  NSString *path;
+
+  path = [_lib mountPoint];
+  if (path)
+    [self->volMap removeObjectForKey:path];
+  [self->libMap removeObjectForKey:[_lib name]];
 }
 
 /* required stuff */

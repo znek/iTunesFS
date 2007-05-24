@@ -41,6 +41,12 @@
 - (unsigned)playlistIndex;
 - (NSString *)properlyEscapedFSRepresentation;
 
-@end /* NSString+Extensions */
+@end /* NSString (iTunesFSExtensions) */
 
+@interface NSString (iTunesFSLittleEndianUnicode)
+
+- (id)initWithLittleEndianUnicodeData:(NSData *)_leData;
+
+@end /* NSString (iTunesFSLittleEndianUnicode) */
+  
 #endif	/* __iTunesFS_NSString_Extensions_H */

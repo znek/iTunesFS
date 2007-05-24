@@ -37,6 +37,7 @@
 #import "NSString+Extensions.h"
 
 @interface iTunesPlaylist (Private)
+- (void)generatePrettyTrackNames;
 - (void)setName:(NSString *)_name;
 - (void)setTracks:(NSArray *)_tracks;
 - (void)setTrackNames:(NSArray *)_trackNames;
@@ -44,7 +45,7 @@
 
 @implementation iTunesPlaylist
 
-- (id)initWithITunesRepresentation:(NSDictionary *)_list
+- (id)initWithITunesLibraryRepresentation:(NSDictionary *)_list
   lib:(iTunesLibrary *)_lib
 {
   self = [super init];
@@ -80,20 +81,46 @@
     }
     [self setTracks:ma];
     [ma release];
+    [self generatePrettyTrackNames];
+  }
+  return self;
+}
+
+- (id)initWithIPodLibraryRepresentation:(NSDictionary *)_list
+  lib:(iTunesLibrary *)_lib
+{
+  self = [super init];
+  if (self) {
+    NSArray        *items;
+    NSMutableArray *ma;
+    unsigned       i, count;
     
-    count = [self->tracks count];
-    ma    = [[NSMutableArray alloc] initWithCapacity:count];
+    [self setName:[_list objectForKey:@"name"]];
+
+    items = [_list objectForKey:@"trackIDs"];
+    count = [items count];
+    ma = [[NSMutableArray alloc] initWithCapacity:count];
     for (i = 0; i < count; i++) {
-      NSString    *tn;
-      iTunesTrack *track;
+      NSString     *trackID;
+      iTunesTrack  *track;
       
-      track = [self trackAtIndex:i];
-      tn    = [NSString stringWithFormat:@"%03d %@",
-                                         i + 1, [track prettyName]];
-      [ma addObject:tn];
+      trackID = [items objectAtIndex:i];
+      track   = [_lib trackWithID:trackID];
+      if (!track) {
+#if 0
+        /* NOTE: Rolf's library really sports these effects, seems to be
+        * limited to Podcasts only.
+        */
+        NSLog(@"INFO Playlist[%@]: found no track item for #%@",
+              self->name, trackID);
+#endif
+        continue;
+      }
+      [ma addObject:track];
     }
-    [self setTrackNames:ma];
+    [self setTracks:ma];
     [ma release];
+    [self generatePrettyTrackNames];
   }
   return self;
 }
@@ -103,6 +130,27 @@
   [self->tracks     release];
   [self->trackNames release];
   [super dealloc];
+}
+
+/* private */
+
+- (void)generatePrettyTrackNames {
+  NSMutableArray *ma;
+  unsigned       i, count;
+
+  count = [self->tracks count];
+  ma    = [[NSMutableArray alloc] initWithCapacity:count];
+  for (i = 0; i < count; i++) {
+    NSString    *tn;
+    iTunesTrack *track;
+    
+    track = [self trackAtIndex:i];
+    tn    = [NSString stringWithFormat:@"%03d %@",
+                                       i + 1, [track prettyName]];
+    [ma addObject:tn];
+  }
+  [self setTrackNames:ma];
+  [ma release];
 }
 
 /* accessors */
