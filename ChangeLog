@@ -1,3 +1,18 @@
+2007-05-25  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v1.1.1 (IN PROGRESS)
+
+	* NOTES: added some Spotlight info
+
+	* README: updated
+
+	* iTunesFileSystem.m: added new "iTunesFileSystemDebugEnabled" and
+	  "NoIPods" defaults (described in README). Added some debug output,
+	  when iTunesFileSystemDebugEnabled == YES. All paths will be mangled
+	  now before they are being processed - using the "NoIPods" default
+	  this leads to the whole "libraries" hierarchy to be hidden, as it's
+	  not useful to display it then.
+
 2007-05-24  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* v1.1.0

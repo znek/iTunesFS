@@ -41,30 +41,34 @@
 - (void)removeLibrary:(iTunesLibrary *)_lib;
 - (void)didMountRemovableDevice:(NSNotification *)_notif;
 - (void)didUnmountRemovableDevice:(NSNotification *)_notif;
+- (NSArray *)pathFromFSPath:(NSString *)_path;
 @end
 
 @implementation iTunesFileSystem
 
+static BOOL     doDebug     = NO;
+static BOOL     ignoreIPods = NO;
 static NSString *fsIconPath = nil;
 
 + (void)initialize {
-  static BOOL didInit = NO;
-  NSBundle    *mb;
+  static BOOL    didInit = NO;
+  NSUserDefaults *ud;
+  NSBundle       *mb;
   
   if (didInit) return;
-  didInit    = YES;
-  mb         = [NSBundle mainBundle];
-  fsIconPath = [[mb pathForResource:@"iTunesFS" ofType:@"icns"] copy];
+  didInit     = YES;
+  ud          = [NSUserDefaults standardUserDefaults];
+  doDebug     = [ud boolForKey:@"iTunesFileSystemDebugEnabled"];
+  ignoreIPods = [ud boolForKey:@"NoIPods"];
+  mb          = [NSBundle mainBundle];
+  fsIconPath  = [[mb pathForResource:@"iTunesFS" ofType:@"icns"] copy];
   NSAssert(fsIconPath != nil, @"Couldn't find iTunesFS.icns!");
 }
 
 /* notifications */
 
 - (void)fuseWillMount {
-  iTunesLibrary        *lib;
-  NSArray              *volPaths;
-  unsigned             i, count;
-  NSNotificationCenter *nc;
+  iTunesLibrary *lib;
 
   self->libMap = [[NSMutableDictionary alloc] initWithCapacity:3];
   self->volMap = [[NSMutableDictionary alloc] initWithCapacity:3];
@@ -74,30 +78,36 @@ static NSString *fsIconPath = nil;
   [self addLibrary:lib];
   [lib release];
 
-  // add mounted iPods
-  volPaths = [[NSWorkspace sharedWorkspace] mountedRemovableMedia];
-  count    = [volPaths count];
-  for (i = 0; i < count; i++) {
-    NSString *path;
-    
-    path = [volPaths objectAtIndex:i];
-    if ([iPodLibrary isIPodAtMountPoint:path]) {
-      lib = [[iPodLibrary alloc] initWithMountPoint:path];
-      [self addLibrary:lib];
-      [lib release];
+  if (!ignoreIPods) {
+    NSArray              *volPaths;
+    unsigned             i, count;
+    NSNotificationCenter *nc;
+
+    // add mounted iPods
+    volPaths = [[NSWorkspace sharedWorkspace] mountedRemovableMedia];
+    count    = [volPaths count];
+    for (i = 0; i < count; i++) {
+      NSString *path;
+      
+      path = [volPaths objectAtIndex:i];
+      if ([iPodLibrary isIPodAtMountPoint:path]) {
+        lib = [[iPodLibrary alloc] initWithMountPoint:path];
+        [self addLibrary:lib];
+        [lib release];
+      }
     }
+    
+    // mount/unmount registration
+    nc = [[NSWorkspace sharedWorkspace] notificationCenter];
+    [nc addObserver:self
+        selector:@selector(didMountRemovableDevice:)
+        name:NSWorkspaceDidMountNotification
+        object:nil];
+    [nc addObserver:self
+        selector:@selector(didUnmountRemovableDevice:)
+        name:NSWorkspaceDidUnmountNotification
+        object:nil];
   }
-  
-  // mount/unmount registration
-  nc = [[NSWorkspace sharedWorkspace] notificationCenter];
-  [nc addObserver:self
-      selector:@selector(didMountRemovableDevice:)
-      name:NSWorkspaceDidMountNotification
-      object:nil];
-  [nc addObserver:self
-      selector:@selector(didUnmountRemovableDevice:)
-      name:NSWorkspaceDidUnmountNotification
-      object:nil];
 }
 
 - (void)fuseDidUnmount {
@@ -117,6 +127,7 @@ static NSString *fsIconPath = nil;
   if ([iPodLibrary isIPodAtMountPoint:path]) {
     iTunesLibrary *lib;
 
+    if (doDebug) NSLog(@"Will add library for iPod at path: %@", path);
     lib = [[iPodLibrary alloc] initWithMountPoint:path];
     [self addLibrary:lib];
     [lib release];
@@ -129,8 +140,11 @@ static NSString *fsIconPath = nil;
 
   path = [[_notif userInfo] objectForKey:@"NSDevicePath"];
   lib  = [self->volMap objectForKey:path];
-  if (lib)
+  if (lib) {
+    if (doDebug)
+      NSLog(@"Will remove library for unmounted iPod at path: %@", path);
     [self removeLibrary:lib];
+  }
 }
 
 /* adding/removing libraries */
@@ -153,6 +167,26 @@ static NSString *fsIconPath = nil;
   [self->libMap removeObjectForKey:[_lib name]];
 }
 
+/* private */
+
+- (NSArray *)pathFromFSPath:(NSString *)_path {
+  NSArray *path;
+
+  path = [_path pathComponents];
+  if (ignoreIPods) {
+    NSMutableArray *fakePath;
+    
+    /* When iPods are ignored by default, we suppress the "Libraries"
+    * hierarchy altogether as it makes no sense.
+    * This is done by faking the only existing library into the path.
+    */
+    fakePath = [path mutableCopy];
+    [fakePath insertObject:[[self->libMap allKeys] lastObject] atIndex:1];
+    path = [fakePath autorelease];
+  }
+  return path;
+}
+
 /* required stuff */
 
 /* currently we have this scheme:
@@ -162,7 +196,10 @@ static NSString *fsIconPath = nil;
   NSArray       *path;
   iTunesLibrary *lib;
 
-  path = [_path pathComponents];
+  if (doDebug)
+    NSLog(@"%s path:%@", __PRETTY_FUNCTION__, _path);
+
+  path = [self pathFromFSPath:_path];
   if ([path isRootDirectory])
     return [self->libMap allKeys];
 
@@ -176,13 +213,17 @@ static NSString *fsIconPath = nil;
   NSArray       *path;
   iTunesLibrary *lib;
 
-  path         = [_path pathComponents];
+  if (doDebug)
+    NSLog(@"%s path:%@", __PRETTY_FUNCTION__, _path);
+
+  path         = [self pathFromFSPath:_path];
   *isDirectory = [path isDirectoryPath];
 
   if ([path isRootDirectory]) return YES;
 
   lib = [self->libMap objectForKey:[path libraryName]];
-  if ([path isLibraryDirectory]) return lib != nil;
+  if ([path isLibraryDirectory])
+    return lib != nil;
   else if([path isPlaylistDirectory])
     return [[lib playlistNames] containsObject:[path playlistName]];
   else
@@ -194,7 +235,10 @@ static NSString *fsIconPath = nil;
   NSArray       *path;
   iTunesLibrary *lib;
   
-  path = [_path pathComponents];
+  if (doDebug)
+    NSLog(@"%s path:%@", __PRETTY_FUNCTION__, _path);
+
+  path = [self pathFromFSPath:_path];
   if ([path isDirectoryPath])
     return [super fileAttributesAtPath:_path];
 
@@ -206,8 +250,11 @@ static NSString *fsIconPath = nil;
 - (NSData *)contentsAtPath:(NSString *)_path {
   NSArray       *path;
   iTunesLibrary *lib;
-  
-  path = [_path pathComponents];
+
+  if (doDebug)
+    NSLog(@"%s path:%@", __PRETTY_FUNCTION__, _path);
+
+  path = [self pathFromFSPath:_path];
   if ([path isDirectoryPath]) return nil;
 
   lib = [self->libMap objectForKey:[path libraryName]];
@@ -235,9 +282,21 @@ static NSString *fsIconPath = nil;
 - (NSImage *)iconForPath:(NSString *)_path {
   NSArray *path;
   
-  path = [_path pathComponents];
+  path = [self pathFromFSPath:_path];
   if ([path isLibraryDirectory])
     return [[self->libMap objectForKey:[path libraryName]] icon];
+  return nil;
+}
+
+- (NSDictionary *)fileSystemAttributesAtPath:(NSString *)_path {
+  if ([_path isEqualToString:@"/"]) {
+    NSMutableDictionary *attrs;
+    
+    attrs = [[NSMutableDictionary alloc] initWithCapacity:2];
+    //    [attrs setObject:defaultSize forKey:NSFileSystemSize];
+    [attrs setObject:[NSNumber numberWithInt:0] forKey:NSFileSystemFreeSize];
+    return [attrs autorelease];
+  }
   return nil;
 }
 

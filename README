@@ -33,6 +33,9 @@ Name               | Type | DefVal | Description
 DetailedTrackNames | BOOL | NO     | If YES, use very detailed information
                                      in track names (Album title, Artist,
                                      track number, etc.)
+NoIPods              BOOL   NO       If YES, don't scan for iPods and instead
+                                     of displaying "libraries" at root level
+                                     display playlists of iTunes library
 
 
 TODO / IDEAS

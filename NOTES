@@ -52,3 +52,27 @@ Playlists = (
         "Playlist Persistent ID" = 7A0FE2A0B4C1DDFA;
     }
 ); 
+
+
+Spotlight
+=========
+
+
+        "public.audio" = {
+            allattrs = (
+                kMDItemAlbum, 
+                kMDItemTitle, 
+                kMDItemMusicalGenre, 
+                kMDItemRecordingDate, 
+                kMDItemAuthors, 
+                kMDItemComposer
+            ); 
+            displayattrs = (
+                kMDItemAlbum, 
+                kMDItemTitle, 
+                kMDItemMusicalGenre, 
+                kMDItemRecordingDate, 
+                kMDItemAuthors, 
+                kMDItemComposer, 
+                kMDItemRecordingYear
+            ); 
