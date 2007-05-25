@@ -416,6 +416,63 @@
 			};
 			name = Release;
 		};
+		AD15ACEC0C06B7AD00345C9E /* Release w/ Debug Symbols */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				COPY_PHASE_STRIP = YES;
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = NO;
+				DSTROOT = /;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = common.h;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_MODE_FLAG = "go-w,a+rX,u+w";
+				INSTALL_PATH = "$(HOME)/Applications";
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = iTunesFS;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				SYMROOT = /tmp/MulleDeploymentProducts;
+				TEMP_DIR = "$(SYMROOT)/$(PROJECT_NAME).build/$(TARGET_NAME).build";
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = "Release w/ Debug Symbols";
+		};
+		AD15ACED0C06B7AD00345C9E /* Release w/ Debug Symbols */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				MOUNT_POINT = /tmp/docsfs;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-lfuse",
+					"-D_FILE_OFFSET_BITS=64",
+					"-std=c99",
+				);
+				PREBINDING = NO;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+			};
+			name = "Release w/ Debug Symbols";
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -424,18 +481,20 @@
 			buildConfigurations = (
 				1DEB927908733DD40010E9CD /* Debug */,
 				1DEB927A08733DD40010E9CD /* Release */,
+				AD15ACED0C06B7AD00345C9E /* Release w/ Debug Symbols */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		7F3DBD080B4422C300A48059 /* Build configuration list for PBXNativeTarget "iTunes" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7F3DBD090B4422C300A48059 /* Debug */,
 				7F3DBD0A0B4422C300A48059 /* Release */,
+				AD15ACEC0C06B7AD00345C9E /* Release w/ Debug Symbols */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};
