@@ -37,6 +37,7 @@
 #import "iTunesPlaylist.h"
 #import "iTunesTrack.h"
 #import "Watchdog.h"
+#import "NSObject+Extensions.h"
 
 @interface iTunesLibrary (Private)
 - (iTunesTrack *)trackWithPrettyName:(NSString *)_ptn
@@ -78,7 +79,7 @@ static NSImage  *libraryIcon  = nil;
 }
 
 - (void)dealloc {
-  [[Watchdog sharedWatchdog] forgetLibrary:self];
+  [self close];
   [self->plMap    release];
   [self->trackMap release];
   [super dealloc];
@@ -144,20 +145,21 @@ static NSImage  *libraryIcon  = nil;
   }
 }
 
+- (void)close {
+  [[Watchdog sharedWatchdog] forgetLibrary:self];
+}
+
 /* accessors */
 
 - (NSString *)name {
   return self->name;
 }
-
 - (NSImage *)icon {
   return libraryIcon;
 }
-
 - (NSString *)libraryPath {
   return libraryPath;
 }
-
 - (NSString *)mountPoint {
   return nil;
 }
@@ -165,50 +167,25 @@ static NSImage  *libraryIcon  = nil;
 - (NSArray *)playlistNames {
   return [self->plMap allKeys];
 }
-
-- (NSArray *)trackNamesForPlaylistNamed:(NSString *)_plName {
-  return [[self->plMap objectForKey:_plName] trackNames];
+- (iTunesPlaylist *)playlistNamed:(NSString *)_plName {
+  return [self->plMap objectForKey:_plName];
 }
+
 
 - (iTunesTrack *)trackWithID:(NSString *)_trackID {
   return [self->trackMap objectForKey:_trackID];
 }
 
-- (BOOL)isValidTrackName:(NSString *)_ptn inPlaylistNamed:(NSString *)_plName {
-#if 0
-  if(![_ptn isValidTrackName]) {
-    NSLog(@"NOT valid track name! -> %@", _ptn);
-    return NO;
-  }
+/* iTunesFS lookup */
+
+- (id)lookupPathComponent:(NSString *)_pc {
+  return [self playlistNamed:_pc];
+}
+- (NSArray *)directoryContents {
+  return [self playlistNames];
+}
+- (BOOL)isDirectory {
   return YES;
-#else
-  return [_ptn isValidTrackName];
-#endif
-}
-
-- (iTunesTrack *)trackWithPrettyName:(NSString *)_ptn
-  inPlaylistNamed:(NSString *)_plName
-{
-  iTunesPlaylist *pl;
-  unsigned       idx;
-  
-  pl = [self->plMap objectForKey:_plName];
-  if (!pl) return nil;
-  idx = [_ptn playlistIndex];
-  return [pl trackAtIndex:idx];
-}
-
-- (NSData *)fileContentForTrackWithPrettyName:(NSString *)_ptn
-  inPlaylistNamed:(NSString *)_plName
-{
-  return [[self trackWithPrettyName:_ptn inPlaylistNamed:_plName] fileContent];
-}
-
-- (NSDictionary *)fileAttributesForTrackWithPrettyName:(NSString *)_ptn
-  inPlaylistNamed:(NSString *)_plName
-{
-  return [[self trackWithPrettyName:_ptn inPlaylistNamed:_plName]
-                fileAttributes];
 }
 
 @end /* iTunesLibrary */

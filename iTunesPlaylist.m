@@ -190,4 +190,20 @@
   return self->trackNames;
 }
 
+/* iTunesFS lookup */
+
+- (id)lookupPathComponent:(NSString *)_pc {
+  unsigned idx;
+  
+  idx = [[self trackNames] indexOfObject:_pc];
+  if (idx == NSNotFound) return nil;
+  return [self trackAtIndex:idx];
+}
+- (NSArray *)directoryContents {
+  return [self trackNames];
+}
+- (BOOL)isDirectory {
+  return YES;
+}
+
 @end /* iTunesPlaylist */

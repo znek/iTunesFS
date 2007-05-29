@@ -30,38 +30,48 @@
   POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef	__iTunesFS_iTunesLibrary_H
-#define	__iTunesFS_iTunesLibrary_H
+#import "common.h"
+#import "NSObject+Extensions.h"
 
-#import <Foundation/Foundation.h>
+@implementation NSObject (iTunesFSLookupExtensions)
 
-@class NSImage;
-@class iTunesPlaylist;
-@class iTunesTrack;
-
-@interface iTunesLibrary : NSObject
-{
-  NSString            *name;
-  NSMutableDictionary *plMap;
-  NSMutableDictionary *trackMap;
+- (id)lookupPathComponent:(NSString *)_pc {
+  return nil;
+}
+- (NSArray *)directoryContents {
+  return nil;
+}
+- (NSData *)fileContents {
+  return nil;
+}
+- (NSDictionary *)fileAttributes {
+  return nil;
+}
+- (NSDictionary *)fileSystemAttributes {
+  return nil;
+}
+- (NSImage *)icon {
+  return nil;
+}
+- (BOOL)isFile {
+  return NO;
+}
+- (BOOL)isDirectory {
+  return NO;
 }
 
-- (NSString *)name;
-- (NSImage *)icon;
+@end /* NSObject (iTunesFSLookupExtensions) */
 
-- (void)reload;
-- (void)close;
+@implementation NSDictionary (iTunesFSLookupExtensions)
 
-- (NSString *)libraryPath;
-- (NSString *)mountPoint;
+- (id)lookupPathComponent:(NSString *)_pc {
+  return [self objectForKey:_pc];
+}
+- (NSArray *)directoryContents {
+  return [self allKeys];
+}
+- (BOOL)isDirectory {
+  return YES;
+}
 
-- (NSArray *)playlistNames;
-- (iTunesPlaylist *)playlistNamed:(NSString *)_plName;
-
-/* helpers */
-
-- (iTunesTrack *)trackWithID:(NSString *)_trackID;
-
-@end /* iTunesLibrary */
-
-#endif	/* __iTunesFS_iTunesLibrary_H */
+@end /* NSDictionary (iTunesFSLookupExtensions) */

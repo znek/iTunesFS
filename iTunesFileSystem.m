@@ -35,13 +35,18 @@
 #import "iTunesLibrary.h"
 #import "iPodLibrary.h"
 #import "NSArray+Extensions.h"
+#import "NSObject+Extensions.h"
 
 @interface iTunesFileSystem (Private)
 - (void)addLibrary:(iTunesLibrary *)_lib;
 - (void)removeLibrary:(iTunesLibrary *)_lib;
 - (void)didMountRemovableDevice:(NSNotification *)_notif;
 - (void)didUnmountRemovableDevice:(NSNotification *)_notif;
+
+- (BOOL)showLibraries;
+
 - (NSArray *)pathFromFSPath:(NSString *)_path;
+- (id)lookupPath:(NSString *)_path;
 @end
 
 @implementation iTunesFileSystem
@@ -104,6 +109,10 @@ static NSString *fsIconPath = nil;
         name:NSWorkspaceDidMountNotification
         object:nil];
     [nc addObserver:self
+        selector:@selector(willUnmountRemovableDevice:)
+        name:NSWorkspaceWillUnmountNotification
+        object:nil];
+    [nc addObserver:self
         selector:@selector(didUnmountRemovableDevice:)
         name:NSWorkspaceDidUnmountNotification
         object:nil];
@@ -131,6 +140,19 @@ static NSString *fsIconPath = nil;
     lib = [[iPodLibrary alloc] initWithMountPoint:path];
     [self addLibrary:lib];
     [lib release];
+  }
+}
+
+- (void)willUnmountRemovableDevice:(NSNotification *)_notif {
+  NSString      *path;
+  iTunesLibrary *lib;
+  
+  path = [[_notif userInfo] objectForKey:@"NSDevicePath"];
+  lib  = [self->volMap objectForKey:path];
+  if (lib) {
+    if (doDebug)
+      NSLog(@"Will close library for unmounting iPod at path: %@", path);
+    [lib close];
   }
 }
 
@@ -169,22 +191,72 @@ static NSString *fsIconPath = nil;
 
 /* private */
 
+- (BOOL)showLibraries {
+  if (ignoreIPods) return NO;
+  if ([self->libMap count] == 1) return NO;
+  return YES;
+}
+
 - (NSArray *)pathFromFSPath:(NSString *)_path {
   NSArray *path;
 
   path = [_path pathComponents];
-  if (ignoreIPods) {
+  if (![self showLibraries]) {
     NSMutableArray *fakePath;
     
-    /* When iPods are ignored by default, we suppress the "Libraries"
-    * hierarchy altogether as it makes no sense.
-    * This is done by faking the only existing library into the path.
-    */
+    /* We're not showing the library list by faking the only existing
+     * library into the path - the lookup will then be done as usual.
+     */
     fakePath = [path mutableCopy];
     [fakePath insertObject:[[self->libMap allKeys] lastObject] atIndex:1];
     path = [fakePath autorelease];
   }
   return path;
+}
+
+- (id)lookupPath:(NSString *)_path {
+  NSArray  *path;
+  id       obj;
+  unsigned i, count;
+
+  path = [self pathFromFSPath:_path];
+  count = [path count];
+  if (!count) return nil;
+  obj = [self lookupPathComponent:[path objectAtIndex:0]];
+  if (doDebug)
+    NSLog(@"lookup [%@, #0] -> %@", [path objectAtIndex:0], obj);
+  for (i = 1; i < count; i++) {
+    obj = [obj lookupPathComponent:[path objectAtIndex:i]];
+    if (doDebug)
+      NSLog(@"lookup [%@, #%d] -> %@", [path objectAtIndex:i], i, obj);
+  }
+  return obj;
+}
+
+/* iTunesFS lookup */
+
+- (id)lookupPathComponent:(NSString *)_pc {
+  if ([_pc isEqualToString:@"/"]) return self;
+  // TODO: add fake Spotlight entries
+  return [self->libMap lookupPathComponent:_pc];
+}
+
+- (NSArray *)directoryContents {
+  // TODO: fake Spotlight database
+  return [self->libMap directoryContents];
+}
+
+- (NSDictionary *)fileSystemAttributes {
+  NSMutableDictionary *attrs;
+  
+  attrs = [[NSMutableDictionary alloc] initWithCapacity:2];
+  //    [attrs setObject:defaultSize forKey:NSFileSystemSize];
+  [attrs setObject:[NSNumber numberWithInt:0] forKey:NSFileSystemFreeSize];
+  return [attrs autorelease];
+}
+
+- (BOOL)isDirectory {
+  return YES;
 }
 
 /* required stuff */
@@ -193,73 +265,24 @@ static NSString *fsIconPath = nil;
  * Libraries / Playlists / Tracks
  */
 - (NSArray *)directoryContentsAtPath:(NSString *)_path {
-  NSArray       *path;
-  iTunesLibrary *lib;
-
-  if (doDebug)
-    NSLog(@"%s path:%@", __PRETTY_FUNCTION__, _path);
-
-  path = [self pathFromFSPath:_path];
-  if ([path isRootDirectory])
-    return [self->libMap allKeys];
-
-  lib = [self->libMap objectForKey:[path libraryName]];
-  if ([path isLibraryDirectory])
-    return [lib playlistNames];
-  return [lib trackNamesForPlaylistNamed:[path playlistName]];
+  return [[self lookupPath:_path] directoryContents];
 }
 
 - (BOOL)fileExistsAtPath:(NSString *)_path isDirectory:(BOOL *)isDirectory {
-  NSArray       *path;
-  iTunesLibrary *lib;
-
-  if (doDebug)
-    NSLog(@"%s path:%@", __PRETTY_FUNCTION__, _path);
-
-  path         = [self pathFromFSPath:_path];
-  *isDirectory = [path isDirectoryPath];
-
-  if ([path isRootDirectory]) return YES;
-
-  lib = [self->libMap objectForKey:[path libraryName]];
-  if ([path isLibraryDirectory])
-    return lib != nil;
-  else if([path isPlaylistDirectory])
-    return [[lib playlistNames] containsObject:[path playlistName]];
-  else
-    return [lib isValidTrackName:[path trackName]
-                inPlaylistNamed:[path playlistName]];
+  id obj;
+  
+  obj          = [self lookupPath:_path];
+  *isDirectory = [obj isDirectory];
+  if ([obj isDirectory]) return YES;
+  return [obj isFile];
 }
 
 - (NSDictionary *)fileAttributesAtPath:(NSString *)_path {
-  NSArray       *path;
-  iTunesLibrary *lib;
-  
-  if (doDebug)
-    NSLog(@"%s path:%@", __PRETTY_FUNCTION__, _path);
-
-  path = [self pathFromFSPath:_path];
-  if ([path isDirectoryPath])
-    return [super fileAttributesAtPath:_path];
-
-  lib = [self->libMap objectForKey:[path libraryName]];
-  return [lib fileAttributesForTrackWithPrettyName:[path trackName]
-              inPlaylistNamed:[path playlistName]];
+  return [[self lookupPath:_path] fileAttributes];
 }
 
 - (NSData *)contentsAtPath:(NSString *)_path {
-  NSArray       *path;
-  iTunesLibrary *lib;
-
-  if (doDebug)
-    NSLog(@"%s path:%@", __PRETTY_FUNCTION__, _path);
-
-  path = [self pathFromFSPath:_path];
-  if ([path isDirectoryPath]) return nil;
-
-  lib = [self->libMap objectForKey:[path libraryName]];
-  return [lib fileContentForTrackWithPrettyName:[path trackName]
-              inPlaylistNamed:[path playlistName]];
+  return [[self lookupPath:_path] fileContents];
 }
 
 /* optional */
@@ -280,24 +303,11 @@ static NSString *fsIconPath = nil;
 }
 
 - (NSImage *)iconForPath:(NSString *)_path {
-  NSArray *path;
-  
-  path = [self pathFromFSPath:_path];
-  if ([path isLibraryDirectory])
-    return [[self->libMap objectForKey:[path libraryName]] icon];
-  return nil;
+  return [[self lookupPath:_path] icon];
 }
 
 - (NSDictionary *)fileSystemAttributesAtPath:(NSString *)_path {
-  if ([_path isEqualToString:@"/"]) {
-    NSMutableDictionary *attrs;
-    
-    attrs = [[NSMutableDictionary alloc] initWithCapacity:2];
-    //    [attrs setObject:defaultSize forKey:NSFileSystemSize];
-    [attrs setObject:[NSNumber numberWithInt:0] forKey:NSFileSystemFreeSize];
-    return [attrs autorelease];
-  }
-  return nil;
+  return [[self lookupPath:_path] fileSystemAttributes];
 }
 
 @end

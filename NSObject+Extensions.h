@@ -30,38 +30,25 @@
   POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef	__iTunesFS_iTunesLibrary_H
-#define	__iTunesFS_iTunesLibrary_H
+#ifndef	__iTunesFS_NSObject_Extensions_H
+#define	__iTunesFS_NSObject_Extensions_H
 
 #import <Foundation/Foundation.h>
 
 @class NSImage;
-@class iTunesPlaylist;
-@class iTunesTrack;
 
-@interface iTunesLibrary : NSObject
-{
-  NSString            *name;
-  NSMutableDictionary *plMap;
-  NSMutableDictionary *trackMap;
-}
+@interface NSObject (iTunesFSLookupExtensions)
 
-- (NSString *)name;
+- (id)lookupPathComponent:(NSString *)_pc;
+
+- (NSArray *)directoryContents;
+- (NSData *)fileContents;
+- (NSDictionary *)fileAttributes;
+- (NSDictionary *)fileSystemAttributes;
 - (NSImage *)icon;
+- (BOOL)isFile;
+- (BOOL)isDirectory;
 
-- (void)reload;
-- (void)close;
+@end /* NSObject (iTunesFSLookupExtensions) */
 
-- (NSString *)libraryPath;
-- (NSString *)mountPoint;
-
-- (NSArray *)playlistNames;
-- (iTunesPlaylist *)playlistNamed:(NSString *)_plName;
-
-/* helpers */
-
-- (iTunesTrack *)trackWithID:(NSString *)_trackID;
-
-@end /* iTunesLibrary */
-
-#endif	/* __iTunesFS_iTunesLibrary_H */
+#endif	/* __iTunesFS_NSObject_Extensions_H */

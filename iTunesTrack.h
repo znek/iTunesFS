@@ -45,8 +45,6 @@
 - (id)initWithIPodLibraryRepresentation:(NSDictionary *)_track;
 
 - (NSString *)prettyName;
-- (NSDictionary *)fileAttributes;
-- (NSData *)fileContent;
   
 @end /* iTunesTrack */
 

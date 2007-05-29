@@ -1,4 +1,4 @@
-2007-05-25  Marcus Mueller  <znek@mulle-kybernetik.com>
+2007-05-29  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* v1.1.1 (IN PROGRESS)
 
@@ -6,12 +6,27 @@
 
 	* README: updated
 
+	* NSObject+Extensions.[hm]: new iTunesFS lookup methods which
+	  dramatically simplify the implementation
+
 	* iTunesFileSystem.m: added new "iTunesFileSystemDebugEnabled" and
 	  "NoIPods" defaults (described in README). Added some debug output,
 	  when iTunesFileSystemDebugEnabled == YES. All paths will be mangled
 	  now before they are being processed - using the "NoIPods" default
 	  this leads to the whole "libraries" hierarchy to be hidden, as it's
 	  not useful to display it then.
+	  Implemented new lookup algorithm for looking up "generic" objects
+	  for performing all file system related operations on. Call -close
+	  on libraries whose mount points are about to vanish.
+
+	* iTunesTrack.[hm]: minor renaming, implemented file system operations
+	  as part of the new lookup API
+
+	* iTunesPlaylist.m: implemented lookup API
+
+	* iTunesLibrary.[hm]: removed quite a bit of the old API, implemented
+	  new lookup API. Added new -close method which can be called in
+	  case a file system will be unmounted.
 
 2007-05-24  Marcus Mueller  <znek@mulle-kybernetik.com>
 

@@ -193,6 +193,8 @@ static BOOL detailedNames = NO;
   return self->url;
 }
 
+/* iTunesFS lookup */
+
 - (NSDictionary *)fileAttributes {
   if (!self->url) return nil;
   if (![self->url isFileURL]) return nil;
@@ -200,7 +202,7 @@ static BOOL detailedNames = NO;
                                          traverseLink:YES];
 }
 
-- (NSData *)fileContent {
+- (NSData *)fileContents {
   if (!self->url) return nil;
   if (![self->url isFileURL]) { /* http based audio stream... */
     return [[self->url description] dataUsingEncoding:NSUTF8StringEncoding];
@@ -208,6 +210,10 @@ static BOOL detailedNames = NO;
   return [NSData dataWithContentsOfURL:self->url
                  options:NSMappedRead|NSUncachedRead
                  error:NULL];
+}
+
+- (BOOL)isFile {
+  return YES;
 }
 
 @end /* iTunesTrack */
