@@ -39,6 +39,8 @@ DetailedTrackNames | BOOL | If YES, use very detailed information
 NoIPods            | BOOL | If YES, don't scan for iPods and instead
 (NO)               |      | of displaying "libraries" at root level
                    |      | display playlists of iTunes library
+SymbolicLinks      | BOOL | If YES, use symbolic links for tracks instead of
+(NO)               |      | "faking" the existence of files
 
 For developers
 --------------

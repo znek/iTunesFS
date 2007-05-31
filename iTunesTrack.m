@@ -45,16 +45,24 @@
 
 @implementation iTunesTrack
 
-static BOOL detailedNames = NO;
+static BOOL doDebug          = NO;
+static BOOL detailedNames    = NO;
+static BOOL useSymbolicLinks = NO;
 
 + (void)initialize {
   static BOOL    didInit = NO;
   NSUserDefaults *ud;
   
   if (didInit) return;
-  didInit       = YES;
-  ud            = [NSUserDefaults standardUserDefaults];
-  detailedNames = [ud boolForKey:@"DetailedTrackNames"];
+  didInit          = YES;
+  ud               = [NSUserDefaults standardUserDefaults];
+  doDebug          = [ud boolForKey:@"iTunesFileSystemDebugEnabled"];
+  detailedNames    = [ud boolForKey:@"DetailedTrackNames"];
+  useSymbolicLinks = [ud boolForKey:@"SymbolicLinks"];
+  if (doDebug && detailedNames)
+    NSLog(@"Using detailed names for tracks");
+  if (doDebug && useSymbolicLinks)
+    NSLog(@"Using symbolic links for tracks");
 }
 
 /* init & dealloc */
@@ -113,6 +121,7 @@ static BOOL detailedNames = NO;
       [self setUrl:[NSURL URLWithString:location]];
     }
     [self setPrettyName:pn];
+
     attrs = [[NSMutableDictionary alloc] initWithCapacity:3];
     if ([[self url] isFileURL]) {
       tmp = [_track objectForKey:@"Size"];
@@ -131,6 +140,8 @@ static BOOL detailedNames = NO;
       if (tmp)
         [attrs setObject:tmp forKey:NSFileModificationDate];
     }
+    if (useSymbolicLinks)
+      [attrs setObject:NSFileTypeSymbolicLink forKey:NSFileType];
     [self setAttributes:attrs];
     [attrs release];
   }
@@ -201,9 +212,11 @@ static BOOL detailedNames = NO;
     if (tmp)
       [attrs setObject:tmp forKey:NSFileCreationDate];
     tmp = [_track objectForKey:@"Date Modified"];
-    if (tmp) {
+    if (tmp)
       [attrs setObject:tmp forKey:NSFileModificationDate];
-    }
+    if (useSymbolicLinks)
+      [attrs setObject:NSFileTypeSymbolicLink forKey:NSFileType];
+
     [self setAttributes:attrs];
     [attrs release];
   }
@@ -263,6 +276,10 @@ static BOOL detailedNames = NO;
   return [NSData dataWithContentsOfFile:path
                  options:NSMappedRead|NSUncachedRead
                  error:NULL];
+}
+
+- (NSString *)symbolicLinkTarget {
+  return [self->url properlyEscapedPath];
 }
 
 - (BOOL)isFile {

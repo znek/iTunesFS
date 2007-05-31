@@ -4,10 +4,13 @@
 
 	* iTunesFileSystem.m: inform NSWorkspace about directory changes
 	  (doesn't seem to have the desired effect on my system, though).
+	  Implemented symbolic link lookup.
 
 	* NSURL+Extensions.[hm]: new category for properly demangling
 	  "?" characters in file URLs to "_", as this is what iTunes seems to
 	  do
+
+	* NSObject+Extensions.[hm]: added new method -symbolicLinkTarget
 
 	* iTunesLibrary.m: if library contains only one playlist (i.e. Shuffle)
 	  skip the playlist in listing and instead show all tracks.
@@ -18,7 +21,10 @@
 
 	* iTunesTrack.[hm]: Derive FileSystemAttributes from attributes stored
 	  in either iTunes or iTunesDB representation. Properly demangle
-	  file URL paths before accessing data in hose file system.
+	  file URL paths before accessing data in hose file system. Return
+	  these URL paths as symbolic link targets when asked to. Return
+	  NSFileType == NSFileTypeSymbolicLink in case the "SymbolicLinks"
+	  user default is true.
 
 	* iTunesFileSystem.m, iTunesLibrary.m, iTunesPlaylist.m, iTunesTrack.m:
 	  added custom -description to aid in debugging

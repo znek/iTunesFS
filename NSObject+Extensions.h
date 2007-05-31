@@ -43,6 +43,8 @@
 
 - (NSArray *)directoryContents;
 - (NSData *)fileContents;
+- (NSString *)symbolicLinkTarget;
+
 - (NSDictionary *)fileAttributes;
 - (NSDictionary *)fileSystemAttributes;
 - (NSImage *)icon;

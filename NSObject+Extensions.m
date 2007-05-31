@@ -44,6 +44,9 @@
 - (NSData *)fileContents {
   return nil;
 }
+- (NSString *)symbolicLinkTarget {
+  return nil; 
+}
 - (NSDictionary *)fileAttributes {
   return nil;
 }

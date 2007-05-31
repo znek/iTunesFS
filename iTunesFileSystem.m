@@ -303,6 +303,10 @@ static NSString *fsIconPath = nil;
   return [[self lookupPath:_path] fileContents];
 }
 
+- (NSString *)pathContentOfSymbolicLinkAtPath:(NSString *)_path {
+  return [[self lookupPath:_path] symbolicLinkTarget];
+}
+
 /* optional */
 
 - (BOOL)shouldMountInFinder {
