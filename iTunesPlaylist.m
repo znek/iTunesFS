@@ -206,4 +206,12 @@
   return YES;
 }
 
+/* debugging */
+
+- (NSString *)description {
+  return [NSString stringWithFormat:@"<%@ 0x%x: name:%@ #tracks:%d",
+                                    NSStringFromClass(self->isa), self,
+                                    [self name], [self count]];
+}
+
 @end /* iTunesPlaylist */

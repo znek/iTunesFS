@@ -23,6 +23,7 @@
 		AD15A4D40C04433D00345C9E /* Watchdog.m in Sources */ = {isa = PBXBuildFile; fileRef = AD15A4D30C04433D00345C9E /* Watchdog.m */; };
 		AD15A57E0C04540500345C9E /* NSArray+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = AD15A57D0C04540500345C9E /* NSArray+Extensions.m */; };
 		AD15AA5E0C05BC7400345C9E /* iPodLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = AD15AA5D0C05BC7400345C9E /* iPodLibrary.m */; };
+		AD2186D50C0D4805008FB568 /* NSURL+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = AD2186D40C0D4805008FB568 /* NSURL+Extensions.m */; };
 		AD37A2040C01C58000DF1291 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = AD37A2030C01C58000DF1291 /* MainMenu.nib */; };
 		AD37A2970C01C87E00DF1291 /* iTunesLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = AD37A2960C01C87E00DF1291 /* iTunesLibrary.m */; };
 		AD5B5E7C0C0C1A70003B1650 /* NSObject+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = AD5B5E7B0C0C1A70003B1650 /* NSObject+Extensions.m */; };
@@ -62,6 +63,8 @@
 		AD15A6520C0462ED00345C9E /* ChangeLog */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 8; lastKnownFileType = text; path = ChangeLog; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
 		AD15AA5C0C05BC7400345C9E /* iPodLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iPodLibrary.h; sourceTree = "<group>"; };
 		AD15AA5D0C05BC7400345C9E /* iPodLibrary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iPodLibrary.m; sourceTree = "<group>"; };
+		AD2186D30C0D4805008FB568 /* NSURL+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+Extensions.h"; sourceTree = "<group>"; };
+		AD2186D40C0D4805008FB568 /* NSURL+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+Extensions.m"; sourceTree = "<group>"; };
 		AD37A1FB0C01C57400DF1291 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		AD37A2950C01C87E00DF1291 /* iTunesLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTunesLibrary.h; sourceTree = "<group>"; };
 		AD37A2960C01C87E00DF1291 /* iTunesLibrary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTunesLibrary.m; sourceTree = "<group>"; };
@@ -138,6 +141,8 @@
 				AD15A57D0C04540500345C9E /* NSArray+Extensions.m */,
 				AD5B5E7A0C0C1A70003B1650 /* NSObject+Extensions.h */,
 				AD5B5E7B0C0C1A70003B1650 /* NSObject+Extensions.m */,
+				AD2186D30C0D4805008FB568 /* NSURL+Extensions.h */,
+				AD2186D40C0D4805008FB568 /* NSURL+Extensions.m */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -304,6 +309,7 @@
 				AD15A57E0C04540500345C9E /* NSArray+Extensions.m in Sources */,
 				AD15AA5E0C05BC7400345C9E /* iPodLibrary.m in Sources */,
 				AD5B5E7C0C0C1A70003B1650 /* NSObject+Extensions.m in Sources */,
+				AD2186D50C0D4805008FB568 /* NSURL+Extensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

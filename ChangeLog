@@ -1,3 +1,28 @@
+2007-05-31  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v1.1.2
+
+	* iTunesFileSystem.m: inform NSWorkspace about directory changes
+	  (doesn't seem to have the desired effect on my system, though).
+
+	* NSURL+Extensions.[hm]: new category for properly demangling
+	  "?" characters in file URLs to "_", as this is what iTunes seems to
+	  do
+
+	* iTunesLibrary.m: if library contains only one playlist (i.e. Shuffle)
+	  skip the playlist in listing and instead show all tracks.
+
+	* iPodLibrary.m: extract "dateModified" and "dateAdded" from iTunesDB
+	  and put it into representation dictionary for iTunesTrack to
+	  initialize with
+
+	* iTunesTrack.[hm]: Derive FileSystemAttributes from attributes stored
+	  in either iTunes or iTunesDB representation. Properly demangle
+	  file URL paths before accessing data in hose file system.
+
+	* iTunesFileSystem.m, iTunesLibrary.m, iTunesPlaylist.m, iTunesTrack.m:
+	  added custom -description to aid in debugging
+
 2007-05-29  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* v1.1.1

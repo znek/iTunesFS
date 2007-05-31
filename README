@@ -28,14 +28,26 @@ Marcus Mueller <znek@mulle-kybernetik.com>.
 Defaults
 ========
 
-Name               | Type | DefVal | Description
----------------------------------------------------------------------------
-DetailedTrackNames | BOOL | NO     | If YES, use very detailed information
-                                     in track names (Album title, Artist,
-                                     track number, etc.)
-NoIPods              BOOL   NO       If YES, don't scan for iPods and instead
-                                     of displaying "libraries" at root level
-                                     display playlists of iTunes library
+For users
+---------
+
+Name               | Type | Description
+-------------------+------+----------------------------------------------
+DetailedTrackNames | BOOL | If YES, use very detailed information
+(NO)               |      | in track names (Album title, Artist,
+                   |      | track number, etc.)
+NoIPods            | BOOL | If YES, don't scan for iPods and instead
+(NO)               |      | of displaying "libraries" at root level
+                   |      | display playlists of iTunes library
+
+For developers
+--------------
+
+Name                         | Type | Description
+-----------------------------+------+-------------------------------------
+iTunesFileSystemDebugEnabled | BOOL | turns on general debugging info
+iTunesFSDebugPathLookup      | BOOL | display path objects during lookup
+iPodLibraryDebugEnabled      | BOOL | detailed iPodLibrary debugging
 
 
 TODO / IDEAS

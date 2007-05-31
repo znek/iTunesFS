@@ -30,23 +30,25 @@
   POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef	__iTunesFS_iTunesTrack_H
-#define	__iTunesFS_iTunesTrack_H
+#import "common.h"
+#import "NSURL+Extensions.h"
 
-#import <Foundation/Foundation.h>
+@implementation NSURL (iTunesFSExtensions)
 
-@interface iTunesTrack : NSObject
-{
-  NSString     *prettyName;
-  NSURL        *url;
-  NSDictionary *attributes;
+- (NSString *)properlyEscapedPath {
+  NSRange         r;
+  NSString        *path;
+  NSMutableString *proper;
+  
+  if (![self isFileURL]) return nil;
+  path = [self path];
+  r    = [path rangeOfString:@"?"];
+  if (r.location == NSNotFound) return path;
+
+  proper   = [path mutableCopy];
+  r.length = [path length] - r.location;
+  [proper replaceOccurrencesOfString:@"?" withString:@"_" options:0 range:r];
+  return [proper autorelease];
 }
 
-- (id)initWithITunesLibraryRepresentation:(NSDictionary *)_track;
-- (id)initWithIPodLibraryRepresentation:(NSDictionary *)_track;
-
-- (NSString *)prettyName;
-  
-@end /* iTunesTrack */
-
-#endif	/* __iTunesFS_iTunesTrack_H */
+@end /* NSURL (iTunesFSExtensions) */

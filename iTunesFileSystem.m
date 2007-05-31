@@ -52,6 +52,7 @@
 @implementation iTunesFileSystem
 
 static BOOL     doDebug     = NO;
+static BOOL     debugLookup = NO;
 static BOOL     ignoreIPods = NO;
 static NSString *fsIconPath = nil;
 
@@ -64,6 +65,7 @@ static NSString *fsIconPath = nil;
   didInit     = YES;
   ud          = [NSUserDefaults standardUserDefaults];
   doDebug     = [ud boolForKey:@"iTunesFileSystemDebugEnabled"];
+  debugLookup = [ud boolForKey:@"iTunesFSDebugPathLookup"];
   ignoreIPods = [ud boolForKey:@"NoIPods"];
   mb          = [NSBundle mainBundle];
   fsIconPath  = [[mb pathForResource:@"iTunesFS" ofType:@"icns"] copy];
@@ -135,11 +137,19 @@ static NSString *fsIconPath = nil;
   path = [[_notif userInfo] objectForKey:@"NSDevicePath"];
   if ([iPodLibrary isIPodAtMountPoint:path]) {
     iTunesLibrary *lib;
+    BOOL          prevShowLibraries;
 
+    prevShowLibraries = [self showLibraries];
     if (doDebug) NSLog(@"Will add library for iPod at path: %@", path);
     lib = [[iPodLibrary alloc] initWithMountPoint:path];
     [self addLibrary:lib];
     [lib release];
+
+    if ([self showLibraries] != prevShowLibraries) {
+      if (doDebug)
+        NSLog(@"posting -noteFileSystemChanged: for %@", [self mountPoint]);
+      [[NSWorkspace sharedWorkspace] noteFileSystemChanged:[self mountPoint]];
+    }
   }
 }
 
@@ -163,9 +173,17 @@ static NSString *fsIconPath = nil;
   path = [[_notif userInfo] objectForKey:@"NSDevicePath"];
   lib  = [self->volMap objectForKey:path];
   if (lib) {
+    BOOL prevShowLibraries;
+
     if (doDebug)
       NSLog(@"Will remove library for unmounted iPod at path: %@", path);
     [self removeLibrary:lib];
+
+    if ([self showLibraries] != prevShowLibraries) {
+      if (doDebug)
+        NSLog(@"posting -noteFileSystemChanged: for %@", [self mountPoint]);
+      [[NSWorkspace sharedWorkspace] noteFileSystemChanged:[self mountPoint]];
+    }
   }
 }
 
@@ -223,12 +241,12 @@ static NSString *fsIconPath = nil;
   count = [path count];
   if (!count) return nil;
   obj = [self lookupPathComponent:[path objectAtIndex:0]];
-  if (doDebug)
-    NSLog(@"lookup [%@, #0] -> %@", [path objectAtIndex:0], obj);
+  if (debugLookup)
+    NSLog(@"lookup [#0, %@] -> %@", [path objectAtIndex:0], obj);
   for (i = 1; i < count; i++) {
     obj = [obj lookupPathComponent:[path objectAtIndex:i]];
-    if (doDebug)
-      NSLog(@"lookup [%@, #%d] -> %@", [path objectAtIndex:i], i, obj);
+    if (debugLookup)
+      NSLog(@"lookup [#%d, %@] -> %@", i, [path objectAtIndex:i], obj);
   }
   return obj;
 }
@@ -287,11 +305,9 @@ static NSString *fsIconPath = nil;
 
 /* optional */
 
-#if 0
 - (BOOL)shouldMountInFinder {
   return YES;
 }
-#endif
 
 - (BOOL)usesResourceForks {
   return YES;
@@ -308,6 +324,24 @@ static NSString *fsIconPath = nil;
 
 - (NSDictionary *)fileSystemAttributesAtPath:(NSString *)_path {
   return [[self lookupPath:_path] fileSystemAttributes];
+}
+
+/* debugging */
+
+- (NSString *)description {
+  NSMutableString *ms;
+  
+  ms = [[NSMutableString alloc] initWithCapacity:60];
+  [ms appendString:@"<"];
+  [ms appendFormat:@"%@ 0x%x", NSStringFromClass(self->isa), self];
+  [ms appendString:@"#libs:"];
+  [ms appendFormat:@"%d", [self->libMap count]];
+  if (!ignoreIPods) {
+    [ms appendString:@" #iPods:"];
+    [ms appendFormat:@"%d", [self->volMap count]];
+  }
+  [ms appendString:@">"];
+  return [ms autorelease];
 }
 
 @end

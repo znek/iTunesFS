@@ -179,13 +179,31 @@ static NSImage  *libraryIcon  = nil;
 /* iTunesFS lookup */
 
 - (id)lookupPathComponent:(NSString *)_pc {
+  unsigned count;
+  
+  count = [self->plMap count];
+  if (count == 0) return nil;
+  if (count == 1)
+    return [[[self->plMap allValues] lastObject] lookupPathComponent:_pc];
   return [self playlistNamed:_pc];
 }
+
 - (NSArray *)directoryContents {
-  return [self playlistNames];
+  if ([self->plMap count] != 1)
+    return [self playlistNames];
+  return [[[self->plMap allValues] lastObject] directoryContents];
 }
+
 - (BOOL)isDirectory {
   return YES;
+}
+
+/* debugging */
+
+- (NSString *)description {
+  return [NSString stringWithFormat:@"<%@ 0x%x: name:%@ path:%@",
+                                    NSStringFromClass(self->isa), self,
+                                    [self name], [self libraryPath]];
 }
 
 @end /* iTunesLibrary */

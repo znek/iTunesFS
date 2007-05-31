@@ -45,7 +45,11 @@
 - (NSString *)iTunesDeviceInfoPath;
 - (NSString *)iTunesMusicFolderPath;
 
+- (NSDate *)dateFromMacTimestamp:(NSNumber *)_timestamp;
+
 - (void)setFileLength:(id)_value;
+- (void)setDateAdded:(NSNumber *)_timestamp;
+- (void)setDateModified:(NSNumber *)_timestamp;
 @end
 
 /* NOTE:
@@ -68,18 +72,30 @@ typedef struct {
 
 typedef struct {
   unsigned long  uniqueID;
-  unsigned long  visible;  // 1 -> visible, all other invisible
+  unsigned long  visible;
   unsigned long  fileType;
   unsigned short type;
   unsigned char  isCompilation;
   unsigned char  rating;
-  unsigned long  dateAdded;
+  unsigned long  dateModified;
   unsigned long  size;
   unsigned long  length;
   unsigned long  trackNumber;
   unsigned long  totalTracks;
   unsigned long  year;
   unsigned long  bitrate;
+  unsigned long  sampleRate;
+  unsigned long  volume;
+  unsigned long  startTime;
+  unsigned long  stopTime;
+  unsigned long  soundcheck;
+  unsigned long  playCount;
+  unsigned long  playCountBackup;
+  unsigned long  dateLastPlayed;
+  unsigned long  discNumber;
+  unsigned long  totalDiscs;
+  unsigned long  userID;
+  unsigned long  dateAdded;
 } mhitExtra;
 
 typedef struct {
@@ -114,8 +130,8 @@ static NSMutableDictionary *codeSelMap = nil;
   didInit       = YES;
   ud            = [NSUserDefaults standardUserDefaults];
   doDebug       = [ud boolForKey:@"iPodLibraryDebugEnabled"];
-  
-  codeSelMap = [[NSMutableDictionary alloc] initWithCapacity:10];
+
+  codeSelMap = [[NSMutableDictionary alloc] initWithCapacity:2];
   [codeSelMap setObject:@"setName:"     forKey:[NSNumber numberWithInt:1]];
   [codeSelMap setObject:@"setLocation:" forKey:[NSNumber numberWithInt:2]];
 #if 0
@@ -288,15 +304,20 @@ static NSMutableDictionary *codeSelMap = nil;
       mhitExtra *prop;
       NSString  *trackID;
 
-      data           = [fh readDataOfLength:sizeof(mhitExtra)];
-      prop           = (mhitExtra *)[data bytes];
-      prop->uniqueID = NSSwapLittleLongToHost(prop->uniqueID);
-      prop->size     = NSSwapLittleLongToHost(prop->size);
-      trackID        = [ULongNum(prop->uniqueID) description];
+      data               = [fh readDataOfLength:sizeof(mhitExtra)];
+      prop               = (mhitExtra *)[data bytes];
+      prop->uniqueID     = NSSwapLittleLongToHost(prop->uniqueID);
+      prop->size         = NSSwapLittleLongToHost(prop->size);
+      prop->dateModified = NSSwapLittleLongToHost(prop->dateModified);
+      prop->dateAdded    = NSSwapLittleLongToHost(prop->dateAdded);
+      trackID            = [ULongNum(prop->uniqueID) description];
 
       self->currentObject = [[NSMutableDictionary alloc] initWithCapacity:2];
       [tmap setObject:self->currentObject forKey:trackID];
+
       [self setFileLength:ULongNum(prop->size)];
+      [self setDateAdded:ULongNum(prop->dateAdded)];
+      [self setDateModified:ULongNum(prop->dateModified)];
 
       [self->currentObject release];
 
@@ -388,9 +409,26 @@ static NSMutableDictionary *codeSelMap = nil;
 }
 
 - (void)setFileLength:(id)_value {
-#if 0
-  [self->currentObject setValue:_value forKey:@"fileLength"];
-#endif
+  [self->currentObject setValue:_value forKey:@"Size"];
+}
+
+#define macTimeOffset 2082844800
+- (NSDate *)dateFromMacTimestamp:(NSNumber *)_timestamp {
+  NSTimeInterval t;
+  
+  t = (NSTimeInterval)([_timestamp unsignedLongValue] - macTimeOffset);
+  return [NSDate dateWithTimeIntervalSince1970:t];
+}
+#undef macTimeOffset
+
+- (void)setDateAdded:(NSNumber *)_timestamp {
+  [self->currentObject setValue:[self dateFromMacTimestamp:_timestamp]
+                       forKey:@"Date Added"];
+}
+
+- (void)setDateModified:(NSNumber *)_timestamp {
+  [self->currentObject setValue:[self dateFromMacTimestamp:_timestamp]
+                       forKey:@"Date Modified"];
 }
 
 /* accessors */
