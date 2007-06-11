@@ -31,6 +31,7 @@
 		ADBDABA90C02FF10004CF795 /* NSString+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = ADBDABA80C02FF10004CF795 /* NSString+Extensions.m */; };
 		ADCB993C0C1D5AE9002A3130 /* GNUmakefile in Resources */ = {isa = PBXBuildFile; fileRef = ADCB99390C1D5AE9002A3130 /* GNUmakefile */; };
 		ADCB993E0C1D5AE9002A3130 /* GNUmakefile.preamble in Resources */ = {isa = PBXBuildFile; fileRef = ADCB993B0C1D5AE9002A3130 /* GNUmakefile.preamble */; };
+		ADCB999C0C1D7582002A3130 /* GNUmakefile in Resources */ = {isa = PBXBuildFile; fileRef = ADCB999B0C1D7582002A3130 /* GNUmakefile */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -84,6 +85,7 @@
 		ADBDABA80C02FF10004CF795 /* NSString+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Extensions.m"; sourceTree = "<group>"; };
 		ADCB99390C1D5AE9002A3130 /* GNUmakefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 5; indentWidth = 8; name = GNUmakefile; path = "../../../../../../var/automount/Network/Users/znek/Projects/mulle-svn/iTunesFS/GNUmakefile"; sourceTree = "<group>"; tabWidth = 8; };
 		ADCB993B0C1D5AE9002A3130 /* GNUmakefile.preamble */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 5; indentWidth = 8; name = GNUmakefile.preamble; path = "../../../../../../var/automount/Network/Users/znek/Projects/mulle-svn/iTunesFS/GNUmakefile.preamble"; sourceTree = "<group>"; tabWidth = 8; };
+		ADCB999B0C1D7582002A3130 /* GNUmakefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 5; indentWidth = 8; name = GNUmakefile; path = "/var/automount/Network/Users/znek/Projects/mulle-svn/iTunesFS/FUSEObjC/GNUmakefile"; sourceTree = "<absolute>"; tabWidth = 8; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -214,6 +216,7 @@
 		7FEAC1C30B446B70008EF420 /* FUSEObjC */ = {
 			isa = PBXGroup;
 			children = (
+				ADCB99A10C1D759B002A3130 /* GNUstep */,
 				7FEAC1C80B446B70008EF420 /* FUSEMain.m */,
 				7FEAC1C40B446B70008EF420 /* FUSEFileSystem.h */,
 				7FEAC1C50B446B70008EF420 /* FUSEFileSystem.m */,
@@ -235,6 +238,14 @@
 			children = (
 				ADCB99390C1D5AE9002A3130 /* GNUmakefile */,
 				ADCB993B0C1D5AE9002A3130 /* GNUmakefile.preamble */,
+			);
+			name = GNUstep;
+			sourceTree = "<group>";
+		};
+		ADCB99A10C1D759B002A3130 /* GNUstep */ = {
+			isa = PBXGroup;
+			children = (
+				ADCB999B0C1D7582002A3130 /* GNUmakefile */,
 			);
 			name = GNUstep;
 			sourceTree = "<group>";
@@ -284,6 +295,7 @@
 				ADBDA9CC0C02E7A5004CF795 /* iTunesFS.icns in Resources */,
 				ADCB993C0C1D5AE9002A3130 /* GNUmakefile in Resources */,
 				ADCB993E0C1D5AE9002A3130 /* GNUmakefile.preamble in Resources */,
+				ADCB999C0C1D7582002A3130 /* GNUmakefile in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
