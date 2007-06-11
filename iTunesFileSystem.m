@@ -338,7 +338,7 @@ static NSString *fsIconPath = nil;
   ms = [[NSMutableString alloc] initWithCapacity:60];
   [ms appendString:@"<"];
   [ms appendFormat:@"%@ 0x%x", NSStringFromClass(self->isa), self];
-  [ms appendString:@"#libs:"];
+  [ms appendString:@": #libs:"];
   [ms appendFormat:@"%d", [self->libMap count]];
   if (!ignoreIPods) {
     [ms appendString:@" #iPods:"];

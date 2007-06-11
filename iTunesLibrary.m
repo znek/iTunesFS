@@ -39,13 +39,9 @@
 #import "Watchdog.h"
 #import "NSObject+Extensions.h"
 
-@interface iTunesLibrary (Private)
-- (iTunesTrack *)trackWithPrettyName:(NSString *)_ptn
-  inPlaylistNamed:(NSString *)_plName;
-@end
-
 @implementation iTunesLibrary
 
+static BOOL     doDebug       = NO;
 static NSString *libraryPath  = nil;
 static NSImage  *libraryIcon  = nil;
 
@@ -56,6 +52,7 @@ static NSImage  *libraryIcon  = nil;
   if (didInit) return;
   didInit     = YES;
   ud          = [NSUserDefaults standardUserDefaults];
+  doDebug     = [ud boolForKey:@"iTunesFileSystemDebugEnabled"];
   libraryPath = [[ud stringForKey:@"Library"] copy];
   if (!libraryPath) {
     libraryPath = [[NSHomeDirectory() stringByAppendingString:
@@ -80,6 +77,7 @@ static NSImage  *libraryIcon  = nil;
 
 - (void)dealloc {
   [self close];
+  [self->name     release];
   [self->plMap    release];
   [self->trackMap release];
   [super dealloc];
@@ -95,9 +93,8 @@ static NSImage  *libraryIcon  = nil;
   NSArray       *trackIDs;
   unsigned      i, count;
 
-#if 0
-  NSLog(@"%s", __PRETTY_FUNCTION__);
-#endif
+  if (doDebug)
+    NSLog(@"%s", __PRETTY_FUNCTION__);
 
   [self->plMap    removeAllObjects];
   [self->trackMap removeAllObjects];
@@ -152,6 +149,7 @@ static NSImage  *libraryIcon  = nil;
 /* accessors */
 
 - (NSString *)name {
+  if (!doDebug) return @"iTunes";
   return self->name;
 }
 - (NSImage *)icon {

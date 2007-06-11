@@ -1,3 +1,14 @@
+2007-06-08  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v1.1.3 (IN PROGRESS)
+
+	* iTunesFileSystem.m: fixed typo in -description
+
+	* iTunesLibrary.m: only append iTunes library version number to name if
+	  debugging is enabled.
+
+	* Resources/*: moved everything in here to top-level directory
+
 2007-05-31  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* v1.1.2
