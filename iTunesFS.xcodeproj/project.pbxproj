@@ -26,12 +26,6 @@
 		AD2186D50C0D4805008FB568 /* NSURL+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = AD2186D40C0D4805008FB568 /* NSURL+Extensions.m */; };
 		AD37A2040C01C58000DF1291 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = AD37A2030C01C58000DF1291 /* MainMenu.nib */; };
 		AD37A2970C01C87E00DF1291 /* iTunesLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = AD37A2960C01C87E00DF1291 /* iTunesLibrary.m */; };
-		AD5A40710C214A1900B1A000 /* README-GNUstep in Resources */ = {isa = PBXBuildFile; fileRef = AD5A40700C214A1900B1A000 /* README-GNUstep */; };
-		AD5A40840C214FCB00B1A000 /* FUSEFileSystem.m in Sources */ = {isa = PBXBuildFile; fileRef = AD5A407F0C214FCB00B1A000 /* FUSEFileSystem.m */; };
-		AD5A40850C214FCB00B1A000 /* FUSEMain.m in Sources */ = {isa = PBXBuildFile; fileRef = AD5A40800C214FCB00B1A000 /* FUSEMain.m */; };
-		AD5A40860C214FCB00B1A000 /* GNUmakefile in Resources */ = {isa = PBXBuildFile; fileRef = AD5A40810C214FCB00B1A000 /* GNUmakefile */; };
-		AD5A40870C214FCB00B1A000 /* GNUmakefile in Resources */ = {isa = PBXBuildFile; fileRef = AD5A40820C214FCB00B1A000 /* GNUmakefile */; };
-		AD5A40880C214FCB00B1A000 /* GNUmakefile.preamble in Resources */ = {isa = PBXBuildFile; fileRef = AD5A40830C214FCB00B1A000 /* GNUmakefile.preamble */; };
 		AD5B5E7C0C0C1A70003B1650 /* NSObject+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = AD5B5E7B0C0C1A70003B1650 /* NSObject+Extensions.m */; };
 		ADAADA9B0C2111390024D899 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = ADAADA9A0C2111390024D899 /* Localizable.strings */; };
 		ADBDA9CC0C02E7A5004CF795 /* iTunesFS.icns in Resources */ = {isa = PBXBuildFile; fileRef = ADBDA9CB0C02E7A5004CF795 /* iTunesFS.icns */; };
@@ -321,10 +315,6 @@
 				AD37A2040C01C58000DF1291 /* MainMenu.nib in Resources */,
 				ADBDA9CC0C02E7A5004CF795 /* iTunesFS.icns in Resources */,
 				ADAADA9B0C2111390024D899 /* Localizable.strings in Resources */,
-				AD5A40710C214A1900B1A000 /* README-GNUstep in Resources */,
-				AD5A40860C214FCB00B1A000 /* GNUmakefile in Resources */,
-				AD5A40870C214FCB00B1A000 /* GNUmakefile in Resources */,
-				AD5A40880C214FCB00B1A000 /* GNUmakefile.preamble in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -367,8 +357,6 @@
 				AD15AA5E0C05BC7400345C9E /* iPodLibrary.m in Sources */,
 				AD5B5E7C0C0C1A70003B1650 /* NSObject+Extensions.m in Sources */,
 				AD2186D50C0D4805008FB568 /* NSURL+Extensions.m in Sources */,
-				AD5A40840C214FCB00B1A000 /* FUSEFileSystem.m in Sources */,
-				AD5A40850C214FCB00B1A000 /* FUSEMain.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
