@@ -38,6 +38,8 @@
 @interface iTunesTrack : NSObject
 {
   NSString     *prettyName;
+  NSString     *album;
+  NSString     *artist;
   NSURL        *url;
   NSDictionary *attributes;
 }
@@ -46,6 +48,8 @@
 - (id)initWithIPodLibraryRepresentation:(NSDictionary *)_track;
 
 - (NSString *)prettyName;
+- (NSString *)album;
+- (NSString *)artist;
   
 @end /* iTunesTrack */
 

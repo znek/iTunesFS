@@ -70,23 +70,26 @@ static BOOL useSymbolicLinks = NO;
 - (id)initWithITunesLibraryRepresentation:(NSDictionary *)_track {
   self = [super init];
   if (self) {
-    NSString            *name, *artist, *album;
+    NSString            *name;
     NSNumber            *trackNumber;
     NSString            *location;
     NSMutableString     *pn;
     NSMutableDictionary *attrs;
     id                  tmp;
 
-    pn = [[NSMutableString alloc] initWithCapacity:128];
+    pn           = [[NSMutableString alloc] initWithCapacity:128];
+    self->artist = [[[_track objectForKey:@"Artist"]
+                             properlyEscapedFSRepresentation] copy];
+    self->album  = [[[_track objectForKey:@"Album"]
+                             properlyEscapedFSRepresentation] copy];
+
     if (detailedNames) {
-      artist = [_track objectForKey:@"Artist"];
-      if (artist) {
-        [pn appendString:[artist properlyEscapedFSRepresentation]];
+      if (self->artist) {
+        [pn appendString:self->artist];
         [pn appendString:@"_"];
       }
-      album = [_track objectForKey:@"Album"];
-      if (album) {
-        [pn appendString:[album properlyEscapedFSRepresentation]];
+      if (self->album) {
+        [pn appendString:self->album];
         [pn appendString:@"_"];
       }
       trackNumber = [_track objectForKey:@"Track Number"];
@@ -103,11 +106,6 @@ static BOOL useSymbolicLinks = NO;
       NSLog(@"WARN: track without name! REP:%@", _track);
       [pn appendString:@"Empty"];
     }
-#if 0
-    [pn appendString:@" ["];
-    [pn appendString:_trackID];
-    [pn appendString:@"]"];
-#endif
     location = [_track objectForKey:@"Location"];
     if (location) {
       [pn appendString:@"."];
@@ -151,23 +149,26 @@ static BOOL useSymbolicLinks = NO;
 - (id)initWithIPodLibraryRepresentation:(NSDictionary *)_track {
   self = [super init];
   if (self) {
-    NSString            *name, *artist, *album;
+    NSString            *name;
     NSNumber            *trackNumber;
     NSURL               *location;
     NSMutableString     *pn;
     NSMutableDictionary *attrs;
     id                  tmp;
 
-    pn = [[NSMutableString alloc] initWithCapacity:128];
+    pn           = [[NSMutableString alloc] initWithCapacity:128];
+    self->artist = [[[_track objectForKey:@"Artist"]
+                             properlyEscapedFSRepresentation] copy];
+    self->album  = [[[_track objectForKey:@"Album"]
+                             properlyEscapedFSRepresentation] copy];
+
     if (detailedNames) {
-      artist = [_track objectForKey:@"Artist"];
-      if (artist) {
-        [pn appendString:[artist properlyEscapedFSRepresentation]];
+      if (self->artist) {
+        [pn appendString:self->artist];
         [pn appendString:@"_"];
       }
-      album = [_track objectForKey:@"Album"];
-      if (album) {
-        [pn appendString:[album properlyEscapedFSRepresentation]];
+      if (self->album) {
+        [pn appendString:self->album];
         [pn appendString:@"_"];
       }
       trackNumber = [_track objectForKey:@"Track Number"];
@@ -184,11 +185,6 @@ static BOOL useSymbolicLinks = NO;
       NSLog(@"WARN: track without name! REP:%@", _track);
       [pn appendString:@"Empty"];
     }
-#if 0
-    [pn appendString:@" ["];
-    [pn appendString:_trackID];
-    [pn appendString:@"]"];
-#endif
     location = [_track objectForKey:@"location"];
     if (location) {
       [pn appendString:@"."];
@@ -225,6 +221,8 @@ static BOOL useSymbolicLinks = NO;
 
 - (void)dealloc {
   [self->prettyName release];
+  [self->album      release];
+  [self->artist     release];
   [self->url        release];
   [self->attributes release];
   [super dealloc];
@@ -239,6 +237,13 @@ static BOOL useSymbolicLinks = NO;
 }
 - (NSString *)prettyName {
   return self->prettyName;
+}
+
+- (NSString *)album {
+  return self->album;
+}
+- (NSString *)artist {
+  return self->artist;
 }
 
 - (void)setUrl:(NSURL *)_url {
@@ -273,9 +278,13 @@ static BOOL useSymbolicLinks = NO;
     return [[self->url description] dataUsingEncoding:NSUTF8StringEncoding];
   }
   path = [self->url properlyEscapedPath];
+#ifndef GNUSTEP_BASE_LIBRARY
   return [NSData dataWithContentsOfFile:path
                  options:NSMappedRead|NSUncachedRead
                  error:NULL];
+#else
+  return [[[NSData alloc] initWithContentsOfMappedFile:path] autorelease];
+#endif
 }
 
 - (NSString *)symbolicLinkTarget {

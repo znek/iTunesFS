@@ -1,6 +1,35 @@
-2007-06-08  Marcus Mueller  <znek@mulle-kybernetik.com>
+2007-06-14  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* v1.1.3 (IN PROGRESS)
+
+	* README: updated with new user default description
+
+	* NOTES: added localization hint
+
+	* iTunesLibrary.[hm]: added new -reloadVirtualMaps public API used
+	  by subclassers to call after -reload is done
+
+	* iTunesLibrary.m: if "UseCategories" default is YES, display
+	  "Playlists", "Artists" and "Albums" as virtual folders
+
+	* iPodLibrary.m: call -reloadVirtualMaps after -reload, properly
+	  parse "Albums" and "Artists" for tracks
+
+	* iTunesTrack.[hm]: remember "Artist" and "Album" for later use
+
+	* NSString+Extensions.m: removed obsolete category methods. Properly
+	  escape ":" (0x35) with similar glyph (0xFF1A)
+
+	* {English,German,French,Italian,Spanish,Japanese}.lproj/
+	  Localizable.strings: added localized variants of the virtual category
+	  folder names
+
+	* English.lproj/MainMenu.gorm: added main interface for GNUstep
+
+	* FUSEObjC-GNUstep/*: added port of FUSEObjC specifically for GNUstep,
+	  basically removed all HFS+ and Finder related stuff
+
+2007-06-08  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* iTunesFileSystem.m: fixed typo in -description
 

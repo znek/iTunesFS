@@ -26,7 +26,14 @@
 		AD2186D50C0D4805008FB568 /* NSURL+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = AD2186D40C0D4805008FB568 /* NSURL+Extensions.m */; };
 		AD37A2040C01C58000DF1291 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = AD37A2030C01C58000DF1291 /* MainMenu.nib */; };
 		AD37A2970C01C87E00DF1291 /* iTunesLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = AD37A2960C01C87E00DF1291 /* iTunesLibrary.m */; };
+		AD5A40710C214A1900B1A000 /* README-GNUstep in Resources */ = {isa = PBXBuildFile; fileRef = AD5A40700C214A1900B1A000 /* README-GNUstep */; };
+		AD5A40840C214FCB00B1A000 /* FUSEFileSystem.m in Sources */ = {isa = PBXBuildFile; fileRef = AD5A407F0C214FCB00B1A000 /* FUSEFileSystem.m */; };
+		AD5A40850C214FCB00B1A000 /* FUSEMain.m in Sources */ = {isa = PBXBuildFile; fileRef = AD5A40800C214FCB00B1A000 /* FUSEMain.m */; };
+		AD5A40860C214FCB00B1A000 /* GNUmakefile in Resources */ = {isa = PBXBuildFile; fileRef = AD5A40810C214FCB00B1A000 /* GNUmakefile */; };
+		AD5A40870C214FCB00B1A000 /* GNUmakefile in Resources */ = {isa = PBXBuildFile; fileRef = AD5A40820C214FCB00B1A000 /* GNUmakefile */; };
+		AD5A40880C214FCB00B1A000 /* GNUmakefile.preamble in Resources */ = {isa = PBXBuildFile; fileRef = AD5A40830C214FCB00B1A000 /* GNUmakefile.preamble */; };
 		AD5B5E7C0C0C1A70003B1650 /* NSObject+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = AD5B5E7B0C0C1A70003B1650 /* NSObject+Extensions.m */; };
+		ADAADA9B0C2111390024D899 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = ADAADA9A0C2111390024D899 /* Localizable.strings */; };
 		ADBDA9CC0C02E7A5004CF795 /* iTunesFS.icns in Resources */ = {isa = PBXBuildFile; fileRef = ADBDA9CB0C02E7A5004CF795 /* iTunesFS.icns */; };
 		ADBDABA90C02FF10004CF795 /* NSString+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = ADBDABA80C02FF10004CF795 /* NSString+Extensions.m */; };
 /* End PBXBuildFile section */
@@ -70,8 +77,21 @@
 		AD37A2960C01C87E00DF1291 /* iTunesLibrary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTunesLibrary.m; sourceTree = "<group>"; };
 		AD37A2BE0C01CFA800DF1291 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		AD37A2C20C01CFB400DF1291 /* NOTES */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = NOTES; sourceTree = "<group>"; };
+		AD5A40700C214A1900B1A000 /* README-GNUstep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "README-GNUstep"; sourceTree = "<group>"; };
+		AD5A407E0C214FCB00B1A000 /* FUSEFileSystem.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = FUSEFileSystem.h; sourceTree = "<group>"; };
+		AD5A407F0C214FCB00B1A000 /* FUSEFileSystem.m */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.objc; path = FUSEFileSystem.m; sourceTree = "<group>"; };
+		AD5A40800C214FCB00B1A000 /* FUSEMain.m */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.objc; path = FUSEMain.m; sourceTree = "<group>"; };
+		AD5A40810C214FCB00B1A000 /* GNUmakefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 5; path = GNUmakefile; sourceTree = "<group>"; tabWidth = 8; };
+		AD5A40820C214FCB00B1A000 /* GNUmakefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 5; indentWidth = 8; path = GNUmakefile; sourceTree = "<group>"; tabWidth = 8; };
+		AD5A40830C214FCB00B1A000 /* GNUmakefile.preamble */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 5; indentWidth = 8; path = GNUmakefile.preamble; sourceTree = "<group>"; tabWidth = 8; };
 		AD5B5E7A0C0C1A70003B1650 /* NSObject+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Extensions.h"; sourceTree = "<group>"; };
 		AD5B5E7B0C0C1A70003B1650 /* NSObject+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Extensions.m"; sourceTree = "<group>"; };
+		ADAADA6B0C2110C00024D899 /* English */ = {isa = PBXFileReference; explicitFileType = text.plist.strings; fileEncoding = 10; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
+		ADAADAB10C2113DA0024D899 /* German */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = German; path = German.lproj/Localizable.strings; sourceTree = "<group>"; };
+		ADAADAD30C2114D80024D899 /* French */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = French; path = French.lproj/Localizable.strings; sourceTree = "<group>"; };
+		ADAADAFF0C2115A80024D899 /* Japanese */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = Japanese; path = Japanese.lproj/Localizable.strings; sourceTree = "<group>"; };
+		ADAADB190C2116520024D899 /* Italian */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = Italian; path = Italian.lproj/Localizable.strings; sourceTree = "<group>"; };
+		ADAADB340C2117520024D899 /* Spanish */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = Spanish; path = Spanish.lproj/Localizable.strings; sourceTree = "<group>"; };
 		ADBDA9170C02CF28004CF795 /* AUTHORS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AUTHORS; sourceTree = "<group>"; };
 		ADBDA91F0C02CF48004CF795 /* Version */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; path = Version; sourceTree = "<group>"; };
 		ADBDA9310C02CFA0004CF795 /* COPYING */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
@@ -102,6 +122,7 @@
 			isa = PBXGroup;
 			children = (
 				AD37A2BE0C01CFA800DF1291 /* README */,
+				AD5A40700C214A1900B1A000 /* README-GNUstep */,
 				AD37A2C20C01CFB400DF1291 /* NOTES */,
 				ADBDA9170C02CF28004CF795 /* AUTHORS */,
 				ADBDA9310C02CFA0004CF795 /* COPYING */,
@@ -112,6 +133,7 @@
 				7FEA82C10B456A36001441DE /* Resources */,
 				7FEAC1C30B446B70008EF420 /* FUSEObjC */,
 				ADBDAB040C02F664004CF795 /* Scripts */,
+				AD5A407C0C214FAA00B1A000 /* GNUstep */,
 				08FB779DFE84155DC02AAC07 /* External Frameworks and Libraries */,
 				1AB674ADFE9D54B511CA2CBB /* Products */,
 			);
@@ -200,8 +222,9 @@
 			isa = PBXGroup;
 			children = (
 				AD37A2030C01C58000DF1291 /* MainMenu.nib */,
-				ADBDA9CB0C02E7A5004CF795 /* iTunesFS.icns */,
+				ADAADA9A0C2111390024D899 /* Localizable.strings */,
 				7F3DBD070B4422C200A48059 /* Info.plist */,
+				ADBDA9CB0C02E7A5004CF795 /* iTunesFS.icns */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -215,6 +238,27 @@
 				7F3627620B8521EE0020679E /* external */,
 			);
 			path = FUSEObjC;
+			sourceTree = "<group>";
+		};
+		AD5A407C0C214FAA00B1A000 /* GNUstep */ = {
+			isa = PBXGroup;
+			children = (
+				AD5A40820C214FCB00B1A000 /* GNUmakefile */,
+				AD5A40830C214FCB00B1A000 /* GNUmakefile.preamble */,
+				AD5A407D0C214FCB00B1A000 /* FUSEObjC-GNUstep */,
+			);
+			name = GNUstep;
+			sourceTree = "<group>";
+		};
+		AD5A407D0C214FCB00B1A000 /* FUSEObjC-GNUstep */ = {
+			isa = PBXGroup;
+			children = (
+				AD5A40810C214FCB00B1A000 /* GNUmakefile */,
+				AD5A407E0C214FCB00B1A000 /* FUSEFileSystem.h */,
+				AD5A407F0C214FCB00B1A000 /* FUSEFileSystem.m */,
+				AD5A40800C214FCB00B1A000 /* FUSEMain.m */,
+			);
+			path = "FUSEObjC-GNUstep";
 			sourceTree = "<group>";
 		};
 		ADBDAB040C02F664004CF795 /* Scripts */ = {
@@ -253,6 +297,14 @@
 			isa = PBXProject;
 			buildConfigurationList = 1DEB927808733DD40010E9CD /* Build configuration list for PBXProject "iTunesFS" */;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+				Italian,
+				Spanish,
+			);
 			mainGroup = 08FB7794FE84155DC02AAC07 /* QSFuse */;
 			projectDirPath = "";
 			targets = (
@@ -268,6 +320,11 @@
 			files = (
 				AD37A2040C01C58000DF1291 /* MainMenu.nib in Resources */,
 				ADBDA9CC0C02E7A5004CF795 /* iTunesFS.icns in Resources */,
+				ADAADA9B0C2111390024D899 /* Localizable.strings in Resources */,
+				AD5A40710C214A1900B1A000 /* README-GNUstep in Resources */,
+				AD5A40860C214FCB00B1A000 /* GNUmakefile in Resources */,
+				AD5A40870C214FCB00B1A000 /* GNUmakefile in Resources */,
+				AD5A40880C214FCB00B1A000 /* GNUmakefile.preamble in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -310,6 +367,8 @@
 				AD15AA5E0C05BC7400345C9E /* iPodLibrary.m in Sources */,
 				AD5B5E7C0C0C1A70003B1650 /* NSObject+Extensions.m in Sources */,
 				AD2186D50C0D4805008FB568 /* NSURL+Extensions.m in Sources */,
+				AD5A40840C214FCB00B1A000 /* FUSEFileSystem.m in Sources */,
+				AD5A40850C214FCB00B1A000 /* FUSEMain.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -322,6 +381,19 @@
 				AD37A1FB0C01C57400DF1291 /* English */,
 			);
 			name = MainMenu.nib;
+			sourceTree = "<group>";
+		};
+		ADAADA9A0C2111390024D899 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				ADAADA6B0C2110C00024D899 /* English */,
+				ADAADAB10C2113DA0024D899 /* German */,
+				ADAADAD30C2114D80024D899 /* French */,
+				ADAADB190C2116520024D899 /* Italian */,
+				ADAADB340C2117520024D899 /* Spanish */,
+				ADAADAFF0C2115A80024D899 /* Japanese */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

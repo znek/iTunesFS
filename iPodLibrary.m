@@ -131,12 +131,12 @@ static NSMutableDictionary *codeSelMap = nil;
   ud            = [NSUserDefaults standardUserDefaults];
   doDebug       = [ud boolForKey:@"iPodLibraryDebugEnabled"];
 
-  codeSelMap = [[NSMutableDictionary alloc] initWithCapacity:2];
+  codeSelMap = [[NSMutableDictionary alloc] initWithCapacity:4];
   [codeSelMap setObject:@"setName:"     forKey:[NSNumber numberWithInt:1]];
   [codeSelMap setObject:@"setLocation:" forKey:[NSNumber numberWithInt:2]];
-#if 0
   [codeSelMap setObject:@"setAlbum:"    forKey:[NSNumber numberWithInt:3]];
   [codeSelMap setObject:@"setArtist:"   forKey:[NSNumber numberWithInt:4]];
+#if 0
   [codeSelMap setObject:@"setGenre:"    forKey:[NSNumber numberWithInt:5]];
   [codeSelMap setObject:@"setFiletype:" forKey:[NSNumber numberWithInt:6]];
   [codeSelMap setObject:@"setComment:"  forKey:[NSNumber numberWithInt:8]];
@@ -203,6 +203,7 @@ static NSMutableDictionary *codeSelMap = nil;
     [self->plMap setObject:pl forKey:[pl name]];
     [pl release];
   }
+  [self reloadVirtualMaps];
 }
 
 /* private */
@@ -406,6 +407,14 @@ static NSMutableDictionary *codeSelMap = nil;
   path = [[self iTunesMusicFolderPath] stringByAppendingPathComponent:path];
   url  = [NSURL fileURLWithPath:path];
   [self->currentObject setValue:url forKey:@"location"];
+}
+
+- (void)setAlbum:(NSString *)_value {
+  [self->currentObject setValue:_value forKey:@"Album"];
+}
+
+- (void)setArtist:(NSString *)_value {
+  [self->currentObject setValue:_value forKey:@"Artist"];
 }
 
 - (void)setFileLength:(id)_value {

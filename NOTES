@@ -76,3 +76,13 @@ Spotlight
                 kMDItemComposer, 
                 kMDItemRecordingYear
             ); 
+
+
+iTunes localization
+===================
+
+"135.014"                = "WIEDERGABELISTEN";
+"kSearchMenuItemAlbums"  = "Alben";
+"kSearchMenuItemArtists" = "Interpreten";
+"3102.020"               = "Unbekannt";
+"kSearchMenuItemAll"     = "Alle";

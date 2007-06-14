@@ -1,0 +1,19 @@
+About the GNUstep port
+======================
+
+This port was done using a recent (r25225) svn trunk revision of
+GNUstep (http://www.gnustep.org). The system used for the port is running
+FreeBSD 6.2-STABLE, which has a native kqueue() implementation. Also,
+I used the fusefs BSD port from the ports collection, fusefs-kmod-0.3.0_5.
+
+It's probably a good idea to include autoconf magic for figuring out all
+compile time requirements, but for the time being it's just not here.
+
+
+FUSEObjC-GNUstep
+================
+
+This is a port of FUSEObjC (original version referenced in the FUSEObjC
+folder) which basically removes all HFS+ and Finder related stuff. This
+should be generic enough to allow for compilation on systems other than
+Mac OS X.

@@ -41,6 +41,9 @@ NoIPods            | BOOL | If YES, don't scan for iPods and instead
                    |      | display playlists of iTunes library
 SymbolicLinks      | BOOL | If YES, use symbolic links for tracks instead of
 (NO)               |      | "faking" the existence of files
+UseCategories      | BOOL | If YES, display "Playlists", "Artists" and "Albums"
+(YES)              |      | as virtual folders
+
 
 For developers
 --------------

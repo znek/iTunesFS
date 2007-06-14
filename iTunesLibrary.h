@@ -44,12 +44,14 @@
   NSString            *name;
   NSMutableDictionary *plMap;
   NSMutableDictionary *trackMap;
+  NSMutableDictionary *virtMap;
 }
 
 - (NSString *)name;
 - (NSImage *)icon;
 
 - (void)reload;
+- (void)reloadVirtualMaps; // for subclassers - called by -reload
 - (void)close;
 
 - (NSString *)libraryPath;

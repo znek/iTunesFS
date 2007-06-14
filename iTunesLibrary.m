@@ -42,18 +42,27 @@
 @implementation iTunesLibrary
 
 static BOOL     doDebug       = NO;
+static BOOL     useCategories = NO;
+static BOOL     mimicIPodNav  = NO;
 static NSString *libraryPath  = nil;
 static NSImage  *libraryIcon  = nil;
+static NSString *kPlaylists   = nil;
+static NSString *kArtists     = nil;
+static NSString *kAlbums      = nil;
+static NSString *kUnknown     = nil;
+static NSString *kAll         = nil;
 
 + (void)initialize {
   static BOOL    didInit = NO;
   NSUserDefaults *ud;
   
   if (didInit) return;
-  didInit     = YES;
-  ud          = [NSUserDefaults standardUserDefaults];
-  doDebug     = [ud boolForKey:@"iTunesFileSystemDebugEnabled"];
-  libraryPath = [[ud stringForKey:@"Library"] copy];
+  didInit       = YES;
+  ud            = [NSUserDefaults standardUserDefaults];
+  doDebug       = [ud boolForKey:@"iTunesFileSystemDebugEnabled"];
+  useCategories = [ud boolForKey:@"UseCategories"];
+  libraryPath   = [[[ud stringForKey:@"Library"] stringByStandardizingPath]
+                                                 copy];
   if (!libraryPath) {
     libraryPath = [[NSHomeDirectory() stringByAppendingString:
                                       @"/Music/iTunes/iTunes Music Library.xml"]
@@ -62,6 +71,20 @@ static NSImage  *libraryIcon  = nil;
   libraryIcon = [[[NSWorkspace sharedWorkspace]
                                iconForFile:@"/Applications/iTunes.app"]
                                copy];
+
+  kPlaylists  = [[NSLocalizedString(@"Playlists", "Playlists")
+                                   properlyEscapedFSRepresentation] copy];
+  kAlbums     = [[NSLocalizedString(@"Albums",    "Albums")
+                                   properlyEscapedFSRepresentation] copy];
+  kArtists    = [[NSLocalizedString(@"Artists",   "Artists")
+                                   properlyEscapedFSRepresentation] copy];
+  kUnknown    = [[NSLocalizedString(@"Unknown",   "Unknown")
+                                   properlyEscapedFSRepresentation] copy];
+  kAll        = [[NSLocalizedString(@"All",       "All")
+                                   properlyEscapedFSRepresentation] copy];
+
+  if (doDebug && useCategories)
+    NSLog(@"Using categories (virtual folder hierarchy)");
 }
 
 - (id)init {
@@ -69,6 +92,17 @@ static NSImage  *libraryIcon  = nil;
   if (self) {
     self->plMap    = [[NSMutableDictionary alloc] initWithCapacity:128];
     self->trackMap = [[NSMutableDictionary alloc] initWithCapacity:10000];
+    if (useCategories) {
+      NSMutableDictionary *tmp;
+
+      self->virtMap = [[NSMutableDictionary alloc] initWithCapacity:3];
+      tmp = [[NSMutableDictionary alloc] initWithCapacity:1000];
+      [self->virtMap setObject:tmp forKey:kAlbums];
+      [tmp release];
+      tmp = [[NSMutableDictionary alloc] initWithCapacity:1000];
+      [self->virtMap setObject:tmp forKey:kArtists];
+      [tmp release];
+    }
     [self reload];
     [[Watchdog sharedWatchdog] watchLibrary:self];
   }
@@ -80,6 +114,7 @@ static NSImage  *libraryIcon  = nil;
   [self->name     release];
   [self->plMap    release];
   [self->trackMap release];
+  [self->virtMap  release];
   [super dealloc];
 }
 
@@ -140,6 +175,101 @@ static NSImage  *libraryIcon  = nil;
     [self->plMap setObject:pl forKey:[pl name]];
     [pl release];
   }
+  [self reloadVirtualMaps];
+}
+
+- (void)reloadVirtualMaps {
+  NSMutableDictionary *albums, *artists;
+  NSArray             *tracks;
+  unsigned            count, i;
+
+  if (!useCategories) return;
+
+  [self->virtMap setObject:self->plMap forKey:kPlaylists];
+
+  albums  = [self->virtMap objectForKey:kAlbums];
+  artists = [self->virtMap objectForKey:kArtists];
+  
+  [albums  removeAllObjects];
+  [artists removeAllObjects];
+
+  tracks = [self->trackMap allValues];
+  count  = [tracks count];
+  for (i = 0; i < count; i++) {
+    iTunesTrack *track;
+    NSString            *artist, *album;
+    NSMutableDictionary *artistAlbums, *albumTracks;
+
+    track  = [tracks objectAtIndex:i];
+    artist = [track artist];
+    if (!artist) artist = kUnknown;
+    album  = [track album];
+    if (!album)  album  = kUnknown;
+    
+    artistAlbums = [artists objectForKey:artist];
+    if (!artistAlbums) {
+      artistAlbums = [[NSMutableDictionary alloc] initWithCapacity:2];
+      [artists setObject:artistAlbums forKey:artist];
+      [artistAlbums release];
+    }
+    albumTracks = [artistAlbums objectForKey:album];
+    if (!albumTracks) {
+      albumTracks = [[NSMutableDictionary alloc] initWithCapacity:10];
+      [artistAlbums setObject:albumTracks forKey:album];
+      [albumTracks release];
+    }
+    // TODO: apply formatter here
+    [albumTracks setObject:track forKey:[track prettyName]];
+    
+    // now, for albums only
+    albumTracks = [albums objectForKey:album];
+    if (!albumTracks) {
+      albumTracks = [[NSMutableDictionary alloc] initWithCapacity:10];
+      [albums setObject:albumTracks forKey:album];
+      [albumTracks release];
+    }
+    // TODO: apply formatter here
+    [albumTracks setObject:track forKey:[track prettyName]];
+  }
+
+  if (mimicIPodNav) {
+    /* optimize artistAlbums hierarchy, insert "All" if there is more than
+     * one album per artist
+     */
+    NSArray *allAlbums;
+
+    allAlbums = [artists allValues];
+    count     = [allAlbums count];
+    for (i = 0; i < count; i++) {
+      NSMutableDictionary *artistAlbums;
+      unsigned            aCount, k;
+
+      artistAlbums = [allAlbums objectAtIndex:i];
+      aCount       = [artistAlbums count];
+      if (aCount > 1) {
+        NSArray             *allArtistAlbums;
+        NSMutableDictionary *allTracks;
+        
+        allTracks = [[NSMutableDictionary alloc] initWithCapacity:10 * aCount];
+        [artistAlbums setObject:allTracks forKey:kAll];
+        [allTracks release];
+
+        allArtistAlbums = [artistAlbums allValues];
+        for (k = 0; k < aCount; k++) {
+          NSDictionary *albumTracks;
+
+          albumTracks = [allArtistAlbums objectAtIndex:k];
+          /* NOTE:
+           * This doesn't avoid collisions!!
+           * It's unsuitable for COPYING content, though browsing does work
+           * to some extent...
+           */
+          [allTracks addEntriesFromDictionary:albumTracks];
+        }
+      }
+    }
+  }
+  
 }
 
 - (void)close {
@@ -177,19 +307,25 @@ static NSImage  *libraryIcon  = nil;
 /* iTunesFS lookup */
 
 - (id)lookupPathComponent:(NSString *)_pc {
-  unsigned count;
-  
-  count = [self->plMap count];
-  if (count == 0) return nil;
-  if (count == 1)
-    return [[[self->plMap allValues] lastObject] lookupPathComponent:_pc];
-  return [self playlistNamed:_pc];
+  if (!useCategories) {
+    unsigned count;
+    
+    count = [self->plMap count];
+    if (count == 0) return nil;
+    if (count == 1)
+      return [[[self->plMap allValues] lastObject] lookupPathComponent:_pc];
+    return [self playlistNamed:_pc];
+  }
+  return [self->virtMap lookupPathComponent:_pc];
 }
 
 - (NSArray *)directoryContents {
-  if ([self->plMap count] != 1)
-    return [self playlistNames];
-  return [[[self->plMap allValues] lastObject] directoryContents];
+  if (!useCategories) {
+    if ([self->plMap count] != 1)
+      return [self playlistNames];
+    return [[[self->plMap allValues] lastObject] directoryContents];
+  }
+  return [self->virtMap directoryContents];
 }
 
 - (BOOL)isDirectory {

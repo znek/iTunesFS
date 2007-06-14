@@ -6,40 +6,42 @@
 	<string>English</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
-  <key>CFBundleName</key>
-	<string>iTunesFS</string>
-	<key>CFBundleVersion</key>
-	<string>1.1.3</string>
-  <key>CFBundleShortVersionString</key>
-	<string>1.1.3</string>
-  <key>CFBundleGetInfoString</key>
+	<key>CFBundleGetInfoString</key>
 	<string>iTunesFS version 1.1.3, Copyright 2007 Mulle kybernetiK.</string>
-  <key>NSHumanReadableCopyright</key>
-	<string>Copyright 2007 Mulle kybernetiK.</string>
 	<key>CFBundleIconFile</key>
 	<string>iTunesFS</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.mulle-kybernetik.znek.iTunesFS</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>iTunesFS</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.1.3</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>1.1.3</string>
 	<key>FUSEFileSystemClass</key>
 	<string>iTunesFileSystem</string>
+	<key>LSUIElement</key>
+	<string>1</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>Copyright 2007 Mulle kybernetiK.</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
-	<key>LSUIElement</key>
-	<string>1</string>
 	<key>NSUserDefaults</key>
 	<dict>
 		<key>FUSEMountName</key>
 		<string>iTunesFS</string>
 		<key>FUSEMountPath</key>
 		<string>/Volumes/iTunesFS</string>
+		<key>UseCategories</key>
+		<true/>
 	</dict>
 </dict>
 </plist>

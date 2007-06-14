@@ -37,8 +37,6 @@
 
 @interface NSString (iTunesFSExtensions)
 
-- (BOOL)isValidTrackName;
-- (unsigned)playlistIndex;
 - (NSString *)properlyEscapedFSRepresentation;
 
 @end /* NSString (iTunesFSExtensions) */
