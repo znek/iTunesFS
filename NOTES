@@ -84,5 +84,6 @@ iTunes localization
 "135.014"                = "WIEDERGABELISTEN";
 "kSearchMenuItemAlbums"  = "Alben";
 "kSearchMenuItemArtists" = "Interpreten";
+"kSearchMenuItemSongs"   = "Songs";
 "3102.020"               = "Unbekannt";
 "kSearchMenuItemAll"     = "Alle";

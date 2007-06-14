@@ -49,6 +49,7 @@ static NSImage  *libraryIcon  = nil;
 static NSString *kPlaylists   = nil;
 static NSString *kArtists     = nil;
 static NSString *kAlbums      = nil;
+static NSString *kSongs       = nil;
 static NSString *kUnknown     = nil;
 static NSString *kAll         = nil;
 
@@ -77,6 +78,8 @@ static NSString *kAll         = nil;
   kAlbums     = [[NSLocalizedString(@"Albums",    "Albums")
                                    properlyEscapedFSRepresentation] copy];
   kArtists    = [[NSLocalizedString(@"Artists",   "Artists")
+                                   properlyEscapedFSRepresentation] copy];
+  kSongs      = [[NSLocalizedString(@"Songs",     "Songs")
                                    properlyEscapedFSRepresentation] copy];
   kUnknown    = [[NSLocalizedString(@"Unknown",   "Unknown")
                                    properlyEscapedFSRepresentation] copy];
@@ -185,7 +188,17 @@ static NSString *kAll         = nil;
 
   if (!useCategories) return;
 
-  [self->virtMap setObject:self->plMap forKey:kPlaylists];
+  [self->virtMap removeObjectForKey:kPlaylists];
+  [self->virtMap removeObjectForKey:kSongs];
+
+  if ([self->plMap count] == 1) {
+    // TODO: this needs to be another key, then
+    [self->virtMap setObject:[[self->plMap allValues] lastObject]
+                   forKey:kSongs];
+  }
+  else {
+    [self->virtMap setObject:self->plMap forKey:kPlaylists];
+  }
 
   albums  = [self->virtMap objectForKey:kAlbums];
   artists = [self->virtMap objectForKey:kArtists];
