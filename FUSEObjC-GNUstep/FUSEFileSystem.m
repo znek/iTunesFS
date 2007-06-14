@@ -72,8 +72,27 @@
 }
 @end
 
-#pragma mark -
 
+#ifdef GNUSTEP_BASE_LIBRARY
+
+@interface NSBundle (OSXJaguarAdditions)
+
+- (id)objectForInfoDictionaryKey:(NSString *)_key;
+
+@end
+
+@implementation NSBundle (OSXJaguarAdditions)
+
+- (id)objectForInfoDictionaryKey:(NSString *)_key {
+  return [[self infoDictionary] objectForKey:_key];
+}
+
+@end
+
+#endif
+
+
+// #pragma mark -
 
 static FUSEFileSystem *manager;
 
@@ -97,6 +116,7 @@ static FUSEFileSystem *manager;
 
 
 @implementation FUSEFileSystem
+
 + (void)initialize {
   NSDictionary *defaults = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"NSUserDefaults"];
   if (defaults)
@@ -135,13 +155,13 @@ static FUSEFileSystem *manager;
   return manager;
 }
 
-#pragma mark Resource Forks and HFS headers
+// #pragma mark Resource Forks and HFS headers
 
 - (BOOL)usesResourceForks{
   return NO;
 }
 
-#pragma mark Attributes
+// #pragma mark Attributes
 
 - (NSDictionary *)fileSystemAttributesAtPath:(NSString *)path {
   return nil;
@@ -297,7 +317,7 @@ static FUSEFileSystem *manager;
   return YES;  
 }
 
-#pragma mark Open/Close
+// #pragma mark Open/Close
 
 - (id)openFileAtPath:(NSString *)path mode:(int)mode {
   return [manager contentsAtPath:path];
@@ -306,7 +326,7 @@ static FUSEFileSystem *manager;
 - (void)releaseFileAtPath:(NSString *)path handle:(id)handle {
 }
 
-#pragma mark Reading
+// #pragma mark Reading
 
 - (NSData *)contentsAtPath:(NSString *)path {
   return nil; 
@@ -345,7 +365,7 @@ static FUSEFileSystem *manager;
 
 
 
-#pragma mark Writing
+// #pragma mark Writing
 
 - (BOOL)createDirectoryAtPath:(NSString *)path attributes:(NSDictionary *)attributes {
   return NO;
@@ -387,7 +407,7 @@ static FUSEFileSystem *manager;
   return NO;
 }
 
-#pragma mark Finder
+// #pragma mark Finder
 
 
 
@@ -404,7 +424,7 @@ static FUSEFileSystem *manager;
 
 
 
-#pragma mark Lifecycle
+// #pragma mark Lifecycle
 
 
 
@@ -467,7 +487,7 @@ static FUSEFileSystem *manager;
 
 
 
-#pragma mark -
+// #pragma mark -
 
 
 
@@ -823,7 +843,9 @@ int fusefm_setattr(const char *path, const char *a,
   
   NSMutableArray *arguments = [NSMutableArray arrayWithObjects:
     [[NSBundle mainBundle] executablePath],
+#if 0
     [NSString stringWithFormat:@"-ovolname=%@",[self mountName]],
+#endif
     @"-f",  // Foreground rather than daemonize
     @"-s",  // Single-threaded until we can work out threading issues.
     nil];
@@ -849,8 +871,7 @@ int fusefm_setattr(const char *path, const char *a,
   
   // Remove volume header file
   NSFileManager *fileManager = [NSFileManager defaultManager];
-  [fileManager removeFileAtPath:[self resourcePathForPath:[self mountPoint]]
-                        handler:nil];
+  [fileManager removeFileAtPath:[self mountPoint] handler:nil];
   [self fuseWillUnmount];
   // Unmount
   NSTask *unmountTask = [NSTask launchedTaskWithLaunchPath:@"/sbin/umount" arguments:[NSArray arrayWithObjects: @"-v", [self mountPoint], nil]];

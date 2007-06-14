@@ -6,7 +6,7 @@ GNUSTEP_INSTALLATION_DOMAIN = LOCAL
 
 APP_NAME = iTunesFS
 
-iTunesFS_PRINCIPAL_CLASS  = iTunesFileSystem
+iTunesFS_PRINCIPAL_CLASS  = NSApplication
 iTunesFS_APPLICATION_ICON = iTunesFS.tiff
 iTunesFS_MAIN_MODEL_FILE  = MainMenu.gorm
 iTunesFS_LANGUAGES        = English German French Italian Spanish Japanese
@@ -35,7 +35,6 @@ iTunesFS_LOCALIZED_RESOURCE_FILES +=		\
 
 iTunesFS_RESOURCE_FILES +=			\
 	iTunesFS.tiff				\
-	Info.plist				\
 
 
 -include GNUmakefile.preamble

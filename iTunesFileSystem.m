@@ -68,9 +68,17 @@ static NSString *fsIconPath = nil;
   debugLookup = [ud boolForKey:@"iTunesFSDebugPathLookup"];
   ignoreIPods = [ud boolForKey:@"NoIPods"];
   mb          = [NSBundle mainBundle];
+#ifndef GNU_GUI_LIBRARY
   fsIconPath  = [[mb pathForResource:@"iTunesFS" ofType:@"icns"] copy];
   NSAssert(fsIconPath != nil, @"Couldn't find iTunesFS.icns!");
+#endif
 }
+
+#ifdef GNU_GUI_LIBRARY
++ (id)sharedApplication {
+  return NSApp;
+}
+#endif
 
 /* notifications */
 

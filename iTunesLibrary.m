@@ -69,9 +69,11 @@ static NSString *kAll         = nil;
                                       @"/Music/iTunes/iTunes Music Library.xml"]
                                       copy];
   }
+#ifndef DGNU_GUI_LIBRARY
   libraryIcon = [[[NSWorkspace sharedWorkspace]
                                iconForFile:@"/Applications/iTunes.app"]
                                copy];
+#endif
 
   kPlaylists  = [[NSLocalizedString(@"Playlists", "Playlists")
                                    properlyEscapedFSRepresentation] copy];

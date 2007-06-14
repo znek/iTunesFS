@@ -29,11 +29,11 @@
 // Optional methods
 //
 
-#pragma mark Resource Forks
+// #pragma mark Resource Forks
 
 - (BOOL)usesResourceForks; // Enable resource forks (icons, weblocs, more)
 
-#pragma mark Writing
+// #pragma mark Writing
 
 - (BOOL)createDirectoryAtPath:(NSString *)path attributes:(NSDictionary *)attributes;
 
@@ -45,7 +45,7 @@
 - (BOOL)removeFileAtPath:(NSString *)path handler:(id)handler;
 
 
-#pragma mark Lifecycle
+// #pragma mark Lifecycle
 
 - (NSString *)mountName;
 - (NSString *)mountPoint;
@@ -60,7 +60,7 @@
 - (void)fuseDidUnmount;
 
 
-#pragma mark Special Files
+// #pragma mark Special Files
 
 - (NSDictionary *)fileSystemAttributesAtPath:(NSString *)path;
 
@@ -75,7 +75,7 @@
 //
 
 
-#pragma mark Advanced File Operations
+// #pragma mark Advanced File Operations
 
 - (id)openFileAtPath:(NSString *)path mode:(int)mode;
 - (int)readFileAtPath:(NSString *)path handle:(id)handle
