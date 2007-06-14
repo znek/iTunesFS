@@ -47,7 +47,6 @@
 
 // #pragma mark Lifecycle
 
-- (NSString *)mountName;
 - (NSString *)mountPoint;
 
 - (BOOL)shouldMountInFinder; // Defaults to NO

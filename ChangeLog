@@ -1,8 +1,10 @@
 2007-06-14  Marcus Mueller  <znek@mulle-kybernetik.com>
 
-	* v1.1.3 (IN PROGRESS)
+	* v1.1.3
 
-	* README: updated with new user default description
+	* README: updated with GNUstep info and new NSUserDefaults description
+
+	* README-GNUstep: added
 
 	* NOTES: added localization hint
 
@@ -28,6 +30,9 @@
 
 	* FUSEObjC-GNUstep/*: added port of FUSEObjC specifically for GNUstep,
 	  basically removed all HFS+ and Finder related stuff
+
+	* examples/iTunesMusicLibrary.xml: added new tiny library for users
+	  who don't have iTunes around but want to take a look nevertheless
 
 2007-06-08  Marcus Mueller  <znek@mulle-kybernetik.com>
 

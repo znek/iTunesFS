@@ -17,3 +17,50 @@ This is a port of FUSEObjC (original version referenced in the FUSEObjC
 folder) which basically removes all HFS+ and Finder related stuff. This
 should be generic enough to allow for compilation on systems other than
 Mac OS X.
+
+
+EXAMPLE
+=======
+
+There's a tiny, handcrafted (in all senses ;-) version of an iTunes Music
+Library XML file in the "examples" folder. After you have built the
+iTunesFS.app, use this command in a shell for starting the file system:
+
+$ openapp ./iTunesFS.app -Library examples/iTunesMusicLibrary.xml
+
+You will then be able to browse the iTunes library, i.e.:
+
+$ ls -l /tmp/iTunesFS/
+total 0
+dr-xr-xr-x  2 znek  wheel  0 Jan  1  1970 Albums
+dr-xr-xr-x  2 znek  wheel  0 Jan  1  1970 Artists
+dr-xr-xr-x  2 znek  wheel  0 Jan  1  1970 Playlists
+$ ls -l /tmp/iTunesFS/Playlists
+total 0
+dr-xr-xr-x  2 znek  wheel  0 Jan  1  1970 Audiobooks
+dr-xr-xr-x  2 znek  wheel  0 Jan  1  1970 Faves
+dr-xr-xr-x  2 znek  wheel  0 Jan  1  1970 Instrumental
+dr-xr-xr-x  2 znek  wheel  0 Jan  1  1970 Library
+dr-xr-xr-x  2 znek  wheel  0 Jan  1  1970 Movies
+dr-xr-xr-x  2 znek  wheel  0 Jan  1  1970 Music
+dr-xr-xr-x  2 znek  wheel  0 Jan  1  1970 Party Shuffle
+dr-xr-xr-x  2 znek  wheel  0 Jan  1  1970 Podcasts
+dr-xr-xr-x  2 znek  wheel  0 Jan  1  1970 TV Shows
+$ ls -l /tmp/iTunesFS/Playlists/Faves/
+total 10919
+-r-xr-xr-x  1 znek  wheel  4082013 Mar 27  2006 001 Karma.m4a
+-r-xr-xr-x  1 znek  wheel  7098527 Jun 14 18:43 002 ChoCo FrigHTs.mp3
+$ ls -l /tmp/iTunesFS/Artists/Moshcircus/Karma/
+total 39551
+-r-xr-xr-x  1 znek  wheel  4450130 Mar 27  2006 Diabolic Infernal Satan.m4a
+-r-xr-xr-x  1 znek  wheel  4649112 Mar 27  2006 Enola Gay.m4a
+-r-xr-xr-x  1 znek  wheel  3624537 Mar 27  2006 Flesh of Gods.m4a
+-r-xr-xr-x  1 znek  wheel  5292322 Mar 27  2006 Into Light.m4a
+-r-xr-xr-x  1 znek  wheel  4082013 Mar 27  2006 Karma.m4a
+-r-xr-xr-x  1 znek  wheel  4806113 Mar 27  2006 Online with God.m4a
+-r-xr-xr-x  1 znek  wheel  5651675 Mar 27  2006 Per Aspera Ad Astra.m4a
+-r-xr-xr-x  1 znek  wheel   963599 Mar 27  2006 Salvation One.m4a
+-r-xr-xr-x  1 znek  wheel  1454902 Mar 27  2006 Salvation Three.m4a
+-r-xr-xr-x  1 znek  wheel  1918854 Mar 27  2006 Salvation Two.m4a
+-r-xr-xr-x  1 znek  wheel  3604444 Mar 27  2006 Samsara.m4a
+

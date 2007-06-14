@@ -1,0 +1,883 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Major Version</key><integer>1</integer>
+	<key>Minor Version</key><integer>1</integer>
+	<key>Application Version</key><string>7.2</string>
+	<key>Features</key><integer>1</integer>
+	<key>Show Content Ratings</key><true/>
+	<key>Music Folder</key><string>file://localhost/Local/Music/</string>
+	<key>Library Persistent ID</key><string>3261086BB1F62DA1</string>
+	<key>Tracks</key>
+	<dict>
+		<key>255</key>
+		<dict>
+			<key>Track ID</key><integer>255</integer>
+			<key>Name</key><string>CaRdRiVeR's WeeKeNd</string>
+			<key>Artist</key><string>SORE PLEXUS</string>
+			<key>Album</key><string>HaPTePHObiC</string>
+			<key>Genre</key><string>Metal</string>
+			<key>Kind</key><string>MPEG audio file</string>
+			<key>Size</key><integer>4611675</integer>
+			<key>Total Time</key><integer>214413</integer>
+			<key>Track Number</key><integer>1</integer>
+			<key>Track Count</key><integer>12</integer>
+			<key>Year</key><integer>1998</integer>
+			<key>Date Modified</key><date>2007-06-14T18:43:39Z</date>
+			<key>Date Added</key><date>2007-06-14T18:43:08Z</date>
+			<key>Bit Rate</key><integer>160</integer>
+			<key>Sample Rate</key><integer>44100</integer>
+			<key>Artwork Count</key><integer>1</integer>
+			<key>Persistent ID</key><string>9C5A5E44FBC4A25C</string>
+			<key>Track Type</key><string>File</string>
+			<key>Location</key><string>file://localhost/Local/Music/SORE%20PLEXUS/HaPTePHObiC/01%20CaRdRiVeR's%20WeeKeNd.mp3</string>
+			<key>File Folder Count</key><integer>4</integer>
+			<key>Library Folder Count</key><integer>1</integer>
+		</dict>
+		<key>259</key>
+		<dict>
+			<key>Track ID</key><integer>259</integer>
+			<key>Name</key><string>gYPsY sHRed</string>
+			<key>Artist</key><string>SORE PLEXUS</string>
+			<key>Album</key><string>HaPTePHObiC</string>
+			<key>Genre</key><string>Metal</string>
+			<key>Kind</key><string>MPEG audio file</string>
+			<key>Size</key><integer>5887488</integer>
+			<key>Total Time</key><integer>278204</integer>
+			<key>Track Number</key><integer>2</integer>
+			<key>Track Count</key><integer>12</integer>
+			<key>Year</key><integer>1998</integer>
+			<key>Date Modified</key><date>2007-06-14T18:43:41Z</date>
+			<key>Date Added</key><date>2007-06-14T18:43:08Z</date>
+			<key>Bit Rate</key><integer>160</integer>
+			<key>Sample Rate</key><integer>44100</integer>
+			<key>Artwork Count</key><integer>1</integer>
+			<key>Persistent ID</key><string>9C5A5E44FBC4A25F</string>
+			<key>Track Type</key><string>File</string>
+			<key>Location</key><string>file://localhost/Local/Music/SORE%20PLEXUS/HaPTePHObiC/02%20gYPsY%20sHRed.mp3</string>
+			<key>File Folder Count</key><integer>4</integer>
+			<key>Library Folder Count</key><integer>1</integer>
+		</dict>
+		<key>262</key>
+		<dict>
+			<key>Track ID</key><integer>262</integer>
+			<key>Name</key><string>miCRoBURsT</string>
+			<key>Artist</key><string>SORE PLEXUS</string>
+			<key>Album</key><string>HaPTePHObiC</string>
+			<key>Genre</key><string>Metal</string>
+			<key>Kind</key><string>MPEG audio file</string>
+			<key>Size</key><integer>1849478</integer>
+			<key>Total Time</key><integer>76303</integer>
+			<key>Track Number</key><integer>3</integer>
+			<key>Track Count</key><integer>12</integer>
+			<key>Year</key><integer>1998</integer>
+			<key>Date Modified</key><date>2007-06-14T18:43:41Z</date>
+			<key>Date Added</key><date>2007-06-14T18:43:08Z</date>
+			<key>Bit Rate</key><integer>160</integer>
+			<key>Sample Rate</key><integer>44100</integer>
+			<key>Artwork Count</key><integer>1</integer>
+			<key>Persistent ID</key><string>9C5A5E44FBC4A261</string>
+			<key>Track Type</key><string>File</string>
+			<key>Location</key><string>file://localhost/Local/Music/SORE%20PLEXUS/HaPTePHObiC/03%20miCRoBURsT.mp3</string>
+			<key>File Folder Count</key><integer>4</integer>
+			<key>Library Folder Count</key><integer>1</integer>
+		</dict>
+		<key>265</key>
+		<dict>
+			<key>Track ID</key><integer>265</integer>
+			<key>Name</key><string>P.dOmAiN</string>
+			<key>Artist</key><string>SORE PLEXUS</string>
+			<key>Album</key><string>HaPTePHObiC</string>
+			<key>Genre</key><string>Metal</string>
+			<key>Kind</key><string>MPEG audio file</string>
+			<key>Size</key><integer>6565101</integer>
+			<key>Total Time</key><integer>312084</integer>
+			<key>Track Number</key><integer>4</integer>
+			<key>Track Count</key><integer>12</integer>
+			<key>Year</key><integer>1998</integer>
+			<key>Date Modified</key><date>2007-06-14T18:43:42Z</date>
+			<key>Date Added</key><date>2007-06-14T18:43:09Z</date>
+			<key>Bit Rate</key><integer>160</integer>
+			<key>Sample Rate</key><integer>44100</integer>
+			<key>Artwork Count</key><integer>1</integer>
+			<key>Persistent ID</key><string>9C5A5E44FBC4A263</string>
+			<key>Track Type</key><string>File</string>
+			<key>Location</key><string>file://localhost/Local/Music/SORE%20PLEXUS/HaPTePHObiC/04%20P.dOmAiN.mp3</string>
+			<key>File Folder Count</key><integer>4</integer>
+			<key>Library Folder Count</key><integer>1</integer>
+		</dict>
+		<key>268</key>
+		<dict>
+			<key>Track ID</key><integer>268</integer>
+			<key>Name</key><string>La NigiRO</string>
+			<key>Artist</key><string>SORE PLEXUS</string>
+			<key>Album</key><string>HaPTePHObiC</string>
+			<key>Genre</key><string>Metal</string>
+			<key>Kind</key><string>MPEG audio file</string>
+			<key>Size</key><integer>4283567</integer>
+			<key>Total Time</key><integer>198008</integer>
+			<key>Track Number</key><integer>5</integer>
+			<key>Track Count</key><integer>12</integer>
+			<key>Year</key><integer>1998</integer>
+			<key>Date Modified</key><date>2007-06-14T18:43:43Z</date>
+			<key>Date Added</key><date>2007-06-14T18:43:09Z</date>
+			<key>Bit Rate</key><integer>160</integer>
+			<key>Sample Rate</key><integer>44100</integer>
+			<key>Artwork Count</key><integer>1</integer>
+			<key>Persistent ID</key><string>9C5A5E44FBC4A265</string>
+			<key>Track Type</key><string>File</string>
+			<key>Location</key><string>file://localhost/Local/Music/SORE%20PLEXUS/HaPTePHObiC/05%20La%20NigiRO.mp3</string>
+			<key>File Folder Count</key><integer>4</integer>
+			<key>Library Folder Count</key><integer>1</integer>
+		</dict>
+		<key>271</key>
+		<dict>
+			<key>Track ID</key><integer>271</integer>
+			<key>Name</key><string>semPer AliQUid HaeReT</string>
+			<key>Artist</key><string>SORE PLEXUS</string>
+			<key>Album</key><string>HaPTePHObiC</string>
+			<key>Genre</key><string>Metal</string>
+			<key>Kind</key><string>MPEG audio file</string>
+			<key>Size</key><integer>2084591</integer>
+			<key>Total Time</key><integer>88058</integer>
+			<key>Track Number</key><integer>6</integer>
+			<key>Track Count</key><integer>12</integer>
+			<key>Year</key><integer>1998</integer>
+			<key>Date Modified</key><date>2007-06-14T18:43:44Z</date>
+			<key>Date Added</key><date>2007-06-14T18:43:09Z</date>
+			<key>Bit Rate</key><integer>160</integer>
+			<key>Sample Rate</key><integer>44100</integer>
+			<key>Artwork Count</key><integer>1</integer>
+			<key>Persistent ID</key><string>9C5A5E44FBC4A267</string>
+			<key>Track Type</key><string>File</string>
+			<key>Location</key><string>file://localhost/Local/Music/SORE%20PLEXUS/HaPTePHObiC/06%20semPer%20AliQUid%20HaeReT.mp3</string>
+			<key>File Folder Count</key><integer>4</integer>
+			<key>Library Folder Count</key><integer>1</integer>
+		</dict>
+		<key>274</key>
+		<dict>
+			<key>Track ID</key><integer>274</integer>
+			<key>Name</key><string>FlYgeR My CHUNg</string>
+			<key>Artist</key><string>SORE PLEXUS</string>
+			<key>Album</key><string>HaPTePHObiC</string>
+			<key>Genre</key><string>Metal</string>
+			<key>Kind</key><string>MPEG audio file</string>
+			<key>Size</key><integer>6749010</integer>
+			<key>Total Time</key><integer>321280</integer>
+			<key>Track Number</key><integer>7</integer>
+			<key>Track Count</key><integer>12</integer>
+			<key>Year</key><integer>1998</integer>
+			<key>Date Modified</key><date>2007-06-14T18:43:45Z</date>
+			<key>Date Added</key><date>2007-06-14T18:43:09Z</date>
+			<key>Bit Rate</key><integer>160</integer>
+			<key>Sample Rate</key><integer>44100</integer>
+			<key>Artwork Count</key><integer>1</integer>
+			<key>Persistent ID</key><string>9C5A5E44FBC4A269</string>
+			<key>Track Type</key><string>File</string>
+			<key>Location</key><string>file://localhost/Local/Music/SORE%20PLEXUS/HaPTePHObiC/07%20FlYgeR%20My%20CHUNg.mp3</string>
+			<key>File Folder Count</key><integer>4</integer>
+			<key>Library Folder Count</key><integer>1</integer>
+		</dict>
+		<key>277</key>
+		<dict>
+			<key>Track ID</key><integer>277</integer>
+			<key>Name</key><string>ALOi</string>
+			<key>Artist</key><string>SORE PLEXUS</string>
+			<key>Album</key><string>HaPTePHObiC</string>
+			<key>Genre</key><string>Metal</string>
+			<key>Kind</key><string>MPEG audio file</string>
+			<key>Size</key><integer>5473178</integer>
+			<key>Total Time</key><integer>257488</integer>
+			<key>Track Number</key><integer>8</integer>
+			<key>Track Count</key><integer>12</integer>
+			<key>Year</key><integer>1998</integer>
+			<key>Date Modified</key><date>2007-06-14T18:43:46Z</date>
+			<key>Date Added</key><date>2007-06-14T18:43:09Z</date>
+			<key>Bit Rate</key><integer>160</integer>
+			<key>Sample Rate</key><integer>44100</integer>
+			<key>Artwork Count</key><integer>1</integer>
+			<key>Persistent ID</key><string>9C5A5E44FBC4A26B</string>
+			<key>Track Type</key><string>File</string>
+			<key>Location</key><string>file://localhost/Local/Music/SORE%20PLEXUS/HaPTePHObiC/08%20ALOi.mp3</string>
+			<key>File Folder Count</key><integer>4</integer>
+			<key>Library Folder Count</key><integer>1</integer>
+		</dict>
+		<key>280</key>
+		<dict>
+			<key>Track ID</key><integer>280</integer>
+			<key>Name</key><string>DiE NasTY QUI-LiNg</string>
+			<key>Artist</key><string>SORE PLEXUS</string>
+			<key>Album</key><string>HaPTePHObiC</string>
+			<key>Genre</key><string>Metal</string>
+			<key>Kind</key><string>MPEG audio file</string>
+			<key>Size</key><integer>6134090</integer>
+			<key>Total Time</key><integer>290533</integer>
+			<key>Track Number</key><integer>9</integer>
+			<key>Track Count</key><integer>12</integer>
+			<key>Year</key><integer>1998</integer>
+			<key>Date Modified</key><date>2007-06-14T18:43:47Z</date>
+			<key>Date Added</key><date>2007-06-14T18:43:10Z</date>
+			<key>Bit Rate</key><integer>160</integer>
+			<key>Sample Rate</key><integer>44100</integer>
+			<key>Artwork Count</key><integer>1</integer>
+			<key>Persistent ID</key><string>9C5A5E44FBC4A26D</string>
+			<key>Track Type</key><string>File</string>
+			<key>Location</key><string>file://localhost/Local/Music/SORE%20PLEXUS/HaPTePHObiC/09%20DiE%20NasTY%20QUI-LiNg.mp3</string>
+			<key>File Folder Count</key><integer>4</integer>
+			<key>Library Folder Count</key><integer>1</integer>
+		</dict>
+		<key>283</key>
+		<dict>
+			<key>Track ID</key><integer>283</integer>
+			<key>Name</key><string>HaPTePHObiC</string>
+			<key>Artist</key><string>SORE PLEXUS</string>
+			<key>Album</key><string>HaPTePHObiC</string>
+			<key>Genre</key><string>Metal</string>
+			<key>Kind</key><string>MPEG audio file</string>
+			<key>Size</key><integer>1809774</integer>
+			<key>Total Time</key><integer>74318</integer>
+			<key>Track Number</key><integer>10</integer>
+			<key>Track Count</key><integer>12</integer>
+			<key>Year</key><integer>1998</integer>
+			<key>Date Modified</key><date>2007-06-14T18:43:48Z</date>
+			<key>Date Added</key><date>2007-06-14T18:43:10Z</date>
+			<key>Bit Rate</key><integer>160</integer>
+			<key>Sample Rate</key><integer>44100</integer>
+			<key>Artwork Count</key><integer>1</integer>
+			<key>Persistent ID</key><string>9C5A5E44FBC4A26F</string>
+			<key>Track Type</key><string>File</string>
+			<key>Location</key><string>file://localhost/Local/Music/SORE%20PLEXUS/HaPTePHObiC/10%20HaPTePHObiC.mp3</string>
+			<key>File Folder Count</key><integer>4</integer>
+			<key>Library Folder Count</key><integer>1</integer>
+		</dict>
+		<key>286</key>
+		<dict>
+			<key>Track ID</key><integer>286</integer>
+			<key>Name</key><string>6 A.M.</string>
+			<key>Artist</key><string>SORE PLEXUS</string>
+			<key>Album</key><string>HaPTePHObiC</string>
+			<key>Genre</key><string>Metal</string>
+			<key>Kind</key><string>MPEG audio file</string>
+			<key>Size</key><integer>5013426</integer>
+			<key>Total Time</key><integer>234501</integer>
+			<key>Track Number</key><integer>11</integer>
+			<key>Track Count</key><integer>12</integer>
+			<key>Year</key><integer>1998</integer>
+			<key>Date Modified</key><date>2007-06-14T18:43:49Z</date>
+			<key>Date Added</key><date>2007-06-14T18:43:10Z</date>
+			<key>Bit Rate</key><integer>160</integer>
+			<key>Sample Rate</key><integer>44100</integer>
+			<key>Artwork Count</key><integer>1</integer>
+			<key>Persistent ID</key><string>9C5A5E44FBC4A271</string>
+			<key>Track Type</key><string>File</string>
+			<key>Location</key><string>file://localhost/Local/Music/SORE%20PLEXUS/HaPTePHObiC/11%206%20A.M..mp3</string>
+			<key>File Folder Count</key><integer>4</integer>
+			<key>Library Folder Count</key><integer>1</integer>
+		</dict>
+		<key>289</key>
+		<dict>
+			<key>Track ID</key><integer>289</integer>
+			<key>Name</key><string>ChoCo FrigHTs</string>
+			<key>Artist</key><string>SORE PLEXUS</string>
+			<key>Album</key><string>HaPTePHObiC</string>
+			<key>Genre</key><string>Metal</string>
+			<key>Kind</key><string>MPEG audio file</string>
+			<key>Size</key><integer>7098527</integer>
+			<key>Total Time</key><integer>338755</integer>
+			<key>Track Number</key><integer>12</integer>
+			<key>Track Count</key><integer>12</integer>
+			<key>Year</key><integer>1998</integer>
+			<key>Date Modified</key><date>2007-06-14T18:43:50Z</date>
+			<key>Date Added</key><date>2007-06-14T18:43:10Z</date>
+			<key>Bit Rate</key><integer>160</integer>
+			<key>Sample Rate</key><integer>44100</integer>
+			<key>Artwork Count</key><integer>1</integer>
+			<key>Persistent ID</key><string>9C5A5E44FBC4A273</string>
+			<key>Track Type</key><string>File</string>
+			<key>Location</key><string>file://localhost/Local/Music/SORE%20PLEXUS/HaPTePHObiC/12%20ChoCo%20FrigHTs.mp3</string>
+			<key>File Folder Count</key><integer>4</integer>
+			<key>Library Folder Count</key><integer>1</integer>
+		</dict>
+		<key>333</key>
+		<dict>
+			<key>Track ID</key><integer>333</integer>
+			<key>Name</key><string>Online with God</string>
+			<key>Artist</key><string>Moshcircus</string>
+			<key>Album</key><string>Karma</string>
+			<key>Genre</key><string>Metal</string>
+			<key>Kind</key><string>AAC audio file</string>
+			<key>Size</key><integer>4806113</integer>
+			<key>Total Time</key><integer>288204</integer>
+			<key>Track Number</key><integer>11</integer>
+			<key>Track Count</key><integer>11</integer>
+			<key>Year</key><integer>2006</integer>
+			<key>BPM</key><integer>216</integer>
+			<key>Date Modified</key><date>2006-03-27T15:35:26Z</date>
+			<key>Date Added</key><date>2007-06-14T18:44:11Z</date>
+			<key>Bit Rate</key><integer>128</integer>
+			<key>Sample Rate</key><integer>44100</integer>
+			<key>Artwork Count</key><integer>1</integer>
+			<key>Persistent ID</key><string>9C5A5E44FBC4A275</string>
+			<key>Track Type</key><string>File</string>
+			<key>File Type</key><integer>1295270176</integer>
+			<key>File Creator</key><integer>1752133483</integer>
+			<key>Location</key><string>file://localhost/Local/Music/Moshcircus/Karma/11%20Online%20with%20God.m4a</string>
+			<key>File Folder Count</key><integer>4</integer>
+			<key>Library Folder Count</key><integer>1</integer>
+		</dict>
+		<key>337</key>
+		<dict>
+			<key>Track ID</key><integer>337</integer>
+			<key>Name</key><string>Samsara</string>
+			<key>Artist</key><string>Moshcircus</string>
+			<key>Album</key><string>Karma</string>
+			<key>Genre</key><string>Metal</string>
+			<key>Kind</key><string>AAC audio file</string>
+			<key>Size</key><integer>3604444</integer>
+			<key>Total Time</key><integer>215502</integer>
+			<key>Track Number</key><integer>2</integer>
+			<key>Track Count</key><integer>11</integer>
+			<key>Year</key><integer>2006</integer>
+			<key>BPM</key><integer>226</integer>
+			<key>Date Modified</key><date>2006-03-27T15:35:21Z</date>
+			<key>Date Added</key><date>2007-06-14T18:44:11Z</date>
+			<key>Bit Rate</key><integer>128</integer>
+			<key>Sample Rate</key><integer>44100</integer>
+			<key>Artwork Count</key><integer>1</integer>
+			<key>Persistent ID</key><string>9C5A5E44FBC4A278</string>
+			<key>Track Type</key><string>File</string>
+			<key>File Type</key><integer>1295270176</integer>
+			<key>File Creator</key><integer>1752133483</integer>
+			<key>Location</key><string>file://localhost/Local/Music/Moshcircus/Karma/02%20Samsara.m4a</string>
+			<key>File Folder Count</key><integer>4</integer>
+			<key>Library Folder Count</key><integer>1</integer>
+		</dict>
+		<key>340</key>
+		<dict>
+			<key>Track ID</key><integer>340</integer>
+			<key>Name</key><string>Diabolic Infernal Satan</string>
+			<key>Artist</key><string>Moshcircus</string>
+			<key>Album</key><string>Karma</string>
+			<key>Genre</key><string>Metal</string>
+			<key>Kind</key><string>AAC audio file</string>
+			<key>Size</key><integer>4450130</integer>
+			<key>Total Time</key><integer>268212</integer>
+			<key>Track Number</key><integer>6</integer>
+			<key>Track Count</key><integer>11</integer>
+			<key>Year</key><integer>2006</integer>
+			<key>BPM</key><integer>216</integer>
+			<key>Date Modified</key><date>2006-03-27T15:35:24Z</date>
+			<key>Date Added</key><date>2007-06-14T18:44:11Z</date>
+			<key>Bit Rate</key><integer>128</integer>
+			<key>Sample Rate</key><integer>44100</integer>
+			<key>Artwork Count</key><integer>1</integer>
+			<key>Persistent ID</key><string>9C5A5E44FBC4A27A</string>
+			<key>Track Type</key><string>File</string>
+			<key>File Type</key><integer>1295270176</integer>
+			<key>File Creator</key><integer>1752133483</integer>
+			<key>Location</key><string>file://localhost/Local/Music/Moshcircus/Karma/06%20Diabolic%20Infernal%20Satan.m4a</string>
+			<key>File Folder Count</key><integer>4</integer>
+			<key>Library Folder Count</key><integer>1</integer>
+		</dict>
+		<key>343</key>
+		<dict>
+			<key>Track ID</key><integer>343</integer>
+			<key>Name</key><string>Salvation One</string>
+			<key>Artist</key><string>Moshcircus</string>
+			<key>Album</key><string>Karma</string>
+			<key>Genre</key><string>Metal</string>
+			<key>Kind</key><string>AAC audio file</string>
+			<key>Size</key><integer>963599</integer>
+			<key>Total Time</key><integer>48690</integer>
+			<key>Track Number</key><integer>1</integer>
+			<key>Track Count</key><integer>11</integer>
+			<key>Year</key><integer>2006</integer>
+			<key>Date Modified</key><date>2006-03-27T15:35:21Z</date>
+			<key>Date Added</key><date>2007-06-14T18:44:11Z</date>
+			<key>Bit Rate</key><integer>128</integer>
+			<key>Sample Rate</key><integer>44100</integer>
+			<key>Artwork Count</key><integer>1</integer>
+			<key>Persistent ID</key><string>9C5A5E44FBC4A27C</string>
+			<key>Track Type</key><string>File</string>
+			<key>File Type</key><integer>1295270176</integer>
+			<key>File Creator</key><integer>1752133483</integer>
+			<key>Location</key><string>file://localhost/Local/Music/Moshcircus/Karma/01%20Salvation%20One.m4a</string>
+			<key>File Folder Count</key><integer>4</integer>
+			<key>Library Folder Count</key><integer>1</integer>
+		</dict>
+		<key>346</key>
+		<dict>
+			<key>Track ID</key><integer>346</integer>
+			<key>Name</key><string>Into Light</string>
+			<key>Artist</key><string>Moshcircus</string>
+			<key>Album</key><string>Karma</string>
+			<key>Genre</key><string>Metal</string>
+			<key>Kind</key><string>AAC audio file</string>
+			<key>Size</key><integer>5292322</integer>
+			<key>Total Time</key><integer>320178</integer>
+			<key>Track Number</key><integer>3</integer>
+			<key>Track Count</key><integer>11</integer>
+			<key>Year</key><integer>2006</integer>
+			<key>BPM</key><integer>226</integer>
+			<key>Date Modified</key><date>2006-03-27T15:35:22Z</date>
+			<key>Date Added</key><date>2007-06-14T18:44:11Z</date>
+			<key>Bit Rate</key><integer>128</integer>
+			<key>Sample Rate</key><integer>44100</integer>
+			<key>Artwork Count</key><integer>1</integer>
+			<key>Persistent ID</key><string>9C5A5E44FBC4A27E</string>
+			<key>Track Type</key><string>File</string>
+			<key>File Type</key><integer>1295270176</integer>
+			<key>File Creator</key><integer>1752133483</integer>
+			<key>Location</key><string>file://localhost/Local/Music/Moshcircus/Karma/03%20Into%20Light.m4a</string>
+			<key>File Folder Count</key><integer>4</integer>
+			<key>Library Folder Count</key><integer>1</integer>
+		</dict>
+		<key>349</key>
+		<dict>
+			<key>Track ID</key><integer>349</integer>
+			<key>Name</key><string>Enola Gay</string>
+			<key>Artist</key><string>Moshcircus</string>
+			<key>Album</key><string>Karma</string>
+			<key>Genre</key><string>Metal</string>
+			<key>Kind</key><string>AAC audio file</string>
+			<key>Size</key><integer>4649112</integer>
+			<key>Total Time</key><integer>280611</integer>
+			<key>Track Number</key><integer>8</integer>
+			<key>Track Count</key><integer>11</integer>
+			<key>Year</key><integer>2006</integer>
+			<key>BPM</key><integer>226</integer>
+			<key>Date Modified</key><date>2006-03-27T15:35:24Z</date>
+			<key>Date Added</key><date>2007-06-14T18:44:11Z</date>
+			<key>Bit Rate</key><integer>128</integer>
+			<key>Sample Rate</key><integer>44100</integer>
+			<key>Artwork Count</key><integer>1</integer>
+			<key>Persistent ID</key><string>9C5A5E44FBC4A280</string>
+			<key>Track Type</key><string>File</string>
+			<key>File Type</key><integer>1295270176</integer>
+			<key>File Creator</key><integer>1752133483</integer>
+			<key>Location</key><string>file://localhost/Local/Music/Moshcircus/Karma/08%20Enola%20Gay.m4a</string>
+			<key>File Folder Count</key><integer>4</integer>
+			<key>Library Folder Count</key><integer>1</integer>
+		</dict>
+		<key>352</key>
+		<dict>
+			<key>Track ID</key><integer>352</integer>
+			<key>Name</key><string>Per Aspera Ad Astra</string>
+			<key>Artist</key><string>Moshcircus</string>
+			<key>Album</key><string>Karma</string>
+			<key>Genre</key><string>Metal</string>
+			<key>Kind</key><string>AAC audio file</string>
+			<key>Size</key><integer>5651675</integer>
+			<key>Total Time</key><integer>342400</integer>
+			<key>Track Number</key><integer>5</integer>
+			<key>Track Count</key><integer>11</integer>
+			<key>Year</key><integer>2006</integer>
+			<key>BPM</key><integer>226</integer>
+			<key>Date Modified</key><date>2006-03-27T15:35:23Z</date>
+			<key>Date Added</key><date>2007-06-14T18:44:11Z</date>
+			<key>Bit Rate</key><integer>128</integer>
+			<key>Sample Rate</key><integer>44100</integer>
+			<key>Artwork Count</key><integer>1</integer>
+			<key>Persistent ID</key><string>9C5A5E44FBC4A282</string>
+			<key>Track Type</key><string>File</string>
+			<key>File Type</key><integer>1295270176</integer>
+			<key>File Creator</key><integer>1752133483</integer>
+			<key>Location</key><string>file://localhost/Local/Music/Moshcircus/Karma/05%20Per%20Aspera%20Ad%20Astra.m4a</string>
+			<key>File Folder Count</key><integer>4</integer>
+			<key>Library Folder Count</key><integer>1</integer>
+		</dict>
+		<key>355</key>
+		<dict>
+			<key>Track ID</key><integer>355</integer>
+			<key>Name</key><string>Salvation Two</string>
+			<key>Artist</key><string>Moshcircus</string>
+			<key>Album</key><string>Karma</string>
+			<key>Genre</key><string>Metal</string>
+			<key>Kind</key><string>AAC audio file</string>
+			<key>Size</key><integer>1918854</integer>
+			<key>Total Time</key><integer>110270</integer>
+			<key>Track Number</key><integer>7</integer>
+			<key>Track Count</key><integer>11</integer>
+			<key>Year</key><integer>2006</integer>
+			<key>Date Modified</key><date>2006-03-27T15:35:24Z</date>
+			<key>Date Added</key><date>2007-06-14T18:44:11Z</date>
+			<key>Bit Rate</key><integer>128</integer>
+			<key>Sample Rate</key><integer>44100</integer>
+			<key>Artwork Count</key><integer>1</integer>
+			<key>Persistent ID</key><string>9C5A5E44FBC4A284</string>
+			<key>Track Type</key><string>File</string>
+			<key>File Type</key><integer>1295270176</integer>
+			<key>File Creator</key><integer>1752133483</integer>
+			<key>Location</key><string>file://localhost/Local/Music/Moshcircus/Karma/07%20Salvation%20Two.m4a</string>
+			<key>File Folder Count</key><integer>4</integer>
+			<key>Library Folder Count</key><integer>1</integer>
+		</dict>
+		<key>358</key>
+		<dict>
+			<key>Track ID</key><integer>358</integer>
+			<key>Name</key><string>Salvation Three</string>
+			<key>Artist</key><string>Moshcircus</string>
+			<key>Album</key><string>Karma</string>
+			<key>Genre</key><string>Metal</string>
+			<key>Kind</key><string>AAC audio file</string>
+			<key>Size</key><integer>1454902</integer>
+			<key>Total Time</key><integer>81338</integer>
+			<key>Track Number</key><integer>10</integer>
+			<key>Track Count</key><integer>11</integer>
+			<key>Year</key><integer>2006</integer>
+			<key>Date Modified</key><date>2006-03-27T15:35:25Z</date>
+			<key>Date Added</key><date>2007-06-14T18:44:11Z</date>
+			<key>Bit Rate</key><integer>128</integer>
+			<key>Sample Rate</key><integer>44100</integer>
+			<key>Artwork Count</key><integer>1</integer>
+			<key>Persistent ID</key><string>9C5A5E44FBC4A286</string>
+			<key>Track Type</key><string>File</string>
+			<key>File Type</key><integer>1295270176</integer>
+			<key>File Creator</key><integer>1752133483</integer>
+			<key>Location</key><string>file://localhost/Local/Music/Moshcircus/Karma/10%20Salvation%20Three.m4a</string>
+			<key>File Folder Count</key><integer>4</integer>
+			<key>Library Folder Count</key><integer>1</integer>
+		</dict>
+		<key>361</key>
+		<dict>
+			<key>Track ID</key><integer>361</integer>
+			<key>Name</key><string>Flesh of Gods</string>
+			<key>Artist</key><string>Moshcircus</string>
+			<key>Album</key><string>Karma</string>
+			<key>Genre</key><string>Metal</string>
+			<key>Kind</key><string>AAC audio file</string>
+			<key>Size</key><integer>3624537</integer>
+			<key>Total Time</key><integer>216733</integer>
+			<key>Track Number</key><integer>9</integer>
+			<key>Track Count</key><integer>11</integer>
+			<key>Year</key><integer>2006</integer>
+			<key>BPM</key><integer>230</integer>
+			<key>Date Modified</key><date>2006-03-27T15:35:25Z</date>
+			<key>Date Added</key><date>2007-06-14T18:44:11Z</date>
+			<key>Bit Rate</key><integer>128</integer>
+			<key>Sample Rate</key><integer>44100</integer>
+			<key>Artwork Count</key><integer>1</integer>
+			<key>Persistent ID</key><string>9C5A5E44FBC4A288</string>
+			<key>Track Type</key><string>File</string>
+			<key>File Type</key><integer>1295270176</integer>
+			<key>File Creator</key><integer>1752133483</integer>
+			<key>Location</key><string>file://localhost/Local/Music/Moshcircus/Karma/09%20Flesh%20of%20Gods.m4a</string>
+			<key>File Folder Count</key><integer>4</integer>
+			<key>Library Folder Count</key><integer>1</integer>
+		</dict>
+		<key>364</key>
+		<dict>
+			<key>Track ID</key><integer>364</integer>
+			<key>Name</key><string>Karma</string>
+			<key>Artist</key><string>Moshcircus</string>
+			<key>Album</key><string>Karma</string>
+			<key>Genre</key><string>Metal</string>
+			<key>Kind</key><string>AAC audio file</string>
+			<key>Size</key><integer>4082013</integer>
+			<key>Total Time</key><integer>245270</integer>
+			<key>Track Number</key><integer>4</integer>
+			<key>Track Count</key><integer>11</integer>
+			<key>Year</key><integer>2006</integer>
+			<key>BPM</key><integer>232</integer>
+			<key>Date Modified</key><date>2006-03-27T15:35:22Z</date>
+			<key>Date Added</key><date>2007-06-14T18:44:11Z</date>
+			<key>Bit Rate</key><integer>128</integer>
+			<key>Sample Rate</key><integer>44100</integer>
+			<key>Artwork Count</key><integer>1</integer>
+			<key>Persistent ID</key><string>9C5A5E44FBC4A28A</string>
+			<key>Track Type</key><string>File</string>
+			<key>File Type</key><integer>1295270176</integer>
+			<key>File Creator</key><integer>1752133483</integer>
+			<key>Location</key><string>file://localhost/Local/Music/Moshcircus/Karma/04%20Karma.m4a</string>
+			<key>File Folder Count</key><integer>4</integer>
+			<key>Library Folder Count</key><integer>1</integer>
+		</dict>
+	</dict>
+	<key>Playlists</key>
+	<array>
+		<dict>
+			<key>Name</key><string>Library</string>
+			<key>Master</key><true/>
+			<key>Playlist ID</key><integer>38</integer>
+			<key>Playlist Persistent ID</key><string>6FC16CC74977A25F</string>
+			<key>Visible</key><false/>
+			<key>All Items</key><true/>
+			<key>Playlist Items</key>
+			<array>
+				<dict>
+					<key>Track ID</key><integer>255</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>259</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>262</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>265</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>268</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>271</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>274</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>277</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>280</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>283</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>286</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>289</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>343</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>337</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>346</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>364</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>352</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>340</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>355</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>349</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>361</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>358</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>333</integer>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>Name</key><string>Audiobooks</string>
+			<key>Playlist ID</key><integer>60</integer>
+			<key>Playlist Persistent ID</key><string>C8D787A13971AD2B</string>
+			<key>Visible</key><false/>
+			<key>All Items</key><true/>
+			<key>Audiobooks</key><true/>
+		</dict>
+		<dict>
+			<key>Name</key><string>Faves</string>
+			<key>Playlist ID</key><integer>396</integer>
+			<key>Playlist Persistent ID</key><string>9C5A5E44FBC4A28D</string>
+			<key>All Items</key><true/>
+			<key>Playlist Items</key>
+			<array>
+				<dict>
+					<key>Track ID</key><integer>364</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>289</integer>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>Name</key><string>Instrumental</string>
+			<key>Playlist ID</key><integer>378</integer>
+			<key>Playlist Persistent ID</key><string>9C5A5E44FBC4A28C</string>
+			<key>All Items</key><true/>
+			<key>Playlist Items</key>
+			<array>
+				<dict>
+					<key>Track ID</key><integer>343</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>355</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>358</integer>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>Name</key><string>Movies</string>
+			<key>Playlist ID</key><integer>54</integer>
+			<key>Playlist Persistent ID</key><string>C8D787A13971AD29</string>
+			<key>Visible</key><false/>
+			<key>All Items</key><true/>
+			<key>Movies</key><true/>
+		</dict>
+		<dict>
+			<key>Name</key><string>Music</string>
+			<key>Playlist ID</key><integer>51</integer>
+			<key>Playlist Persistent ID</key><string>C8D787A13971AD28</string>
+			<key>All Items</key><true/>
+			<key>Music</key><true/>
+			<key>Playlist Items</key>
+			<array>
+				<dict>
+					<key>Track ID</key><integer>343</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>337</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>346</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>364</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>352</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>340</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>355</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>349</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>361</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>358</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>333</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>255</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>259</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>262</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>265</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>268</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>271</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>274</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>277</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>280</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>283</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>286</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>289</integer>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>Name</key><string>Party Shuffle</string>
+			<key>Playlist ID</key><integer>41</integer>
+			<key>Playlist Persistent ID</key><string>362C75F50BBE1650</string>
+			<key>Party Shuffle</key><true/>
+			<key>All Items</key><true/>
+			<key>Playlist Items</key>
+			<array>
+				<dict>
+					<key>Track ID</key><integer>255</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>255</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>255</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>255</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>255</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>255</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>255</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>255</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>255</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>255</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>255</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>255</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>255</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>255</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>255</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>255</integer>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>Name</key><string>Podcasts</string>
+			<key>Playlist ID</key><integer>44</integer>
+			<key>Playlist Persistent ID</key><string>A97D508F645EF697</string>
+			<key>Visible</key><false/>
+			<key>Podcasts</key><true/>
+			<key>All Items</key><true/>
+		</dict>
+		<dict>
+			<key>Name</key><string>TV Shows</string>
+			<key>Playlist ID</key><integer>57</integer>
+			<key>Playlist Persistent ID</key><string>C8D787A13971AD2A</string>
+			<key>Visible</key><false/>
+			<key>All Items</key><true/>
+			<key>TV Shows</key><true/>
+		</dict>
+	</array>
+</dict>
+</plist>

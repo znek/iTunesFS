@@ -81,6 +81,7 @@
 		AD5B5E7A0C0C1A70003B1650 /* NSObject+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Extensions.h"; sourceTree = "<group>"; };
 		AD5B5E7B0C0C1A70003B1650 /* NSObject+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Extensions.m"; sourceTree = "<group>"; };
 		AD95D3AA0C21BBDA00B96A36 /* iTunesFSInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = iTunesFSInfo.plist; sourceTree = "<group>"; };
+		AD95D40A0C21C7C500B96A36 /* iTunesMusicLibrary.xml */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; name = iTunesMusicLibrary.xml; path = "../../../../../../var/automount/Network/Users/znek/Projects/mulle-svn/iTunesFS/examples/iTunesMusicLibrary.xml"; sourceTree = "<group>"; };
 		ADAADA6B0C2110C00024D899 /* English */ = {isa = PBXFileReference; explicitFileType = text.plist.strings; fileEncoding = 10; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
 		ADAADAB10C2113DA0024D899 /* German */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = German; path = German.lproj/Localizable.strings; sourceTree = "<group>"; };
 		ADAADAD30C2114D80024D899 /* French */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = French; path = French.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -129,6 +130,7 @@
 				7FEAC1C30B446B70008EF420 /* FUSEObjC */,
 				ADBDAB040C02F664004CF795 /* Scripts */,
 				AD5A407C0C214FAA00B1A000 /* GNUstep */,
+				AD95D4090C21C7AF00B96A36 /* examples */,
 				08FB779DFE84155DC02AAC07 /* External Frameworks and Libraries */,
 				1AB674ADFE9D54B511CA2CBB /* Products */,
 			);
@@ -257,6 +259,14 @@
 			path = "FUSEObjC-GNUstep";
 			sourceTree = "<group>";
 		};
+		AD95D4090C21C7AF00B96A36 /* examples */ = {
+			isa = PBXGroup;
+			children = (
+				AD95D40A0C21C7C500B96A36 /* iTunesMusicLibrary.xml */,
+			);
+			name = examples;
+			sourceTree = "<group>";
+		};
 		ADBDAB040C02F664004CF795 /* Scripts */ = {
 			isa = PBXGroup;
 			children = (
@@ -315,8 +325,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				AD37A2040C01C58000DF1291 /* MainMenu.nib in Resources */,
-				ADBDA9CC0C02E7A5004CF795 /* iTunesFS.icns in Resources */,
 				ADAADA9B0C2111390024D899 /* Localizable.strings in Resources */,
+				ADBDA9CC0C02E7A5004CF795 /* iTunesFS.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -108,7 +108,6 @@ static FUSEFileSystem *manager;
 //- (void)fuseInit;
 //- (void)fuseDestroy;
 //- (BOOL)shouldStartFuse;
-//- (NSString *)mountName;
 //- (NSString *)mountPoint;
 
 @end
@@ -460,12 +459,6 @@ static FUSEFileSystem *manager;
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender {
   [self stopFuse];
   return NSTerminateNow;
-}
-
-- (NSString *)mountName {
-  NSString *mountName = [[[NSUserDefaults standardUserDefaults] stringForKey:@"FUSEMountName"] retain];
-  if (!mountName) mountName = NSStringFromClass([self class]);
-  return mountName;
 }
 
 - (NSString *)mountPoint {
@@ -843,9 +836,6 @@ int fusefm_setattr(const char *path, const char *a,
   
   NSMutableArray *arguments = [NSMutableArray arrayWithObjects:
     [[NSBundle mainBundle] executablePath],
-#if 0
-    [NSString stringWithFormat:@"-ovolname=%@",[self mountName]],
-#endif
     @"-f",  // Foreground rather than daemonize
     @"-s",  // Single-threaded until we can work out threading issues.
     nil];
