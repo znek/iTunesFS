@@ -9,7 +9,7 @@ APP_NAME = iTunesFS
 iTunesFS_PRINCIPAL_CLASS  = iTunesFileSystem
 iTunesFS_APPLICATION_ICON = iTunesFS.tiff
 iTunesFS_MAIN_MODEL_FILE  = MainMenu.gorm
-iTunesFS_LANGUAGES        = English
+iTunesFS_LANGUAGES        = English German French Italian Spanish Japanese
 iTunesFS_SUBPROJECTS      = FUSEObjC-GNUstep
 
 iTunesFS_OBJC_PRECOMPILED_HEADERS = common.h
@@ -31,6 +31,7 @@ iTunesFS_OBJC_FILES +=				\
 
 iTunesFS_LOCALIZED_RESOURCE_FILES +=		\
 	MainMenu.gorm				\
+	Localizable.strings			\
 
 iTunesFS_RESOURCE_FILES +=			\
 	iTunesFS.tiff				\
