@@ -40,8 +40,20 @@
 		<string>iTunesFS</string>
 		<key>FUSEMountPath</key>
 		<string>/Volumes/iTunesFS</string>
+		<key>DetailedTrackNames</key>
+		<false/>
+		<key>NoIPods</key>
+		<false/>
+		<key>SymbolicLinks</key>
+		<false/>
 		<key>UseCategories</key>
 		<true/>
+		<key>iTunesFileSystemDebugEnabled</key>
+		<false/>
+		<key>iTunesFSDebugPathLookup</key>
+		<false/>
+		<key>iPodLibraryDebugEnabled</key>
+		<false/>
 	</dict>
 </dict>
 </plist>

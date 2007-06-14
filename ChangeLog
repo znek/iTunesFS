@@ -8,6 +8,8 @@
 
 	* NOTES: added localization hint
 
+	* Info.plist: added all NSUserDefaults
+
 	* iTunesLibrary.[hm]: added new -reloadVirtualMaps public API used
 	  by subclassers to call after -reload is done
 
