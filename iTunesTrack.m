@@ -45,20 +45,25 @@
 
 @implementation iTunesTrack
 
-static BOOL doDebug          = NO;
-static BOOL detailedNames    = NO;
-static BOOL useSymbolicLinks = NO;
+static BOOL     doDebug                    = NO;
+static BOOL     detailedNames              = NO;
+static BOOL     useSymbolicLinks           = NO;
+static NSString *locationReplacePrefix     = nil;
+static NSString *locationDestinationPrefix = nil;
 
 + (void)initialize {
   static BOOL    didInit = NO;
   NSUserDefaults *ud;
   
   if (didInit) return;
-  didInit          = YES;
-  ud               = [NSUserDefaults standardUserDefaults];
-  doDebug          = [ud boolForKey:@"iTunesFileSystemDebugEnabled"];
-  detailedNames    = [ud boolForKey:@"DetailedTrackNames"];
-  useSymbolicLinks = [ud boolForKey:@"SymbolicLinks"];
+  didInit                   = YES;
+  ud                        = [NSUserDefaults standardUserDefaults];
+  doDebug                   = [ud boolForKey:@"iTunesFileSystemDebugEnabled"];
+  detailedNames             = [ud boolForKey:@"DetailedTrackNames"];
+  useSymbolicLinks          = [ud boolForKey:@"SymbolicLinks"];
+  locationReplacePrefix     = [ud stringForKey:@"LocationReplacePrefix"];
+  locationDestinationPrefix = [ud stringForKey:@"LocationDestinationPrefix"];
+
   if (doDebug && detailedNames)
     NSLog(@"Using detailed names for tracks");
   if (doDebug && useSymbolicLinks)
@@ -115,6 +120,16 @@ static BOOL useSymbolicLinks = NO;
       else {
         /* http:// stream address... */
         [pn appendString:@"webloc"];
+      }
+      if (locationReplacePrefix) {
+        NSRange r;
+        
+        r = [location rangeOfString:locationReplacePrefix];
+        if (r.location != NSNotFound) {
+          location = [location substringFromIndex:NSMaxRange(r)];
+          location = [locationDestinationPrefix
+                                              stringByAppendingString:location];
+        }
       }
       [self setUrl:[NSURL URLWithString:location]];
     }
