@@ -279,7 +279,7 @@ static NSString *locationDestinationPrefix = nil;
   return self->attributes;
 }
 
-/* iTunesFS lookup */
+/* FUSEOFS */
 
 - (NSDictionary *)fileAttributes {
   return [self attributes];

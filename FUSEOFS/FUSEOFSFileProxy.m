@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2007, Marcus Müller <znek@mulle-kybernetik.com>.
+  Copyright (c) 2007, Marcus MÃ¼ller <znek@mulle-kybernetik.com>.
   All rights reserved.
 
 
@@ -30,27 +30,43 @@
   POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef	__iTunesFS_NSObject_Extensions_H
-#define	__iTunesFS_NSObject_Extensions_H
+#import "FUSEOFSFileProxy.h"
 
-#import <Foundation/Foundation.h>
+@interface FUSEOFSFileProxy (Private)
+- (NSFileManager *)fileManager;
+@end
 
-@class NSImage;
+@implementation FUSEOFSFileProxy
 
-@interface NSObject (iTunesFSLookupExtensions)
+- (id)initWithPath:(NSString *)_path {
+  self = [self init];
+  if (self) {
+    self->path = [_path copy];
+  }
+  return self;
+}
 
-- (id)lookupPathComponent:(NSString *)_pc;
+- (void)dealloc {
+  [self->path release];
+  [super dealloc];
+}
 
-- (NSArray *)directoryContents;
-- (NSData *)fileContents;
-- (NSString *)symbolicLinkTarget;
+/* private */
 
-- (NSDictionary *)fileAttributes;
-- (NSDictionary *)fileSystemAttributes;
-- (NSImage *)icon;
-- (BOOL)isFile;
-- (BOOL)isDirectory;
+- (NSFileManager *)fileManager {
+  return [NSFileManager defaultManager];
+}
 
-@end /* NSObject (iTunesFSLookupExtensions) */
+/* FUSEOFS */
 
-#endif	/* __iTunesFS_NSObject_Extensions_H */
+- (NSData *)fileContents {
+  return [[self fileManager] contentsAtPath:self->path];
+}
+- (NSDictionary *)fileAttributes {
+  return [[self fileManager] fileAttributesAtPath:self->path traverseLink:YES];
+}
+- (BOOL)isFile {
+  return YES;
+}
+
+@end /* FUSEOFSFileProxy */

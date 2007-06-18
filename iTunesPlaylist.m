@@ -190,7 +190,7 @@
   return self->trackNames;
 }
 
-/* iTunesFS lookup */
+/* FUSEOFS */
 
 - (id)lookupPathComponent:(NSString *)_pc {
   unsigned idx;

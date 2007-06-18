@@ -37,7 +37,7 @@
 #import "iTunesPlaylist.h"
 #import "iTunesTrack.h"
 #import "Watchdog.h"
-#import "NSObject+Extensions.h"
+#import "NSObject+FUSEOFS.h"
 
 @implementation iTunesLibrary
 
@@ -46,17 +46,17 @@ static BOOL     useCategories = NO;
 static BOOL     mimicIPodNav  = NO;
 static NSString *libraryPath  = nil;
 static NSImage  *libraryIcon  = nil;
-static NSString *kPlaylists   = nil;
-static NSString *kArtists     = nil;
-static NSString *kAlbums      = nil;
-static NSString *kSongs       = nil;
-static NSString *kUnknown     = nil;
-static NSString *kAll         = nil;
+static NSString *kPlaylists   = @"Playlists";
+static NSString *kArtists     = @"Artists";
+static NSString *kAlbums      = @"Albums";
+static NSString *kSongs       = @"Songs";
+static NSString *kUnknown     = @"Unknown";
+static NSString *kAll         = @"All";
 
 + (void)initialize {
   static BOOL    didInit = NO;
   NSUserDefaults *ud;
-  
+
   if (didInit) return;
   didInit       = YES;
   ud            = [NSUserDefaults standardUserDefaults];
@@ -69,7 +69,7 @@ static NSString *kAll         = nil;
                                       @"/Music/iTunes/iTunes Music Library.xml"]
                                       copy];
   }
-#ifndef DGNU_GUI_LIBRARY
+#ifndef GNU_GUI_LIBRARY
   libraryIcon = [[[NSWorkspace sharedWorkspace]
                                iconForFile:@"/Applications/iTunes.app"]
                                copy];
@@ -297,9 +297,6 @@ static NSString *kAll         = nil;
   if (!doDebug) return @"iTunes";
   return self->name;
 }
-- (NSImage *)icon {
-  return libraryIcon;
-}
 - (NSString *)libraryPath {
   return libraryPath;
 }
@@ -319,7 +316,7 @@ static NSString *kAll         = nil;
   return [self->trackMap objectForKey:_trackID];
 }
 
-/* iTunesFS lookup */
+/* FUSEOFS */
 
 - (id)lookupPathComponent:(NSString *)_pc {
   if (!useCategories) {
@@ -345,6 +342,9 @@ static NSString *kAll         = nil;
 
 - (BOOL)isDirectory {
   return YES;
+}
+- (NSImage *)icon {
+  return libraryIcon;
 }
 
 /* debugging */

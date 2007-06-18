@@ -30,35 +30,50 @@
   POSSIBILITY OF SUCH DAMAGE.
 */
 
-#import "common.h"
-#import "NSArray+Extensions.h"
+#import "NSObject+FUSEOFS.h"
 
-@implementation NSArray (iTunesFSPathExtensions)
+@implementation NSObject (FUSEOFS)
 
-- (NSString *)libraryName {
-  return [self objectAtIndex:1];
+- (id)lookupPathComponent:(NSString *)_pc {
+  return nil;
 }
-- (NSString *)playlistName {
-  return [self objectAtIndex:2];
+- (NSArray *)directoryContents {
+  return nil;
 }
-- (NSString *)trackName {
-  return [self objectAtIndex:3];
+- (NSData *)fileContents {
+  return nil;
+}
+- (NSString *)symbolicLinkTarget {
+  return nil; 
+}
+- (NSDictionary *)fileAttributes {
+  return nil;
+}
+- (NSDictionary *)fileSystemAttributes {
+  return nil;
+}
+- (NSImage *)icon {
+  return nil;
+}
+- (BOOL)isFile {
+  return NO;
+}
+- (BOOL)isDirectory {
+  return NO;
 }
 
-- (BOOL)isRootDirectory {
-  return [self count] == 1;
+@end /* NSObject (FUSEOFS) */
+
+@implementation NSDictionary (FUSEOFS)
+
+- (id)lookupPathComponent:(NSString *)_pc {
+  return [self objectForKey:_pc];
 }
-- (BOOL)isLibraryDirectory {
-  return [self count] == 2;
+- (NSArray *)directoryContents {
+  return [self allKeys];
 }
-- (BOOL)isPlaylistDirectory {
-  return [self count] == 3;
-}
-- (BOOL)isDirectoryPath {
-  return [self count] < 4;
-}
-- (BOOL)isFilePath {
-  return [self count] == 4;
+- (BOOL)isDirectory {
+  return YES;
 }
 
-@end /* NSArray (iTunesFSPathExtensions) */
+@end /* NSDictionary (FUSEOFS) */

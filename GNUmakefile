@@ -10,7 +10,7 @@ iTunesFS_PRINCIPAL_CLASS  = NSApplication
 iTunesFS_APPLICATION_ICON = iTunesFS.tiff
 iTunesFS_MAIN_MODEL_FILE  = MainMenu.gorm
 iTunesFS_LANGUAGES        = English German French Italian Spanish Japanese
-iTunesFS_SUBPROJECTS      = FUSEObjC-GNUstep
+iTunesFS_SUBPROJECTS      = FUSEOFS FUSEObjC-GNUstep
 
 iTunesFS_OBJC_PRECOMPILED_HEADERS = common.h
 
@@ -24,9 +24,7 @@ iTunesFS_OBJC_FILES +=				\
 						\
 	Watchdog.m				\
 						\
-	NSObject+Extensions.m			\
 	NSString+Extensions.m			\
-	NSArray+Extensions.m			\
 	NSURL+Extensions.m			\
 
 iTunesFS_LOCALIZED_RESOURCE_FILES +=		\

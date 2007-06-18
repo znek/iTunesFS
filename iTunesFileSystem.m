@@ -34,8 +34,7 @@
 #import "iTunesFileSystem.h"
 #import "iTunesLibrary.h"
 #import "iPodLibrary.h"
-#import "NSArray+Extensions.h"
-#import "NSObject+Extensions.h"
+#import "NSObject+FUSEOFS.h"
 
 @interface iTunesFileSystem (Private)
 - (void)addLibrary:(iTunesLibrary *)_lib;
@@ -52,7 +51,6 @@
 @implementation iTunesFileSystem
 
 static BOOL     doDebug     = NO;
-static BOOL     debugLookup = NO;
 static BOOL     ignoreIPods = NO;
 static NSString *fsIconPath = nil;
 
@@ -65,7 +63,6 @@ static NSString *fsIconPath = nil;
   didInit     = YES;
   ud          = [NSUserDefaults standardUserDefaults];
   doDebug     = [ud boolForKey:@"iTunesFileSystemDebugEnabled"];
-  debugLookup = [ud boolForKey:@"iTunesFSDebugPathLookup"];
   ignoreIPods = [ud boolForKey:@"NoIPods"];
   mb          = [NSBundle mainBundle];
 #ifndef GNU_GUI_LIBRARY
@@ -73,12 +70,6 @@ static NSString *fsIconPath = nil;
   NSAssert(fsIconPath != nil, @"Couldn't find iTunesFS.icns!");
 #endif
 }
-
-#ifdef GNU_GUI_LIBRARY
-+ (id)sharedApplication {
-  return NSApp;
-}
-#endif
 
 /* notifications */
 
@@ -223,10 +214,11 @@ static NSString *fsIconPath = nil;
   return YES;
 }
 
+/* override */
 - (NSArray *)pathFromFSPath:(NSString *)_path {
   NSArray *path;
 
-  path = [_path pathComponents];
+  path = [super pathFromFSPath:_path];
   if (![self showLibraries]) {
     NSMutableArray *fakePath;
     
@@ -240,29 +232,9 @@ static NSString *fsIconPath = nil;
   return path;
 }
 
-- (id)lookupPath:(NSString *)_path {
-  NSArray  *path;
-  id       obj;
-  unsigned i, count;
-
-  path = [self pathFromFSPath:_path];
-  count = [path count];
-  if (!count) return nil;
-  obj = [self lookupPathComponent:[path objectAtIndex:0]];
-  if (debugLookup)
-    NSLog(@"lookup [#0, %@] -> %@", [path objectAtIndex:0], obj);
-  for (i = 1; i < count; i++) {
-    obj = [obj lookupPathComponent:[path objectAtIndex:i]];
-    if (debugLookup)
-      NSLog(@"lookup [#%d, %@] -> %@", i, [path objectAtIndex:i], obj);
-  }
-  return obj;
-}
-
-/* iTunesFS lookup */
+/* FUSEOFS */
 
 - (id)lookupPathComponent:(NSString *)_pc {
-  if ([_pc isEqualToString:@"/"]) return self;
   // TODO: add fake Spotlight entries
   return [self->libMap lookupPathComponent:_pc];
 }
@@ -285,36 +257,6 @@ static NSString *fsIconPath = nil;
   return YES;
 }
 
-/* required stuff */
-
-/* currently we have this scheme:
- * Libraries / Playlists / Tracks
- */
-- (NSArray *)directoryContentsAtPath:(NSString *)_path {
-  return [[self lookupPath:_path] directoryContents];
-}
-
-- (BOOL)fileExistsAtPath:(NSString *)_path isDirectory:(BOOL *)isDirectory {
-  id obj;
-  
-  obj          = [self lookupPath:_path];
-  *isDirectory = [obj isDirectory];
-  if ([obj isDirectory]) return YES;
-  return [obj isFile];
-}
-
-- (NSDictionary *)fileAttributesAtPath:(NSString *)_path {
-  return [[self lookupPath:_path] fileAttributes];
-}
-
-- (NSData *)contentsAtPath:(NSString *)_path {
-  return [[self lookupPath:_path] fileContents];
-}
-
-- (NSString *)pathContentOfSymbolicLinkAtPath:(NSString *)_path {
-  return [[self lookupPath:_path] symbolicLinkTarget];
-}
-
 /* optional */
 
 - (BOOL)shouldMountInFinder {
@@ -328,14 +270,6 @@ static NSString *fsIconPath = nil;
 - (NSString *)iconFileForPath:(NSString *)_path {
   if ([_path isEqualToString:@"/"]) return fsIconPath;
   return nil;
-}
-
-- (NSImage *)iconForPath:(NSString *)_path {
-  return [[self lookupPath:_path] icon];
-}
-
-- (NSDictionary *)fileSystemAttributesAtPath:(NSString *)_path {
-  return [[self lookupPath:_path] fileSystemAttributes];
 }
 
 /* debugging */

@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2007, Marcus Müller <znek@mulle-kybernetik.com>.
+  Copyright (c) 2007, Marcus MŸller <znek@mulle-kybernetik.com>.
   All rights reserved.
 
 
@@ -30,23 +30,18 @@
   POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef	__iTunesFS_NSArray_Extensions_H
-#define	__iTunesFS_NSArray_Extensions_H
+#ifndef	__iTunesFS_FUSEOFSFileProxy_H
+#define	__iTunesFS_FUSEOFSFileProxy_H
 
 #import <Foundation/Foundation.h>
 
-@interface NSArray (iTunesFSPathExtensions)
+@interface FUSEOFSFileProxy : NSObject
+{
+  NSString *path;
+}
 
-- (NSString *)libraryName;
-- (NSString *)playlistName;
-- (NSString *)trackName;
+- (id)initWithPath:(NSString *)_path;
 
-- (BOOL)isRootDirectory;
-- (BOOL)isLibraryDirectory;
-- (BOOL)isPlaylistDirectory;
-- (BOOL)isDirectoryPath;
-- (BOOL)isFilePath;
+@end /* FUSEOFSFileProxy */
 
-@end /* NSArray (iTunesFSPathExtensions) */
-
-#endif	/* __iTunesFS_NSArray_Extensions_H */
+#endif	/* __iTunesFS_FUSEOFSFileProxy_H */

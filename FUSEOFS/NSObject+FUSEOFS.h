@@ -30,17 +30,27 @@
   POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef	__iTunesFS_iTunesFileSystem_H
-#define	__iTunesFS_iTunesFileSystem_H
+#ifndef	__iTunesFS_NSObject_FUSEOFS_H
+#define	__iTunesFS_NSObject_FUSEOFS_H
 
-#import "FUSEObjectFileSystem.h"
+#import <Foundation/Foundation.h>
 
-@interface iTunesFileSystem : FUSEObjectFileSystem
-{
-  NSMutableDictionary *libMap;
-  NSMutableDictionary *volMap; // iPods only
-}
+@class NSImage;
 
-@end /* iTunesFileSystem */
+@interface NSObject (FUSEOFS)
 
-#endif	/* __iTunesFS_iTunesFileSystem_H */
+- (id)lookupPathComponent:(NSString *)_pc;
+
+- (NSArray *)directoryContents;
+- (NSData *)fileContents;
+- (NSString *)symbolicLinkTarget;
+
+- (NSDictionary *)fileAttributes;
+- (NSDictionary *)fileSystemAttributes;
+- (NSImage *)icon;
+- (BOOL)isFile;
+- (BOOL)isDirectory;
+
+@end /* NSObject (FUSEOFS) */
+
+#endif	/* __iTunesFS_NSObject_FUSEOFS_H */

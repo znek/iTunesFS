@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2007, Marcus Müller <znek@mulle-kybernetik.com>.
+  Copyright (c) 2007, Marcus MÃ¼ller <znek@mulle-kybernetik.com>.
   All rights reserved.
 
 
@@ -30,51 +30,23 @@
   POSSIBILITY OF SUCH DAMAGE.
 */
 
-#import "common.h"
-#import "NSObject+Extensions.h"
+#ifndef	__iTunesFS_FUSEObjectFileSystem_H
+#define	__iTunesFS_FUSEObjectFileSystem_H
 
-@implementation NSObject (iTunesFSLookupExtensions)
+#import "FUSEFileSystem.h"
 
-- (id)lookupPathComponent:(NSString *)_pc {
-  return nil;
-}
-- (NSArray *)directoryContents {
-  return nil;
-}
-- (NSData *)fileContents {
-  return nil;
-}
-- (NSString *)symbolicLinkTarget {
-  return nil; 
-}
-- (NSDictionary *)fileAttributes {
-  return nil;
-}
-- (NSDictionary *)fileSystemAttributes {
-  return nil;
-}
-- (NSImage *)icon {
-  return nil;
-}
-- (BOOL)isFile {
-  return NO;
-}
-- (BOOL)isDirectory {
-  return NO;
+@interface FUSEObjectFileSystem : FUSEFileSystem
+{
+
 }
 
-@end /* NSObject (iTunesFSLookupExtensions) */
+// transform the file system path passed in from FUSE into object file system
+// path components.
+- (NSArray *)pathFromFSPath:(NSString *)_path;
 
-@implementation NSDictionary (iTunesFSLookupExtensions)
+// the root object during path lookup
+- (id)rootObject;
 
-- (id)lookupPathComponent:(NSString *)_pc {
-  return [self objectForKey:_pc];
-}
-- (NSArray *)directoryContents {
-  return [self allKeys];
-}
-- (BOOL)isDirectory {
-  return YES;
-}
+@end /* FUSEObjectFileSystem */
 
-@end /* NSDictionary (iTunesFSLookupExtensions) */
+#endif	/* __iTunesFS_FUSEObjectFileSystem_H */

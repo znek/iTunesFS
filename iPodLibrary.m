@@ -465,10 +465,6 @@ static NSMutableDictionary *codeSelMap = nil;
   return self->name;
 }
 
-- (NSImage *)icon {
-  return [[NSWorkspace sharedWorkspace] iconForFile:self->mountPoint];
-}
-
 - (NSString *)libraryPath {
   return [NSString stringWithFormat:@"%@/iPod_Control/iTunes/iTunesDB",
                                     self->mountPoint];
@@ -476,6 +472,10 @@ static NSMutableDictionary *codeSelMap = nil;
 
 - (NSString *)mountPoint {
   return self->mountPoint;
+}
+
+- (NSImage *)icon {
+  return [[NSWorkspace sharedWorkspace] iconForFile:self->mountPoint];
 }
 
 @end /* iPodLibrary */

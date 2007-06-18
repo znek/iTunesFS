@@ -1,3 +1,22 @@
+2007-06-18  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v1.1.4 (IN PROGRESS)
+
+	* FUSEOFS/*: added new FUSEOFS subproject. The idea here is to have
+	  a reusable object model for other FUSEObjC based file systems.
+
+	* iTunesFileSystem.[hm]: moved all lookup related stuff to new
+	  superclass, FUSEObjectFileSystem.
+
+	* iTunesLibrary.m, iPodLibrary.m, iTunesPlaylist.m, iTunesTrack.m:
+	  changed all references of "iTunesFS" to "FUSEOFS".
+
+	* NSArray+Extensions.[hm]: removed obsolete category
+
+	* NSObject+Extensions.[hm]: removed, part of FUSEOFS now.
+
+	* GNUmakefile{,.preamble}: added FUSEOFS
+
 2007-06-14  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* v1.1.3
