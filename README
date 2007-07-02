@@ -54,11 +54,12 @@ PlaylistsTrackFormat | String | The format string to use for formatting track
 For developers
 --------------
 
-Name                         | Type | Description
------------------------------+------+-------------------------------------
-iTunesFileSystemDebugEnabled | BOOL | turns on general debugging info
-iTunesFSDebugPathLookup      | BOOL | display path objects during lookup
-iPodLibraryDebugEnabled      | BOOL | detailed iPodLibrary debugging
+Name                                | Type | Description
+------------------------------------+------+---------------------------------
+FUSEObjectFileSystemDebugPathLookup | BOOL | display path objects during
+                                    |      | lookup
+iTunesFileSystemDebugEnabled        | BOOL | turns on general debugging info
+iPodLibraryDebugEnabled             | BOOL | detailed iPodLibrary debugging
 
 
 Formatters
@@ -79,11 +80,11 @@ Currently, track properties of interest are:
 
 Here's an example of a more complex formatter:
 
-"#%(trackNumber#00) %(name) (%(artist) - %(album))"
+"#%(trackNumber#00) %(name) (%(artist) - %(album)).%(ext)"
 
 This would produce an output similar to this:
 
-#04 Karma (Moshcircus - Karma)
+#05 Per Aspera Ad Astra (Moshcircus - Karma).m4a
 
 
 TODO / IDEAS

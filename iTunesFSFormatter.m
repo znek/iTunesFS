@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2007, Marcus MÂ¸ller <znek@mulle-kybernetik.com>.
+  Copyright (c) 2007, Marcus Müller <znek@mulle-kybernetik.com>.
   All rights reserved.
 
 
@@ -38,6 +38,7 @@
 {
   id              target;
   NSMutableString *buffer;
+  unsigned        rewindIndex;
 }
 
 - (id)initWithTarget:(id)_obj;
@@ -219,8 +220,10 @@ static NSMutableDictionary *fmtCache = nil;
 }
 
 - (void)appendToBuffer:(NSString *)_s {
-  if (_s)
+  if (_s) {
+    self->rewindIndex = [self->buffer length];
     [self->buffer appendString:_s];
+  }
 }
 
 - (void)appendValueForKeyToBuffer:(NSString *)_key {
@@ -252,8 +255,24 @@ static NSMutableDictionary *fmtCache = nil;
 
   NS_ENDHANDLER
 
-  if (value)
+  if (value) {
     [self->buffer appendString:[value description]];
+  }
+  else {
+    /* Rewind to rewindIndex - this will remove any static "prefixes"
+     * In most cases this is the right thing to do, but sometimes it
+     * might lead to undesired side effects. I'm nevertheless convinced
+     * that this is the best choice for a default operation.
+     */
+    NSRange r;
+    
+    r = NSMakeRange(self->rewindIndex,
+                    [self->buffer length] - self->rewindIndex);
+    if (r.length) {
+      [self->buffer deleteCharactersInRange:r];
+      self->rewindIndex = [self->buffer length];
+    }
+  }
 }
 
 - (NSString *)formattedString {

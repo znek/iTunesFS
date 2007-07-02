@@ -39,7 +39,6 @@
 
 @implementation FUSEObjectFileSystem
 
-static BOOL doDebug     = NO;
 static BOOL debugLookup = NO;
 
 + (void)initialize {
@@ -49,17 +48,8 @@ static BOOL debugLookup = NO;
   if (didInit) return;
   didInit     = YES;
   ud          = [NSUserDefaults standardUserDefaults];
-  doDebug     = [ud boolForKey:@"FUSEObjectFileSystemDebugEnabled"];
   debugLookup = [ud boolForKey:@"FUSEObjectFileSystemDebugPathLookup"];
 }
-
-#if 0
-#ifdef GNU_GUI_LIBRARY
-+ (id)sharedApplication {
-  return NSApp;
-}
-#endif
-#endif
 
 - (NSArray *)pathFromFSPath:(NSString *)_path {
   return [_path pathComponents];

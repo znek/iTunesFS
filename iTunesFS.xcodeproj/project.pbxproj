@@ -23,7 +23,6 @@
 		AD15A4D40C04433D00345C9E /* Watchdog.m in Sources */ = {isa = PBXBuildFile; fileRef = AD15A4D30C04433D00345C9E /* Watchdog.m */; };
 		AD15AA5E0C05BC7400345C9E /* iPodLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = AD15AA5D0C05BC7400345C9E /* iPodLibrary.m */; };
 		AD20DB530C259F6F00DB2A42 /* FUSEObjectFileSystem.m in Sources */ = {isa = PBXBuildFile; fileRef = AD20DB520C259F6F00DB2A42 /* FUSEObjectFileSystem.m */; };
-		AD20DC190C25AD8E00DB2A42 /* FUSEOFSFileProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = AD20DC180C25AD8E00DB2A42 /* FUSEOFSFileProxy.m */; };
 		AD2186D50C0D4805008FB568 /* NSURL+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = AD2186D40C0D4805008FB568 /* NSURL+Extensions.m */; };
 		AD21E2FF0C32D49800D827BE /* iTunesFSFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = AD21E2FE0C32D49800D827BE /* iTunesFSFormatter.m */; };
 		AD37A2040C01C58000DF1291 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = AD37A2030C01C58000DF1291 /* MainMenu.nib */; };
@@ -70,8 +69,8 @@
 		AD20DC180C25AD8E00DB2A42 /* FUSEOFSFileProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FUSEOFSFileProxy.m; sourceTree = "<group>"; };
 		AD2186D30C0D4805008FB568 /* NSURL+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = "NSURL+Extensions.h"; sourceTree = "<group>"; };
 		AD2186D40C0D4805008FB568 /* NSURL+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.objc; path = "NSURL+Extensions.m"; sourceTree = "<group>"; };
-		AD21E2FD0C32D49800D827BE /* iTunesFSFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTunesFSFormatter.h; sourceTree = "<group>"; };
-		AD21E2FE0C32D49800D827BE /* iTunesFSFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTunesFSFormatter.m; sourceTree = "<group>"; };
+		AD21E2FD0C32D49800D827BE /* iTunesFSFormatter.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = iTunesFSFormatter.h; sourceTree = "<group>"; };
+		AD21E2FE0C32D49800D827BE /* iTunesFSFormatter.m */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.objc; path = iTunesFSFormatter.m; sourceTree = "<group>"; };
 		AD37A1FB0C01C57400DF1291 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		AD37A2950C01C87E00DF1291 /* iTunesLibrary.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = iTunesLibrary.h; sourceTree = "<group>"; };
 		AD37A2960C01C87E00DF1291 /* iTunesLibrary.m */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.objc; path = iTunesLibrary.m; sourceTree = "<group>"; };
@@ -397,7 +396,6 @@
 				AD5B5E7C0C0C1A70003B1650 /* NSObject+FUSEOFS.m in Sources */,
 				AD2186D50C0D4805008FB568 /* NSURL+Extensions.m in Sources */,
 				AD20DB530C259F6F00DB2A42 /* FUSEObjectFileSystem.m in Sources */,
-				AD20DC190C25AD8E00DB2A42 /* FUSEOFSFileProxy.m in Sources */,
 				AD21E2FF0C32D49800D827BE /* iTunesFSFormatter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

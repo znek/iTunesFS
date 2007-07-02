@@ -10,7 +10,7 @@ FUSEOFS_INCLUDE_DIRS +=			\
 FUSEOFS_OBJC_FILES +=			\
 	FUSEObjectFileSystem.m		\
 	NSObject+FUSEOFS.m		\
-	FUSEOFSFileProxy.m		\
+#	FUSEOFSFileProxy.m		\
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/subproject.make
