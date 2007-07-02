@@ -21,6 +21,7 @@ iTunesFS_OBJC_FILES +=				\
 	iPodLibrary.m				\
 	iTunesPlaylist.m			\
 	iTunesTrack.m				\
+	iTunesFSFormatter.m			\
 						\
 	Watchdog.m				\
 						\
