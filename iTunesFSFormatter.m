@@ -174,6 +174,15 @@ static NSValue        *appendValueForKeyToBufferValue = nil;
 
 @implementation iTunesFSFormattingResult
 
+static NSMutableDictionary *fmtCache = nil;
+
++ (void)initialize {
+  static BOOL didInit = NO;
+  
+  if (didInit) return;
+  fmtCache = [[NSMutableDictionary alloc] initWithCapacity:3];
+}
+
 - (id)initWithTarget:(id)_obj {
   self = [super init];
   if (self) {
@@ -189,18 +198,52 @@ static NSValue        *appendValueForKeyToBufferValue = nil;
   [super dealloc];
 }
 
+- (NSFormatter *)getFormatterForValue:(id)_value
+  withFormatString:(NSString *)_fmt
+{
+  NSString          *cacheKey;
+  NSNumberFormatter *formatter;
+
+  cacheKey  = _fmt;
+  formatter = [fmtCache objectForKey:cacheKey];
+  if (!formatter) {
+    formatter = [[NSNumberFormatter alloc] init];
+    [formatter setFormat:_fmt];
+    [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+    [fmtCache setObject:formatter forKey:cacheKey];
+    [formatter release];
+  }
+  return formatter;
+}
+
 - (void)appendToBuffer:(NSString *)_s {
   if (_s)
     [self->buffer appendString:_s];
 }
 
 - (void)appendValueForKeyToBuffer:(NSString *)_key {
-  NSString *value;
+  NSRange     r;
+  NSString    *fmt, *value;
+
+  r = [_key rangeOfString:@"#"];
+  if (r.length) {
+    
+    fmt  = [_key substringFromIndex:NSMaxRange(r)];
+    _key = [_key substringToIndex:r.location];
+  }
+  else {
+    fmt = nil;
+  }
 
   NS_DURING
 
     value = [self->target valueForKeyPath:_key];
-
+    if (fmt) {
+      NSFormatter *formatter;
+      
+      formatter = [self getFormatterForValue:value withFormatString:fmt];
+      value     = [formatter stringForObjectValue:value];
+    }
   NS_HANDLER
 
     value = [localException reason];

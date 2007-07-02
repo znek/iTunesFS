@@ -2,8 +2,11 @@
 
 	* v1.1.4 (IN PROGRESS)
 
+	* README: updated defaults section and added "Formatters" section
+
 	* iTunesFSFormatter.[hm]: new formatter object - this is used
-	  for formatting all track names for now.
+	  for formatting all track names for now. Includes ability to provide
+	  format strings for number formatters.
 
 	* iTunesTrack.[hm]: deprecated -prettyName, use -name now. Added
 	  -extension (and, as a convenience, -ext), -trackNumber and

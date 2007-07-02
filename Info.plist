@@ -57,7 +57,7 @@
 		<key>AlbumsTrackFormat</key>
 		<string>%(name).%(ext)</string>
 		<key>PlaylistsTrackFormat</key>
-		<string>%(playlistNumber) %(name).%(ext)</string>
+		<string>%(playlistNumber#000) %(name).%(ext)</string>
 	</dict>
 </dict>
 </plist>

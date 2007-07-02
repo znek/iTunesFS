@@ -35,18 +35,20 @@ Defaults
 For users
 ---------
 
-Name               | Type | Description
--------------------+------+----------------------------------------------
-DetailedTrackNames | BOOL | If YES, use very detailed information
-(NO)               |      | in track names (Album title, Artist,
-                   |      | track number, etc.)
-NoIPods            | BOOL | If YES, don't scan for iPods and instead
-(NO)               |      | of displaying "libraries" at root level
-                   |      | display playlists of iTunes library
-SymbolicLinks      | BOOL | If YES, use symbolic links for tracks instead of
-(NO)               |      | "faking" the existence of files
-UseCategories      | BOOL | If YES, display "Playlists", "Artists" and "Albums"
-(YES)              |      | as virtual folders
+Name                 | Type   | Description
+---------------------+--------+----------------------------------------------
+NoIPods              | BOOL   | If YES, don't scan for iPods and instead
+(NO)                 |        | of displaying "libraries" at root level
+                     |        | display playlists of iTunes library
+SymbolicLinks        | BOOL   | If YES, use symbolic links for tracks instead
+(NO)                 |        | of "faking" the existence of files
+UseCategories        | BOOL   | If YES, display "Playlists", "Artists" and
+(YES)                |        | "Albums" as virtual folders
+AlbumsTrackFormat    | String | The format string to use for formatting track
+                     |        | names in "Albums", "Songs" or "Artists"
+                     |        | folders. Read "Formatters" section for details
+PlaylistsTrackFormat | String | The format string to use for formatting track
+                     |        | names in "Playlists" folders.
 
 
 For developers
@@ -57,6 +59,31 @@ Name                         | Type | Description
 iTunesFileSystemDebugEnabled | BOOL | turns on general debugging info
 iTunesFSDebugPathLookup      | BOOL | display path objects during lookup
 iPodLibraryDebugEnabled      | BOOL | detailed iPodLibrary debugging
+
+
+Formatters
+==========
+
+It's possible to format track names in a generic way providing format strings
+either via "AlbumsTrackFormat" or "PlaylistsTrackFormat". The formatters
+use a python-like syntax for formatting object properties, i.e.: %(name).
+The keys in braces can be complete keypaths. Also, it's possible to provide
+a number format to apply to the resulting value, i.e.: %(trackNumber#000).
+Currently, track properties of interest are:
+- name
+- album
+- artist
+- extension (you can also use "ext" as a convenience)
+- trackNumber
+- playlistNumber
+
+Here's an example of a more complex formatter:
+
+"#%(trackNumber#00) %(name) (%(artist) - %(album))"
+
+This would produce an output similar to this:
+
+#04 Karma (Moshcircus - Karma)
 
 
 TODO / IDEAS
