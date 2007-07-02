@@ -36,17 +36,18 @@
 #import "NSURL+Extensions.h"
 
 @interface iTunesTrack (Private)
+- (NSString *)prettyName;
 - (void)setPrettyName:(NSString *)_prettyName;
 - (void)setUrl:(NSURL *)_url;
 - (NSURL *)url;
 - (void)setAttributes:(NSDictionary *)_attributes;
 - (NSDictionary *)attributes;
+- (void)setTrackNumber:(unsigned)_trackNumber;
 @end
 
 @implementation iTunesTrack
 
 static BOOL     doDebug                    = NO;
-static BOOL     detailedNames              = NO;
 static BOOL     useSymbolicLinks           = NO;
 static NSString *locationReplacePrefix     = nil;
 static NSString *locationDestinationPrefix = nil;
@@ -59,13 +60,10 @@ static NSString *locationDestinationPrefix = nil;
   didInit                   = YES;
   ud                        = [NSUserDefaults standardUserDefaults];
   doDebug                   = [ud boolForKey:@"iTunesFileSystemDebugEnabled"];
-  detailedNames             = [ud boolForKey:@"DetailedTrackNames"];
   useSymbolicLinks          = [ud boolForKey:@"SymbolicLinks"];
   locationReplacePrefix     = [ud stringForKey:@"LocationReplacePrefix"];
   locationDestinationPrefix = [ud stringForKey:@"LocationDestinationPrefix"];
 
-  if (doDebug && detailedNames)
-    NSLog(@"Using detailed names for tracks");
   if (doDebug && useSymbolicLinks)
     NSLog(@"Using symbolic links for tracks");
 }
@@ -76,50 +74,35 @@ static NSString *locationDestinationPrefix = nil;
   self = [super init];
   if (self) {
     NSString            *name;
-    NSNumber            *trackNumber;
+    NSNumber            *tn;
     NSString            *location;
-    NSMutableString     *pn;
     NSMutableDictionary *attrs;
     id                  tmp;
 
-    pn           = [[NSMutableString alloc] initWithCapacity:128];
     self->artist = [[[_track objectForKey:@"Artist"]
                              properlyEscapedFSRepresentation] copy];
     self->album  = [[[_track objectForKey:@"Album"]
                              properlyEscapedFSRepresentation] copy];
 
-    if (detailedNames) {
-      if (self->artist) {
-        [pn appendString:self->artist];
-        [pn appendString:@"_"];
-      }
-      if (self->album) {
-        [pn appendString:self->album];
-        [pn appendString:@"_"];
-      }
-      trackNumber = [_track objectForKey:@"Track Number"];
-      if (trackNumber) {
-        [pn appendString:[trackNumber description]];
-        [pn appendString:@" "];
-      }
-    }
+    tn = [_track objectForKey:@"Track Number"];
+    [self setTrackNumber:[tn unsignedIntValue]];
+
     name = [_track objectForKey:@"Name"];
     if (name) {
-      [pn appendString:[name properlyEscapedFSRepresentation]];
+      [self setPrettyName:[name properlyEscapedFSRepresentation]];
     }
     else {
       NSLog(@"WARN: track without name! REP:%@", _track);
-      [pn appendString:@"Empty"];
+      [self setPrettyName:@"Empty"];
     }
     location = [_track objectForKey:@"Location"];
     if (location) {
-      [pn appendString:@"."];
       if ([location hasPrefix:@"file"]) {
-        [pn appendString:[location pathExtension]];
+        self->ext = [[location pathExtension] copy];
       }
       else {
         /* http:// stream address... */
-        [pn appendString:@"webloc"];
+        self->ext = @"webloc";
       }
       if (locationReplacePrefix) {
         NSRange r;
@@ -133,7 +116,6 @@ static NSString *locationDestinationPrefix = nil;
       }
       [self setUrl:[NSURL URLWithString:location]];
     }
-    [self setPrettyName:pn];
 
     attrs = [[NSMutableDictionary alloc] initWithCapacity:3];
     if ([[self url] isFileURL]) {
@@ -165,53 +147,37 @@ static NSString *locationDestinationPrefix = nil;
   self = [super init];
   if (self) {
     NSString            *name;
-    NSNumber            *trackNumber;
+    NSNumber            *tn;
     NSURL               *location;
-    NSMutableString     *pn;
     NSMutableDictionary *attrs;
     id                  tmp;
 
-    pn           = [[NSMutableString alloc] initWithCapacity:128];
     self->artist = [[[_track objectForKey:@"Artist"]
                              properlyEscapedFSRepresentation] copy];
     self->album  = [[[_track objectForKey:@"Album"]
                              properlyEscapedFSRepresentation] copy];
 
-    if (detailedNames) {
-      if (self->artist) {
-        [pn appendString:self->artist];
-        [pn appendString:@"_"];
-      }
-      if (self->album) {
-        [pn appendString:self->album];
-        [pn appendString:@"_"];
-      }
-      trackNumber = [_track objectForKey:@"Track Number"];
-      if (trackNumber) {
-        [pn appendString:[trackNumber description]];
-        [pn appendString:@" "];
-      }
-    }
+    tn = [_track objectForKey:@"Track Number"];
+    [self setTrackNumber:[tn unsignedIntValue]];
+
     name = [_track objectForKey:@"name"];
     if (name) {
-      [pn appendString:[name properlyEscapedFSRepresentation]];
+      [self setPrettyName:[name properlyEscapedFSRepresentation]];
     }
     else {
       NSLog(@"WARN: track without name! REP:%@", _track);
-      [pn appendString:@"Empty"];
+      [self setPrettyName:@"Empty"];
     }
     location = [_track objectForKey:@"location"];
     if (location) {
-      [pn appendString:@"."];
       if ([location isFileURL]) {
-        [pn appendString:[[location path] pathExtension]];
+        self->ext = [[[location path] pathExtension] copy];
       }
       else {
-        [pn appendString:@"webloc"];
+        self->ext = @"webloc";
       }
       [self setUrl:location];
     }
-    [self setPrettyName:pn];
 
     attrs = [[NSMutableDictionary alloc] initWithCapacity:3];
     if ([[self url] isFileURL]) {
@@ -240,6 +206,7 @@ static NSString *locationDestinationPrefix = nil;
   [self->artist     release];
   [self->url        release];
   [self->attributes release];
+  [self->ext        release];
   [super dealloc];
 }
 
@@ -251,6 +218,9 @@ static NSString *locationDestinationPrefix = nil;
   self->prettyName = _prettyName;
 }
 - (NSString *)prettyName {
+  return self->prettyName;
+}
+- (NSString *)name {
   return self->prettyName;
 }
 
@@ -269,6 +239,12 @@ static NSString *locationDestinationPrefix = nil;
 - (NSURL *)url {
   return self->url;
 }
+- (NSString *)extension {
+  return self->ext;
+}
+- (NSString *)ext {
+  return self->ext;
+}
 
 - (void)setAttributes:(NSDictionary *)_attributes {
   _attributes = [_attributes copy];
@@ -278,6 +254,21 @@ static NSString *locationDestinationPrefix = nil;
 - (NSDictionary *)attributes {
   return self->attributes;
 }
+
+- (void)setTrackNumber:(unsigned)_trackNumber {
+  self->trackNumber = _trackNumber;
+}
+- (unsigned)trackNumber {
+  return self->trackNumber;
+}
+
+- (void)setPlaylistNumber:(unsigned)_playlistNumber {
+  self->playlistNumber = _playlistNumber;
+}
+- (unsigned)playlistNumber {
+  return self->playlistNumber;
+}
+
 
 /* FUSEOFS */
 

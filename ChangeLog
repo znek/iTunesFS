@@ -1,6 +1,20 @@
-2007-06-18  Marcus Mueller  <znek@mulle-kybernetik.com>
+2007-07-02  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* v1.1.4 (IN PROGRESS)
+
+	* iTunesFSFormatter.[hm]: new formatter object - this is used
+	  for formatting all track names for now.
+
+	* iTunesTrack.[hm]: deprecated -prettyName, use -name now. Added
+	  -extension (and, as a convenience, -ext), -trackNumber and
+	  -playlistNumber for formatting purposes. Removed the
+	  "DetailedTrackNames" default.
+
+	* iTunesLibrary.m: added new "AlbumsTrackFormat" default for formatting
+	  track names in "Albums" and "Songs".
+
+	* iTunesPlaylist.m: added new "PlaylistsTrackFormat" default for
+	  formatting track names in "Playlists".
 
 	* FUSEOFS/*: added new FUSEOFS subproject. The idea here is to have
 	  a reusable object model for other FUSEObjC based file systems.

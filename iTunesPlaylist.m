@@ -35,6 +35,7 @@
 #import "iTunesLibrary.h"
 #import "iTunesTrack.h"
 #import "NSString+Extensions.h"
+#import "iTunesFSFormatter.h"
 
 @interface iTunesPlaylist (Private)
 - (void)generatePrettyTrackNames;
@@ -44,6 +45,25 @@
 @end
 
 @implementation iTunesPlaylist
+
+static BOOL              doDebug           = NO;
+static iTunesFSFormatter *plTrackFormatter = nil;
+
++ (void)initialize {
+  static BOOL    didInit = NO;
+  NSUserDefaults *ud;
+  NSString       *fmt;
+  
+  if (didInit) return;
+  didInit          = YES;
+  ud               = [NSUserDefaults standardUserDefaults];
+  doDebug          = [ud boolForKey:@"iTunesFileSystemDebugEnabled"];
+  fmt              = [ud stringForKey:@"PlaylistsTrackFormat"];
+  plTrackFormatter = [[iTunesFSFormatter alloc] initWithFormatString:fmt];
+  
+  if (doDebug)
+    NSLog(@"PlaylistsTrackFormat: %@", fmt);
+}
 
 - (id)initWithITunesLibraryRepresentation:(NSDictionary *)_list
   lib:(iTunesLibrary *)_lib
@@ -62,12 +82,12 @@
     for (i = 0; i < count; i++) {
       NSDictionary *item;
       NSString     *trackID;
-      iTunesTrack  *track;
+      iTunesTrack  *trk;
 
       item    = [items objectAtIndex:i];
       trackID = [[item objectForKey:@"Track ID"] description];
-      track   = [_lib trackWithID:trackID];
-      if (!track) {
+      trk     = [_lib trackWithID:trackID];
+      if (!trk) {
 #if 0
         /* NOTE: Rolf's library really sports these effects, seems to be
          * limited to Podcasts only.
@@ -77,7 +97,7 @@
 #endif
         continue;
       }
-      [ma addObject:track];
+      [ma addObject:trk];
     }
     [self setTracks:ma];
     [ma release];
@@ -102,11 +122,11 @@
     ma = [[NSMutableArray alloc] initWithCapacity:count];
     for (i = 0; i < count; i++) {
       NSString     *trackID;
-      iTunesTrack  *track;
+      iTunesTrack  *trk;
       
       trackID = [items objectAtIndex:i];
-      track   = [_lib trackWithID:trackID];
-      if (!track) {
+      trk     = [_lib trackWithID:trackID];
+      if (!trk) {
 #if 0
         /* NOTE: Rolf's library really sports these effects, seems to be
         * limited to Podcasts only.
@@ -116,7 +136,7 @@
 #endif
         continue;
       }
-      [ma addObject:track];
+      [ma addObject:trk];
     }
     [self setTracks:ma];
     [ma release];
@@ -141,12 +161,14 @@
   count = [self->tracks count];
   ma    = [[NSMutableArray alloc] initWithCapacity:count];
   for (i = 0; i < count; i++) {
+    iTunesTrack *trk;
+    unsigned    trkIndex;
     NSString    *tn;
-    iTunesTrack *track;
     
-    track = [self trackAtIndex:i];
-    tn    = [NSString stringWithFormat:@"%03d %@",
-                                       i + 1, [track prettyName]];
+    trk      = [self trackAtIndex:i];
+    trkIndex = i + 1;
+    [trk setPlaylistNumber:trkIndex];
+    tn       = [plTrackFormatter stringValueByFormattingObject:trk];
     [ma addObject:tn];
   }
   [self setTrackNames:ma];

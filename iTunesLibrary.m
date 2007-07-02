@@ -38,24 +38,27 @@
 #import "iTunesTrack.h"
 #import "Watchdog.h"
 #import "NSObject+FUSEOFS.h"
+#import "iTunesFSFormatter.h"
 
 @implementation iTunesLibrary
 
-static BOOL     doDebug       = NO;
-static BOOL     useCategories = NO;
-static BOOL     mimicIPodNav  = NO;
-static NSString *libraryPath  = nil;
-static NSImage  *libraryIcon  = nil;
-static NSString *kPlaylists   = @"Playlists";
-static NSString *kArtists     = @"Artists";
-static NSString *kAlbums      = @"Albums";
-static NSString *kSongs       = @"Songs";
-static NSString *kUnknown     = @"Unknown";
-static NSString *kAll         = @"All";
+static BOOL              doDebug               = NO;
+static BOOL              useCategories         = NO;
+static BOOL              mimicIPodNav          = NO;
+static NSString          *libraryPath          = nil;
+static NSImage           *libraryIcon          = nil;
+static NSString          *kPlaylists           = @"Playlists";
+static NSString          *kArtists             = @"Artists";
+static NSString          *kAlbums              = @"Albums";
+static NSString          *kSongs               = @"Songs";
+static NSString          *kUnknown             = @"Unknown";
+static NSString          *kAll                 = @"All";
+static iTunesFSFormatter *albumsTrackFormatter = nil;
 
 + (void)initialize {
   static BOOL    didInit = NO;
   NSUserDefaults *ud;
+  NSString       *fmt;
 
   if (didInit) return;
   didInit       = YES;
@@ -87,6 +90,12 @@ static NSString *kAll         = @"All";
                                    properlyEscapedFSRepresentation] copy];
   kAll        = [[NSLocalizedString(@"All",       "All")
                                    properlyEscapedFSRepresentation] copy];
+
+  fmt                  = [ud stringForKey:@"AlbumsTrackFormat"];
+  albumsTrackFormatter = [[iTunesFSFormatter alloc] initWithFormatString:fmt];
+
+  if (doDebug)
+    NSLog(@"AlbumsTrackFormat: %@", fmt);
 
   if (doDebug && useCategories)
     NSLog(@"Using categories (virtual folder hierarchy)");
@@ -194,7 +203,6 @@ static NSString *kAll         = @"All";
   [self->virtMap removeObjectForKey:kSongs];
 
   if ([self->plMap count] == 1) {
-    // TODO: this needs to be another key, then
     [self->virtMap setObject:[[self->plMap allValues] lastObject]
                    forKey:kSongs];
   }
@@ -212,7 +220,7 @@ static NSString *kAll         = @"All";
   count  = [tracks count];
   for (i = 0; i < count; i++) {
     iTunesTrack *track;
-    NSString            *artist, *album;
+    NSString            *artist, *album, *formattedName;
     NSMutableDictionary *artistAlbums, *albumTracks;
 
     track  = [tracks objectAtIndex:i];
@@ -233,8 +241,8 @@ static NSString *kAll         = @"All";
       [artistAlbums setObject:albumTracks forKey:album];
       [albumTracks release];
     }
-    // TODO: apply formatter here
-    [albumTracks setObject:track forKey:[track prettyName]];
+    formattedName = [albumsTrackFormatter stringValueByFormattingObject:track];
+    [albumTracks setObject:track forKey:formattedName];
     
     // now, for albums only
     albumTracks = [albums objectForKey:album];
@@ -243,8 +251,8 @@ static NSString *kAll         = @"All";
       [albums setObject:albumTracks forKey:album];
       [albumTracks release];
     }
-    // TODO: apply formatter here
-    [albumTracks setObject:track forKey:[track prettyName]];
+    formattedName = [albumsTrackFormatter stringValueByFormattingObject:track];
+    [albumTracks setObject:track forKey:formattedName];
   }
 
   if (mimicIPodNav) {

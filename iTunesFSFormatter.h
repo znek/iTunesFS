@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2007, Marcus Müller <znek@mulle-kybernetik.com>.
+  Copyright (c) 2007, Marcus MÂ¸ller <znek@mulle-kybernetik.com>.
   All rights reserved.
 
 
@@ -30,37 +30,21 @@
   POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef	__iTunesFS_iTunesTrack_H
-#define	__iTunesFS_iTunesTrack_H
+#ifndef	__iTunesFS_iTunesFSFormatter_H
+#define	__iTunesFS_iTunesFSFormatter_H
 
 #import <Foundation/Foundation.h>
 
-@interface iTunesTrack : NSObject
+@interface iTunesFSFormatter : NSObject
 {
-  NSString     *prettyName;
-  NSString     *album;
-  NSString     *artist;
-  NSURL        *url;
-  NSDictionary *attributes;
-  NSString     *ext;
-  unsigned     trackNumber;
-  unsigned     playlistNumber;
+  NSString       *format;
+  NSMutableArray *formattingOps;
 }
 
-- (id)initWithITunesLibraryRepresentation:(NSDictionary *)_track;
-- (id)initWithIPodLibraryRepresentation:(NSDictionary *)_track;
+- (id)initWithFormatString:(NSString *)_format;
 
-- (NSString *)name;
-- (NSString *)album;
-- (NSString *)artist;
+- (NSString *)stringValueByFormattingObject:(id)_obj;
 
-- (NSString *)extension;
-- (NSString *)ext;
+@end /* iTunesFSFormatter */
 
-- (unsigned)trackNumber;
-- (void)setPlaylistNumber:(unsigned)_playlistNumber;
-- (unsigned)playlistNumber;
-
-@end /* iTunesTrack */
-
-#endif	/* __iTunesFS_iTunesTrack_H */
+#endif	/* __iTunesFS_iTunesFSFormatter_H */
