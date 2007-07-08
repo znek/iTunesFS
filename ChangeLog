@@ -1,3 +1,10 @@
+2007-07-08  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v1.1.5
+
+	* {Italian,Spanish}.lproj/Localizable.strings: fixed Italian and
+	  Spanish localizations.
+
 2007-07-02  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* v1.1.4 (IN PROGRESS)
