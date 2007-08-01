@@ -1,13 +1,28 @@
-2007-07-08  Marcus Mueller  <znek@mulle-kybernetik.com>
+2007-08-01  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* v1.1.5
+
+	* iTunesLibrary.m: added "Compilations" patch from Mark Wallis which
+	  aggregates all albums which have different artists in this folder
+
+	* {*}.lproj/Localizable.strings: added "Compilations"
+
+	* AUTHORS: updated
+
+	* NOTES: updated
+
+	* English.lproj/MainMenu.nib: updated, but still invisible - we
+	  probably could use a UI for setting formatters and the like, but
+	  I'm still a bit undecided.
+
+2007-07-08  Infinity  <me@infinite-labs.net>
 
 	* {Italian,Spanish}.lproj/Localizable.strings: fixed Italian and
 	  Spanish localizations.
 
 2007-07-02  Marcus Mueller  <znek@mulle-kybernetik.com>
 
-	* v1.1.4 (IN PROGRESS)
+	* v1.1.4
 
 	* README: updated defaults section and added "Formatters" section
 

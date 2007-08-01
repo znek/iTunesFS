@@ -48,6 +48,7 @@ static BOOL              mimicIPodNav          = NO;
 static NSString          *libraryPath          = nil;
 static NSImage           *libraryIcon          = nil;
 static NSString          *kPlaylists           = @"Playlists";
+static NSString			     *kCompilations		     = @"Compilations";
 static NSString          *kArtists             = @"Artists";
 static NSString          *kAlbums              = @"Albums";
 static NSString          *kSongs               = @"Songs";
@@ -78,18 +79,20 @@ static iTunesFSFormatter *albumsTrackFormatter = nil;
                                copy];
 #endif
 
-  kPlaylists  = [[NSLocalizedString(@"Playlists", "Playlists")
-                                   properlyEscapedFSRepresentation] copy];
-  kAlbums     = [[NSLocalizedString(@"Albums",    "Albums")
-                                   properlyEscapedFSRepresentation] copy];
-  kArtists    = [[NSLocalizedString(@"Artists",   "Artists")
-                                   properlyEscapedFSRepresentation] copy];
-  kSongs      = [[NSLocalizedString(@"Songs",     "Songs")
-                                   properlyEscapedFSRepresentation] copy];
-  kUnknown    = [[NSLocalizedString(@"Unknown",   "Unknown")
-                                   properlyEscapedFSRepresentation] copy];
-  kAll        = [[NSLocalizedString(@"All",       "All")
-                                   properlyEscapedFSRepresentation] copy];
+  kPlaylists    = [[NSLocalizedString(@"Playlists", "Playlists")
+                                      properlyEscapedFSRepresentation] copy];
+  kAlbums       = [[NSLocalizedString(@"Albums",    "Albums")
+                                      properlyEscapedFSRepresentation] copy];
+  kCompilations = [[NSLocalizedString(@"Compilations", "Compilations")
+								                      properlyEscapedFSRepresentation] copy];
+  kArtists      = [[NSLocalizedString(@"Artists",   "Artists")
+                                      properlyEscapedFSRepresentation] copy];
+  kSongs        = [[NSLocalizedString(@"Songs",     "Songs")
+                                      properlyEscapedFSRepresentation] copy];
+  kUnknown      = [[NSLocalizedString(@"Unknown",   "Unknown")
+                                      properlyEscapedFSRepresentation] copy];
+  kAll          = [[NSLocalizedString(@"All",       "All")
+                                      properlyEscapedFSRepresentation] copy];
 
   fmt                  = [ud stringForKey:@"AlbumsTrackFormat"];
   albumsTrackFormatter = [[iTunesFSFormatter alloc] initWithFormatString:fmt];
@@ -109,12 +112,15 @@ static iTunesFSFormatter *albumsTrackFormatter = nil;
     if (useCategories) {
       NSMutableDictionary *tmp;
 
-      self->virtMap = [[NSMutableDictionary alloc] initWithCapacity:3];
+      self->virtMap = [[NSMutableDictionary alloc] initWithCapacity:4];
       tmp = [[NSMutableDictionary alloc] initWithCapacity:1000];
       [self->virtMap setObject:tmp forKey:kAlbums];
       [tmp release];
       tmp = [[NSMutableDictionary alloc] initWithCapacity:1000];
       [self->virtMap setObject:tmp forKey:kArtists];
+      [tmp release];
+      tmp = [[NSMutableDictionary alloc] initWithCapacity:1000];
+      [self->virtMap setObject:tmp forKey:kCompilations];
       [tmp release];
     }
     [self reload];
@@ -193,8 +199,8 @@ static iTunesFSFormatter *albumsTrackFormatter = nil;
 }
 
 - (void)reloadVirtualMaps {
-  NSMutableDictionary *albums, *artists;
-  NSArray             *tracks;
+  NSMutableDictionary *albums, *artists, *compilations;
+  NSArray             *tracks, *allAlbums;
   unsigned            count, i;
 
   if (!useCategories) return;
@@ -210,11 +216,13 @@ static iTunesFSFormatter *albumsTrackFormatter = nil;
     [self->virtMap setObject:self->plMap forKey:kPlaylists];
   }
 
-  albums  = [self->virtMap objectForKey:kAlbums];
-  artists = [self->virtMap objectForKey:kArtists];
+  albums       = [self->virtMap objectForKey:kAlbums];
+  artists      = [self->virtMap objectForKey:kArtists];
+  compilations = [self->virtMap objectForKey:kCompilations];
   
-  [albums  removeAllObjects];
-  [artists removeAllObjects];
+  [albums       removeAllObjects];
+  [artists      removeAllObjects];
+  [compilations removeAllObjects];
 
   tracks = [self->trackMap allValues];
   count  = [tracks count];
@@ -253,6 +261,39 @@ static iTunesFSFormatter *albumsTrackFormatter = nil;
     }
     formattedName = [albumsTrackFormatter stringValueByFormattingObject:track];
     [albumTracks setObject:track forKey:formattedName];
+  }
+  
+  allAlbums = [albums allValues];
+  count = [allAlbums count];
+  for (i = 0; i < count; i++) {
+    NSMutableDictionary *thisAlbum;
+    NSString            *artist, *album;
+
+    thisAlbum = [allAlbums objectAtIndex:i];
+    tracks    = [thisAlbum allValues];
+    
+    artist = [[tracks objectAtIndex:0] artist];
+    if (!artist) artist = kUnknown;
+    album = [[tracks objectAtIndex:0] album];
+    if (album) {
+      unsigned tCount, j;
+
+      tCount = [tracks count];
+      if (tCount > 1) {	
+        for (j = 1; j < tCount; j++) {
+          iTunesTrack *track;
+          NSString    *tArtist;
+
+          track   = [tracks objectAtIndex:j];
+          tArtist = [track artist];
+          if (!tArtist) tArtist = kUnknown;
+          if (![artist isEqualToString:tArtist]) { 
+            [compilations setObject:thisAlbum forKey:album];
+            break;
+          }
+        }
+      }
+    }
   }
 
   if (mimicIPodNav) {

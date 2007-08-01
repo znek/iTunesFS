@@ -81,7 +81,10 @@ Spotlight
 iTunes localization
 ===================
 
+/Applications/iTunes.app/Contents/Resources/English.lproj/Localizable.strings
+
 "135.014"                = "WIEDERGABELISTEN";
+"128.006"                = "Compilations";
 "kSearchMenuItemAlbums"  = "Alben";
 "kSearchMenuItemArtists" = "Interpreten";
 "kSearchMenuItemSongs"   = "Songs";
