@@ -398,11 +398,18 @@ static NSMutableDictionary *codeSelMap = nil;
 
 - (void)setLocation:(NSString *)_value {
   NSArray  *pc;
+  unsigned count;
   NSString *path;
   NSURL    *url;
 
-  pc   = [_value componentsSeparatedByString:@":"];
-  pc   = [pc subarrayWithRange:NSMakeRange([pc count] - 2, 2)];
+  pc    = [_value componentsSeparatedByString:@":"];
+  count = [pc count];
+  if (count < 2) {
+    NSLog(@"%s -- illegal value for location, got '%@'",
+          __PRETTY_FUNCTION__, _value);
+    return;
+  }
+  pc   = [pc subarrayWithRange:NSMakeRange(count - 2, 2)];
   path = [NSString pathWithComponents:pc];
   path = [[self iTunesMusicFolderPath] stringByAppendingPathComponent:path];
   url  = [NSURL fileURLWithPath:path];

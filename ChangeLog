@@ -1,6 +1,12 @@
-2007-08-01  Marcus Mueller  <znek@mulle-kybernetik.com>
+2007-08-06  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* v1.1.5
+
+	* iPodLibrary.m: added safeguards in -setLocation: in case content in
+	  iTunesDB file is malformed (or in a new scheme we don't understand,
+	  yet)
+
+2007-08-01  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* iTunesLibrary.m: added "Compilations" patch from Mark Wallis which
 	  aggregates all albums which have different artists in this folder
