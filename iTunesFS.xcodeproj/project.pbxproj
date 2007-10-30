@@ -31,6 +31,7 @@
 		ADAADA9B0C2111390024D899 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = ADAADA9A0C2111390024D899 /* Localizable.strings */; };
 		ADBDA9CC0C02E7A5004CF795 /* iTunesFS.icns in Resources */ = {isa = PBXBuildFile; fileRef = ADBDA9CB0C02E7A5004CF795 /* iTunesFS.icns */; };
 		ADBDABA90C02FF10004CF795 /* NSString+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = ADBDABA80C02FF10004CF795 /* NSString+Extensions.m */; };
+		ADD11F3A0CD7A26000E7A5C2 /* JBiPodLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = ADD11F390CD7A26000E7A5C2 /* JBiPodLibrary.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -101,6 +102,8 @@
 		ADBDAB050C02F678004CF795 /* create-itunesfs-binary-package.sh */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.script.sh; path = "create-itunesfs-binary-package.sh"; sourceTree = "<group>"; };
 		ADBDABA70C02FF10004CF795 /* NSString+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = "NSString+Extensions.h"; sourceTree = "<group>"; };
 		ADBDABA80C02FF10004CF795 /* NSString+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.objc; path = "NSString+Extensions.m"; sourceTree = "<group>"; };
+		ADD11F380CD7A21E00E7A5C2 /* JBiPodLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JBiPodLibrary.h; sourceTree = "<group>"; };
+		ADD11F390CD7A26000E7A5C2 /* JBiPodLibrary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JBiPodLibrary.m; sourceTree = "<group>"; };
 		ADDCD76C0C26A6640031B215 /* GNUmakefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 5; indentWidth = 8; path = GNUmakefile; sourceTree = "<group>"; tabWidth = 8; };
 /* End PBXFileReference section */
 
@@ -156,6 +159,8 @@
 				AD37A2960C01C87E00DF1291 /* iTunesLibrary.m */,
 				AD15AA5C0C05BC7400345C9E /* iPodLibrary.h */,
 				AD15AA5D0C05BC7400345C9E /* iPodLibrary.m */,
+				ADD11F380CD7A21E00E7A5C2 /* JBiPodLibrary.h */,
+				ADD11F390CD7A26000E7A5C2 /* JBiPodLibrary.m */,
 				AD15A2170C03208500345C9E /* iTunesPlaylist.h */,
 				AD15A2180C03208500345C9E /* iTunesPlaylist.m */,
 				AD15A22A0C03248C00345C9E /* iTunesTrack.h */,
@@ -329,6 +334,7 @@
 		08FB7793FE84155DC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = 1DEB927808733DD40010E9CD /* Build configuration list for PBXProject "iTunesFS" */;
+			compatibilityVersion = "Xcode 2.4";
 			hasScannedForEncodings = 1;
 			knownRegions = (
 				English,
@@ -340,6 +346,7 @@
 			);
 			mainGroup = 08FB7794FE84155DC02AAC07 /* QSFuse */;
 			projectDirPath = "";
+			projectRoot = "";
 			targets = (
 				7F3DBD040B4422C200A48059 /* iTunes */,
 			);
@@ -397,6 +404,7 @@
 				AD2186D50C0D4805008FB568 /* NSURL+Extensions.m in Sources */,
 				AD20DB530C259F6F00DB2A42 /* FUSEObjectFileSystem.m in Sources */,
 				AD21E2FF0C32D49800D827BE /* iTunesFSFormatter.m in Sources */,
+				ADD11F3A0CD7A26000E7A5C2 /* JBiPodLibrary.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -435,7 +443,6 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
-				MOUNT_POINT = /tmp/docsfs;
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-lfuse",
@@ -455,7 +462,6 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
-				MOUNT_POINT = /tmp/docsfs;
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-lfuse",
@@ -511,7 +517,6 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_MODE_FLAG = "go-w,a+rX,u+w";
 				INSTALL_PATH = "$(HOME)/Applications";
-				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				OTHER_LDFLAGS = (
 					"-framework",
 					Foundation,
@@ -520,7 +525,6 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = iTunesFS;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				SYMROOT = /tmp/MulleDeploymentProducts;
 				TEMP_DIR = "$(SYMROOT)/$(PROJECT_NAME).build/$(TARGET_NAME).build";
 				WRAPPER_EXTENSION = app;
@@ -535,7 +539,7 @@
 					ppc,
 					i386,
 				);
-				COPY_PHASE_STRIP = YES;
+				COPY_PHASE_STRIP = NO;
 				DEPLOYMENT_LOCATION = YES;
 				DEPLOYMENT_POSTPROCESSING = NO;
 				DSTROOT = /;
@@ -548,7 +552,6 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_MODE_FLAG = "go-w,a+rX,u+w";
 				INSTALL_PATH = "$(HOME)/Applications";
-				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				OTHER_LDFLAGS = (
 					"-framework",
 					Foundation,
@@ -557,7 +560,6 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = iTunesFS;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				SYMROOT = /tmp/MulleDeploymentProducts;
 				TEMP_DIR = "$(SYMROOT)/$(PROJECT_NAME).build/$(TARGET_NAME).build";
 				WRAPPER_EXTENSION = app;
@@ -573,7 +575,6 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
-				MOUNT_POINT = /tmp/docsfs;
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-lfuse",

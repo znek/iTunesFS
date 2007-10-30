@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2007, Marcus Müller <znek@mulle-kybernetik.com>.
+  Copyright (c) 2007, Marcus MÃ¼ller <znek@mulle-kybernetik.com>.
   All rights reserved.
 
 
@@ -7,15 +7,15 @@
   modification, are permitted provided that the following conditions are met:
 
   - Redistributions of source code must retain the above copyright notice, this
-    list of conditions and the following disclaimer.
+  list of conditions and the following disclaimer.
 
   - Redistributions in binary form must reproduce the above copyright notice,
-    this list of conditions and the following disclaimer in the documentation
-    and/or other materials provided with the distribution.
+  this list of conditions and the following disclaimer in the documentation
+  and/or other materials provided with the distribution.
 
   - Neither the name of Mulle kybernetiK nor the names of its contributors
-    may be used to endorse or promote products derived from this software
-    without specific prior written permission.
+  may be used to endorse or promote products derived from this software
+  without specific prior written permission.
 
   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -30,25 +30,31 @@
   POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef	__iTunesFS_iPodLibrary_H
-#define	__iTunesFS_iPodLibrary_H
+#import "common.h"
+#import "JBiPodLibrary.h"
 
-#import "iTunesLibrary.h"
+@implementation JBiPodLibrary
 
-@interface iPodLibrary : iTunesLibrary
-{
-  NSString *mountPoint;
-
-  /* required by iTunesDB parsing */
-  id       currentObject; // not retained
++ (BOOL)isIPodAtMountPoint:(NSString *)_path {
+  NSString *testPath;
+  
+  /* simple heuristic for Jailbreaked iPods */
+  testPath = [NSString stringWithFormat:@"%@/Media/iTunes_Control", _path];
+  return [[NSFileManager defaultManager] fileExistsAtPath:testPath];
 }
 
-+ (BOOL)isIPodAtMountPoint:(NSString *)_path;
+- (NSString *)iTunesDeviceInfoPath {
+  return nil;
+}
 
-- (id)initWithMountPoint:(NSString *)_path;
+- (NSString *)iTunesMusicFolderPath {
+  return [NSString stringWithFormat:@"%@/Media/iTunes_Control/Music/",
+                                    [self mountPoint]];
+}
 
-- (NSString *)mountPoint;
+- (NSString *)libraryPath {
+  return [NSString stringWithFormat:@"%@/Media/iTunes_Control/iTunes/iTunesDB",
+                                    [self mountPoint]];
+}
 
-@end /* iPodLibrary */
-
-#endif	/* __iTunesFS_iPodLibrary_H */
+@end /* JBiPodLibrary */

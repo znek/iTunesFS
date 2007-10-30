@@ -34,6 +34,7 @@
 #import "iTunesFileSystem.h"
 #import "iTunesLibrary.h"
 #import "iPodLibrary.h"
+#import "JBiPodLibrary.h"
 #import "NSObject+FUSEOFS.h"
 
 @interface iTunesFileSystem (Private)
@@ -50,9 +51,10 @@
 
 @implementation iTunesFileSystem
 
-static BOOL     doDebug     = NO;
-static BOOL     ignoreIPods = NO;
-static NSString *fsIconPath = nil;
+static BOOL     doDebug          = NO;
+static BOOL     ignoreIPods      = NO;
+static NSString *fsIconPath      = nil;
+static NSArray  *fakeVolumePaths = nil;
 
 + (void)initialize {
   static BOOL    didInit = NO;
@@ -60,13 +62,14 @@ static NSString *fsIconPath = nil;
   NSBundle       *mb;
   
   if (didInit) return;
-  didInit     = YES;
-  ud          = [NSUserDefaults standardUserDefaults];
-  doDebug     = [ud boolForKey:@"iTunesFileSystemDebugEnabled"];
-  ignoreIPods = [ud boolForKey:@"NoIPods"];
-  mb          = [NSBundle mainBundle];
+  didInit         = YES;
+  ud              = [NSUserDefaults standardUserDefaults];
+  doDebug         = [ud boolForKey:@"iTunesFileSystemDebugEnabled"];
+  ignoreIPods     = [ud boolForKey:@"NoIPods"];
+  fakeVolumePaths = [[ud arrayForKey:@"iPodMountPoints"] copy];
+  mb              = [NSBundle mainBundle];
 #ifndef GNU_GUI_LIBRARY
-  fsIconPath  = [[mb pathForResource:@"iTunesFS" ofType:@"icns"] copy];
+  fsIconPath      = [[mb pathForResource:@"iTunesFS" ofType:@"icns"] copy];
   NSAssert(fsIconPath != nil, @"Couldn't find iTunesFS.icns!");
 #endif
 }
@@ -90,7 +93,10 @@ static NSString *fsIconPath = nil;
     NSNotificationCenter *nc;
 
     // add mounted iPods
+    lib      = nil;
     volPaths = [[NSWorkspace sharedWorkspace] mountedRemovableMedia];
+    if (fakeVolumePaths)
+      volPaths = [volPaths arrayByAddingObjectsFromArray:fakeVolumePaths];
     count    = [volPaths count];
     for (i = 0; i < count; i++) {
       NSString *path;
@@ -98,8 +104,15 @@ static NSString *fsIconPath = nil;
       path = [volPaths objectAtIndex:i];
       if ([iPodLibrary isIPodAtMountPoint:path]) {
         lib = [[iPodLibrary alloc] initWithMountPoint:path];
+      }
+      else if ([JBiPodLibrary isIPodAtMountPoint:path]) {
+        lib = [[JBiPodLibrary alloc] initWithMountPoint:path];
+      }
+      
+      if (lib) {
         [self addLibrary:lib];
         [lib release];
+        lib = nil;
       }
     }
     
@@ -134,13 +147,18 @@ static NSString *fsIconPath = nil;
   NSString *path;
 
   path = [[_notif userInfo] objectForKey:@"NSDevicePath"];
-  if ([iPodLibrary isIPodAtMountPoint:path]) {
+  if ([iPodLibrary isIPodAtMountPoint:path] ||
+      [JBiPodLibrary isIPodAtMountPoint:path]) 
+  {
     iTunesLibrary *lib;
     BOOL          prevShowLibraries;
 
     prevShowLibraries = [self showLibraries];
     if (doDebug) NSLog(@"Will add library for iPod at path: %@", path);
-    lib = [[iPodLibrary alloc] initWithMountPoint:path];
+    if ([iPodLibrary isIPodAtMountPoint:path])
+      lib = [[iPodLibrary alloc] initWithMountPoint:path];
+    else
+      lib = [[JBiPodLibrary alloc] initWithMountPoint:path];
     [self addLibrary:lib];
     [lib release];
 

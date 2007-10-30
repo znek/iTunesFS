@@ -451,12 +451,15 @@ static NSMutableDictionary *codeSelMap = nil;
 
 - (NSString *)name {
   if (!self->name) {
+    NSString *devInfoPath;
     NSData   *devInfo, *leData;
     NSString *devName;
     ushort   nameLen;
 
-    devInfo    = [NSData dataWithContentsOfFile:[self iTunesDeviceInfoPath]];
-    if (devInfo) {
+    devInfoPath = [self iTunesDeviceInfoPath];
+    if (devInfoPath &&
+        (devInfo = [NSData dataWithContentsOfFile:devInfoPath]))
+    {
       [devInfo getBytes:&nameLen length:sizeof(nameLen)];
       nameLen    = NSSwapLittleShortToHost(nameLen);
       leData     = [devInfo subdataWithRange:NSMakeRange(sizeof(nameLen),

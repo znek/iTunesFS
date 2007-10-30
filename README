@@ -49,6 +49,9 @@ AlbumsTrackFormat    | String | The format string to use for formatting track
                      |        | folders. Read "Formatters" section for details
 PlaylistsTrackFormat | String | The format string to use for formatting track
                      |        | names in "Playlists" folders.
+iPodMountPoints      | Array  | An array of mount points to scan for iPods.
+                     |        | Comes in handy for testing purposes or in case
+                     |        | you mount your iPod/iPhone via MacFusion (ssh).
 
 
 For developers
