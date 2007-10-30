@@ -1,10 +1,19 @@
-2007-08-06  Marcus Mueller  <znek@mulle-kybernetik.com>
+2007-10-30  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* v1.1.5
 
+	* iPodLibrary.h: expose -mountPoint (for subclassers).
+
 	* iPodLibrary.m: added safeguards in -setLocation: in case content in
 	  iTunesDB file is malformed (or in a new scheme we don't understand,
-	  yet)
+	  yet).
+
+	* JBiPodLibrary.[hm]: new subclass of iPodLibrary which sports the
+	  new folder locations of iPod Touch and iPhone.
+
+	* iTunesFileSystem.m: added JBiPodLibrary support. Add additional
+	  entries to volume paths of removable devices from new
+	  "iPodMountPoints" user default.
 
 2007-08-01  Marcus Mueller  <znek@mulle-kybernetik.com>
 
