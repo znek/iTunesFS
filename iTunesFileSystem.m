@@ -285,6 +285,16 @@ static NSArray  *fakeVolumePaths = nil;
   return YES;
 }
 
+/* Finder in 10.5.{1|2} is badly broken and displays filesystems
+ * marked as "local" only in sidebar
+ */
+- (BOOL)isLocal {
+  NSString *osVer = [[NSProcessInfo processInfo] operatingSystemVersionString];
+  
+  if ([osVer rangeOfString:@"10.5"].length != 0) return YES;
+  return NO;
+}
+
 - (NSString *)iconFileForPath:(NSString *)_path {
   if ([_path isEqualToString:@"/"]) return fsIconPath;
   return nil;

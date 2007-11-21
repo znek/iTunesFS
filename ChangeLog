@@ -1,3 +1,11 @@
+2007-11-22  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* iTunesFileSystem.m: implement -isLocal to return YES on
+	  Mac OS X 10.5.x due to Leopard's Finder's broken behavior in dealing
+	  with FUSE filesystems
+
+	* iTunesFS.xcodeproj/project.pbxproj: promoted to Xcode 3.0 project
+
 2007-10-30  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* v1.1.5
