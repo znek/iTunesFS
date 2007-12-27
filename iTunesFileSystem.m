@@ -47,6 +47,8 @@
 
 - (NSArray *)pathFromFSPath:(NSString *)_path;
 - (id)lookupPath:(NSString *)_path;
+
+- (BOOL)needsLocalOption;
 @end
 
 @implementation iTunesFileSystem
@@ -277,10 +279,6 @@ static NSArray  *fakeVolumePaths = nil;
 
 /* optional */
 
-- (BOOL)shouldMountInFinder {
-  return YES;
-}
-
 - (BOOL)usesResourceForks {
   return YES;
 }
@@ -288,11 +286,25 @@ static NSArray  *fakeVolumePaths = nil;
 /* Finder in 10.5.{1|2} is badly broken and displays filesystems
  * marked as "local" only in sidebar
  */
-- (BOOL)isLocal {
+- (BOOL)needsLocalOption {
   NSString *osVer = [[NSProcessInfo processInfo] operatingSystemVersionString];
   
   if ([osVer rangeOfString:@"10.5"].length != 0) return YES;
   return NO;
+}
+
+- (NSArray *)fuseOptions {
+  NSMutableArray *os;
+  
+  os = [[[super fuseOptions] mutableCopy] autorelease];
+#if 0
+  // careful!
+  [os addObject:@"debug"];
+#endif
+  [os addObject:@"ping_diskarb"];
+  if ([self needsLocalOption])
+    [os addObject:@"local"];
+  return os;
 }
 
 - (NSString *)iconFileForPath:(NSString *)_path {

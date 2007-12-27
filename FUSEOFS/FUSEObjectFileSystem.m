@@ -39,7 +39,8 @@
 
 @implementation FUSEObjectFileSystem
 
-static BOOL debugLookup = NO;
+static BOOL         debugLookup = NO;
+static NSDictionary *emptyDict  = nil;
 
 + (void)initialize {
   static BOOL    didInit = NO;
@@ -49,6 +50,7 @@ static BOOL debugLookup = NO;
   didInit     = YES;
   ud          = [NSUserDefaults standardUserDefaults];
   debugLookup = [ud boolForKey:@"FUSEObjectFileSystemDebugPathLookup"];
+  emptyDict   = [[NSDictionary alloc] init];
 }
 
 - (NSArray *)pathFromFSPath:(NSString *)_path {
@@ -80,7 +82,7 @@ static BOOL debugLookup = NO;
 
 /* required FUSE methods */
 
-- (NSArray *)directoryContentsAtPath:(NSString *)_path {
+- (NSArray *)contentsOfDirectoryAtPath:(NSString *)_path error:(NSError **)_err {
   return [[self lookupPath:_path] directoryContents];
 }
 
@@ -93,15 +95,22 @@ static BOOL debugLookup = NO;
   return [obj isFile];
 }
 
-- (NSDictionary *)fileAttributesAtPath:(NSString *)_path {
-  return [[self lookupPath:_path] fileAttributes];
+- (NSDictionary *)attributesOfItemAtPath:(NSString *)_path
+  error:(NSError **)_err
+{
+  NSDictionary *attr = [[self lookupPath:_path] fileAttributes];
+  if (!attr)
+    attr = emptyDict;
+  return attr;
 }
 
 - (NSData *)contentsAtPath:(NSString *)_path {
   return [[self lookupPath:_path] fileContents];
 }
 
-- (NSString *)pathContentOfSymbolicLinkAtPath:(NSString *)_path {
+- (NSString *)destinationOfSymbolicLinkAtPath:(NSString *)_path
+  error:(NSError **)_err
+{
   return [[self lookupPath:_path] symbolicLinkTarget];
 }
 
@@ -111,9 +120,20 @@ static BOOL debugLookup = NO;
   return [[self lookupPath:_path] icon];
 }
 
-- (NSDictionary *)fileSystemAttributesAtPath:(NSString *)_path {
-  return [[self lookupPath:_path] fileSystemAttributes];
+- (NSDictionary *)attributesOfFileSystemForPath:(NSString *)_path
+  error:(NSError **)_err
+{
+  NSDictionary *attr = [[self lookupPath:_path] fileSystemAttributes];
+  if (!attr)
+    attr = emptyDict;
+  return attr;
 }
 
+#if 0
+- (NSArray *)extendedAttributesForPath:path error:(NSError **)_err {
+// TODO: Implement!
+  return nil;
+}
+#endif
 
 @end /* FUSEObjectFileSystem */

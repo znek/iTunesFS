@@ -1,3 +1,13 @@
+2007-12-27  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* README: updated
+
+	* FUSEObjectFileSystem.m: renamed all overridden methods due to upgrade
+	  of FUSEObjC
+
+	* iTunesFileSystem.m: implemented -fuseOptions, renamed -isLocal to
+	  - needsLocalOption
+
 2007-11-22  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* iTunesFileSystem.m: implement -isLocal to return YES on

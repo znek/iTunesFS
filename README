@@ -96,6 +96,7 @@ TODO / IDEAS
 - expose iTunesTrack metadata to Spotlight
   - would need to gather that metadata (Artist, Album, etc.) first
     (but that's trivial)
+- create .fseventsd folder?
 
 
 References
