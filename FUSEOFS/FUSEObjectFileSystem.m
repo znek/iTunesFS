@@ -82,7 +82,9 @@ static NSDictionary *emptyDict  = nil;
 
 /* required FUSE methods */
 
-- (NSArray *)contentsOfDirectoryAtPath:(NSString *)_path error:(NSError **)_err {
+- (NSArray *)contentsOfDirectoryAtPath:(NSString *)_path
+  error:(NSError **)_err
+{
   return [[self lookupPath:_path] directoryContents];
 }
 

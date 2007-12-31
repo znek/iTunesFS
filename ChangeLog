@@ -1,6 +1,15 @@
+2007-12-31  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v1.1.6
+
+	* README: updated, added proper MacFUSE Core versions
+
+	* iTunesFileSystem.m: added "NoITunes" default, preventing iTunes
+	  library from being displayed (feature request by Iacopo Cacciaguerra)
+
 2007-12-27  Marcus Mueller  <znek@mulle-kybernetik.com>
 
-	* README: updated
+	* README: updated, added .fseventsd TODO
 
 	* FUSEObjectFileSystem.m: renamed all overridden methods due to upgrade
 	  of FUSEObjC

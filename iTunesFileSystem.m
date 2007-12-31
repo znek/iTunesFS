@@ -54,6 +54,7 @@
 @implementation iTunesFileSystem
 
 static BOOL     doDebug          = NO;
+static BOOL     ignoreITunes     = NO;
 static BOOL     ignoreIPods      = NO;
 static NSString *fsIconPath      = nil;
 static NSArray  *fakeVolumePaths = nil;
@@ -67,7 +68,10 @@ static NSArray  *fakeVolumePaths = nil;
   didInit         = YES;
   ud              = [NSUserDefaults standardUserDefaults];
   doDebug         = [ud boolForKey:@"iTunesFileSystemDebugEnabled"];
+  ignoreITunes    = [ud boolForKey:@"NoITunes"];
   ignoreIPods     = [ud boolForKey:@"NoIPods"];
+  if (ignoreITunes && ignoreIPods)
+    NSLog(@"ERROR: ignoring iTunes and iPods doesn't make sense at all.");
   fakeVolumePaths = [[ud arrayForKey:@"iPodMountPoints"] copy];
   mb              = [NSBundle mainBundle];
 #ifndef GNU_GUI_LIBRARY
@@ -85,10 +89,11 @@ static NSArray  *fakeVolumePaths = nil;
   self->volMap = [[NSMutableDictionary alloc] initWithCapacity:3];
 
   // add default library
-  lib = [[iTunesLibrary alloc] init];
-  [self addLibrary:lib];
-  [lib release];
-
+  if (!ignoreITunes) {
+    lib = [[iTunesLibrary alloc] init];
+    [self addLibrary:lib];
+    [lib release];
+  }
   if (!ignoreIPods) {
     NSArray              *volPaths;
     unsigned             i, count;
@@ -283,8 +288,8 @@ static NSArray  *fakeVolumePaths = nil;
   return YES;
 }
 
-/* Finder in 10.5.{1|2} is badly broken and displays filesystems
- * marked as "local" only in sidebar
+/* Finder in 10.5.{1|2} is braindead, only displays filesystems
+ * marked as "local" in sidebar
  */
 - (BOOL)needsLocalOption {
   NSString *osVer = [[NSProcessInfo processInfo] operatingSystemVersionString];
