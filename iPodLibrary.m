@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2007, Marcus Müller <znek@mulle-kybernetik.com>.
+  Copyright (c) 2007-2008, Marcus Müller <znek@mulle-kybernetik.com>.
   All rights reserved.
 
 
@@ -48,6 +48,7 @@
 - (NSDate *)dateFromMacTimestamp:(NSNumber *)_timestamp;
 
 - (void)setFileLength:(id)_value;
+- (void)setTrackNumber:(id)_value;
 - (void)setDateAdded:(NSNumber *)_timestamp;
 - (void)setDateModified:(NSNumber *)_timestamp;
 @end
@@ -309,6 +310,7 @@ static NSMutableDictionary *codeSelMap = nil;
       prop               = (mhitExtra *)[data bytes];
       prop->uniqueID     = NSSwapLittleLongToHost(prop->uniqueID);
       prop->size         = NSSwapLittleLongToHost(prop->size);
+      prop->trackNumber  = NSSwapLittleLongToHost(prop->trackNumber);
       prop->dateModified = NSSwapLittleLongToHost(prop->dateModified);
       prop->dateAdded    = NSSwapLittleLongToHost(prop->dateAdded);
       trackID            = [ULongNum(prop->uniqueID) description];
@@ -317,6 +319,7 @@ static NSMutableDictionary *codeSelMap = nil;
       [tmap setObject:self->currentObject forKey:trackID];
 
       [self setFileLength:ULongNum(prop->size)];
+      [self setTrackNumber:ULongNum(prop->trackNumber)];
       [self setDateAdded:ULongNum(prop->dateAdded)];
       [self setDateModified:ULongNum(prop->dateModified)];
 
@@ -426,6 +429,10 @@ static NSMutableDictionary *codeSelMap = nil;
 
 - (void)setFileLength:(id)_value {
   [self->currentObject setValue:_value forKey:@"Size"];
+}
+
+- (void)setTrackNumber:(id)_value {
+  [self->currentObject setValue:_value forKey:@"Track Number"];
 }
 
 #define macTimeOffset 2082844800

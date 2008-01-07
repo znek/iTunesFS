@@ -1,6 +1,6 @@
 {
   FUSEFileSystemClass      = iTunesFileSystem;
-  NSHumanReadableCopyright = "Copyright 2007 Mulle kybernetiK.";
+  NSHumanReadableCopyright = "Copyright 2007-2008 Mulle kybernetiK.";
   NSUserDefaults           = {
     FUSEMountPath        = "/tmp/iTunesFS";
     UseCategories        = YES;

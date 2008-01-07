@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2007, Marcus Müller <znek@mulle-kybernetik.com>.
+  Copyright (c) 2007-2008, Marcus Müller <znek@mulle-kybernetik.com>.
   All rights reserved.
 
 
@@ -44,7 +44,7 @@
   NSDictionary *attributes;
   NSString     *ext;
   unsigned     trackNumber;
-  unsigned     playlistNumber;
+  unsigned     playlistNumber; // transient
 }
 
 - (id)initWithITunesLibraryRepresentation:(NSDictionary *)_track;
@@ -58,6 +58,10 @@
 - (NSString *)ext;
 
 - (unsigned)trackNumber;
+
+/* this is transient information, set by every playlist that needs this
+ * track to format itself according to the context of the calling playlist
+ */
 - (void)setPlaylistNumber:(unsigned)_playlistNumber;
 - (unsigned)playlistNumber;
 

@@ -1,3 +1,10 @@
+2008-01-07  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* iPodLibrary.m: forgot to set "Track Number" properly, reported by
+	  Tim Fitzgerald
+
+	* *.*: updated copyright information for 2008
+
 2007-12-31  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* v1.1.6

@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2007, Marcus MŸller <znek@mulle-kybernetik.com>.
+  Copyright (c) 2007-2008, Marcus MŸller <znek@mulle-kybernetik.com>.
   All rights reserved.
 
 
