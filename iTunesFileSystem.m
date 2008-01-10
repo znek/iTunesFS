@@ -56,20 +56,30 @@
 static BOOL     doDebug          = NO;
 static BOOL     ignoreITunes     = NO;
 static BOOL     ignoreIPods      = NO;
+static BOOL     autoOpenInFinder = YES;
 static NSString *fsIconPath      = nil;
 static NSArray  *fakeVolumePaths = nil;
+static NSData   *finderInfo      = nil;
 
 + (void)initialize {
-  static BOOL    didInit = NO;
+  static BOOL didInit = NO;
+
+  if (didInit) return;
+
   NSUserDefaults *ud;
   NSBundle       *mb;
-  
-  if (didInit) return;
-  didInit         = YES;
-  ud              = [NSUserDefaults standardUserDefaults];
-  doDebug         = [ud boolForKey:@"iTunesFileSystemDebugEnabled"];
-  ignoreITunes    = [ud boolForKey:@"NoITunes"];
-  ignoreIPods     = [ud boolForKey:@"NoIPods"];
+  // TODO: (Dan) document where you derived this magic from
+  char           bs[32] = { [9] = 0x10 };
+
+  didInit          = YES;
+  ud               = [NSUserDefaults standardUserDefaults];
+  doDebug          = [ud boolForKey:@"iTunesFileSystemDebugEnabled"];
+  ignoreITunes     = [ud boolForKey:@"NoITunes"];
+  ignoreIPods      = [ud boolForKey:@"NoIPods"];
+  autoOpenInFinder = [ud boolForKey:@"AutoOpenInFinder"];
+
+  finderInfo = [[NSData alloc] initWithBytes:bs length:sizeof(bs)];
+
   if (ignoreITunes && ignoreIPods)
     NSLog(@"ERROR: ignoring iTunes and iPods doesn't make sense at all.");
   fakeVolumePaths = [[ud arrayForKey:@"iPodMountPoints"] copy];
@@ -174,6 +184,10 @@ static NSArray  *fakeVolumePaths = nil;
         NSLog(@"posting -noteFileSystemChanged: for %@", [self mountPoint]);
       [[NSWorkspace sharedWorkspace] noteFileSystemChanged:[self mountPoint]];
     }
+  }
+  /* iTunesFS itself is a removable device... */
+  else if (autoOpenInFinder && [path isEqualTo:[self mountPoint]]) {
+    [[NSWorkspace sharedWorkspace] openFile:path];
   }
 }
 
@@ -282,6 +296,18 @@ static NSArray  *fakeVolumePaths = nil;
   return YES;
 }
 
+/* overriding FUSE behavior */
+
+- (NSData *)valueOfExtendedAttribute:(NSString *)_name
+  forPath:(NSString *)_path
+  error:(NSError **)_err
+{
+  // HACK: force extensions to be hidden
+  if ([_name isEqualToString:@"com.apple.FinderInfo"])
+    return finderInfo;
+  return [super valueOfExtendedAttribute:_name forPath:_path error:_err];
+}
+
 /* optional */
 
 - (BOOL)usesResourceForks {
@@ -306,6 +332,19 @@ static NSArray  *fakeVolumePaths = nil;
   // careful!
   [os addObject:@"debug"];
 #endif
+  
+#if 0
+  // TODO: (Dan) explain why we would need that option
+  // we know all filesizes beforehand from the various libraries' metadata,
+  // MUST we really guarantee that these are indeed correct?
+  [os addObject:@"direct_io"];
+#endif
+#if 0
+  // TODO: (Dan) explain why we would need that option
+  // presumably, this is necessary for burn folder support - but why?
+  [os addObject:@"fsname=iTunesFS"];
+#endif
+  // necessary on 10.4, ignored on 10.5
   [os addObject:@"ping_diskarb"];
   if ([self needsLocalOption])
     [os addObject:@"local"];

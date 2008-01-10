@@ -1,3 +1,22 @@
+2008-01-09  Dan Villiom Podlaski Christiansen  <dan@villiom.dk>
+
+	* README: updated for new defaults 'AutoOpenInFinder' and
+	  'UseBurnFoldersInFinder'
+
+	* FUSEOFS/FUSEObjectFileSystem.m: properly set the volicon fuse option
+	  if we have a custom icon for the filesystem
+
+	* iTunesLibrary.h: expose burn folder helper methods to subclassers
+
+	* iTunesLibrary.m, iPodLibrary.m: properly set burn folder names if the
+	  default is set to YES
+
+	* iTunesFS.xcodeproj/project.pbxproj: removed redundant variables,
+	  use standard way to choose C99
+
+	* Info.plist: set the default value (YES) for new 'AutoOpenInFinder'
+	  user default
+
 2008-01-07  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* iPodLibrary.m: forgot to set "Track Number" properly, reported by

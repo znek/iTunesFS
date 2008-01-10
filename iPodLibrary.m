@@ -201,7 +201,8 @@ static NSMutableDictionary *codeSelMap = nil;
     plRep = [playlists objectAtIndex:i];
     pl    = [[iTunesPlaylist alloc] initWithIPodLibraryRepresentation:plRep
                                     lib:self];
-    [self->plMap setObject:pl forKey:[pl name]];
+    [self->plMap setObject:pl
+                 forKey:[self burnFolderNameFromFolderName:[pl name]]];
     [pl release];
   }
   [self reloadVirtualMaps];

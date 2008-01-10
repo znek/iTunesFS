@@ -58,6 +58,8 @@
 		<string>%(name).%(ext)</string>
 		<key>PlaylistsTrackFormat</key>
 		<string>%(playlistNumber#000) %(name).%(ext)</string>
+    <key>AutoOpenInFinder</key>
+		<true/>
 	</dict>
 </dict>
 </plist>

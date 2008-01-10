@@ -36,25 +36,29 @@ Defaults
 For users
 ---------
 
-Name                 | Type   | Description
----------------------+--------+----------------------------------------------
-NoIPods              | BOOL   | If YES, don't scan for iPods and instead
-(NO)                 |        | of displaying "libraries" at root level
-                     |        | display playlists of iTunes library
-NoITunes             | BOOL   | If YES, don't display iTunes library
-(NO)                 |        |
-SymbolicLinks        | BOOL   | If YES, use symbolic links for tracks instead
-(NO)                 |        | of "faking" the existence of files
-UseCategories        | BOOL   | If YES, display "Playlists", "Artists" and
-(YES)                |        | "Albums" as virtual folders
-AlbumsTrackFormat    | String | The format string to use for formatting track
-                     |        | names in "Albums", "Songs" or "Artists"
-                     |        | folders. Read "Formatters" section for details
-PlaylistsTrackFormat | String | The format string to use for formatting track
-                     |        | names in "Playlists" folders.
-iPodMountPoints      | Array  | An array of mount points to scan for iPods.
-                     |        | Comes in handy for testing purposes or in case
-                     |        | you mount your iPod/iPhone via MacFusion (ssh).
+Name                  | Type   | Description
+----------------------+--------+----------------------------------------------
+NoIPods               | BOOL   | If YES, don't scan for iPods and instead
+(NO)                  |        | of displaying "libraries" at root level
+                      |        | display playlists of iTunes library
+NoITunes              | BOOL   | If YES, don't display iTunes library
+(NO)                  |        |
+SymbolicLinks         | BOOL   | If YES, use symbolic links for tracks instead
+(NO)                  |        | of "faking" the existence of files
+UseCategories         | BOOL   | If YES, display "Playlists", "Artists" and
+(YES)                 |        | "Albums" as virtual folders
+AlbumsTrackFormat     | String | The format string to use for formatting track
+                      |        | names in "Albums", "Songs" or "Artists"
+                      |        | folders. Read "Formatters" section for details
+PlaylistsTrackFormat  | String | The format string to use for formatting track
+                      |        | names in "Playlists" folders.
+iPodMountPoints       | Array  | An array of mount points to scan for iPods.
+                      |        | Comes in handy for testing purposes or in case
+                      |        | you mount your iPod/iPhone via MacFusion (ssh).
+AutoOpenInFinder      | BOOL   | Automatically open the iTunesFS in Finder after
+(YES)                 |        | it has been mounted
+UseBurnFoldersInFinder| BOOL   | Expose all virtual folders (including
+(NO)                  |        | playlists) as burn folders in Finder
 
 
 For developers

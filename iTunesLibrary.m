@@ -45,6 +45,7 @@
 static BOOL              doDebug               = NO;
 static BOOL              useCategories         = NO;
 static BOOL              mimicIPodNav          = NO;
+static BOOL              useBurnFolderNames    = YES;
 static NSString          *libraryPath          = nil;
 static NSImage           *libraryIcon          = nil;
 static NSString          *kPlaylists           = @"Playlists";
@@ -62,17 +63,19 @@ static iTunesFSFormatter *albumsTrackFormatter = nil;
   NSString       *fmt;
 
   if (didInit) return;
-  didInit       = YES;
-  ud            = [NSUserDefaults standardUserDefaults];
-  doDebug       = [ud boolForKey:@"iTunesFileSystemDebugEnabled"];
-  useCategories = [ud boolForKey:@"UseCategories"];
-  libraryPath   = [[[ud stringForKey:@"Library"] stringByStandardizingPath]
-                                                 copy];
+  didInit            = YES;
+  ud                 = [NSUserDefaults standardUserDefaults];
+  doDebug            = [ud boolForKey:@"iTunesFileSystemDebugEnabled"];
+  useCategories      = [ud boolForKey:@"UseCategories"];
+  useBurnFolderNames = [ud boolForKey:@"UseBurnFoldersInFinder"];
+  libraryPath        = [[[ud stringForKey:@"Library"] stringByStandardizingPath]
+                                                      copy];
   if (!libraryPath) {
     libraryPath = [[NSHomeDirectory() stringByAppendingString:
                                       @"/Music/iTunes/iTunes Music Library.xml"]
                                       copy];
   }
+  /* GNUstep's AppKit doesn't know Apple icons */
 #ifndef GNU_GUI_LIBRARY
   libraryIcon = [[[NSWorkspace sharedWorkspace]
                                iconForFile:@"/Applications/iTunes.app"]
@@ -192,7 +195,10 @@ static iTunesFSFormatter *albumsTrackFormatter = nil;
     plRep = [playlists objectAtIndex:i];
     pl    = [[iTunesPlaylist alloc] initWithITunesLibraryRepresentation:plRep
                                     lib:self];
-    [self->plMap setObject:pl forKey:[pl name]];
+
+    [self->plMap setObject:pl
+                 forKey:[self burnFolderNameFromFolderName:[pl name]]];
+
     [pl release];
   }
   [self reloadVirtualMaps];
@@ -228,7 +234,8 @@ static iTunesFSFormatter *albumsTrackFormatter = nil;
   count  = [tracks count];
   for (i = 0; i < count; i++) {
     iTunesTrack *track;
-    NSString            *artist, *album, *formattedName;
+    NSString            *artist, *album;
+    NSString            *formattedArtist, *formattedAlbum, *formattedName;
     NSMutableDictionary *artistAlbums, *albumTracks;
 
     track  = [tracks objectAtIndex:i];
@@ -237,26 +244,28 @@ static iTunesFSFormatter *albumsTrackFormatter = nil;
     album  = [track album];
     if (!album)  album  = kUnknown;
     
-    artistAlbums = [artists objectForKey:artist];
+    formattedArtist = [self burnFolderNameFromFolderName:artist];
+    formattedAlbum  = [self burnFolderNameFromFolderName:album];
+    artistAlbums    = [artists objectForKey:formattedArtist];
     if (!artistAlbums) {
       artistAlbums = [[NSMutableDictionary alloc] initWithCapacity:2];
-      [artists setObject:artistAlbums forKey:artist];
+      [artists setObject:artistAlbums forKey:formattedArtist];
       [artistAlbums release];
     }
-    albumTracks = [artistAlbums objectForKey:album];
+    albumTracks = [artistAlbums objectForKey:formattedAlbum];
     if (!albumTracks) {
       albumTracks = [[NSMutableDictionary alloc] initWithCapacity:10];
-      [artistAlbums setObject:albumTracks forKey:album];
+      [artistAlbums setObject:albumTracks forKey:formattedAlbum];
       [albumTracks release];
     }
     formattedName = [albumsTrackFormatter stringValueByFormattingObject:track];
     [albumTracks setObject:track forKey:formattedName];
     
     // now, for albums only
-    albumTracks = [albums objectForKey:album];
+    albumTracks = [albums objectForKey:formattedAlbum];
     if (!albumTracks) {
       albumTracks = [[NSMutableDictionary alloc] initWithCapacity:10];
-      [albums setObject:albumTracks forKey:album];
+      [albums setObject:albumTracks forKey:formattedAlbum];
       [albumTracks release];
     }
     formattedName = [albumsTrackFormatter stringValueByFormattingObject:track];
@@ -279,7 +288,8 @@ static iTunesFSFormatter *albumsTrackFormatter = nil;
       unsigned tCount, j;
 
       tCount = [tracks count];
-      if (tCount > 1) {	
+      if (tCount > 1) {
+        NSString *formattedAlbum = [self burnFolderNameFromFolderName:album];
         for (j = 1; j < tCount; j++) {
           iTunesTrack *track;
           NSString    *tArtist;
@@ -288,7 +298,7 @@ static iTunesFSFormatter *albumsTrackFormatter = nil;
           tArtist = [track artist];
           if (!tArtist) tArtist = kUnknown;
           if (![artist isEqualToString:tArtist]) { 
-            [compilations setObject:thisAlbum forKey:album];
+            [compilations setObject:thisAlbum forKey:formattedAlbum];
             break;
           }
         }
@@ -372,9 +382,11 @@ static iTunesFSFormatter *albumsTrackFormatter = nil;
     unsigned count;
     
     count = [self->plMap count];
-    if (count == 0) return nil;
-    if (count == 1)
+    if (count == 0) return nil; // no playlists, no entries
+    if (count == 1) {
+      // hide single playlist altogether (i.e. iPod shuffle)
       return [[[self->plMap allValues] lastObject] lookupPathComponent:_pc];
+    }
     return [self playlistNamed:_pc];
   }
   return [self->virtMap lookupPathComponent:_pc];
@@ -384,6 +396,7 @@ static iTunesFSFormatter *albumsTrackFormatter = nil;
   if (!useCategories) {
     if ([self->plMap count] != 1)
       return [self playlistNames];
+    // return all tracknames in case there's just one playlist (iPod shuffle)
     return [[[self->plMap allValues] lastObject] directoryContents];
   }
   return [self->virtMap directoryContents];
@@ -394,6 +407,18 @@ static iTunesFSFormatter *albumsTrackFormatter = nil;
 }
 - (NSImage *)icon {
   return libraryIcon;
+}
+
+/* burn folder support */
+
+- (NSString *)burnFolderNameFromFolderName:(NSString *)_s {
+  if (!useBurnFolderNames) return _s;
+  return [_s stringByAppendingPathExtension:@"fpbf"];
+}
+
+- (NSString *)folderNameFromBurnFolderName:(NSString *)_s {
+  if (!useBurnFolderNames) return _s;
+  return [_s stringByDeletingPathExtension];
 }
 
 /* debugging */

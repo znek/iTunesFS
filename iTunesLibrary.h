@@ -64,6 +64,11 @@
 
 - (iTunesTrack *)trackWithID:(NSString *)_trackID;
 
+/* burn folder helpers */
+
+- (NSString *)burnFolderNameFromFolderName:(NSString *)_s;
+- (NSString *)folderNameFromBurnFolderName:(NSString *)_s;
+
 @end /* iTunesLibrary */
 
 #endif	/* __iTunesFS_iTunesLibrary_H */

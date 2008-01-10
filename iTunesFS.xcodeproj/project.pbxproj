@@ -438,17 +438,12 @@
 		1DEB927908733DD40010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				LIBRARY_SEARCH_PATHS = /usr/local/lib;
-				OTHER_CFLAGS = (
-					"$(inherited)",
-					"-lfuse",
-					"-D_FILE_OFFSET_BITS=64",
-					"-std=c99",
-				);
+				OTHER_CFLAGS = "-D_FILE_OFFSET_BITS=64";
 				PREBINDING = NO;
 				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.4u.sdk";
 			};
@@ -457,17 +452,12 @@
 		1DEB927A08733DD40010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				LIBRARY_SEARCH_PATHS = /usr/local/lib;
-				OTHER_CFLAGS = (
-					"$(inherited)",
-					"-lfuse",
-					"-D_FILE_OFFSET_BITS=64",
-					"-std=c99",
-				);
+				OTHER_CFLAGS = "-D_FILE_OFFSET_BITS=64";
 				PREBINDING = NO;
 				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.4u.sdk";
 			};
@@ -485,13 +475,6 @@
 				GCC_PREFIX_HEADER = common.h;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					AppKit,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = iTunesFS;
 				WRAPPER_EXTENSION = app;
 			};
@@ -517,13 +500,6 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_MODE_FLAG = "go-w,a+rX,u+w";
 				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					AppKit,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = iTunesFS;
 				SYMROOT = /tmp/MulleDeploymentProducts;
 				TEMP_DIR = "$(SYMROOT)/$(PROJECT_NAME).build/$(TARGET_NAME).build";
@@ -552,13 +528,6 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_MODE_FLAG = "go-w,a+rX,u+w";
 				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					AppKit,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = iTunesFS;
 				SYMROOT = /tmp/MulleDeploymentProducts;
 				TEMP_DIR = "$(SYMROOT)/$(PROJECT_NAME).build/$(TARGET_NAME).build";
@@ -570,17 +539,12 @@
 		AD15ACED0C06B7AD00345C9E /* Release w/ Debug Symbols */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				LIBRARY_SEARCH_PATHS = /usr/local/lib;
-				OTHER_CFLAGS = (
-					"$(inherited)",
-					"-lfuse",
-					"-D_FILE_OFFSET_BITS=64",
-					"-std=c99",
-				);
+				OTHER_CFLAGS = "-D_FILE_OFFSET_BITS=64";
 				PREBINDING = NO;
 				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.4u.sdk";
 			};

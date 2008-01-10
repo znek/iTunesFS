@@ -138,4 +138,19 @@ static NSDictionary *emptyDict  = nil;
 }
 #endif
 
+- (NSArray *)fuseOptions {
+  NSString *volIconPath;
+
+  volIconPath = [[self rootObject] iconFileForPath:@"/"];
+  if (volIconPath) {
+    NSMutableArray *os;
+    
+    os = [[[super fuseOptions] mutableCopy] autorelease];
+    // this is necessary, unfortunately
+    [os addObject:[@"volicon=" stringByAppendingString:volIconPath]];
+    return os;
+  }
+  return [super fuseOptions];
+}
+
 @end /* FUSEObjectFileSystem */
