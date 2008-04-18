@@ -35,8 +35,6 @@
 
 #import <Foundation/Foundation.h>
 
-@class NSImage;
-
 @interface NSObject (FUSEOFS)
 
 - (id)lookupPathComponent:(NSString *)_pc;
@@ -47,7 +45,7 @@
 
 - (NSDictionary *)fileAttributes;
 - (NSDictionary *)fileSystemAttributes;
-- (NSImage *)icon;
+- (NSData *)iconData;
 - (BOOL)isFile;
 - (BOOL)isDirectory;
 

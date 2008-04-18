@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2007-2008, Marcus Müller <znek@mulle-kybernetik.com>.
+  Copyright (c) 2007-2008, Marcus MÃ¼ller <znek@mulle-kybernetik.com>.
   All rights reserved.
 
 
@@ -7,15 +7,15 @@
   modification, are permitted provided that the following conditions are met:
 
   - Redistributions of source code must retain the above copyright notice, this
-    list of conditions and the following disclaimer.
+  list of conditions and the following disclaimer.
 
   - Redistributions in binary form must reproduce the above copyright notice,
-    this list of conditions and the following disclaimer in the documentation
-    and/or other materials provided with the distribution.
+  this list of conditions and the following disclaimer in the documentation
+  and/or other materials provided with the distribution.
 
   - Neither the name of Mulle kybernetiK nor the names of its contributors
-    may be used to endorse or promote products derived from this software
-    without specific prior written permission.
+  may be used to endorse or promote products derived from this software
+  without specific prior written permission.
 
   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -30,11 +30,13 @@
   POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef	__iTunesFS_common_H_
-#define	__iTunesFS_common_H_
+#import <Foundation/Foundation.h>
 
-#ifdef __OBJC__
-#import <AppKit/AppKit.h>
-#endif
+@class iTunesFileSystem;
 
-#endif /* __iTunesFS_common_H_ */
+@interface iTunesFSController : NSObject
+{
+  iTunesFileSystem *fs;
+}
+
+@end

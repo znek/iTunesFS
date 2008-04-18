@@ -52,7 +52,7 @@
 - (NSDictionary *)fileSystemAttributes {
   return nil;
 }
-- (NSImage *)icon {
+- (NSData *)iconData {
   return nil;
 }
 - (BOOL)isFile {

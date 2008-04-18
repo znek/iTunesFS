@@ -47,7 +47,7 @@ static BOOL              useCategories         = NO;
 static BOOL              mimicIPodNav          = NO;
 static BOOL              useBurnFolderNames    = YES;
 static NSString          *libraryPath          = nil;
-static NSImage           *libraryIcon          = nil;
+static NSData            *libraryIconData      = nil;
 static NSString          *kPlaylists           = @"Playlists";
 static NSString			     *kCompilations		     = @"Compilations";
 static NSString          *kArtists             = @"Artists";
@@ -77,9 +77,9 @@ static iTunesFSFormatter *albumsTrackFormatter = nil;
   }
   /* GNUstep's AppKit doesn't know Apple icons */
 #ifndef GNU_GUI_LIBRARY
-  libraryIcon = [[[NSWorkspace sharedWorkspace]
-                               iconForFile:@"/Applications/iTunes.app"]
-                               copy];
+  libraryIconData = [[[[NSWorkspace sharedWorkspace]
+                                    iconForFile:@"/Applications/iTunes.app"]
+                                    TIFFRepresentation] copy];
 #endif
 
   kPlaylists    = [[NSLocalizedString(@"Playlists", "Playlists")
@@ -405,8 +405,8 @@ static iTunesFSFormatter *albumsTrackFormatter = nil;
 - (BOOL)isDirectory {
   return YES;
 }
-- (NSImage *)icon {
-  return libraryIcon;
+- (NSData *)iconData {
+  return libraryIconData;
 }
 
 /* burn folder support */

@@ -35,10 +35,18 @@
 
 #import "FUSEFileSystem.h"
 
-@interface FUSEObjectFileSystem : FUSEFileSystem
-{
+@class GMUserFileSystem;
 
+@interface FUSEObjectFileSystem : NSObject
+{
+  GMUserFileSystem *fs;
+  NSString         *mountPoint;
 }
+
+- (void)mountAtPath:(NSString *)_path;
+- (void)unmount;
+
+- (NSString *)mountPoint;
 
 // transform the file system path passed in from FUSE into object file system
 // path components.
@@ -46,6 +54,8 @@
 
 // the root object during path lookup
 - (id)rootObject;
+
+- (NSArray *)fuseOptions;
 
 @end /* FUSEObjectFileSystem */
 

@@ -31,10 +31,22 @@
 */
 
 #import "FUSEObjectFileSystem.h"
+#import "common.h"
+#import <MacFUSE/GMUserFileSystem.h>
 #import "NSObject+FUSEOFS.h"
 
 @interface FUSEObjectFileSystem (Private)
 - (id)lookupPath:(NSString *)_path;
+@end
+
+@interface NSObject (FUSEObjectFileSystem_HackHackHack)
+- (NSString *)iconFileForPath:(NSString *)_path;
+@end
+
+@implementation NSObject (FUSEObjectFileSystem_HackHackHack)
+- (NSString *)iconFileForPath:(NSString *)_path {
+  return nil;
+}
 @end
 
 @implementation FUSEObjectFileSystem
@@ -51,6 +63,38 @@ static NSDictionary *emptyDict  = nil;
   ud          = [NSUserDefaults standardUserDefaults];
   debugLookup = [ud boolForKey:@"FUSEObjectFileSystemDebugPathLookup"];
   emptyDict   = [[NSDictionary alloc] init];
+}
+
+- (id)init {
+  
+  self = [super init];
+  if (self) {
+    self->fs = [[GMUserFileSystem alloc] initWithDelegate:self
+                                         isThreadSafe:YES];
+  }
+  return self;
+}
+
+- (void)dealloc {
+  [self->fs release];
+  [super dealloc];
+}
+
+- (void)mountAtPath:(NSString *)_path {
+  self->mountPoint = [_path copy];
+  [self->fs mountAtPath:self->mountPoint
+            withOptions:[self fuseOptions]];
+}
+
+- (void)unmount {
+  [self->mountPoint release];
+  [self->fs unmount];
+  [self->fs setDelegate:nil];
+  [self->fs release];
+}
+
+- (NSString *)mountPoint {
+  return self->mountPoint;
 }
 
 - (NSArray *)pathFromFSPath:(NSString *)_path {
@@ -88,6 +132,7 @@ static NSDictionary *emptyDict  = nil;
   return [[self lookupPath:_path] directoryContents];
 }
 
+#if 0 // REMOVE
 - (BOOL)fileExistsAtPath:(NSString *)_path isDirectory:(BOOL *)isDirectory {
   id obj;
   
@@ -96,6 +141,7 @@ static NSDictionary *emptyDict  = nil;
   if ([obj isDirectory]) return YES;
   return [obj isFile];
 }
+#endif
 
 - (NSDictionary *)attributesOfItemAtPath:(NSString *)_path
   error:(NSError **)_err
@@ -118,8 +164,8 @@ static NSDictionary *emptyDict  = nil;
 
 /* optional FUSE methods */
 
-- (NSImage *)iconForPath:(NSString *)_path {
-  return [[self lookupPath:_path] icon];
+- (NSData *)iconDataAtPath:(NSString *)_path {
+  return [[self lookupPath:_path] iconData];
 }
 
 - (NSDictionary *)attributesOfFileSystemForPath:(NSString *)_path
@@ -139,18 +185,17 @@ static NSDictionary *emptyDict  = nil;
 #endif
 
 - (NSArray *)fuseOptions {
-  NSString *volIconPath;
+  NSMutableArray *os;
+  NSString       *volIconPath;
 
+  os          = [NSMutableArray array];
   volIconPath = [[self rootObject] iconFileForPath:@"/"];
+
   if (volIconPath) {
-    NSMutableArray *os;
-    
-    os = [[[super fuseOptions] mutableCopy] autorelease];
     // this is necessary, unfortunately
     [os addObject:[@"volicon=" stringByAppendingString:volIconPath]];
-    return os;
   }
-  return [super fuseOptions];
+  return os;
 }
 
 @end /* FUSEObjectFileSystem */

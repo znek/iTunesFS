@@ -92,7 +92,7 @@ static NSData   *finderInfo      = nil;
 
 /* notifications */
 
-- (void)fuseWillMount {
+- (void)didMount:(NSNotification *)_notif {
   iTunesLibrary *lib;
 
   self->libMap = [[NSMutableDictionary alloc] initWithCapacity:3];
@@ -150,7 +150,7 @@ static NSData   *finderInfo      = nil;
   }
 }
 
-- (void)fuseDidUnmount {
+- (void)didUnmount:(NSNotification*)_notif {
   NSNotificationCenter *nc;
 
   nc = [[NSWorkspace sharedWorkspace] notificationCenter];
@@ -299,13 +299,13 @@ static NSData   *finderInfo      = nil;
 /* overriding FUSE behavior */
 
 - (NSData *)valueOfExtendedAttribute:(NSString *)_name
-  forPath:(NSString *)_path
+  ofItemAtPath:(NSString *)_path
   error:(NSError **)_err
 {
   // HACK: force extensions to be hidden
   if ([_name isEqualToString:@"com.apple.FinderInfo"])
     return finderInfo;
-  return [super valueOfExtendedAttribute:_name forPath:_path error:_err];
+  return nil;
 }
 
 /* optional */

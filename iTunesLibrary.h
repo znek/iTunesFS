@@ -48,7 +48,7 @@
 }
 
 - (NSString *)name;
-- (NSImage *)icon;
+- (NSData *)iconData;
 
 - (void)reload;
 - (void)reloadVirtualMaps; // for subclassers - called by -reload

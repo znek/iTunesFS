@@ -1,3 +1,36 @@
+2008-03-11  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* NOTE: THIS BUILD DOESN'T WORK, YET.
+	  It's a necessary rewrite for the now official ObjC API,
+	  however it's not finished (and not polished)
+
+	* FUSEObjC: removed external dependency, as this was removed from
+	  googlecode.
+
+	* main.m: added new main() method, this will start AppKit's runloop
+	  like any other AppKit based application.
+
+	* iTunesFileSystem.m: changed to new API
+
+	* FUSEOFS/NSObject+FUSEOFS.[hm]: changed icon API
+
+	* FUSEOFS/FUSEObjectFileSystem.[hm]: according to new API this no
+	  longer subclasses from FUSEFileSystem but is now a delegate to
+	  GMUserFileSystem. There is quite a lot to be done still and several
+	  places need to be revisited.
+	  
+	* English.lproj/MainMenu.nib: changed to new object model
+
+	* iTunesLibrary.[hm]: changed icon API, see FUSEOFS/NSObject+FUSEOFS
+
+	* JBiPodLibrary.m: added a comment, need to address this
+
+	* iTunesFSController.[hm]: new application delegate, needs work (i.e.
+	  defaults need to be fetched dynamically, FS initializer is pretty
+	  ugly)
+
+	* common.h: we need Appkit now
+
 2008-01-09  Dan Villiom Podlaski Christiansen  <dan@villiom.dk>
 
 	* README: updated for new defaults 'AutoOpenInFinder' and
