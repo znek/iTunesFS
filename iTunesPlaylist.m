@@ -215,8 +215,8 @@ static iTunesFSFormatter *plTrackFormatter = nil;
 /* FUSEOFS */
 
 - (id)lookupPathComponent:(NSString *)_pc {
-  unsigned idx;
-  
+  NSUInteger idx;
+
   idx = [[self trackNames] indexOfObject:_pc];
   if (idx == NSNotFound) return nil;
   return [self trackAtIndex:idx];
@@ -227,6 +227,19 @@ static iTunesFSFormatter *plTrackFormatter = nil;
 - (BOOL)isDirectory {
   return YES;
 }
+
+#if 0
+
+// NOTE: in theory this should do the trick of hiding the .fpbf extension,
+// however this flag has been removed from Finder.h altogether and it doesn't
+// work in practice (tested on 10.5.6)
+
+- (NSDictionary *)finderAttributes {
+		NSNumber *finderFlags = [NSNumber numberWithLong:0x0010];
+		return [NSDictionary dictionaryWithObject:finderFlags
+                         forKey:kGMUserFileSystemFinderFlagsKey];
+}
+#endif
 
 /* debugging */
 

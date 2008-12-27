@@ -141,8 +141,9 @@ NSString *WatchdogFlagsKey = @"WatchdogFlags";
 }
 
 - (void)forgetPath:(NSString *)_path {
-  int	idx, fd;
-  
+  NSUInteger idx;
+  NSInteger  fd;
+
   idx = [self->paths indexOfObject:_path];
   if (idx == NSNotFound) return;
 
@@ -155,7 +156,7 @@ NSString *WatchdogFlagsKey = @"WatchdogFlags";
 }
 
 - (id)clientForPath:(NSString *)_path {
-  unsigned idx;
+  NSUInteger idx;
   
   idx = [self->paths indexOfObject:_path];
   if (idx == NSNotFound) return nil;

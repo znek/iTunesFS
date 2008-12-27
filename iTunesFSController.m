@@ -36,13 +36,43 @@
 
 @implementation iTunesFSController
 
+- (void)awakeFromNib {
+	NSDictionary *defaults = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"NSUserDefaults"];
+	if (defaults)
+		[[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
+}
+
 - (void)applicationDidFinishLaunching:(NSNotification *)_notif {
-  NSString *path;
+	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+	[nc addObserver:self
+		selector:@selector(didMount:)
+		name:kGMUserFileSystemDidMount
+		object:nil];
+	[nc addObserver:self
+		selector:@selector(didUnmount:)
+		name:kGMUserFileSystemDidUnmount
+		object:nil];
 
+  NSUserDefaults *ud   = [NSUserDefaults standardUserDefaults];
+  NSString       *path = [ud stringForKey:@"FUSEMountPath"];
   self->fs = [[iTunesFileSystem alloc] init];
-
-  path = @"/Volumes/iTunesFS";
   [self->fs mountAtPath:path];
+}
+
+- (void)didMount:(NSNotification *)_notif {
+	NSUserDefaults *ud    = [NSUserDefaults standardUserDefaults];
+	BOOL autoOpenInFinder = [ud boolForKey:@"AutoOpenInFinder"];
+	if (autoOpenInFinder) {
+		NSString *path = [[_notif userInfo]
+						          objectForKey:kGMUserFileSystemMountPathKey];
+		[[NSWorkspace sharedWorkspace]
+		              selectFile:path
+					  inFileViewerRootedAtPath:[path stringByDeletingLastPathComponent]];
+	}
+}
+
+- (void)didUnmount:(NSNotification *)_notif {
+	[[NSApplication sharedApplication] terminate:nil];
 }
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)_sender {

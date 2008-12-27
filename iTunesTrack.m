@@ -137,6 +137,9 @@ static NSString *locationDestinationPrefix = nil;
     }
     if (useSymbolicLinks)
       [attrs setObject:NSFileTypeSymbolicLink forKey:NSFileType];
+	else
+	  [attrs setObject:NSFileTypeRegular forKey:NSFileType];
+
     [self setAttributes:attrs];
     [attrs release];
   }
@@ -291,6 +294,12 @@ static NSString *locationDestinationPrefix = nil;
 #else
   return [[[NSData alloc] initWithContentsOfMappedFile:path] autorelease];
 #endif
+}
+
+- (NSDictionary *)resourceAttributes {
+  if ([self->url isFileURL]) return nil;
+  return [NSDictionary dictionaryWithObject:self->url
+                       forKey:kGMUserFileSystemWeblocURLKey];
 }
 
 - (NSString *)symbolicLinkTarget {

@@ -52,6 +52,24 @@
 - (NSDictionary *)fileSystemAttributes {
   return nil;
 }
+- (NSDictionary *)finderAttributes {
+	if ([self iconData]) {
+		NSNumber *finderFlags = [NSNumber numberWithLong:kHasCustomIcon];
+		return [NSDictionary dictionaryWithObject:finderFlags
+                         forKey:kGMUserFileSystemFinderFlagsKey];
+  }
+  return nil;
+}
+- (NSDictionary *)resourceAttributes {
+	NSData *iconData;
+  
+	if ((iconData = [self iconData])) {
+		return [NSDictionary dictionaryWithObject:iconData
+                         forKey:kGMUserFileSystemCustomIconDataKey];
+	}
+	return nil;
+}
+
 - (NSData *)iconData {
   return nil;
 }
@@ -67,10 +85,37 @@
 @implementation NSDictionary (FUSEOFS)
 
 - (id)lookupPathComponent:(NSString *)_pc {
+  if ([_pc isEqualToString:@"_FinderInfo"]) return nil;
   return [self objectForKey:_pc];
 }
+- (NSDictionary *)finderAttributes {
+  id finderAttributes = [self objectForKey:@"_FinderInfo"];
+  if (finderAttributes) {
+    return finderAttributes;
+  }
+	if ([self iconData]) {
+		NSNumber *finderFlags = [NSNumber numberWithLong:kHasCustomIcon];
+		return [NSDictionary dictionaryWithObject:finderFlags
+                         forKey:kGMUserFileSystemFinderFlagsKey];
+  }
+  return nil;
+}
+- (NSDictionary *)resourceAttributes {
+	NSData *iconData;
+  
+	if ((iconData = [self iconData])) {
+		return [NSDictionary dictionaryWithObject:iconData
+                         forKey:kGMUserFileSystemCustomIconDataKey];
+	}
+	return nil;
+}
+
 - (NSArray *)directoryContents {
-  return [self allKeys];
+  if (![self objectForKey:@"_FinderInfo"])
+    return [self allKeys];
+  NSMutableArray *keys = [[[self allKeys] mutableCopy] autorelease];
+  [keys removeObject:@"_FinderInfo"];
+  return keys;
 }
 - (BOOL)isDirectory {
   return YES;

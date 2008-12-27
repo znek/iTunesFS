@@ -35,6 +35,7 @@
 
 #ifdef __OBJC__
 #import <AppKit/AppKit.h>
+#import <MacFUSE/MacFUSE.h>
 #endif
 
 #endif /* __iTunesFS_common_H_ */

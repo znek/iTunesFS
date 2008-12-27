@@ -56,10 +56,8 @@
 static BOOL     doDebug          = NO;
 static BOOL     ignoreITunes     = NO;
 static BOOL     ignoreIPods      = NO;
-static BOOL     autoOpenInFinder = YES;
 static NSString *fsIconPath      = nil;
 static NSArray  *fakeVolumePaths = nil;
-static NSData   *finderInfo      = nil;
 
 + (void)initialize {
   static BOOL didInit = NO;
@@ -68,17 +66,12 @@ static NSData   *finderInfo      = nil;
 
   NSUserDefaults *ud;
   NSBundle       *mb;
-  // TODO: (Dan) document where you derived this magic from
-  char           bs[32] = { [9] = 0x10 };
 
   didInit          = YES;
   ud               = [NSUserDefaults standardUserDefaults];
   doDebug          = [ud boolForKey:@"iTunesFileSystemDebugEnabled"];
   ignoreITunes     = [ud boolForKey:@"NoITunes"];
   ignoreIPods      = [ud boolForKey:@"NoIPods"];
-  autoOpenInFinder = [ud boolForKey:@"AutoOpenInFinder"];
-
-  finderInfo = [[NSData alloc] initWithBytes:bs length:sizeof(bs)];
 
   if (ignoreITunes && ignoreIPods)
     NSLog(@"ERROR: ignoring iTunes and iPods doesn't make sense at all.");
@@ -90,9 +83,9 @@ static NSData   *finderInfo      = nil;
 #endif
 }
 
-/* notifications */
+/* NSObject(GMUserFileSystemLifecycle) */
 
-- (void)didMount:(NSNotification *)_notif {
+- (void)willMount {
   iTunesLibrary *lib;
 
   self->libMap = [[NSMutableDictionary alloc] initWithCapacity:3];
@@ -150,7 +143,7 @@ static NSData   *finderInfo      = nil;
   }
 }
 
-- (void)didUnmount:(NSNotification*)_notif {
+- (void)willUnmount {
   NSNotificationCenter *nc;
 
   nc = [[NSWorkspace sharedWorkspace] notificationCenter];
@@ -158,6 +151,8 @@ static NSData   *finderInfo      = nil;
 
   [self->libMap release];
   [self->volMap release];
+	
+  [super willUnmount];
 }
 
 - (void)didMountRemovableDevice:(NSNotification *)_notif {
@@ -184,10 +179,6 @@ static NSData   *finderInfo      = nil;
         NSLog(@"posting -noteFileSystemChanged: for %@", [self mountPoint]);
       [[NSWorkspace sharedWorkspace] noteFileSystemChanged:[self mountPoint]];
     }
-  }
-  /* iTunesFS itself is a removable device... */
-  else if (autoOpenInFinder && [path isEqualTo:[self mountPoint]]) {
-    [[NSWorkspace sharedWorkspace] openFile:path];
   }
 }
 
@@ -294,18 +285,6 @@ static NSData   *finderInfo      = nil;
 
 - (BOOL)isDirectory {
   return YES;
-}
-
-/* overriding FUSE behavior */
-
-- (NSData *)valueOfExtendedAttribute:(NSString *)_name
-  ofItemAtPath:(NSString *)_path
-  error:(NSError **)_err
-{
-  // HACK: force extensions to be hidden
-  if ([_name isEqualToString:@"com.apple.FinderInfo"])
-    return finderInfo;
-  return nil;
 }
 
 /* optional */

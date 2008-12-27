@@ -45,6 +45,10 @@
 
 - (NSDictionary *)fileAttributes;
 - (NSDictionary *)fileSystemAttributes;
+
+- (NSDictionary *)finderAttributes;
+- (NSDictionary *)resourceAttributes;
+
 - (NSData *)iconData;
 - (BOOL)isFile;
 - (BOOL)isDirectory;

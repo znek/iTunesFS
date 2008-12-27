@@ -66,8 +66,7 @@
 
 /* burn folder helpers */
 
-- (NSString *)burnFolderNameFromFolderName:(NSString *)_s;
-- (NSString *)folderNameFromBurnFolderName:(NSString *)_s;
+- (id)burnFolderNameFromFolderName:(NSString *)_s;
 
 @end /* iTunesLibrary */
 

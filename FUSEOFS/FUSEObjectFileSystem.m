@@ -52,6 +52,8 @@
 @implementation FUSEObjectFileSystem
 
 static BOOL         debugLookup = NO;
+static NSDictionary *fileDict   = nil;
+static NSDictionary *dirDict    = nil;
 static NSDictionary *emptyDict  = nil;
 
 + (void)initialize {
@@ -62,6 +64,8 @@ static NSDictionary *emptyDict  = nil;
   didInit     = YES;
   ud          = [NSUserDefaults standardUserDefaults];
   debugLookup = [ud boolForKey:@"FUSEObjectFileSystemDebugPathLookup"];
+  fileDict    = [[NSDictionary alloc] initWithObjectsAndKeys:NSFileTypeRegular, NSFileType, nil];
+  dirDict     = [[NSDictionary alloc] initWithObjectsAndKeys:NSFileTypeDirectory, NSFileType, nil];
   emptyDict   = [[NSDictionary alloc] init];
 }
 
@@ -70,14 +74,9 @@ static NSDictionary *emptyDict  = nil;
   self = [super init];
   if (self) {
     self->fs = [[GMUserFileSystem alloc] initWithDelegate:self
-                                         isThreadSafe:YES];
+                                         isThreadSafe:NO];
   }
   return self;
-}
-
-- (void)dealloc {
-  [self->fs release];
-  [super dealloc];
 }
 
 - (void)mountAtPath:(NSString *)_path {
@@ -87,10 +86,16 @@ static NSDictionary *emptyDict  = nil;
 }
 
 - (void)unmount {
+  [self->fs unmount];
+}
+
+- (void)willUnmount {
   [self->mountPoint release];
+  self->mountPoint = nil;
   [self->fs unmount];
   [self->fs setDelegate:nil];
   [self->fs release];
+  self->fs = nil;
 }
 
 - (NSString *)mountPoint {
@@ -132,23 +137,22 @@ static NSDictionary *emptyDict  = nil;
   return [[self lookupPath:_path] directoryContents];
 }
 
-#if 0 // REMOVE
-- (BOOL)fileExistsAtPath:(NSString *)_path isDirectory:(BOOL *)isDirectory {
-  id obj;
-  
-  obj          = [self lookupPath:_path];
-  *isDirectory = [obj isDirectory];
-  if ([obj isDirectory]) return YES;
-  return [obj isFile];
-}
-#endif
-
 - (NSDictionary *)attributesOfItemAtPath:(NSString *)_path
+  userData:(id)_ud
   error:(NSError **)_err
 {
-  NSDictionary *attr = [[self lookupPath:_path] fileAttributes];
+  NSObject *obj = [self lookupPath:_path];
+  if (!obj) return nil;
+  NSDictionary *attr = [obj fileAttributes];
   if (!attr)
-    attr = emptyDict;
+  {
+	if ([obj isFile])
+	  return fileDict;
+	else if ([obj isDirectory])
+	  return dirDict;
+    else
+	  return nil;
+  }
   return attr;
 }
 
@@ -164,8 +168,16 @@ static NSDictionary *emptyDict  = nil;
 
 /* optional FUSE methods */
 
-- (NSData *)iconDataAtPath:(NSString *)_path {
-  return [[self lookupPath:_path] iconData];
+- (NSDictionary *)finderAttributesAtPath:(NSString *)_path 
+  error:(NSError **)_err
+{
+	return [[self lookupPath:_path] finderAttributes];
+}
+
+- (NSDictionary *)resourceAttributesAtPath:(NSString *)_path
+  error:(NSError **)_err
+{
+  return [[self lookupPath:_path] resourceAttributes];
 }
 
 - (NSDictionary *)attributesOfFileSystemForPath:(NSString *)_path
@@ -177,12 +189,15 @@ static NSDictionary *emptyDict  = nil;
   return attr;
 }
 
-#if 0
-- (NSArray *)extendedAttributesForPath:path error:(NSError **)_err {
-// TODO: Implement!
-  return nil;
+// we need to override this method because Finder attempts to create
+// several directories and the default MacFUSE implementation would
+// create a runtime error
+- (BOOL)createDirectoryAtPath:(NSString *)_path 
+  attributes:(NSDictionary *)_attrs
+  error:(NSError **)_err
+{
+	return NO;
 }
-#endif
 
 - (NSArray *)fuseOptions {
   NSMutableArray *os;

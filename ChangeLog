@@ -1,3 +1,33 @@
+2008-12-27  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v1.1.7b3
+
+	* iTunesFS.xcodeproj: enabled 64bit builds
+
+	* iTunesPlaylist.m: fixed a 64bit issue, added experimental
+	  finderAttributes (disabled)
+
+	* iTunesTrack.m: changes for new API
+
+	* Watchdog.m: fixed several 64bit issues
+
+	* iTunesFileSystem.m: removed AutoOpenInFinder code (moved to
+	  iTunesFSController), completed conversion to new FUSE ObjC API
+
+	* FUSEOFS/NSObject+FUSEOFS.[hm]: added -finderAttributes and
+	  -resourceAttributes
+
+	* FUSEOFS/FUSEObjectFileSystem.m: properly implemented the new
+	  FUSE ObjC API
+
+	* iTunesLibrary.[hm]: several internal changes for burn folder support
+
+	* iTunesFSController.m: enabled registration of defaults from
+	  bundle's Info.plist, observe mounting/unmounting and implemented
+	  AutoOpenInFinder when mount occurred and default is set.
+
+	* common.h: added MacFUSE/MacFUSE.h
+
 2008-03-11  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* NOTE: THIS BUILD DOESN'T WORK, YET.

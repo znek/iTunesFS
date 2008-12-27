@@ -56,15 +56,14 @@ static NSString          *kSongs               = @"Songs";
 static NSString          *kUnknown             = @"Unknown";
 static NSString          *kAll                 = @"All";
 static iTunesFSFormatter *albumsTrackFormatter = nil;
+static NSDictionary      *burnFolderFinderInfo = nil;
 
 + (void)initialize {
-  static BOOL    didInit = NO;
-  NSUserDefaults *ud;
-  NSString       *fmt;
-
+  static BOOL didInit = NO;
   if (didInit) return;
-  didInit            = YES;
-  ud                 = [NSUserDefaults standardUserDefaults];
+  didInit = YES;
+
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   doDebug            = [ud boolForKey:@"iTunesFileSystemDebugEnabled"];
   useCategories      = [ud boolForKey:@"UseCategories"];
   useBurnFolderNames = [ud boolForKey:@"UseBurnFoldersInFinder"];
@@ -75,6 +74,7 @@ static iTunesFSFormatter *albumsTrackFormatter = nil;
                                       @"/Music/iTunes/iTunes Music Library.xml"]
                                       copy];
   }
+
   /* GNUstep's AppKit doesn't know Apple icons */
 #ifndef GNU_GUI_LIBRARY
   libraryIconData = [[[[NSWorkspace sharedWorkspace]
@@ -97,7 +97,14 @@ static iTunesFSFormatter *albumsTrackFormatter = nil;
   kAll          = [[NSLocalizedString(@"All",       "All")
                                       properlyEscapedFSRepresentation] copy];
 
-  fmt                  = [ud stringForKey:@"AlbumsTrackFormat"];
+  if (useBurnFolderNames) {
+     
+		NSNumber *finderFlags = [NSNumber numberWithLong:kNameLocked];
+		burnFolderFinderInfo  = [NSDictionary dictionaryWithObject:finderFlags
+                                          forKey:kGMUserFileSystemFinderFlagsKey];
+  }
+
+  NSString *fmt = [ud stringForKey:@"AlbumsTrackFormat"];
   albumsTrackFormatter = [[iTunesFSFormatter alloc] initWithFormatString:fmt];
 
   if (doDebug)
@@ -201,6 +208,7 @@ static iTunesFSFormatter *albumsTrackFormatter = nil;
 
     [pl release];
   }
+
   [self reloadVirtualMaps];
 }
 
@@ -411,14 +419,9 @@ static iTunesFSFormatter *albumsTrackFormatter = nil;
 
 /* burn folder support */
 
-- (NSString *)burnFolderNameFromFolderName:(NSString *)_s {
+- (id)burnFolderNameFromFolderName:(NSString *)_s {
   if (!useBurnFolderNames) return _s;
   return [_s stringByAppendingPathExtension:@"fpbf"];
-}
-
-- (NSString *)folderNameFromBurnFolderName:(NSString *)_s {
-  if (!useBurnFolderNames) return _s;
-  return [_s stringByDeletingPathExtension];
 }
 
 /* debugging */
