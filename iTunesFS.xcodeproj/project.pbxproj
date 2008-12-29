@@ -433,10 +433,6 @@
 		7F3DBD0A0B4422C300A48059 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
 				COPY_PHASE_STRIP = YES;
 				DEBUGGING_SYMBOLS = NO;
 				DEPLOYMENT_LOCATION = YES;
@@ -466,10 +462,6 @@
 		AD15ACEC0C06B7AD00345C9E /* Release w/ Debug Symbols */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
 				COPY_PHASE_STRIP = NO;
 				DEPLOYMENT_LOCATION = YES;
 				DEPLOYMENT_POSTPROCESSING = NO;

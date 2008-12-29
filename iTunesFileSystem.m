@@ -293,7 +293,7 @@ static NSArray  *fakeVolumePaths = nil;
   return YES;
 }
 
-/* Finder in 10.5.{1|2} is braindead, only displays filesystems
+/* Finder in 10.5.{1|2|3|4|5|6} is braindead, only displays filesystems
  * marked as "local" in sidebar
  */
 - (BOOL)needsLocalOption {
@@ -307,6 +307,9 @@ static NSArray  *fakeVolumePaths = nil;
   NSMutableArray *os;
   
   os = [[[super fuseOptions] mutableCopy] autorelease];
+  // TODO: pretty lame, couldn't we set this using reflection on FS mutability?
+  [os addObject:@"rdonly"];
+
 #if 0
   // careful!
   [os addObject:@"debug"];
@@ -318,11 +321,10 @@ static NSArray  *fakeVolumePaths = nil;
   // MUST we really guarantee that these are indeed correct?
   [os addObject:@"direct_io"];
 #endif
-#if 0
-  // TODO: (Dan) explain why we would need that option
-  // presumably, this is necessary for burn folder support - but why?
-  [os addObject:@"fsname=iTunesFS"];
-#endif
+
+  // TODO: get this from user defaults?
+  [os addObject:@"volname=iTunesFS"];
+
   // necessary on 10.4, ignored on 10.5
   [os addObject:@"ping_diskarb"];
   if ([self needsLocalOption])
