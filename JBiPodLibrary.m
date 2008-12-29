@@ -38,7 +38,7 @@
 + (BOOL)isIPodAtMountPoint:(NSString *)_path {
   NSString *testPath;
   
-  /* simple heuristic for Jailbreaked iPods
+  /* simple heuristic for Jailbroken iPods
    * NOTE: My iPhone 1.1.4 says: <mnt>/var/mobile/Media/iTunes_Control/...
    */
   testPath = [NSString stringWithFormat:@"%@/Media/iTunes_Control", _path];

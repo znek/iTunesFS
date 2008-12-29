@@ -39,6 +39,7 @@
 #import "Watchdog.h"
 #import "NSObject+FUSEOFS.h"
 #import "iTunesFSFormatter.h"
+#import "NSImage+IconData.h"
 
 @implementation iTunesLibrary
 
@@ -79,7 +80,7 @@ static NSDictionary      *burnFolderFinderInfo = nil;
 #ifndef GNU_GUI_LIBRARY
   libraryIconData = [[[[NSWorkspace sharedWorkspace]
                                     iconForFile:@"/Applications/iTunes.app"]
-                                    TIFFRepresentation] copy];
+                                    icnsDataWithWidth:512] copy];
 #endif
 
   kPlaylists    = [[NSLocalizedString(@"Playlists", "Playlists")

@@ -22,6 +22,8 @@
 		AD37A2970C01C87E00DF1291 /* iTunesLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = AD37A2960C01C87E00DF1291 /* iTunesLibrary.m */; };
 		AD3D0D510DB8EEB2001D158B /* iTunesFSController.m in Sources */ = {isa = PBXBuildFile; fileRef = AD0667A70D87023C0095EDEF /* iTunesFSController.m */; };
 		AD5B5E7C0C0C1A70003B1650 /* NSObject+FUSEOFS.m in Sources */ = {isa = PBXBuildFile; fileRef = AD5B5E7B0C0C1A70003B1650 /* NSObject+FUSEOFS.m */; };
+		AD8118720F093DAB000786C9 /* NSImage+IconData.m in Sources */ = {isa = PBXBuildFile; fileRef = AD8118710F093DAB000786C9 /* NSImage+IconData.m */; };
+		AD8118830F093EA4000786C9 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD8118820F093EA4000786C9 /* Accelerate.framework */; };
 		ADAADA9B0C2111390024D899 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = ADAADA9A0C2111390024D899 /* Localizable.strings */; };
 		ADBDA9CC0C02E7A5004CF795 /* iTunesFS.icns in Resources */ = {isa = PBXBuildFile; fileRef = ADBDA9CB0C02E7A5004CF795 /* iTunesFS.icns */; };
 		ADBDABA90C02FF10004CF795 /* NSString+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = ADBDABA80C02FF10004CF795 /* NSString+Extensions.m */; };
@@ -58,7 +60,7 @@
 		AD21E2FE0C32D49800D827BE /* iTunesFSFormatter.m */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.objc; path = iTunesFSFormatter.m; sourceTree = "<group>"; };
 		AD37A1FB0C01C57400DF1291 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		AD37A2950C01C87E00DF1291 /* iTunesLibrary.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = iTunesLibrary.h; sourceTree = "<group>"; };
-		AD37A2960C01C87E00DF1291 /* iTunesLibrary.m */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.objc; path = iTunesLibrary.m; sourceTree = "<group>"; };
+		AD37A2960C01C87E00DF1291 /* iTunesLibrary.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = iTunesLibrary.m; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		AD37A2BE0C01CFA800DF1291 /* README */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		AD37A2C20C01CFB400DF1291 /* NOTES */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; path = NOTES; sourceTree = "<group>"; };
 		AD5A40700C214A1900B1A000 /* README-GNUstep */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; path = "README-GNUstep"; sourceTree = "<group>"; };
@@ -70,6 +72,9 @@
 		AD5A40830C214FCB00B1A000 /* GNUmakefile.preamble */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 5; indentWidth = 8; path = GNUmakefile.preamble; sourceTree = "<group>"; tabWidth = 8; };
 		AD5B5E7A0C0C1A70003B1650 /* NSObject+FUSEOFS.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = "NSObject+FUSEOFS.h"; sourceTree = "<group>"; };
 		AD5B5E7B0C0C1A70003B1650 /* NSObject+FUSEOFS.m */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.objc; path = "NSObject+FUSEOFS.m"; sourceTree = "<group>"; };
+		AD8118700F093DAB000786C9 /* NSImage+IconData.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = "NSImage+IconData.h"; sourceTree = "<group>"; };
+		AD8118710F093DAB000786C9 /* NSImage+IconData.m */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.objc; path = "NSImage+IconData.m"; sourceTree = "<group>"; };
+		AD8118820F093EA4000786C9 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = /System/Library/Frameworks/Accelerate.framework; sourceTree = "<absolute>"; };
 		AD95D3AA0C21BBDA00B96A36 /* iTunesFSInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = iTunesFSInfo.plist; sourceTree = "<group>"; };
 		AD95D40A0C21C7C500B96A36 /* iTunesMusicLibrary.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = iTunesMusicLibrary.xml; sourceTree = "<group>"; };
 		ADAADA6B0C2110C00024D899 /* English */ = {isa = PBXFileReference; explicitFileType = text.plist.strings; fileEncoding = 10; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -98,6 +103,7 @@
 			files = (
 				AD0667BE0D870A7A0095EDEF /* Cocoa.framework in Frameworks */,
 				AD0666410D86FC4F0095EDEF /* MacFUSE.framework in Frameworks */,
+				AD8118830F093EA4000786C9 /* Accelerate.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -118,6 +124,7 @@
 				AD5A407C0C214FAA00B1A000 /* GNUstep */,
 				AD20DC1E0C25AD9D00DB2A42 /* FUSEOFS */,
 				08FB7795FE84155DC02AAC07 /* iTunesFS */,
+				AD81186F0F093D85000786C9 /* filesystems-objc-support */,
 				7FEA82C10B456A36001441DE /* Resources */,
 				AD5A407D0C214FCB00B1A000 /* FUSEObjC-GNUstep */,
 				ADBDAB040C02F664004CF795 /* Scripts */,
@@ -162,6 +169,7 @@
 		08FB779DFE84155DC02AAC07 /* External Frameworks and Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				AD8118820F093EA4000786C9 /* Accelerate.framework */,
 				AD0666400D86FC4F0095EDEF /* MacFUSE.framework */,
 				AD0667BD0D870A7A0095EDEF /* Cocoa.framework */,
 			);
@@ -220,6 +228,15 @@
 				AD5A40800C214FCB00B1A000 /* FUSEMain.m */,
 			);
 			path = "FUSEObjC-GNUstep";
+			sourceTree = "<group>";
+		};
+		AD81186F0F093D85000786C9 /* filesystems-objc-support */ = {
+			isa = PBXGroup;
+			children = (
+				AD8118700F093DAB000786C9 /* NSImage+IconData.h */,
+				AD8118710F093DAB000786C9 /* NSImage+IconData.m */,
+			);
+			path = "filesystems-objc-support";
 			sourceTree = "<group>";
 		};
 		AD95D4090C21C7AF00B96A36 /* examples */ = {
@@ -341,6 +358,7 @@
 				ADD11F3A0CD7A26000E7A5C2 /* JBiPodLibrary.m in Sources */,
 				AD0667DF0D870B520095EDEF /* main.m in Sources */,
 				AD3D0D510DB8EEB2001D158B /* iTunesFSController.m in Sources */,
+				AD8118720F093DAB000786C9 /* NSImage+IconData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

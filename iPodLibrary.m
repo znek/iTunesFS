@@ -36,9 +36,16 @@
 #import "NSString+Extensions.h"
 #import "iTunesPlaylist.h"
 #import "iTunesTrack.h"
+#import "NSImage+IconData.h"
+
+#if __LP64__ || NS_BUILD_32_LIKE_64
+  typedef unsigned int ITDBUInt32;
+#else
+  typedef unsigned long ITDBUInt32;
+#endif
 
 @interface iPodLibrary (Private)
-- (NSString *)selectorNameForCode:(unsigned long)_code;
+- (NSString *)selectorNameForCode:(ITDBUInt32)_code;
 - (void)parseITunesDBAtPath:(NSString *)_path
   playlists:(NSArray **)_playlists
   tracks:(NSDictionary **)_tracks;
@@ -60,59 +67,59 @@
  * fail for others.
  *
  * Information on iTunesDB can be found at:
- * http://ipodlinux.org/ITunesDB
+ * http://ipodlinux.org/wiki/ITunesDB
  */
 
 typedef struct {
   unsigned char pad[2];  // No NULL term!!
   unsigned char code[2]; // No NULL term!!
-  unsigned long jump;
-  unsigned long myLen;
-  unsigned long count;
+  ITDBUInt32 jump;
+  ITDBUInt32 myLen;
+  ITDBUInt32 count;
 } fsbbStruct;
 
 typedef struct {
-  unsigned long  uniqueID;
-  unsigned long  visible;
-  unsigned long  fileType;
+  ITDBUInt32  uniqueID;
+  ITDBUInt32  visible;
+  ITDBUInt32  fileType;
   unsigned short type;
   unsigned char  isCompilation;
   unsigned char  rating;
-  unsigned long  dateModified;
-  unsigned long  size;
-  unsigned long  length;
-  unsigned long  trackNumber;
-  unsigned long  totalTracks;
-  unsigned long  year;
-  unsigned long  bitrate;
-  unsigned long  sampleRate;
-  unsigned long  volume;
-  unsigned long  startTime;
-  unsigned long  stopTime;
-  unsigned long  soundcheck;
-  unsigned long  playCount;
-  unsigned long  playCountBackup;
-  unsigned long  dateLastPlayed;
-  unsigned long  discNumber;
-  unsigned long  totalDiscs;
-  unsigned long  userID;
-  unsigned long  dateAdded;
+  ITDBUInt32  dateModified;
+  ITDBUInt32  size;
+  ITDBUInt32  length;
+  ITDBUInt32  trackNumber;
+  ITDBUInt32  totalTracks;
+  ITDBUInt32  year;
+  ITDBUInt32  bitrate;
+  ITDBUInt32  sampleRate;
+  ITDBUInt32  volume;
+  ITDBUInt32  startTime;
+  ITDBUInt32  stopTime;
+  ITDBUInt32  soundcheck;
+  ITDBUInt32  playCount;
+  ITDBUInt32  playCountBackup;
+  ITDBUInt32  dateLastPlayed;
+  ITDBUInt32  discNumber;
+  ITDBUInt32  totalDiscs;
+  ITDBUInt32  userID;
+  ITDBUInt32  dateAdded;
 } mhitExtra;
 
 typedef struct {
-  unsigned long res1;
-  unsigned long strlength;
-  unsigned long res2[2];
+  ITDBUInt32 res1;
+  ITDBUInt32 strlength;
+  ITDBUInt32 res2[2];
 } stringParam;
 
 typedef struct {
-  unsigned long item_id;
-  unsigned long res1[3];
+  ITDBUInt32 item_id;
+  ITDBUInt32 res1[3];
 } propertyParam;
 
 typedef struct {
-  unsigned long res1[2];
-  unsigned long item_ref;
+  ITDBUInt32 res1[2];
+  ITDBUInt32 item_ref;
   unsigned short res2[2];
 } playlistParam;
 
@@ -160,7 +167,9 @@ static NSMutableDictionary *codeSelMap = nil;
 }
 
 - (void)dealloc {
+  [self close];
   [self->mountPoint release];
+  self->mountPoint = nil;
   [super dealloc];
 }
 
@@ -208,9 +217,14 @@ static NSMutableDictionary *codeSelMap = nil;
   [self reloadVirtualMaps];
 }
 
+- (void)close {
+	if (self->mountPoint)
+		[super close];
+}
+
 /* private */
 
-- (NSString *)selectorNameForCode:(unsigned long)_code {
+- (NSString *)selectorNameForCode:(ITDBUInt32)_code {
   return [codeSelMap objectForKey:ULongNum(_code)];
 }
 
@@ -240,9 +254,9 @@ static NSMutableDictionary *codeSelMap = nil;
     
     data        = [fh readDataOfLength:sizeof(fsbbStruct)];
     fsbb        = (fsbbStruct *)[data bytes];
-    fsbb->jump  = NSSwapLittleLongToHost(fsbb->jump);
-    fsbb->myLen = NSSwapLittleLongToHost(fsbb->myLen);
-    fsbb->count = NSSwapLittleLongToHost(fsbb->count);
+    fsbb->jump  = NSSwapLittleIntToHost(fsbb->jump);
+    fsbb->myLen = NSSwapLittleIntToHost(fsbb->myLen);
+	fsbb->count = NSSwapLittleIntToHost(fsbb->count);
     
     if (memcmp(fsbb->code, "bd", 2) == 0) { // begin of database
       if (doDebug) NSLog(@"%.8x Beginning of database\n", filePos);
@@ -287,7 +301,7 @@ static NSMutableDictionary *codeSelMap = nil;
 
       data               = [fh readDataOfLength:16];
       playlist           = (playlistParam *)[data bytes];
-      playlist->item_ref = NSSwapLittleLongToHost(playlist->item_ref);
+      playlist->item_ref = NSSwapLittleIntToHost(playlist->item_ref);
       trackID            = [ULongNum(playlist->item_ref) description];
       track              = [tmap objectForKey:trackID];
       if (!track && doDebug) {
@@ -309,11 +323,11 @@ static NSMutableDictionary *codeSelMap = nil;
 
       data               = [fh readDataOfLength:sizeof(mhitExtra)];
       prop               = (mhitExtra *)[data bytes];
-      prop->uniqueID     = NSSwapLittleLongToHost(prop->uniqueID);
-      prop->size         = NSSwapLittleLongToHost(prop->size);
-      prop->trackNumber  = NSSwapLittleLongToHost(prop->trackNumber);
-      prop->dateModified = NSSwapLittleLongToHost(prop->dateModified);
-      prop->dateAdded    = NSSwapLittleLongToHost(prop->dateAdded);
+      prop->uniqueID     = NSSwapLittleIntToHost(prop->uniqueID);
+      prop->size         = NSSwapLittleIntToHost(prop->size);
+      prop->trackNumber  = NSSwapLittleIntToHost(prop->trackNumber);
+      prop->dateModified = NSSwapLittleIntToHost(prop->dateModified);
+      prop->dateAdded    = NSSwapLittleIntToHost(prop->dateAdded);
       trackID            = [ULongNum(prop->uniqueID) description];
 
       self->currentObject = [[NSMutableDictionary alloc] initWithCapacity:2];
@@ -343,7 +357,7 @@ static NSMutableDictionary *codeSelMap = nil;
       [fh seekToFileOffset:filePos + 24];
       data          = [fh readDataOfLength:16];
       sp            = (stringParam *)[data bytes];
-      sp->strlength = NSSwapLittleLongToHost(sp->strlength);
+      sp->strlength = NSSwapLittleIntToHost(sp->strlength);
 
       if (fsbb->myLen == 0) // Bad something, skip outta here
         continue;
@@ -492,8 +506,11 @@ static NSMutableDictionary *codeSelMap = nil;
   return self->mountPoint;
 }
 
-- (NSImage *)icon {
-  return [[NSWorkspace sharedWorkspace] iconForFile:self->mountPoint];
+/* FUSEOFS */
+
+- (NSData *)iconData {
+  NSImage *icon = [[NSWorkspace sharedWorkspace] iconForFile:self->mountPoint];
+  return [icon icnsDataWithWidth:512];
 }
 
 @end /* iPodLibrary */
