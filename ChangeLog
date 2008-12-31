@@ -1,4 +1,4 @@
-2008-12-29  Marcus Mueller  <znek@mulle-kybernetik.com>
+2008-12-31  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* v1.1.7b6
 
@@ -23,6 +23,8 @@
 
 	* NSString+Extensions.m: major bug fixed, properly apply Unicode string
 	  normalization (decomposed form) in -properlyEscapedFSRepresentation.
+
+2008-12-29  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* v1.1.7b5
 
