@@ -306,10 +306,6 @@ static NSString *locationDestinationPrefix = nil;
   return [self->url properlyEscapedPath];
 }
 
-- (BOOL)isFile {
-  return YES;
-}
-
 /* debugging */
 
 - (NSString *)description {

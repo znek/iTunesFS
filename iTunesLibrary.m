@@ -386,7 +386,7 @@ static NSDictionary      *burnFolderFinderInfo = nil;
 
 /* FUSEOFS */
 
-- (id)lookupPathComponent:(NSString *)_pc {
+- (id)lookupPathComponent:(NSString *)_pc inContext:(id)_ctx {
   if (!useCategories) {
     unsigned count;
     
@@ -394,11 +394,12 @@ static NSDictionary      *burnFolderFinderInfo = nil;
     if (count == 0) return nil; // no playlists, no entries
     if (count == 1) {
       // hide single playlist altogether (i.e. iPod shuffle)
-      return [[[self->plMap allValues] lastObject] lookupPathComponent:_pc];
+      return [[[self->plMap allValues] lastObject] lookupPathComponent:_pc
+                                                   inContext:_ctx];
     }
     return [self playlistNamed:_pc];
   }
-  return [self->virtMap lookupPathComponent:_pc];
+  return [self->virtMap lookupPathComponent:_pc inContext:_ctx];
 }
 
 - (NSArray *)directoryContents {

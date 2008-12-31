@@ -1,5 +1,29 @@
 2008-12-29  Marcus Mueller  <znek@mulle-kybernetik.com>
 
+	* v1.1.7b6
+
+	* FUSEOFS/NSObject+FUSEOFS.[hm]: new experimental version of FUSEOFS
+	  with slightly different object lookup (provides a context),
+	  removed -isFile but added -isMutable reflection to allow write
+	  methods later on
+
+	* FUSEOFS/FUSEOFSLookupContext.[hm]: new file, represents a context
+	  used during -lookupPathComponent:inContext:
+
+	* FUSEOFS/FUSEObjectFileSystem.[hm]: -lookupPath: uses new
+	  FUSEOFSLookupContext during lookup now
+
+	* iTunesPlaylist.m: code changed due to FUSEOFS API changes
+
+	* iTunesFileSystem.m: code changed due to FUSEOFS API changes
+
+	* iTunesLibrary.m: code changed due to FUSEOFS API changes
+
+	* FUSEOFS/FUSEOFSFileProxy.h: code cleanup
+
+	* NSString+Extensions.m: major bug fixed, properly apply Unicode string
+	  normalization (decomposed form) in -properlyEscapedFSRepresentation.
+
 	* v1.1.7b5
 
 	* Added filesystems-objc-support external, need NSImage+IconData for

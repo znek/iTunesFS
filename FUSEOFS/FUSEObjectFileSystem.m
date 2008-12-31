@@ -34,6 +34,7 @@
 #import "common.h"
 #import <MacFUSE/GMUserFileSystem.h>
 #import "NSObject+FUSEOFS.h"
+#import "FUSEOFSLookupContext.h"
 
 @interface FUSEObjectFileSystem (Private)
 - (id)lookupPath:(NSString *)_path;
@@ -113,19 +114,27 @@ static NSDictionary *emptyDict  = nil;
 - (id)lookupPath:(NSString *)_path {
   NSArray  *path;
   id       obj;
+  id       ctx;
   unsigned i, count;
   
-  path = [self pathFromFSPath:_path];
+  path  = [self pathFromFSPath:_path];
   count = [path count];
   if (!count) return nil;
+
+  ctx = [[FUSEOFSLookupContext alloc] init];
+  [ctx setClientObject:self];
   obj = [self rootObject];
   if (debugLookup)
     NSLog(@"lookup [#0, %@] -> %@", [path objectAtIndex:0], obj);
   for (i = 1; i < count; i++) {
-    obj = [obj lookupPathComponent:[path objectAtIndex:i]];
+    id co = obj;
+    obj = [obj lookupPathComponent:[path objectAtIndex:i] inContext:ctx];
+    if (i < (count - 1))
+      [ctx setClientObject:co];
     if (debugLookup)
       NSLog(@"lookup [#%d, %@] -> %@", i, [path objectAtIndex:i], obj);
   }
+  [ctx release];
   return obj;
 }
 
@@ -146,12 +155,10 @@ static NSDictionary *emptyDict  = nil;
   NSDictionary *attr = [obj fileAttributes];
   if (!attr)
   {
-	if ([obj isFile])
-	  return fileDict;
-	else if ([obj isDirectory])
+	if ([obj isDirectory])
 	  return dirDict;
     else
-	  return nil;
+	  return fileDict;
   }
   return attr;
 }

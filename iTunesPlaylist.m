@@ -214,7 +214,7 @@ static iTunesFSFormatter *plTrackFormatter = nil;
 
 /* FUSEOFS */
 
-- (id)lookupPathComponent:(NSString *)_pc {
+- (id)lookupPathComponent:(NSString *)_pc inContext:(id)_ctx {
   NSUInteger idx;
 
   idx = [[self trackNames] indexOfObject:_pc];

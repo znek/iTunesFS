@@ -264,9 +264,9 @@ static NSArray  *fakeVolumePaths = nil;
 
 /* FUSEOFS */
 
-- (id)lookupPathComponent:(NSString *)_pc {
+- (id)lookupPathComponent:(NSString *)_pc inContext:(id)_ctx {
   // TODO: add fake Spotlight entries
-  return [self->libMap lookupPathComponent:_pc];
+  return [self->libMap lookupPathComponent:_pc inContext:_ctx];
 }
 
 - (NSArray *)directoryContents {

@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2007-2008, Marcus MŸller <znek@mulle-kybernetik.com>.
+  Copyright (c) 2007-2008, Marcus MÃ¼ller <znek@mulle-kybernetik.com>.
   All rights reserved.
 
 
@@ -30,8 +30,8 @@
   POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef	__iTunesFS_FUSEOFSFileProxy_H
-#define	__iTunesFS_FUSEOFSFileProxy_H
+#ifndef	__FUSEOFS_FUSEOFSFileProxy_H
+#define	__FUSEOFS_FUSEOFSFileProxy_H
 
 #import <Foundation/Foundation.h>
 
@@ -44,4 +44,4 @@
 
 @end /* FUSEOFSFileProxy */
 
-#endif	/* __iTunesFS_FUSEOFSFileProxy_H */
+#endif	/* __FUSEOFS_FUSEOFSFileProxy_H */

@@ -30,42 +30,19 @@
   POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef	__FUSEOFS_NSObject_FUSEOFS_H
-#define	__FUSEOFS_NSObject_FUSEOFS_H
+#ifndef	__FUSEOFS_FUSEOFSLookupContext_H
+#define	__FUSEOFS_FUSEOFSLookupContext_H
 
 #import <Foundation/Foundation.h>
 
-@interface NSObject (FUSEOFS)
+@interface FUSEOFSLookupContext : NSObject
+{
+  id clientObject;
+}
 
-/* lookup */
+- (id)clientObject;
+- (void)setClientObject:(id)_co;
 
-- (id)lookupPathComponent:(NSString *)_pc inContext:(id)_ctx;
+@end
 
-- (NSArray *)directoryContents;
-- (NSData *)fileContents;
-- (NSString *)symbolicLinkTarget;
-
-/* attributes */
-
-- (NSDictionary *)fileAttributes;
-- (NSDictionary *)fileSystemAttributes;
-
-/* MacOS X _only_ attributes */
-
-- (NSDictionary *)finderAttributes;
-- (NSDictionary *)resourceAttributes;
-
-/* misc */
-
-// NOTE: the format of iconData is platform dependend - on MacOS X MacFUSE
-// expects this to be 'icns' data
-- (NSData *)iconData;
-
-/* reflection */
-
-- (BOOL)isDirectory;
-- (BOOL)isMutable;
-
-@end /* NSObject (FUSEOFS) */
-
-#endif	/* __FUSEOFS_NSObject_FUSEOFS_H */
+#endif	/* __FUSEOFS_FUSEOFSLookupContext_H */

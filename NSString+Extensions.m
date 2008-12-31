@@ -49,14 +49,19 @@
                                  copy];
   }
 
-  r = [self rangeOfCharacterFromSet:escapeSet];
-  if (r.location == NSNotFound) return self;
-  proper   = [self mutableCopy];
-  r.length = [self length] - r.location;
+  // NOTE: we _always_ need to normalize the string into decomposed form!
+  // ref: http://developer.apple.com/qa/qa2001/qa1235.html
+  proper = [[self mutableCopy] autorelease];
+  CFStringNormalize((CFMutableStringRef)proper, kCFStringNormalizationFormD);
 
+  r = [self rangeOfCharacterFromSet:escapeSet];
+  if (r.location == NSNotFound)
+	  return proper;
+
+  r.length = [self length] - r.location;
   [proper replaceOccurrencesOfString:@":" withString:colon options:0 range:r];
   [proper replaceOccurrencesOfString:@"/" withString:@":"  options:0 range:r];
-  return [proper autorelease];
+  return proper;
 }
 
 @end /* NSString (iTunesFSExtensions) */

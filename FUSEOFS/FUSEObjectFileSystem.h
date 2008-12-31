@@ -30,8 +30,8 @@
   POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef	__iTunesFS_FUSEObjectFileSystem_H
-#define	__iTunesFS_FUSEObjectFileSystem_H
+#ifndef	__FUSEOFS_FUSEObjectFileSystem_H
+#define	__FUSEOFS_FUSEObjectFileSystem_H
 
 #import "FUSEFileSystem.h"
 
@@ -59,4 +59,4 @@
 
 @end /* FUSEObjectFileSystem */
 
-#endif	/* __iTunesFS_FUSEObjectFileSystem_H */
+#endif	/* __FUSEOFS_FUSEObjectFileSystem_H */

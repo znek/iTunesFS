@@ -24,6 +24,7 @@
 		AD5B5E7C0C0C1A70003B1650 /* NSObject+FUSEOFS.m in Sources */ = {isa = PBXBuildFile; fileRef = AD5B5E7B0C0C1A70003B1650 /* NSObject+FUSEOFS.m */; };
 		AD8118720F093DAB000786C9 /* NSImage+IconData.m in Sources */ = {isa = PBXBuildFile; fileRef = AD8118710F093DAB000786C9 /* NSImage+IconData.m */; };
 		AD8118830F093EA4000786C9 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD8118820F093EA4000786C9 /* Accelerate.framework */; };
+		AD8119700F095144000786C9 /* FUSEOFSLookupContext.m in Sources */ = {isa = PBXBuildFile; fileRef = AD81196F0F095144000786C9 /* FUSEOFSLookupContext.m */; };
 		ADAADA9B0C2111390024D899 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = ADAADA9A0C2111390024D899 /* Localizable.strings */; };
 		ADBDA9CC0C02E7A5004CF795 /* iTunesFS.icns in Resources */ = {isa = PBXBuildFile; fileRef = ADBDA9CB0C02E7A5004CF795 /* iTunesFS.icns */; };
 		ADBDABA90C02FF10004CF795 /* NSString+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = ADBDABA80C02FF10004CF795 /* NSString+Extensions.m */; };
@@ -71,10 +72,12 @@
 		AD5A40820C214FCB00B1A000 /* GNUmakefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 5; indentWidth = 8; path = GNUmakefile; sourceTree = "<group>"; tabWidth = 8; };
 		AD5A40830C214FCB00B1A000 /* GNUmakefile.preamble */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 5; indentWidth = 8; path = GNUmakefile.preamble; sourceTree = "<group>"; tabWidth = 8; };
 		AD5B5E7A0C0C1A70003B1650 /* NSObject+FUSEOFS.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = "NSObject+FUSEOFS.h"; sourceTree = "<group>"; };
-		AD5B5E7B0C0C1A70003B1650 /* NSObject+FUSEOFS.m */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.objc; path = "NSObject+FUSEOFS.m"; sourceTree = "<group>"; };
+		AD5B5E7B0C0C1A70003B1650 /* NSObject+FUSEOFS.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = "NSObject+FUSEOFS.m"; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		AD8118700F093DAB000786C9 /* NSImage+IconData.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = "NSImage+IconData.h"; sourceTree = "<group>"; };
 		AD8118710F093DAB000786C9 /* NSImage+IconData.m */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.objc; path = "NSImage+IconData.m"; sourceTree = "<group>"; };
 		AD8118820F093EA4000786C9 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = /System/Library/Frameworks/Accelerate.framework; sourceTree = "<absolute>"; };
+		AD81196E0F095144000786C9 /* FUSEOFSLookupContext.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = FUSEOFSLookupContext.h; sourceTree = "<group>"; };
+		AD81196F0F095144000786C9 /* FUSEOFSLookupContext.m */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.objc; path = FUSEOFSLookupContext.m; sourceTree = "<group>"; };
 		AD95D3AA0C21BBDA00B96A36 /* iTunesFSInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = iTunesFSInfo.plist; sourceTree = "<group>"; };
 		AD95D40A0C21C7C500B96A36 /* iTunesMusicLibrary.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = iTunesMusicLibrary.xml; sourceTree = "<group>"; };
 		ADAADA6B0C2110C00024D899 /* English */ = {isa = PBXFileReference; explicitFileType = text.plist.strings; fileEncoding = 10; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -202,6 +205,8 @@
 				ADDCD7820C26A7E00031B215 /* GNUstep */,
 				AD20DB510C259F6F00DB2A42 /* FUSEObjectFileSystem.h */,
 				AD20DB520C259F6F00DB2A42 /* FUSEObjectFileSystem.m */,
+				AD81196E0F095144000786C9 /* FUSEOFSLookupContext.h */,
+				AD81196F0F095144000786C9 /* FUSEOFSLookupContext.m */,
 				AD5B5E7A0C0C1A70003B1650 /* NSObject+FUSEOFS.h */,
 				AD5B5E7B0C0C1A70003B1650 /* NSObject+FUSEOFS.m */,
 				AD20DC170C25AD8E00DB2A42 /* FUSEOFSFileProxy.h */,
@@ -359,6 +364,7 @@
 				AD0667DF0D870B520095EDEF /* main.m in Sources */,
 				AD3D0D510DB8EEB2001D158B /* iTunesFSController.m in Sources */,
 				AD8118720F093DAB000786C9 /* NSImage+IconData.m in Sources */,
+				AD8119700F095144000786C9 /* FUSEOFSLookupContext.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

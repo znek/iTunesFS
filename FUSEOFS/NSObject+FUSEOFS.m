@@ -34,7 +34,7 @@
 
 @implementation NSObject (FUSEOFS)
 
-- (id)lookupPathComponent:(NSString *)_pc {
+- (id)lookupPathComponent:(NSString *)_pc inContext:(id)_ctx {
   return nil;
 }
 - (NSArray *)directoryContents {
@@ -47,36 +47,54 @@
   return nil; 
 }
 - (NSDictionary *)fileAttributes {
-  return nil;
+  NSMutableDictionary *attrs;
+  NSNumber            *perm;
+
+  attrs = [NSMutableDictionary dictionaryWithCapacity:2];
+  if ([self isDirectory]) {
+    perm = [NSNumber numberWithInt:[self isMutable] ? 0700 : 0500];
+    [attrs setObject:NSFileTypeDirectory forKey:NSFileType];
+    [attrs setObject:[self symbolicLinkTarget] ? NSFileTypeSymbolicLink
+                                               : NSFileTypeDirectory
+           forKey:NSFileType];
+  }
+  else {
+    perm = [NSNumber numberWithInt:[self isMutable] ? 0600 : 0400];
+		[attrs setObject:[self symbolicLinkTarget] ? NSFileTypeSymbolicLink
+                                               : NSFileTypeRegular
+           forKey:NSFileType];
+  }
+  [attrs setObject:perm forKey:NSFilePosixPermissions];
+  return attrs;
 }
 - (NSDictionary *)fileSystemAttributes {
   return nil;
 }
 - (NSDictionary *)finderAttributes {
-	if ([self iconData]) {
-		NSNumber *finderFlags = [NSNumber numberWithLong:kHasCustomIcon];
-		return [NSDictionary dictionaryWithObject:finderFlags
-                         forKey:kGMUserFileSystemFinderFlagsKey];
+  if ([self iconData]) {
+    NSNumber *finderFlags = [NSNumber numberWithLong:kHasCustomIcon];
+    return [NSDictionary dictionaryWithObject:finderFlags
+						 forKey:kGMUserFileSystemFinderFlagsKey];
   }
   return nil;
 }
 - (NSDictionary *)resourceAttributes {
-	NSData *iconData;
+  NSData *iconData;
   
-	if ((iconData = [self iconData])) {
-		return [NSDictionary dictionaryWithObject:iconData
+  if ((iconData = [self iconData])) {
+    return [NSDictionary dictionaryWithObject:iconData
                          forKey:kGMUserFileSystemCustomIconDataKey];
-	}
-	return nil;
+  }
+  return nil;
 }
 
 - (NSData *)iconData {
   return nil;
 }
-- (BOOL)isFile {
+- (BOOL)isDirectory {
   return NO;
 }
-- (BOOL)isDirectory {
+- (BOOL)isMutable {
   return NO;
 }
 
@@ -84,12 +102,12 @@
 
 @implementation NSDictionary (FUSEOFS)
 
-- (id)lookupPathComponent:(NSString *)_pc {
-  if ([_pc isEqualToString:@"_FinderInfo"]) return nil;
+- (id)lookupPathComponent:(NSString *)_pc inContext:(id)_ctx {
+  if ([_pc isEqualToString:@"_FinderAttributes"]) return nil;
   return [self objectForKey:_pc];
 }
 - (NSDictionary *)finderAttributes {
-  id finderAttributes = [self objectForKey:@"_FinderInfo"];
+  id finderAttributes = [self objectForKey:@"_FinderAttributes"];
   if (finderAttributes) {
     return finderAttributes;
   }
@@ -111,10 +129,10 @@
 }
 
 - (NSArray *)directoryContents {
-  if (![self objectForKey:@"_FinderInfo"])
+  if (![self objectForKey:@"_FinderAttributes"])
     return [self allKeys];
   NSMutableArray *keys = [[[self allKeys] mutableCopy] autorelease];
-  [keys removeObject:@"_FinderInfo"];
+  [keys removeObject:@"_FinderAttributes"];
   return keys;
 }
 - (BOOL)isDirectory {
