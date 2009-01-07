@@ -1,3 +1,14 @@
+2009-01-07  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v1.1.7b7
+	
+	* iTunesFS.xcodeproj: pulled the plug on 10.4.x version, don't have
+	  a 10.4.x box around any more and can't guarantee that the 10.4.x
+	  builds will work.
+
+	* *.[hm]: updated copyright notice for 2009, explicitly set
+	  space vs. tabs and UTF-8 encoding for all code files.
+
 2008-12-31  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* v1.1.7b6

@@ -1,10 +1,10 @@
 {
-  FUSEFileSystemClass      = iTunesFileSystem;
-  NSHumanReadableCopyright = "Copyright 2007-2008 Mulle kybernetiK.";
-  NSUserDefaults           = {
-    FUSEMountPath        = "/tmp/iTunesFS";
-    UseCategories        = YES;
-    AlbumsTrackFormat    = "%(name).%(ext)";
+	FUSEFileSystemClass = iTunesFileSystem;
+	"NSHumanReadableCopyright" = "Copyright 2007-2009 Mulle kybernetiK.";
+	NSUserDefaults = {
+		FUSEMountPath = "/tmp/iTunesFS";
+		UseCategories = YES;
+		AlbumsTrackFormat = "%(name).%(ext)";
 		PlaylistsTrackFormat = "%(playlistNumber) %(name).%(ext)";
-  };
+	};
 }
