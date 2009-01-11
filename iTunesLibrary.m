@@ -356,6 +356,9 @@ static NSDictionary      *burnFolderFinderInfo = nil;
 }
 
 - (void)close {
+  if (doDebug)
+    NSLog(@"closing library: %@", self);
+
   [[Watchdog sharedWatchdog] forgetLibrary:self];
 }
 

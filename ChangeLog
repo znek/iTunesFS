@@ -1,4 +1,4 @@
-2009-01-07  Marcus Mueller  <znek@mulle-kybernetik.com>
+2009-01-11  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* v1.1.7b7
 	
@@ -8,6 +8,17 @@
 
 	* *.[hm]: updated copyright notice for 2009, explicitly set
 	  space vs. tabs and UTF-8 encoding for all code files.
+
+	* iTunesFileSystem.m: added debug logs for (un-)mounting,
+	  explicitly release libraries in -willUnmount in order to break retain
+	  cycle with watchdog. Removed "ping_diskarb" from options as we no
+	  longer support Tiger.
+
+	* iTunesLibrary.m: added debug log
+
+	* FUSEOFS/FUSEObjectFileSystem.m: fixed legacy bug in willUnmount, no
+	  need to call [fs unmount]... leads to infinite recursion which
+	  apparently broke unmounting.
 
 2008-12-31  Marcus Mueller  <znek@mulle-kybernetik.com>
 

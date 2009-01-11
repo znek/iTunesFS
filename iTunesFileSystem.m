@@ -88,6 +88,9 @@ static NSArray  *fakeVolumePaths = nil;
 - (void)willMount {
   iTunesLibrary *lib;
 
+  if (doDebug)
+    NSLog(@"iTunesFileSystem will mount now");
+
   self->libMap = [[NSMutableDictionary alloc] initWithCapacity:3];
   self->volMap = [[NSMutableDictionary alloc] initWithCapacity:3];
 
@@ -146,11 +149,35 @@ static NSArray  *fakeVolumePaths = nil;
 - (void)willUnmount {
   NSNotificationCenter *nc;
 
+  if (doDebug)
+    NSLog(@"iTunesFileSystem will unmount now");
+
   nc = [[NSWorkspace sharedWorkspace] notificationCenter];
   [nc removeObserver:self];
 
-  [self->libMap release];
   [self->volMap release];
+
+  NSAutoreleasePool *localPool = [NSAutoreleasePool new];
+  
+  // close all libraries
+  NSArray    *libs    = [self->libMap allValues];
+  NSUInteger i, count = [libs count];
+  for (i = 0; i < count; i++) {
+    [[libs objectAtIndex:i] close];
+  }
+
+  if (doDebug) {
+    libs = [self->libMap allValues];
+    NSUInteger i, count = [libs count];
+    for (i = 0; i < count; i++) {
+      id lib = [libs objectAtIndex:i];
+      NSLog(@"lib: %@, rc: %d", lib, [lib retainCount]);
+    }
+  }
+
+  [localPool release];
+
+  [self->libMap release];
 	
   [super willUnmount];
 }
@@ -307,14 +334,22 @@ static NSArray  *fakeVolumePaths = nil;
   NSMutableArray *os;
   
   os = [[[super fuseOptions] mutableCopy] autorelease];
+  
+#if 0
+  // careful (fuse will be pretty slow when in use)!
+  // NOTE: I guess this is obsolete by now, should use dtrace for the
+  // purpose of debugging fuse
+  [os addObject:@"debug"];
+#endif
+  
   // TODO: pretty lame, couldn't we set this using reflection on FS mutability?
   [os addObject:@"rdonly"];
 
 #if 0
-  // careful!
-  [os addObject:@"debug"];
+  // EXP: use this only for experiments
+  [os addObject:@"daemon_timeout=10"];
 #endif
-  
+
 #if 0
   // TODO: (Dan) explain why we would need that option
   // we know all filesizes beforehand from the various libraries' metadata,
@@ -325,8 +360,6 @@ static NSArray  *fakeVolumePaths = nil;
   // TODO: get this from user defaults?
   [os addObject:@"volname=iTunesFS"];
 
-  // necessary on 10.4, ignored on 10.5
-  [os addObject:@"ping_diskarb"];
   if ([self needsLocalOption])
     [os addObject:@"local"];
   return os;

@@ -93,7 +93,6 @@ static NSDictionary *emptyDict  = nil;
 - (void)willUnmount {
   [self->mountPoint release];
   self->mountPoint = nil;
-  [self->fs unmount];
   [self->fs setDelegate:nil];
   [self->fs release];
   self->fs = nil;
