@@ -158,21 +158,12 @@ static NSArray  *fakeVolumePaths = nil;
   [self->volMap release];
 
   NSAutoreleasePool *localPool = [NSAutoreleasePool new];
-  
+
   // close all libraries
   NSArray    *libs    = [self->libMap allValues];
   NSUInteger i, count = [libs count];
   for (i = 0; i < count; i++) {
     [[libs objectAtIndex:i] close];
-  }
-
-  if (doDebug) {
-    libs = [self->libMap allValues];
-    NSUInteger i, count = [libs count];
-    for (i = 0; i < count; i++) {
-      id lib = [libs objectAtIndex:i];
-      NSLog(@"lib: %@, rc: %d", lib, [lib retainCount]);
-    }
   }
 
   [localPool release];
