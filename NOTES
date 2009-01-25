@@ -90,3 +90,19 @@ iTunes localization
 "kSearchMenuItemSongs"   = "Songs";
 "3102.020"               = "Unbekannt";
 "kSearchMenuItemAll"     = "Alle";
+
+
+Sharing via Apache2/DAV
+=======================
+
+<Directory "/Volumes/iTunesFS/">
+  Options Indexes
+  AllowOverride All
+  Order allow,deny
+  Allow from all
+</Directory>
+
+Alias /iTunesFS /Volumes/iTunesFS
+<Location /iTunesFS>
+  Dav On
+</Location>

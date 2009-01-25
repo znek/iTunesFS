@@ -1,3 +1,14 @@
+2009-01-25  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v1.1.7
+
+	* NOTES: added Apache2/DAV config snippet
+
+	* iTunesFileSystem.m: added "allow_other" FUSE option
+
+	* FUSEOFS/NSObject+FUSEOFS.m: changed file permissions to be more
+	  liberal (more appropriate for iTunesFS)
+
 2009-01-11  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* v1.1.7b7

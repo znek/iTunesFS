@@ -52,14 +52,14 @@
 
   attrs = [NSMutableDictionary dictionaryWithCapacity:2];
   if ([self isDirectory]) {
-    perm = [NSNumber numberWithInt:[self isMutable] ? 0700 : 0500];
+    perm = [NSNumber numberWithInt:[self isMutable] ? 0777 : 0555];
     [attrs setObject:NSFileTypeDirectory forKey:NSFileType];
     [attrs setObject:[self symbolicLinkTarget] ? NSFileTypeSymbolicLink
                                                : NSFileTypeDirectory
            forKey:NSFileType];
   }
   else {
-    perm = [NSNumber numberWithInt:[self isMutable] ? 0600 : 0400];
+    perm = [NSNumber numberWithInt:[self isMutable] ? 0666 : 0444];
 		[attrs setObject:[self symbolicLinkTarget] ? NSFileTypeSymbolicLink
                                                : NSFileTypeRegular
            forKey:NSFileType];

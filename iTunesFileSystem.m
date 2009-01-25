@@ -351,6 +351,8 @@ static NSArray  *fakeVolumePaths = nil;
   // TODO: get this from user defaults?
   [os addObject:@"volname=iTunesFS"];
 
+  [os addObject:@"allow_other"];
+
   if ([self needsLocalOption])
     [os addObject:@"local"];
   return os;
