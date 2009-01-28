@@ -59,6 +59,9 @@ AutoOpenInFinder      | BOOL   | Automatically open the iTunesFS in Finder after
 (YES)                 |        | it has been mounted
 UseBurnFoldersInFinder| BOOL   | Expose all virtual folders (including
 (NO)                  |        | playlists) as burn folders in Finder
+FUSEOptionAllowOther  | BOOL   | If YES, add the "allow_other" FUSE Option.
+(NO)                  |        | You need this if you want to access iTunesFS
+                      |        | via Apache
 
 
 For developers
@@ -90,7 +93,7 @@ Currently, track properties of interest are:
 
 Here's an example of a more complex formatter:
 
-"#%(trackNumber#00) %(name) (%(artist) - %(album)).%(ext)"
+"#%(trackNumber#00) %(name) (%(artist) - %(album)).%(ext.lowercaseString)"
 
 This would produce an output similar to this:
 

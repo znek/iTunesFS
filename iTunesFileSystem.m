@@ -49,6 +49,8 @@
 - (id)lookupPath:(NSString *)_path;
 
 - (BOOL)needsLocalOption;
+- (BOOL)wantsAllowOtherOption;
+
 @end
 
 @implementation iTunesFileSystem
@@ -56,6 +58,7 @@
 static BOOL     doDebug          = NO;
 static BOOL     ignoreITunes     = NO;
 static BOOL     ignoreIPods      = NO;
+static BOOL     allowOtherOption = NO;
 static NSString *fsIconPath      = nil;
 static NSArray  *fakeVolumePaths = nil;
 
@@ -72,6 +75,7 @@ static NSArray  *fakeVolumePaths = nil;
   doDebug          = [ud boolForKey:@"iTunesFileSystemDebugEnabled"];
   ignoreITunes     = [ud boolForKey:@"NoITunes"];
   ignoreIPods      = [ud boolForKey:@"NoIPods"];
+  allowOtherOption = [ud boolForKey:@"FUSEOptionAllowOther"];
 
   if (ignoreITunes && ignoreIPods)
     NSLog(@"ERROR: ignoring iTunes and iPods doesn't make sense at all.");
@@ -321,6 +325,10 @@ static NSArray  *fakeVolumePaths = nil;
   return NO;
 }
 
+- (BOOL)wantsAllowOtherOption {
+  return allowOtherOption;
+}
+
 - (NSArray *)fuseOptions {
   NSMutableArray *os;
   
@@ -351,7 +359,8 @@ static NSArray  *fakeVolumePaths = nil;
   // TODO: get this from user defaults?
   [os addObject:@"volname=iTunesFS"];
 
-  [os addObject:@"allow_other"];
+  if ([self wantsAllowOtherOption])
+    [os addObject:@"allow_other"];
 
   if ([self needsLocalOption])
     [os addObject:@"local"];

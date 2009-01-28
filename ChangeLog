@@ -1,3 +1,13 @@
+2009-01-28  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v1.1.8
+
+	* iTunesFileSystem.m: "allow_other" FUSE option is now triggerable via
+	  a new "FUSEOptionAllowOther" default and OFF by default, as it caused
+	  problems for some users.
+
+	* README: documented new "FUSEOptionAllowOther" default
+
 2009-01-25  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* v1.1.7
