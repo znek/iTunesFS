@@ -1,6 +1,6 @@
 2009-01-29  Marcus Mueller  <znek@mulle-kybernetik.com>
 
-	* 1.1.9b1
+	* 1.1.9
 	
 	* iTunesLibrary.m: changed detection of libraryPath; if no default is
 	  set, a candidate is looked up in the com.apple.iApps domain, first.
