@@ -71,9 +71,33 @@ static NSDictionary      *burnFolderFinderInfo = nil;
   libraryPath        = [[[ud stringForKey:@"Library"] stringByStandardizingPath]
                                                       copy];
   if (!libraryPath) {
-    libraryPath = [[NSHomeDirectory() stringByAppendingString:
-                                      @"/Music/iTunes/iTunes Music Library.xml"]
-                                      copy];
+    // retrieve standard library path from iApps's defaults
+    [ud synchronize];
+
+    NSArray *dbs = [[ud persistentDomainForName:@"com.apple.iApps"]
+                        objectForKey:@"iTunesRecentDatabases"];
+    if ([dbs count] > 0) {
+      NSURL *url = [NSURL URLWithString:[dbs objectAtIndex:0]];
+      if ([url isFileURL]) {
+        libraryPath = [[url path] copy];
+        if (doDebug)
+          NSLog(@"LibraryPath retrieved via iApps default: %@", libraryPath);
+      }
+    }
+
+    if (!libraryPath) {
+      // fallback to simple heuristic, if above plan didn't work
+      // (for whatever reason)
+      libraryPath = [[NSHomeDirectory() stringByAppendingString:
+                                        @"/Music/iTunes/iTunes Music Library.xml"]
+                                        copy];
+      if (doDebug)
+        NSLog(@"LibraryPath determined via simple heuristic: %@", libraryPath);
+    }
+  }
+  else {
+    if (doDebug)
+      NSLog(@"LibraryPath set via 'Library' user default: %@", libraryPath);
   }
 
   /* GNUstep's AppKit doesn't know Apple icons */

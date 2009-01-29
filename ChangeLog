@@ -1,3 +1,12 @@
+2009-01-29  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* 1.1.9b1
+	
+	* iTunesLibrary.m: changed detection of libraryPath; if no default is
+	  set, a candidate is looked up in the com.apple.iApps domain, first.
+	  This change is based on code contributed by Frederik Seiffert
+	  <frederik@algoriddim.net>.
+
 2009-01-28  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* v1.1.8
