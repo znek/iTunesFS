@@ -70,38 +70,50 @@ static iTunesFSFormatter *plTrackFormatter = nil;
 {
   self = [super init];
   if (self) {
-    NSArray        *items;
-    NSMutableArray *ma;
-    unsigned       i, count;
+    BOOL isFolder;
 
+    self->persistentId = [[_list objectForKey:@"Playlist Persistent ID"] copy];
+    self->parentId     = [[_list objectForKey:@"Parent Persistent ID"] copy];
     [self setName:[_list objectForKey:@"Name"]];
-    
-    items = [_list objectForKey:@"Playlist Items"];
-    count = [items count];
-    ma = [[NSMutableArray alloc] initWithCapacity:count];
-    for (i = 0; i < count; i++) {
-      NSDictionary *item;
-      NSString     *trackID;
-      iTunesTrack  *trk;
 
-      item    = [items objectAtIndex:i];
-      trackID = [[item objectForKey:@"Track ID"] description];
-      trk     = [_lib trackWithID:trackID];
-      if (!trk) {
-#if 0
-        /* NOTE: Rolf's library really sports these effects, seems to be
-         * limited to Podcasts only.
-         */
-        NSLog(@"INFO Playlist[%@]: found no track item for #%@",
-              self->name, trackID);
-#endif
-        continue;
+    isFolder = [[_list objectForKey:@"Folder"] boolValue];
+
+    if (!isFolder) {
+      NSArray        *items;
+      unsigned       i, count;
+      NSMutableArray *ma;
+
+      items = [_list objectForKey:@"Playlist Items"];
+      count = [items count];
+      ma    = [[NSMutableArray alloc] initWithCapacity:count];
+
+      for (i = 0; i < count; i++) {
+        NSDictionary *item;
+        NSString     *trackID;
+        iTunesTrack  *trk;
+
+        item    = [items objectAtIndex:i];
+        trackID = [[item objectForKey:@"Track ID"] description];
+        trk     = [_lib trackWithID:trackID];
+        if (!trk) {
+  #if 0
+          /* NOTE: Rolf's library really sports these effects, seems to be
+           * limited to Podcasts only.
+           */
+          NSLog(@"INFO Playlist[%@]: found no track item for #%@",
+                self->name, trackID);
+  #endif
+          continue;
+        }
+        [ma addObject:trk];
       }
-      [ma addObject:trk];
+      [self setTracks:ma];
+      [ma release];
+      [self generatePrettyTrackNames];
     }
-    [self setTracks:ma];
-    [ma release];
-    [self generatePrettyTrackNames];
+    else {
+      self->childrenMap = [[NSMutableDictionary alloc] initWithCapacity:5];
+    }
   }
   return self;
 }
@@ -146,9 +158,12 @@ static iTunesFSFormatter *plTrackFormatter = nil;
 }
 
 - (void)dealloc {
-  [self->name       release];
-  [self->tracks     release];
-  [self->trackNames release];
+  [self->persistentId release];
+  [self->parentId     release];
+  [self->name         release];
+  [self->tracks       release];
+  [self->trackNames   release];
+  [self->childrenMap  release];
   [super dealloc];
 }
 
@@ -186,6 +201,13 @@ static iTunesFSFormatter *plTrackFormatter = nil;
   return self->name;
 }
 
+- (NSString *)persistentId {
+  return self->persistentId;
+}
+- (NSString *)parentId {
+  return self->parentId;
+}
+
 - (void)setTracks:(NSArray *)_tracks {
   _tracks = [_tracks copy];
   [self->tracks release];
@@ -212,9 +234,18 @@ static iTunesFSFormatter *plTrackFormatter = nil;
   return self->trackNames;
 }
 
+- (void)addChild:(iTunesPlaylist *)_child withName:(NSString *)_name {
+  [self->childrenMap setObject:_child
+                     forKey:[_name properlyEscapedFSRepresentation]];
+}
+
 /* FUSEOFS */
 
 - (id)lookupPathComponent:(NSString *)_pc inContext:(id)_ctx {
+  // NOTE: it's either children or tracks, never both!
+  if (self->childrenMap)
+    return [self->childrenMap objectForKey:_pc];
+
   NSUInteger idx;
 
   idx = [[self trackNames] indexOfObject:_pc];
@@ -222,6 +253,9 @@ static iTunesFSFormatter *plTrackFormatter = nil;
   return [self trackAtIndex:idx];
 }
 - (NSArray *)directoryContents {
+  // NOTE: it's either children or tracks, never both!
+  if (self->childrenMap)
+    return [self->childrenMap allKeys];
   return [self trackNames];
 }
 - (BOOL)isDirectory {

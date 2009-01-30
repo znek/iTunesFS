@@ -54,6 +54,40 @@ Playlists = (
 ); 
 
 
+Hierarchical Playlists
+======================
+
+<dict>
+		<key>Name</key><string>self</string>
+		<key>Playlist ID</key><integer>37700</integer>
+		<key>Playlist Persistent ID</key><string>C04DA2199D66B45A</string>
+		<key>All Items</key><true/>
+		<key>Folder</key><true/>
+		<key>Playlist Items</key>
+		<array>
+			<dict>
+				<key>Track ID</key><integer>8314</integer>
+			</dict>
+		...
+		</array>
+</dict>
+<dict>
+		<key>Name</key><string>Intros</string>
+		<key>Playlist ID</key><integer>38805</integer>
+		<key>Playlist Persistent ID</key><string>E7FF551986B26EDA</string>
+		<key>Parent Persistent ID</key><string>E7FF551986B26ED9</string>
+		<key>All Items</key><true/>
+		<key>Folder</key><true/>
+		<key>Playlist Items</key>
+		<array>
+			<dict>
+				<key>Track ID</key><integer>14310</integer>
+			</dict>
+			...
+		</array>
+</dict>
+
+
 Spotlight
 =========
 

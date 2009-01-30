@@ -1,7 +1,21 @@
+2009-01-30  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* 1.1.10
+
+	* iTunesPlaylist.[hm]: implemented playlist folders (don't recall
+	  when they have been introduced in iTunes), which only contain a set
+	  of other playlists. Technically, they also contain the tracks of all
+	  their contained playlists, but in iTunesFS (as well as in iTunes)
+	  these are ignored.
+
+	* iTunesLibrary.m: only playlists, which are no folders, are added to
+	  the top-level. Properly add playlists to their parent folders,
+	  creating a nested hierarchy as in iTunes.
+
 2009-01-29  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* 1.1.9
-	
+
 	* iTunesLibrary.m: changed detection of libraryPath; if no default is
 	  set, a candidate is looked up in the com.apple.iApps domain, first.
 	  This change is based on code contributed by Frederik Seiffert
@@ -31,7 +45,7 @@
 2009-01-11  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* v1.1.7b7
-	
+
 	* iTunesFS.xcodeproj: pulled the plug on 10.4.x version, don't have
 	  a 10.4.x box around any more and can't guarantee that the 10.4.x
 	  builds will work.

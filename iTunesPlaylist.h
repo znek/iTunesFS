@@ -40,9 +40,12 @@
 
 @interface iTunesPlaylist : NSObject
 {
+  NSString *persistentId;
+  NSString *parentId;
   NSString *name;
   NSArray  *tracks;
   NSArray  *trackNames;
+  NSMutableDictionary *childrenMap;
 }
 
 - (id)initWithITunesLibraryRepresentation:(NSDictionary *)_list
@@ -51,11 +54,15 @@
   lib:(iTunesLibrary *)_lib;
 
 - (NSString *)name;
+- (NSString *)persistentId;
+- (NSString *)parentId;
 - (NSArray *)tracks;
 
 - (unsigned)count;
 - (iTunesTrack *)trackAtIndex:(unsigned)_idx;
 - (NSArray *)trackNames;
+
+- (void)addChild:(iTunesPlaylist *)_child withName:(NSString *)_name;
 
 @end /* iTunesPlaylist */
 

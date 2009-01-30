@@ -218,21 +218,61 @@ static NSDictionary      *burnFolderFinderInfo = nil;
     [track release];
   }
   
+  NSMutableDictionary *idPlMap;
   playlists = [lib objectForKey:@"Playlists"];
   count     = [playlists count];
+  idPlMap   = [[NSMutableDictionary alloc] initWithCapacity:count];
+
   for (i = 0; i < count; i++) {
     NSDictionary   *plRep;
     iTunesPlaylist *pl;
-
+    NSString       *plId;
+  
     plRep = [playlists objectAtIndex:i];
     pl    = [[iTunesPlaylist alloc] initWithITunesLibraryRepresentation:plRep
                                     lib:self];
 
-    [self->plMap setObject:pl
-                 forKey:[self burnFolderNameFromFolderName:[pl name]]];
+    // only record top-level playlist, if playlist isn't a folder itself
+    if (![pl parentId]) {
+      [self->plMap setObject:pl
+                   forKey:[self burnFolderNameFromFolderName:[pl name]]];
+    }
 
+    plId = [pl persistentId];
+    if (plId)
+      [idPlMap setObject:pl forKey:plId];
     [pl release];
   }
+
+  // connect children to their parents
+  if ([idPlMap count]) {
+    NSArray *ids;
+    
+    ids   = [idPlMap allKeys];
+    count = [ids count];
+    for (i = 0; i < count; i++) {
+      NSString       *plId;
+      iTunesPlaylist *pl;
+      NSString       *parentId;
+
+      plId     = [ids objectAtIndex:i];
+      pl       = [idPlMap objectForKey:plId];
+      parentId = [pl parentId];
+      if (parentId) {
+        iTunesPlaylist *parent;
+        
+        parent = [idPlMap objectForKey:parentId];
+        if (parent) {
+          [parent addChild:pl
+                  withName:[self burnFolderNameFromFolderName:[pl name]]];
+        }
+        else {
+          NSLog(@"ERROR: didn't find parent playlist of '%@'?!", pl);
+        }
+      }
+    }
+  }
+  [idPlMap release];
 
   [self reloadVirtualMaps];
 }
