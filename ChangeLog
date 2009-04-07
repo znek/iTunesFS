@@ -1,3 +1,16 @@
+2009-04-07  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* 1.1.11b1
+
+	* iTunesFileSystem.m: removed an obsolete and ugly hack by implementing
+	  lookup properly, according to my own specs.
+
+	* iTunesLibrary.m, iTunesTrack.m: fixed a typo in description
+	  (missing trailing ">")
+
+	* iTunesTrack.m: added a hack for the -ext method, if the file has
+	  no extension return "m4a" nevertheless.
+
 2009-01-30  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* 1.1.10

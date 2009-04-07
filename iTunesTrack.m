@@ -246,7 +246,9 @@ static NSString *locationDestinationPrefix = nil;
   return self->ext;
 }
 - (NSString *)ext {
-  return self->ext;
+  if (self->ext)
+    return self->ext;
+  return @"m4a";
 }
 
 - (void)setAttributes:(NSDictionary *)_attributes {
@@ -309,7 +311,7 @@ static NSString *locationDestinationPrefix = nil;
 /* debugging */
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"<%@ 0x%x: name:%@ attrs:%@",
+  return [NSString stringWithFormat:@"<%@ 0x%x: name:%@ attrs:%@>",
                                     NSStringFromClass(self->isa), self,
                                     [self prettyName], [self attributes]];
 }

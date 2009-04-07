@@ -496,7 +496,7 @@ static NSDictionary      *burnFolderFinderInfo = nil;
 /* debugging */
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"<%@ 0x%x: name:%@ path:%@",
+  return [NSString stringWithFormat:@"<%@ 0x%x: name:%@ path:%@>",
                                     NSStringFromClass(self->isa), self,
                                     [self name], [self libraryPath]];
 }

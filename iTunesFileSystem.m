@@ -266,34 +266,29 @@ static NSArray  *fakeVolumePaths = nil;
   return YES;
 }
 
-/* override */
-- (NSArray *)pathFromFSPath:(NSString *)_path {
-  NSArray *path;
-
-  path = [super pathFromFSPath:_path];
-  if (![self showLibraries]) {
-    NSMutableArray *fakePath;
-    
-    /* We're not showing the library list by faking the only existing
-     * library into the path - the lookup will then be done as usual.
-     */
-    fakePath = [path mutableCopy];
-    [fakePath insertObject:[[self->libMap allKeys] lastObject] atIndex:1];
-    path = [fakePath autorelease];
-  }
-  return path;
-}
-
 /* FUSEOFS */
 
 - (id)lookupPathComponent:(NSString *)_pc inContext:(id)_ctx {
   // TODO: add fake Spotlight entries
-  return [self->libMap lookupPathComponent:_pc inContext:_ctx];
+  NSObject *obj;
+  
+  if (![self showLibraries])
+    obj = [[self->libMap allValues] lastObject];
+  else
+    obj = self->libMap;
+
+  return [obj lookupPathComponent:_pc inContext:_ctx];
 }
 
 - (NSArray *)directoryContents {
   // TODO: fake Spotlight database
-  return [self->libMap directoryContents];
+  NSObject *obj;
+  
+  if (![self showLibraries])
+    obj = [[self->libMap allValues] lastObject];
+  else
+    obj = self->libMap;
+  return [obj directoryContents];
 }
 
 - (NSDictionary *)fileSystemAttributes {
