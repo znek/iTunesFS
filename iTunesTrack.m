@@ -289,13 +289,9 @@ static NSString *locationDestinationPrefix = nil;
     return [[self->url description] dataUsingEncoding:NSUTF8StringEncoding];
   }
   path = [self->url properlyEscapedPath];
-#ifndef GNUSTEP_BASE_LIBRARY
   return [NSData dataWithContentsOfFile:path
-                 options:NSMappedRead|NSUncachedRead
+                 options:NSUncachedRead
                  error:NULL];
-#else
-  return [[[NSData alloc] initWithContentsOfMappedFile:path] autorelease];
-#endif
 }
 
 - (NSDictionary *)resourceAttributes {

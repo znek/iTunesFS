@@ -256,7 +256,7 @@ static NSMutableDictionary *codeSelMap = nil;
     fsbb        = (fsbbStruct *)[data bytes];
     fsbb->jump  = NSSwapLittleIntToHost(fsbb->jump);
     fsbb->myLen = NSSwapLittleIntToHost(fsbb->myLen);
-	fsbb->count = NSSwapLittleIntToHost(fsbb->count);
+    fsbb->count = NSSwapLittleIntToHost(fsbb->count);
     
     if (memcmp(fsbb->code, "bd", 2) == 0) { // begin of database
       if (doDebug) NSLog(@"%.8x Beginning of database\n", filePos);

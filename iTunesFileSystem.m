@@ -35,6 +35,7 @@
 #import "iTunesLibrary.h"
 #import "iPodLibrary.h"
 #import "JBiPodLibrary.h"
+#import "IPhoneDiskIPodLibrary.h"
 #import "NSObject+FUSEOFS.h"
 
 @interface iTunesFileSystem (Private)
@@ -124,6 +125,9 @@ static NSArray  *fakeVolumePaths = nil;
       }
       else if ([JBiPodLibrary isIPodAtMountPoint:path]) {
         lib = [[JBiPodLibrary alloc] initWithMountPoint:path];
+      }
+      else if ([IPhoneDiskIPodLibrary isIPodAtMountPoint:path]) {
+        lib = [[IPhoneDiskIPodLibrary alloc] initWithMountPoint:path];
       }
       
       if (lib) {

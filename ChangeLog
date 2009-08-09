@@ -1,3 +1,14 @@
+2009-08-09  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* 1.1.11b2
+
+	* IPhoneDiskIPodLibrary.[hm]: new iPod/iPhone library required for
+	  parsing the contents of an iPod/iPhone mounted via the
+	  iphonedisk (http://code.google.com/p/iphonedisk/) FUSE filesystem.
+
+	* NSData+ZlibDecompression.[hm]: categories for NSData to decompress
+	  zlib compressed byte content, required for new iTunesCDB files.
+
 2009-04-07  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* 1.1.11b1
