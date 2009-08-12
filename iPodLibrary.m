@@ -37,6 +37,7 @@
 #import "iTunesPlaylist.h"
 #import "iTunesTrack.h"
 #import "NSImage+IconData.h"
+#import "NSData+ZlibDecompression.h"
 #import "StreamReader.h"
 
 #if __LP64__ || NS_BUILD_32_LIKE_64
@@ -256,6 +257,29 @@ static NSMutableDictionary *codeSelMap = nil;
     
     if (memcmp(fsbb->code, "bd", 2) == 0) { // begin of database
       if (doDebug) NSLog(@"%.8x Beginning of database\n", filePos);
+
+      // compressed database?
+      if (fsbb->count == 2) {
+        ITDBUInt32 version;
+        data = [sr readDataOfLength:sizeof(ITDBUInt32)];
+        version = *(ITDBUInt32 *)[data bytes];
+        version = NSSwapLittleIntToHost(version);
+        
+        // compressed!
+        if (version >= 0x28) {
+          // read compressed stream into data
+          filePos += fsbb->jump;
+          [sr seekToOffset:filePos];
+          data = [sr readDataOfLength:fsbb->myLen];
+          [sr release];
+
+          // decompress data and create new stream for reading this data
+          data       = [data decompressedDataUsingZlib];
+          sr         = [[StreamReader alloc] initWithData:data];
+          fileLength = [data length];
+          filePos    = 0;
+        }
+      }
     }
     else if (memcmp(fsbb->code, "sd", 2) == 0) { // a list type header
       if (fsbb->count != 1 && fsbb->count != 2) {

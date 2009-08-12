@@ -7,7 +7,9 @@
 	  This is used when parsing iTunesDB files and will be extended
 	  for parsing the decompressed NSData contents of an iTunesCDB file.
 
-	* iPodLibrary.m: use StreamReader when parsing iTunesDB
+	* iPodLibrary.m: use StreamReader when parsing iTunesDB, properly
+	  parse new header and discover compression. If compression is in
+	  use, decompress data accordingly.
 
 	* NSData+ZlibDecompression.m: code cleanup
 
