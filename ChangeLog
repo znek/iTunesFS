@@ -1,6 +1,19 @@
-2009-08-09  Marcus Mueller  <znek@mulle-kybernetik.com>
+2009-08-12  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* 1.1.11b2
+
+	* StreamReader.[hm]: simple abstraction for wrapping small parts of
+	  the NSFileHandle  API either around NSFileHandle or NSData.
+	  This is used when parsing iTunesDB files and will be extended
+	  for parsing the decompressed NSData contents of an iTunesCDB file.
+
+	* iPodLibrary.m: use StreamReader when parsing iTunesDB
+
+	* NSData+ZlibDecompression.m: code cleanup
+
+	* iTunesFileSystem.m: fixed duplicate library inserts
+
+2009-08-09  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* IPhoneDiskIPodLibrary.[hm]: new iPod/iPhone library required for
 	  parsing the contents of an iPod/iPhone mounted via the

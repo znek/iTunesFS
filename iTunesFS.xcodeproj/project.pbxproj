@@ -26,6 +26,7 @@
 		AD8118830F093EA4000786C9 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD8118820F093EA4000786C9 /* Accelerate.framework */; };
 		AD8119700F095144000786C9 /* FUSEOFSLookupContext.m in Sources */ = {isa = PBXBuildFile; fileRef = AD81196F0F095144000786C9 /* FUSEOFSLookupContext.m */; };
 		ADAADA9B0C2111390024D899 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = ADAADA9A0C2111390024D899 /* Localizable.strings */; };
+		ADB59B751033716B002A2998 /* StreamReader.m in Sources */ = {isa = PBXBuildFile; fileRef = ADB59B741033716B002A2998 /* StreamReader.m */; };
 		ADBDA9CC0C02E7A5004CF795 /* iTunesFS.icns in Resources */ = {isa = PBXBuildFile; fileRef = ADBDA9CB0C02E7A5004CF795 /* iTunesFS.icns */; };
 		ADBDABA90C02FF10004CF795 /* NSString+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = ADBDABA80C02FF10004CF795 /* NSString+Extensions.m */; };
 		ADD11F3A0CD7A26000E7A5C2 /* JBiPodLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = ADD11F390CD7A26000E7A5C2 /* JBiPodLibrary.m */; };
@@ -89,6 +90,8 @@
 		ADAADAFF0C2115A80024D899 /* Japanese */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = Japanese; path = Japanese.lproj/Localizable.strings; sourceTree = "<group>"; };
 		ADAADB190C2116520024D899 /* Italian */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = Italian; path = Italian.lproj/Localizable.strings; sourceTree = "<group>"; };
 		ADAADB340C2117520024D899 /* Spanish */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = Spanish; path = Spanish.lproj/Localizable.strings; sourceTree = "<group>"; };
+		ADB59B731033716B002A2998 /* StreamReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StreamReader.h; sourceTree = "<group>"; };
+		ADB59B741033716B002A2998 /* StreamReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StreamReader.m; sourceTree = "<group>"; };
 		ADBDA9170C02CF28004CF795 /* AUTHORS */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; path = AUTHORS; sourceTree = "<group>"; };
 		ADBDA91F0C02CF48004CF795 /* Version */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 5; path = Version; sourceTree = "<group>"; };
 		ADBDA9310C02CFA0004CF795 /* COPYING */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
@@ -177,6 +180,7 @@
 				AD21E2FD0C32D49800D827BE /* iTunesFSFormatter.h */,
 				AD21E2FE0C32D49800D827BE /* iTunesFSFormatter.m */,
 				AD0667DE0D870B520095EDEF /* main.m */,
+				ADB59B7610337187002A2998 /* Support */,
 			);
 			name = iTunesFS;
 			sourceTree = "<group>";
@@ -263,6 +267,15 @@
 				AD95D40A0C21C7C500B96A36 /* iTunesMusicLibrary.xml */,
 			);
 			path = examples;
+			sourceTree = "<group>";
+		};
+		ADB59B7610337187002A2998 /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				ADB59B731033716B002A2998 /* StreamReader.h */,
+				ADB59B741033716B002A2998 /* StreamReader.m */,
+			);
+			name = Support;
 			sourceTree = "<group>";
 		};
 		ADBDAB040C02F664004CF795 /* Scripts */ = {
@@ -389,6 +402,7 @@
 				AD8119700F095144000786C9 /* FUSEOFSLookupContext.m in Sources */,
 				ADF74E91102F07DC00FED3EA /* IPhoneDiskIPodLibrary.m in Sources */,
 				ADF74EC2102F2AF300FED3EA /* NSData+ZlibDecompression.m in Sources */,
+				ADB59B751033716B002A2998 /* StreamReader.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

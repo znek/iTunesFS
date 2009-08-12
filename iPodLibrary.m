@@ -37,6 +37,7 @@
 #import "iTunesPlaylist.h"
 #import "iTunesTrack.h"
 #import "NSImage+IconData.h"
+#import "StreamReader.h"
 
 #if __LP64__ || NS_BUILD_32_LIKE_64
   typedef unsigned int ITDBUInt32;
@@ -232,28 +233,23 @@ static NSMutableDictionary *codeSelMap = nil;
   playlists:(NSArray **)_playlists
   tracks:(NSDictionary **)_tracks
 {
-  NSFileHandle        *fh;
-  NSDictionary        *fileAttrs;
-  unsigned long       fileLength;
-  unsigned long       filePos;
-  NSData              *data;
-  NSMutableArray      *playlists; 
-  NSMutableDictionary *tmap;
-  
-  playlists  = nil;
-  tmap       = nil;
-  fileAttrs  = [[NSFileManager defaultManager]
-                               fileAttributesAtPath:_path traverseLink:YES];
+  NSDictionary        *fileAttrs  = [[NSFileManager defaultManager]
+                                                    fileAttributesAtPath:_path
+                                                    traverseLink:YES];
   NSAssert1(fileAttrs != nil, @"Cannot open iTunesDB at path '%@'", _path);
-  fileLength = [[fileAttrs objectForKey:NSFileSize] unsignedLongValue];
-  fh         = [NSFileHandle fileHandleForReadingAtPath:_path];
-  filePos    = 0;
-  
-  while(filePos < fileLength) {
-    fsbbStruct *fsbb;
-    
-    data        = [fh readDataOfLength:sizeof(fsbbStruct)];
-    fsbb        = (fsbbStruct *)[data bytes];
+
+  unsigned long fileLength = [[fileAttrs objectForKey:NSFileSize]
+                                         unsignedLongValue];
+  unsigned long filePos    = 0;
+  NSFileHandle  *fh        = [NSFileHandle fileHandleForReadingAtPath:_path];
+  StreamReader  *sr        = [[StreamReader alloc] initWithFileHandle:fh];
+
+  NSMutableArray      *playlists = nil;
+  NSMutableDictionary *tmap      = nil;
+
+  while (filePos < fileLength) {
+    NSData     *data = [sr readDataOfLength:sizeof(fsbbStruct)];
+    fsbbStruct *fsbb = (fsbbStruct *)[data bytes];
     fsbb->jump  = NSSwapLittleIntToHost(fsbb->jump);
     fsbb->myLen = NSSwapLittleIntToHost(fsbb->myLen);
     fsbb->count = NSSwapLittleIntToHost(fsbb->count);
@@ -261,7 +257,7 @@ static NSMutableDictionary *codeSelMap = nil;
     if (memcmp(fsbb->code, "bd", 2) == 0) { // begin of database
       if (doDebug) NSLog(@"%.8x Beginning of database\n", filePos);
     }
-    else if(memcmp(fsbb->code, "sd", 2) == 0) { // a list type header
+    else if (memcmp(fsbb->code, "sd", 2) == 0) { // a list type header
       if (fsbb->count != 1 && fsbb->count != 2) {
         if (doDebug) {
           NSLog(@"WARN: %.8x UNKNOWN %c%c %ld %ld %ld\n",
@@ -299,7 +295,7 @@ static NSMutableDictionary *codeSelMap = nil;
       playlistParam       *playlist;
       NSString            *trackID;
 
-      data               = [fh readDataOfLength:16];
+      data               = [sr readDataOfLength:16];
       playlist           = (playlistParam *)[data bytes];
       playlist->item_ref = NSSwapLittleIntToHost(playlist->item_ref);
       trackID            = [ULongNum(playlist->item_ref) description];
@@ -317,11 +313,11 @@ static NSMutableDictionary *codeSelMap = nil;
       if (doDebug)
         NSLog(@"%.8x itemref (%ld): %@\n", filePos, playlist->item_ref, track);
     }
-    else if(memcmp(fsbb->code, "it", 2) == 0) { // a track item
+    else if (memcmp(fsbb->code, "it", 2) == 0) { // a track item
       mhitExtra *prop;
       NSString  *trackID;
 
-      data               = [fh readDataOfLength:sizeof(mhitExtra)];
+      data               = [sr readDataOfLength:sizeof(mhitExtra)];
       prop               = (mhitExtra *)[data bytes];
       prop->uniqueID     = NSSwapLittleIntToHost(prop->uniqueID);
       prop->size         = NSSwapLittleIntToHost(prop->size);
@@ -354,8 +350,8 @@ static NSMutableDictionary *codeSelMap = nil;
               fsbb->myLen, fsbb->count);
       }
       // skip 8 bytes, because jump is always 24
-      [fh seekToFileOffset:filePos + 24];
-      data          = [fh readDataOfLength:16];
+      [sr seekToOffset:filePos + 24];
+      data          = [sr readDataOfLength:16];
       sp            = (stringParam *)[data bytes];
       sp->strlength = NSSwapLittleIntToHost(sp->strlength);
 
@@ -367,7 +363,7 @@ static NSMutableDictionary *codeSelMap = nil;
       {
         NSString *selectorName, *value;
         
-        data         = [fh readDataOfLength:sp->strlength];
+        data         = [sr readDataOfLength:sp->strlength];
         selectorName = [self selectorNameForCode:fsbb->count];
         if (selectorName) {
           SEL selector;
@@ -388,11 +384,11 @@ static NSMutableDictionary *codeSelMap = nil;
     }
     
     filePos += fsbb->jump;
-    [fh seekToFileOffset:filePos];
+    [sr seekToOffset:filePos];
   }
   
   // clean-up
-  [fh closeFile];
+  [sr release];
   self->currentObject = nil;
   *_tracks            = [tmap  autorelease];
   *_playlists         = [playlists autorelease];

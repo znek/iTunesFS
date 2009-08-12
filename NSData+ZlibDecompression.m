@@ -38,9 +38,9 @@
 
 NSString *ZlibDecompressionBlockSize = @"ZlibDecompressionBlockSize";
 
-#define ZlibDefaultDecompressionBlockSize 4096
+#define ZlibDefaultDecompressionBlockSize 8192
 
-#define ZLIB_INTERNAL_ERROR(STRING) [NSException raise:NSInternalInconsistencyException format:@"<%@:0x%p %@> %@ (%d)", [self class], self, NSStringFromSelector(_cmd), (STRING), success];
+#define ZLIB_ERROR(STRING) [NSException raise:NSInternalInconsistencyException format:@"<%@:0x%p %@> %@ (%d)", [self class], self, NSStringFromSelector(_cmd), (STRING), success]
 
 
 // RFC1952
@@ -67,15 +67,10 @@ NSString *ZlibDecompressionBlockSize = @"ZlibDecompressionBlockSize";
 }
 
 - (NSData *)decompressedDataUsingZlibWithArguments:(NSDictionary *)arguments {
-  NSMutableData *decompressedData;
-  id anArgument;
-  z_stream stream;
-  int success;
-  int blocksize;
-  BOOL hasFileHeader;
+  int  blocksize;
   
-  if ((anArgument = [arguments objectForKey:ZlibDecompressionBlockSize]) != nil)
-  {
+  id anArgument = [arguments objectForKey:ZlibDecompressionBlockSize];
+  if (anArgument) {
     blocksize = [anArgument intValue];
     if (blocksize <= 0)
       [NSException raise:NSInvalidArgumentException format:@"ZlibDecompressionBlockSize argument <= 0"];
@@ -84,33 +79,35 @@ NSString *ZlibDecompressionBlockSize = @"ZlibDecompressionBlockSize";
     blocksize = ZlibDefaultDecompressionBlockSize;
   }
   
-  decompressedData = [[[NSMutableData allocWithZone:[self zone]]
-                                      initWithLength:blocksize] autorelease];
+  NSMutableData * decompressedData = [[[NSMutableData allocWithZone:[self zone]]
+                                                      initWithLength:blocksize]
+                                                      autorelease];
+
+  z_stream stream;
   memset(&stream, 0, sizeof(stream)); // initialize stream
   stream.next_in   = (unsigned char *)[self bytes];
   stream.avail_in  = [self length];
   stream.avail_out = blocksize;
   stream.next_out  = (unsigned char *)[decompressedData mutableBytes];
   
-  if ((hasFileHeader = [self _hasGZIPFileHeader]) == YES)
-  {
+  BOOL hasFileHeader = [self _hasGZIPFileHeader];
+  if (hasFileHeader) {
     // skip the header
     int headerLength = [self _gzipFileHeaderLength];
-    
     stream.avail_in -= headerLength;
-    stream.next_in += headerLength;
+    stream.next_in  += headerLength;
   }
   
   // this switches automatically from transparent to non-transparent mode
   // streams use transparent mode (with header), gzip does not do so (and wants to skip that header)
-  success = inflateInit2(&stream, hasFileHeader ? -MAX_WBITS : MAX_WBITS);
+  int success = inflateInit2(&stream, hasFileHeader ? -MAX_WBITS : MAX_WBITS);
   if (success != Z_OK) {
-    NSString *information = @"inflateInit returned an error";
     if (success == Z_MEM_ERROR)
-      information = @"insufficient memory";
-    ZLIB_INTERNAL_ERROR(information)
+      ZLIB_ERROR(@"insufficient memory");
+    else
+		  ZLIB_ERROR(@"inflateInit returned an error");
   }
-  
+
   do {
     if (stream.avail_out == 0) {
       [decompressedData increaseLengthBy:blocksize];
@@ -125,10 +122,10 @@ NSString *ZlibDecompressionBlockSize = @"ZlibDecompressionBlockSize";
   inflateEnd(&stream); // release all memory associated with decompression stream
   
   if (success != Z_STREAM_END) {
-    NSString *information = @"inflate returned an error";
-    if(success == Z_MEM_ERROR)
-      information = @"insufficient memory";
-    ZLIB_INTERNAL_ERROR(information)
+    if( success == Z_MEM_ERROR)
+      ZLIB_ERROR(@"insufficient memory");
+    else
+      ZLIB_ERROR(@"inflate returned an error");
   }
   
   return decompressedData;
@@ -138,9 +135,8 @@ NSString *ZlibDecompressionBlockSize = @"ZlibDecompressionBlockSize";
 // gzipped files do have a header with a magic, whereas zlib streams have
 // no magic!
 - (BOOL)isZlibCompressed {
-  if ([self _hasGZIPFileHeader] == YES) {
-    return YES;
-  }
+  if ([self _hasGZIPFileHeader]) return YES;
+
 #ifndef STABLE
 //#warning * enabled the testing of streams which may result in failures on rare occasions!
   else {

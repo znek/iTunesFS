@@ -248,8 +248,11 @@ static NSArray  *fakeVolumePaths = nil;
   NSString *path;
 
   path = [_lib mountPoint];
-  if (path)
+  if (path) {
+    if ([self->volMap objectForKey:path])
+      return; // drop duplicates
     [self->volMap setObject:_lib forKey:path];
+  }
   [self->libMap setObject:_lib forKey:[_lib name]];
 }
 
