@@ -117,9 +117,10 @@ static NSArray  *fakeVolumePaths = nil;
       volPaths = [volPaths arrayByAddingObjectsFromArray:fakeVolumePaths];
     count    = [volPaths count];
     for (i = 0; i < count; i++) {
-      NSString *path;
-      
-      path = [volPaths objectAtIndex:i];
+      NSString *path = [volPaths objectAtIndex:i];
+      if (doDebug)
+        NSLog(@"testing volPath '%@'", path);
+
       if ([iPodLibrary isIPodAtMountPoint:path]) {
         lib = [[iPodLibrary alloc] initWithMountPoint:path];
       }
@@ -245,21 +246,23 @@ static NSArray  *fakeVolumePaths = nil;
 /* adding/removing libraries */
 
 - (void)addLibrary:(iTunesLibrary *)_lib {
-  NSString *path;
-
-  path = [_lib mountPoint];
+  NSString *path = [_lib mountPoint];
   if (path) {
     if ([self->volMap objectForKey:path])
       return; // drop duplicates
     [self->volMap setObject:_lib forKey:path];
   }
   [self->libMap setObject:_lib forKey:[_lib name]];
+
+  if (doDebug)
+    NSLog(@"did add library %@", _lib);
 }
 
 - (void)removeLibrary:(iTunesLibrary *)_lib {
-  NSString *path;
+  if (doDebug)
+    NSLog(@"will remove library %@", _lib);
 
-  path = [_lib mountPoint];
+  NSString *path = [_lib mountPoint];
   if (path)
     [self->volMap removeObjectForKey:path];
   [self->libMap removeObjectForKey:[_lib name]];
