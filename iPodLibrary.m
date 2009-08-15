@@ -234,9 +234,15 @@ static NSMutableDictionary *codeSelMap = nil;
   playlists:(NSArray **)_playlists
   tracks:(NSDictionary **)_tracks
 {
-  NSDictionary        *fileAttrs  = [[NSFileManager defaultManager]
-                                                    fileAttributesAtPath:_path
-                                                    traverseLink:YES];
+  NSFileManager *fm = [NSFileManager defaultManager];
+  NSDictionary  *fileAttrs;
+  
+#if MAC_OS_X_VERSION_10_6 <= MAC_OS_X_VERSION_MAX_ALLOWED
+  fileAttrs = [fm attributesOfItemAtPath:_path error:nil];
+#else
+  fileAttrs = [fm fileAttributesAtPath:_path traverseLink:YES];
+#endif
+
   NSAssert1(fileAttrs != nil, @"Cannot open iTunesDB at path '%@'", _path);
 
   unsigned long fileLength = [[fileAttrs objectForKey:NSFileSize]
