@@ -9,6 +9,9 @@
 
 	* project.pbxproj: adjusted settings for Snow Leopard compilation.
 
+	* MacOSX10.6.patch, MacOSX10.6-README.txt: Added patch and README
+	  for proper execution on Mac OS X 10.6.
+
 2009-08-15  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* 1.1.11b3
