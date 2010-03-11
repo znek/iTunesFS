@@ -1,0 +1,13 @@
+Index: filesystems-objc-support/NSImage+IconData.m
+===================================================================
+--- filesystems-objc-support/NSImage+IconData.m	(revision 1686)
++++ filesystems-objc-support/NSImage+IconData.m	(working copy)
+@@ -66,7 +66,7 @@
+   // an error about invalid parameters for graphics context. We should try this
+   // again in future 10.5 releases in case it gets fixed. Until then, maybe 
+   // we should use vImageUnpremultiplyData_ARGB8888(...) on 10.5?
+-  if (version != 5) {
++	if (version < 5) {
+     format |= NSAlphaNonpremultipliedBitmapFormat;
+   }
+   NSBitmapImageRep* rep = 

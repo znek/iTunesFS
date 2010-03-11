@@ -1,0 +1,5 @@
+20100311 - ZNeK
+
+There's a bug in Google's support library that prevents proper execution on
+Mac OS X 10.6. If you want to compile iTunesFS from source, you need to
+apply the accompanied patch manually.
