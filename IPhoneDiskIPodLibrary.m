@@ -35,25 +35,12 @@
 
 @implementation IPhoneDiskIPodLibrary
 
-+ (BOOL)isIPodAtMountPoint:(NSString *)_path {
-  NSString *testPath;
-  
-  testPath = [NSString stringWithFormat:@"%@/iTunes_Control", _path];
-  return [[NSFileManager defaultManager] fileExistsAtPath:testPath];
++ (NSString *)iTunesControlPathComponent {
+	return @"iTunes_Control";
 }
 
 - (NSString *)iTunesDeviceInfoPath {
   return nil;
-}
-
-- (NSString *)iTunesMusicFolderPath {
-  return [NSString stringWithFormat:@"%@/iTunes_Control/Music/",
-                                    [self mountPoint]];
-}
-
-- (NSString *)libraryPath {
-  return [NSString stringWithFormat:@"%@/iTunes_Control/iTunes/iTunesCDB",
-                                    [self mountPoint]];
 }
 
 @end /* IPhoneDiskIPodLibrary */

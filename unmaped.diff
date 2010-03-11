@@ -1,0 +1,19 @@
+Index: iTunesTrack.m
+===================================================================
+--- iTunesTrack.m	(revision 112)
++++ iTunesTrack.m	(working copy)
+@@ -289,13 +289,9 @@
+     return [[self->url description] dataUsingEncoding:NSUTF8StringEncoding];
+   }
+   path = [self->url properlyEscapedPath];
+-#ifndef GNUSTEP_BASE_LIBRARY
+   return [NSData dataWithContentsOfFile:path
+-                 options:NSMappedRead|NSUncachedRead
++                 options:NSUncachedRead
+                  error:NULL];
+-#else
+-  return [[[NSData alloc] initWithContentsOfMappedFile:path] autorelease];
+-#endif
+ }
+ 
+ - (NSDictionary *)resourceAttributes {

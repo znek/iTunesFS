@@ -35,28 +35,15 @@
 
 @implementation JBiPodLibrary
 
-+ (BOOL)isIPodAtMountPoint:(NSString *)_path {
-  NSString *testPath;
-  
-  /* simple heuristic for Jailbroken iPods
-   * NOTE: My iPhone 1.1.4 says: <mnt>/var/mobile/Media/iTunes_Control/...
-   */
-  testPath = [NSString stringWithFormat:@"%@/Media/iTunes_Control", _path];
-  return [[NSFileManager defaultManager] fileExistsAtPath:testPath];
+/* NOTE:
+ * This used to be true for old 1.1.x iPhones mounted via SSH
+ */
++ (NSString *)iTunesControlPathComponent {
+  return @"Media/iTunes_Control";
 }
 
 - (NSString *)iTunesDeviceInfoPath {
   return nil;
-}
-
-- (NSString *)iTunesMusicFolderPath {
-  return [NSString stringWithFormat:@"%@/Media/iTunes_Control/Music/",
-                                    [self mountPoint]];
-}
-
-- (NSString *)libraryPath {
-  return [NSString stringWithFormat:@"%@/Media/iTunes_Control/iTunes/iTunesDB",
-                                    [self mountPoint]];
 }
 
 @end /* JBiPodLibrary */

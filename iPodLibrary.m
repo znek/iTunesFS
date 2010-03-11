@@ -154,11 +154,17 @@ static NSMutableDictionary *codeSelMap = nil;
 #endif
 }
 
++ (NSString *)iTunesControlPathComponent {
+  return @"iPod_Control";
+}
+
 + (BOOL)isIPodAtMountPoint:(NSString *)_path {
   NSString *testPath;
   
   /* simple heuristic - works from 1G up to 5G iPods */
-  testPath = [NSString stringWithFormat:@"%@/iPod_Control", _path];
+  testPath = [NSString stringWithFormat:@"%@/%@",
+                                        _path,
+                                        [self iTunesControlPathComponent]];
   return [[NSFileManager defaultManager] fileExistsAtPath:testPath];
 }
 
@@ -425,13 +431,16 @@ static NSMutableDictionary *codeSelMap = nil;
 }
 
 - (NSString *)iTunesDeviceInfoPath {
-  return [NSString stringWithFormat:@"%@/iPod_Control/iTunes/DeviceInfo",
-                                    self->mountPoint];
+  return [NSString stringWithFormat:@"%@/%@/iTunes/DeviceInfo",
+                                    self->mountPoint,
+                                    [[self class] iTunesControlPathComponent]];
 }
 
 - (NSString *)iTunesMusicFolderPath {
-  return [NSString stringWithFormat:@"%@/iPod_Control/Music/",
-                                    self->mountPoint];
+  return [NSString stringWithFormat:@"%@/%@/Music/",
+                                    self->mountPoint,
+                                    [[self class] iTunesControlPathComponent]];
+
 }
 
 /* iTunesDB code / selectors */
@@ -524,8 +533,16 @@ static NSMutableDictionary *codeSelMap = nil;
 }
 
 - (NSString *)libraryPath {
-  return [NSString stringWithFormat:@"%@/iPod_Control/iTunes/iTunesDB",
-                                    self->mountPoint];
+  NSString *path = [NSString stringWithFormat:@"%@/%@/iTunes/iTunesCDB",
+                                              [self mountPoint],
+                                              [[self class]
+                                                     iTunesControlPathComponent]];
+  NSFileManager *fm = [NSFileManager defaultManager];
+  if ([fm fileExistsAtPath:path])
+    return path;
+  return [NSString stringWithFormat:@"%@/%@/iTunes/iTunesDB",
+                                    [self mountPoint],
+                                    [[self class] iTunesControlPathComponent]];
 }
 
 - (NSString *)mountPoint {

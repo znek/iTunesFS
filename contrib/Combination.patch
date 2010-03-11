@@ -1,0 +1,128 @@
+From: Mark Wallis <mwallis@serialmonkey.com>
+Subject: iTunesFS - patch for 'combination listing'
+Date: Sun, 29 Jul 2007 02:16:49 +1000
+
+Hi ZNeK,
+
+First up, great work on iTunesFS - it's just what I needed to help me backup my iTunes library to my local uPnP server.
+
+If your interested, I've attached a patch to the current SVN. This patch adds a "combination" category which is identical to "Artist" except whenever an album contains more than one artist it gets put in a "Compilation" folder. This mirrors how I have things organised on my uPnP server.
+
+I don't know if anyone else would find this useful, but thought it might be worth submitting to you anyway.
+
+Regards,
+Mark Wallis
+
+
+
+Index: iTunesLibrary.m
+===================================================================
+--- iTunesLibrary.m	(revision 62)
++++ iTunesLibrary.m	(working copy)
+@@ -48,6 +48,7 @@
+ static NSString          *libraryPath          = nil;
+ static NSImage           *libraryIcon          = nil;
+ static NSString          *kPlaylists           = @"Playlists";
++static NSString			 *kCombination		   = @"Combination";
+ static NSString          *kArtists             = @"Artists";
+ static NSString          *kAlbums              = @"Albums";
+ static NSString          *kSongs               = @"Songs";
+@@ -82,6 +83,8 @@
+                                    properlyEscapedFSRepresentation] copy];
+   kAlbums     = [[NSLocalizedString(@"Albums",    "Albums")
+                                    properlyEscapedFSRepresentation] copy];
++  kCombination= [[NSLocalizedString(@"Combination", "Combination")
++								   properlyEscapedFSRepresentation] copy];
+   kArtists    = [[NSLocalizedString(@"Artists",   "Artists")
+                                    properlyEscapedFSRepresentation] copy];
+   kSongs      = [[NSLocalizedString(@"Songs",     "Songs")
+@@ -109,13 +112,16 @@
+     if (useCategories) {
+       NSMutableDictionary *tmp;
+ 
+-      self->virtMap = [[NSMutableDictionary alloc] initWithCapacity:3];
++      self->virtMap = [[NSMutableDictionary alloc] initWithCapacity:4];
+       tmp = [[NSMutableDictionary alloc] initWithCapacity:1000];
+       [self->virtMap setObject:tmp forKey:kAlbums];
+       [tmp release];
+       tmp = [[NSMutableDictionary alloc] initWithCapacity:1000];
+       [self->virtMap setObject:tmp forKey:kArtists];
+       [tmp release];
++      tmp = [[NSMutableDictionary alloc] initWithCapacity:1000];
++      [self->virtMap setObject:tmp forKey:kCombination];
++      [tmp release];
+     }
+     [self reload];
+     [[Watchdog sharedWatchdog] watchLibrary:self];
+@@ -193,9 +199,9 @@
+ }
+ 
+ - (void)reloadVirtualMaps {
+-  NSMutableDictionary *albums, *artists;
+-  NSArray             *tracks;
+-  unsigned            count, i;
++  NSMutableDictionary *albums, *artists, *combination;
++  NSArray             *tracks, *allAlbums;
++  unsigned            count, i, count2, j;
+ 
+   if (!useCategories) return;
+ 
+@@ -212,9 +218,11 @@
+ 
+   albums  = [self->virtMap objectForKey:kAlbums];
+   artists = [self->virtMap objectForKey:kArtists];
++  combination = [self->virtMap objectForKey:kCombination];
+   
+   [albums  removeAllObjects];
+   [artists removeAllObjects];
++  [combination removeAllObjects];
+ 
+   tracks = [self->trackMap allValues];
+   count  = [tracks count];
+@@ -254,7 +262,46 @@
+     formattedName = [albumsTrackFormatter stringValueByFormattingObject:track];
+     [albumTracks setObject:track forKey:formattedName];
+   }
++  
++  allAlbums = [albums allValues];
++  count = [allAlbums count];
++  for (i = 0; i < count; i++) {
++	NSMutableDictionary *artistAlbums, *thisAlbum;
++	bool singleArtist = true;
++	NSString *artist, *album;
+ 
++	thisAlbum = [allAlbums objectAtIndex:i];
++	tracks = [thisAlbum allValues];
++	
++	artist = [[tracks objectAtIndex:0] artist];
++	if (!artist) artist = kUnknown;
++	album = [[tracks objectAtIndex:0] album];
++	if (!album)  album  = kUnknown;
++	
++	count2 = [tracks count];
++	
++	if (count2 > 1) {	
++		for (j = 1; j < count2; j++) {
++			iTunesTrack *track = [tracks objectAtIndex:j];
++			if (!([artist isEqualToString:[track artist]])) {
++				singleArtist = false;
++			}
++		}
++		
++		if (!singleArtist) {
++			artist = @"Compilation";	
++		}
++	}
++
++	artistAlbums = [combination objectForKey:artist];
++	if (!artistAlbums) {
++	  artistAlbums = [[NSMutableDictionary alloc] initWithCapacity:2];
++	  [combination setObject:artistAlbums forKey:artist];
++	  [artistAlbums release];
++	}
++	[artistAlbums setObject:thisAlbum forKey:album];
++  }
++
+   if (mimicIPodNav) {
+     /* optimize artistAlbums hierarchy, insert "All" if there is more than
+      * one album per artist

@@ -40,10 +40,11 @@
   NSString *mountPoint;
 
   /* required by iTunesDB parsing */
-  id       currentObject; // not retained
+  id currentObject; // not retained
 }
 
 + (BOOL)isIPodAtMountPoint:(NSString *)_path;
++ (NSString *)iTunesControlPathComponent;
 
 - (id)initWithMountPoint:(NSString *)_path;
 
