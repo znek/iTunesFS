@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2007-2009, Marcus Müller <znek@mulle-kybernetik.com>.
+  Copyright (c) 2007-2010, Marcus Müller <znek@mulle-kybernetik.com>.
   All rights reserved.
 
 
@@ -34,7 +34,7 @@
 #define	__iTunesFS_common_H_
 
 #ifdef __OBJC__
-#import <AppKit/AppKit.h>
+#import <Cocoa/Cocoa.h>
 #import <MacFUSE/MacFUSE.h>
 #endif
 
