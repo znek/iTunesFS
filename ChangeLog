@@ -1,6 +1,6 @@
-2010-03-11  Marcus Mueller  <znek@mulle-kybernetik.com>
+2010-03-15  Marcus Mueller  <znek@mulle-kybernetik.com>
 
-	* 1.1.11b4
+	* 1.1.11
 
 	* iPodLibrary.[hm], IPhoneDiskIPodLibrary.m, JBiPodLibrary.m:
 	  corrected library lookup, which was static before - now it's
