@@ -1,15 +1,14 @@
 What is it?
 ===========
 
-iTunesFS allows you to mount the "iTunes Music Library.xml" file as a file
-system, using the excellent MacFUSE (http://code.google.com/p/macfuse/).
-As of version 1.1, all local iPods will also be mounted in the similar
-fashion. All playlists of either iTunes or the iPods are exposed as
-directories, with their respective entries. The order of tracks within the
-playlists is maintained by prefixing the tracks with their playlist index.
+iTunesFS allows you to mount your local iTunes library and locally mounted
+iPods/iPhones as a single file system mount point, exposing all the details
+like artists, albums and playlists as separate directories with their
+respective entries. The naming of tracks within these directories is
+configurable and playlist order can be maintained by prefixing tracks with
+their respective playlist index. 
 
-Please note that you have to install MacFUSE Core 10.4-1.1.0 (or 10.5-1.1.1,
-depending on your version of Mac OS X) before you can use iTunesFS!
+Please note that you have to install MacFUSE Core before you can use iTunesFS!
 MacFUSE Core is available at http://code.google.com/p/macfuse/.
 
 As of version 1.1.3, you can also build this application using GNUstep on any
@@ -30,88 +29,19 @@ In case you have further questions, feel free to write an email to
 Marcus Mueller <znek@mulle-kybernetik.com>.
 
 
-Defaults
-========
-
-For users
----------
-
-Name                  | Type   | Description
-----------------------+--------+----------------------------------------------
-NoIPods               | BOOL   | If YES, don't scan for iPods and instead
-(NO)                  |        | of displaying "libraries" at root level
-                      |        | display playlists of iTunes library
-NoITunes              | BOOL   | If YES, don't display iTunes library
-(NO)                  |        |
-SymbolicLinks         | BOOL   | If YES, use symbolic links for tracks instead
-(NO)                  |        | of "faking" the existence of files
-UseCategories         | BOOL   | If YES, display "Playlists", "Artists" and
-(YES)                 |        | "Albums" as virtual folders
-AlbumsTrackFormat     | String | The format string to use for formatting track
-                      |        | names in "Albums", "Songs" or "Artists"
-                      |        | folders. Read "Formatters" section for details
-PlaylistsTrackFormat  | String | The format string to use for formatting track
-                      |        | names in "Playlists" folders.
-iPodMountPoints       | Array  | An array of mount points to scan for iPods.
-                      |        | Comes in handy for testing purposes or in case
-                      |        | you mount your iPod/iPhone via MacFusion (ssh).
-AutoOpenInFinder      | BOOL   | Automatically open the iTunesFS in Finder after
-(YES)                 |        | it has been mounted
-UseBurnFoldersInFinder| BOOL   | Expose all virtual folders (including
-(NO)                  |        | playlists) as burn folders in Finder
-FUSEOptionAllowOther  | BOOL   | If YES, add the "allow_other" FUSE Option.
-(NO)                  |        | You need this if you want to access iTunesFS
-                      |        | via Apache
-
-
-For developers
---------------
-
-Name                                | Type | Description
-------------------------------------+------+---------------------------------
-FUSEObjectFileSystemDebugPathLookup | BOOL | display path objects during
-                                    |      | lookup
-iTunesFileSystemDebugEnabled        | BOOL | turns on general debugging info
-iPodLibraryDebugEnabled             | BOOL | detailed iPodLibrary debugging
-
-
-Formatters
-==========
-
-It's possible to format track names in a generic way providing format strings
-either via "AlbumsTrackFormat" or "PlaylistsTrackFormat". The formatters
-use a python-like syntax for formatting object properties, i.e.: %(name).
-The keys in braces can be complete keypaths. Also, it's possible to provide
-a number format to apply to the resulting value, i.e.: %(trackNumber#000).
-Currently, track properties of interest are:
-- name
-- album
-- artist
-- extension (you can also use "ext" as a convenience)
-- trackNumber
-- playlistNumber
-
-Here's an example of a more complex formatter:
-
-"#%(trackNumber#00) %(name) (%(artist) - %(album)).%(ext.lowercaseString)"
-
-This would produce an output similar to this:
-
-#05 Per Aspera Ad Astra (Moshcircus - Karma).m4a
-
-
 TODO / IDEAS
 ============
 
 - expose iTunesTrack metadata to Spotlight
   - would need to gather that metadata (Artist, Album, etc.) first
     (but that's trivial)
+  - spotlight metadata format is subject to change between OS revisions,
+    not trivial to reverse engineer
 - create .fseventsd folder?
 
 
 References
 ==========
 
-MacFUSE  - http://code.google.com/p/macfuse/
-FUSEObjC - http://macfuse.googlecode.com/svn/trunk/filesystems-objc/FUSEObjC
 iTunesFS - http://www.mulle-kybernetik.com/software/iTunesFS
+MacFUSE  - http://code.google.com/p/macfuse/

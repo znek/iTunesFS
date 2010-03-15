@@ -320,14 +320,14 @@ static NSArray  *fakeVolumePaths = nil;
   return YES;
 }
 
-/* Finder in 10.5.{1|2|3|4|5|6} is braindead, only displays filesystems
+/* Finder in ver > 10.4 is braindead, only displays filesystems
  * marked as "local" in sidebar
  */
 - (BOOL)needsLocalOption {
   NSString *osVer = [[NSProcessInfo processInfo] operatingSystemVersionString];
   
-  if ([osVer rangeOfString:@"10.5"].length != 0) return YES;
-  return NO;
+  if ([osVer rangeOfString:@"10.4"].length != 0) return NO;
+  return YES;
 }
 
 - (BOOL)wantsAllowOtherOption {
