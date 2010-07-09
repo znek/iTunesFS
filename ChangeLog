@@ -1,3 +1,10 @@
+2010-07-09  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* 1.1.12
+
+	* project.pbxproj: corrected 10.6 SDK dependency to be 10.5 instead,
+	  required 10.5 minimum deployment target.
+
 2010-03-15  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* 1.1.11
