@@ -35,7 +35,6 @@
 #import "iTunesLibrary.h"
 #import "iPodLibrary.h"
 #import "JBiPodLibrary.h"
-#import "IPhoneDiskIPodLibrary.h"
 #import "NSObject+FUSEOFS.h"
 
 @interface iTunesFileSystem (Private)
@@ -135,7 +134,10 @@ static NSString *iPhoneDiskPath  = @"/Volumes/iPhoneDisk";
       else if ([IPhoneDiskIPodLibrary isIPodAtMountPoint:path]) {
         lib = [[IPhoneDiskIPodLibrary alloc] initWithMountPoint:path];
       }
-      
+      else if ([JBiPhoneDiskIPodLibrary isIPodAtMountPoint:path]) {
+        lib = [[JBiPhoneDiskIPodLibrary alloc] initWithMountPoint:path];
+      }
+
       if (lib) {
         [self addLibrary:lib];
         [lib release];
