@@ -1,6 +1,17 @@
 2010-09-15  Marcus Mueller  <znek@mulle-kybernetik.com>
 
-	* 1.1.13b1
+	* v1.1.13b2
+
+	* IPhoneDiskIPodLibrary.[hm]: removed, moved contents to
+	  iPodLibrary.[hm] for simplicity's sake
+
+	* iPodLibrary.[hm]: added previous contents from
+	  IPhoneDiskIPodLibrary.[hm], also added support for com.apple.afc2
+	  mounted iPhones.
+
+	* iTunesFileSystem.m: added JBiPhoneDiskIPodLibrary detection
+
+	* v1.1.13b1
 
 	* iPodLibrary.m: forgot to reset jump offset after decompressing the
 	  library, fixed. Improved debug logs and added new
@@ -12,14 +23,14 @@
 
 2010-07-09  Marcus Mueller  <znek@mulle-kybernetik.com>
 
-	* 1.1.12
+	* v1.1.12
 
 	* project.pbxproj: corrected 10.6 SDK dependency to be 10.5 instead,
 	  required 10.5 minimum deployment target.
 
 2010-03-15  Marcus Mueller  <znek@mulle-kybernetik.com>
 
-	* 1.1.11
+	* v1.1.11
 
 	* README: removed a lot of obsolete stuff and instead redirected
 	  to the project webpages
@@ -40,13 +51,13 @@
 
 2009-08-15  Marcus Mueller  <znek@mulle-kybernetik.com>
 
-	* 1.1.11b3
+	* v1.1.11b3
 
 	* iPodLibrary.m: OS X 10.6 compatible
 
 2009-08-12  Marcus Mueller  <znek@mulle-kybernetik.com>
 
-	* 1.1.11b2
+	* v1.1.11b2
 
 	* StreamReader.[hm]: simple abstraction for wrapping small parts of
 	  the NSFileHandle  API either around NSFileHandle or NSData.
@@ -72,7 +83,7 @@
 
 2009-04-07  Marcus Mueller  <znek@mulle-kybernetik.com>
 
-	* 1.1.11b1
+	* v1.1.11b1
 
 	* iTunesFileSystem.m: removed an obsolete and ugly hack by implementing
 	  lookup properly, according to my own specs.
@@ -85,7 +96,7 @@
 
 2009-01-30  Marcus Mueller  <znek@mulle-kybernetik.com>
 
-	* 1.1.10
+	* v1.1.10
 
 	* iTunesPlaylist.[hm]: implemented playlist folders (don't recall
 	  when they have been introduced in iTunes), which only contain a set
@@ -99,7 +110,7 @@
 
 2009-01-29  Marcus Mueller  <znek@mulle-kybernetik.com>
 
-	* 1.1.9
+	* v1.1.9
 
 	* iTunesLibrary.m: changed detection of libraryPath; if no default is
 	  set, a candidate is looked up in the com.apple.iApps domain, first.
