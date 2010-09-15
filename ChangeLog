@@ -1,3 +1,15 @@
+2010-09-15  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* 1.1.13b1
+
+	* iPodLibrary.m: forgot to reset jump offset after decompressing the
+	  library, fixed. Improved debug logs and added new
+	  'iPodLibraryDebugVerbose' switch for verbose debugging.
+
+	* iTunesFileSystem.m: work seamlessly in conjunction with iPhoneDisk
+	  by faking its default mountpoint into the list of mount points to
+	  check
+
 2010-07-09  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* 1.1.12
