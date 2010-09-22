@@ -35,7 +35,6 @@
 #import "iTunesLibrary.h"
 #import "iPodLibrary.h"
 #import "JBiPodLibrary.h"
-#import "IPhoneDiskIPodLibrary.h"
 #import "NSObject+FUSEOFS.h"
 
 @interface iTunesFileSystem (Private)
@@ -62,6 +61,7 @@ static BOOL     ignoreIPods      = NO;
 static BOOL     allowOtherOption = NO;
 static NSString *fsIconPath      = nil;
 static NSArray  *fakeVolumePaths = nil;
+static NSString *iPhoneDiskPath  = @"/Volumes/iPhoneDisk";
 
 + (void)initialize {
   static BOOL didInit = NO;
@@ -106,17 +106,21 @@ static NSArray  *fakeVolumePaths = nil;
     [lib release];
   }
   if (!ignoreIPods) {
-    NSArray              *volPaths;
-    unsigned             i, count;
-    NSNotificationCenter *nc;
-
     // add mounted iPods
-    lib      = nil;
-    volPaths = [[NSWorkspace sharedWorkspace] mountedRemovableMedia];
+    NSArray *volPaths = [[NSWorkspace sharedWorkspace] mountedRemovableMedia];
+
     if (fakeVolumePaths)
       volPaths = [volPaths arrayByAddingObjectsFromArray:fakeVolumePaths];
-    count    = [volPaths count];
-    for (i = 0; i < count; i++) {
+
+    // workaround for Finder's inability to treat FUSE filesystems as
+    // removable media
+    if (![volPaths containsObject:iPhoneDiskPath]) {
+      volPaths = [volPaths arrayByAddingObject:iPhoneDiskPath];
+    }
+
+    lib = nil;
+    unsigned count = [volPaths count];
+    for (unsigned i = 0; i < count; i++) {
       NSString *path = [volPaths objectAtIndex:i];
       if (doDebug)
         NSLog(@"testing volPath '%@'", path);
@@ -130,7 +134,10 @@ static NSArray  *fakeVolumePaths = nil;
       else if ([IPhoneDiskIPodLibrary isIPodAtMountPoint:path]) {
         lib = [[IPhoneDiskIPodLibrary alloc] initWithMountPoint:path];
       }
-      
+      else if ([JBiPhoneDiskIPodLibrary isIPodAtMountPoint:path]) {
+        lib = [[JBiPhoneDiskIPodLibrary alloc] initWithMountPoint:path];
+      }
+
       if (lib) {
         [self addLibrary:lib];
         [lib release];
@@ -139,7 +146,8 @@ static NSArray  *fakeVolumePaths = nil;
     }
     
     // mount/unmount registration
-    nc = [[NSWorkspace sharedWorkspace] notificationCenter];
+    NSNotificationCenter *nc = [[NSWorkspace sharedWorkspace]
+                                             notificationCenter];
     [nc addObserver:self
         selector:@selector(didMountRemovableDevice:)
         name:NSWorkspaceDidMountNotification

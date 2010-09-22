@@ -47,3 +47,19 @@
 }
 
 @end /* JBiPodLibrary */
+
+@implementation IPhoneDiskIPodLibrary
+
++ (NSString *)iTunesControlPathComponent {
+	return @"iTunes_Control";
+}
+
+@end /* IPhoneDiskIPodLibrary */
+
+@implementation JBiPhoneDiskIPodLibrary
+
++ (NSString *)iTunesControlPathComponent {
+	return @"private/var/mobile/Media/iTunes_Control";
+}
+
+@end /* IPhoneDiskIPodLibrary */

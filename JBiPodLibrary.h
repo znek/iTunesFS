@@ -39,6 +39,20 @@
 {
 }
 
-@end /* JBiPodLibrary */
+@end // JBiPodLibrary
+
+// com.apple.afc
+@interface IPhoneDiskIPodLibrary : JBiPodLibrary
+{
+}
+
+@end // IPhoneDiskIPodLibrary
+
+// com.apple.afc2
+@interface JBiPhoneDiskIPodLibrary : JBiPodLibrary
+{
+}
+
+@end // JBiPhoneDiskIPodLibrary
 
 #endif	/* __iTunesFS_JBiPodLibrary_H */

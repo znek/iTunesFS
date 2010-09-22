@@ -129,7 +129,8 @@ typedef struct {
 
 @implementation iPodLibrary
 
-static BOOL                doDebug     = NO;
+static BOOL doDebug        = NO;
+static BOOL debugIsVerbose = NO;
 static NSMutableDictionary *codeSelMap = nil;
 
 + (void)initialize {
@@ -137,9 +138,10 @@ static NSMutableDictionary *codeSelMap = nil;
   NSUserDefaults *ud;
   
   if (didInit) return;
-  didInit       = YES;
-  ud            = [NSUserDefaults standardUserDefaults];
-  doDebug       = [ud boolForKey:@"iPodLibraryDebugEnabled"];
+  didInit        = YES;
+  ud             = [NSUserDefaults standardUserDefaults];
+  doDebug        = [ud boolForKey:@"iPodLibraryDebugEnabled"];
+  debugIsVerbose = [ud boolForKey:@"iPodLibraryDebugVerbose"];
 
   codeSelMap = [[NSMutableDictionary alloc] initWithCapacity:4];
   [codeSelMap setObject:@"setName:"     forKey:[NSNumber numberWithInt:1]];
@@ -266,12 +268,15 @@ static NSMutableDictionary *codeSelMap = nil;
     fsbb->jump  = NSSwapLittleIntToHost(fsbb->jump);
     fsbb->myLen = NSSwapLittleIntToHost(fsbb->myLen);
     fsbb->count = NSSwapLittleIntToHost(fsbb->count);
-    
+
     if (memcmp(fsbb->code, "bd", 2) == 0) { // begin of database
-      if (doDebug) NSLog(@"%.8x Beginning of database\n", filePos);
+      if (doDebug && debugIsVerbose)
+        NSLog(@"[0x%08lx] Beginning of database", filePos);
 
       // compressed database?
       if (fsbb->count == 2) {
+        if (doDebug && debugIsVerbose)
+          NSLog(@"[0x%08lx] database might be compressed", filePos);
         ITDBUInt32 version;
         data = [sr readDataOfLength:sizeof(ITDBUInt32)];
         version = *(ITDBUInt32 *)[data bytes];
@@ -279,6 +284,11 @@ static NSMutableDictionary *codeSelMap = nil;
         
         // compressed!
         if (version >= 0x28) {
+          if (doDebug && debugIsVerbose) {
+            NSLog(@"[0x%08lx] database is compressed (version: 0x%x), "
+                  "decompressing", filePos, version);
+          }
+
           // read compressed stream into data
           filePos += fsbb->jump;
           [sr seekToOffset:filePos];
@@ -290,26 +300,29 @@ static NSMutableDictionary *codeSelMap = nil;
           sr         = [[StreamReader alloc] initWithData:data];
           fileLength = [data length];
           filePos    = 0;
+          fsbb->jump = 0;
         }
       }
     }
     else if (memcmp(fsbb->code, "sd", 2) == 0) { // a list type header
       if (fsbb->count != 1 && fsbb->count != 2) {
         if (doDebug) {
-          NSLog(@"WARN: %.8x UNKNOWN %c%c %ld %ld %ld\n",
-                filePos, fsbb->code[0], fsbb->code[1],
-                fsbb->jump, fsbb->myLen, fsbb->count);
+          NSLog(@"WARN: [0x%08lx] unknown list type header '%d', "
+                "jump:0x%x length:0x%x",
+                filePos, fsbb->count, fsbb->jump, fsbb->myLen);
         }
       }
     }
     else if (memcmp(fsbb->code, "lt", 2) == 0) { // list of tracks
-      if (doDebug) NSLog(@"%.8x %ld-item list:\n", filePos, fsbb->myLen);
+      if (doDebug && debugIsVerbose)
+        NSLog(@"[0x%08lx] %ld-item list:", filePos, fsbb->myLen);
       if (!tmap) {
         tmap = [[NSMutableDictionary alloc] initWithCapacity:fsbb->myLen];
       }
     }
     else if (memcmp(fsbb->code, "lp", 2) == 0) { // list of playlists
-      if (doDebug) NSLog(@"%.8x %ld-item list:\n", filePos, fsbb->myLen);
+      if (doDebug && debugIsVerbose)
+        NSLog(@"[0x%08lx] %ld-item list:", filePos, fsbb->myLen);
 
       if (!playlists)
         playlists = [[NSMutableArray alloc] initWithCapacity:fsbb->myLen];
@@ -317,7 +330,8 @@ static NSMutableDictionary *codeSelMap = nil;
     else if (memcmp(fsbb->code, "yp", 2) == 0) { // a playlist
       NSMutableArray *trackIDs;
 
-      if (doDebug) NSLog(@"%.8x playlist:\n", filePos);
+      if (doDebug && debugIsVerbose)
+        NSLog(@"[0x%08lx] playlist:", filePos);
 
       trackIDs            = [[NSMutableArray alloc]      initWithCapacity:12];
       self->currentObject = [[NSMutableDictionary alloc] initWithCapacity:1];
@@ -337,8 +351,8 @@ static NSMutableDictionary *codeSelMap = nil;
       trackID            = [ULongNum(playlist->item_ref) description];
       track              = [tmap objectForKey:trackID];
       if (!track && doDebug) {
-        NSLog(@"ERR: Referenced unknown track with id '%ld'",
-              playlist->item_ref);
+        NSLog(@"ERROR: [0x%08lx] referenced unknown track with id '%ld'",
+              filePos, playlist->item_ref);
       }
       else {
         NSMutableArray *trackIDs;
@@ -346,8 +360,10 @@ static NSMutableDictionary *codeSelMap = nil;
         trackIDs = [self->currentObject objectForKey:@"trackIDs"];
         [trackIDs addObject:trackID];
       }
-      if (doDebug)
-        NSLog(@"%.8x itemref (%ld): %@\n", filePos, playlist->item_ref, track);
+      if (doDebug && debugIsVerbose) {
+        NSLog(@"[0x%08lx] itemref (%ld): %@",
+              filePos, playlist->item_ref, track);
+      }
     }
     else if (memcmp(fsbb->code, "it", 2) == 0) { // a track item
       mhitExtra *prop;
@@ -372,18 +388,17 @@ static NSMutableDictionary *codeSelMap = nil;
 
       [self->currentObject release];
 
-      if (doDebug) {
-        NSLog(@"%.8x %ld-property item (%ld):\n",
+      if (doDebug && debugIsVerbose) {
+        NSLog(@"[0x%08lx] %ld-property item (%ld):",
               filePos, fsbb->count, prop->uniqueID);
       }
     }
     else if (memcmp(fsbb->code, "od", 2) == 0) { // unicode string
       stringParam *sp;
       
-      if (doDebug) {
-        NSLog(@"%.8x Unicode String(%c%c) %ld %ld %ld\t",
-              filePos, fsbb->code[0], fsbb->code[1], fsbb->jump,
-              fsbb->myLen, fsbb->count);
+      if (doDebug && debugIsVerbose) {
+        NSLog(@"[0x%08lx] unicode string '%c%c'",
+              filePos, fsbb->code[0], fsbb->code[1]);
       }
       // skip 8 bytes, because jump is always 24
       [sr seekToOffset:filePos + 24];
@@ -413,9 +428,10 @@ static NSMutableDictionary *codeSelMap = nil;
     }
     else { // unknown code
       if (doDebug) {
-        NSLog(@"%.8x %c%c %ld %ld %ld\n",
-              filePos, fsbb->code[0], fsbb->code[1], fsbb->jump,
-              fsbb->myLen, fsbb->count);
+        NSLog(@"WARN: [0x%08lx] unknown code '%c%c', "
+              "jump:0x%x length:0x%x count:0x%x",
+              filePos, fsbb->code[0], fsbb->code[1],
+              fsbb->jump, fsbb->myLen, fsbb->count);
       }
     }
     

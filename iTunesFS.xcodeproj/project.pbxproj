@@ -30,7 +30,6 @@
 		ADBDA9CC0C02E7A5004CF795 /* iTunesFS.icns in Resources */ = {isa = PBXBuildFile; fileRef = ADBDA9CB0C02E7A5004CF795 /* iTunesFS.icns */; };
 		ADBDABA90C02FF10004CF795 /* NSString+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = ADBDABA80C02FF10004CF795 /* NSString+Extensions.m */; };
 		ADD11F3A0CD7A26000E7A5C2 /* JBiPodLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = ADD11F390CD7A26000E7A5C2 /* JBiPodLibrary.m */; };
-		ADF74E91102F07DC00FED3EA /* IPhoneDiskIPodLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = ADF74E90102F07DC00FED3EA /* IPhoneDiskIPodLibrary.m */; };
 		ADF74EC2102F2AF300FED3EA /* NSData+ZlibDecompression.m in Sources */ = {isa = PBXBuildFile; fileRef = ADF74EC1102F2AF300FED3EA /* NSData+ZlibDecompression.m */; };
 		ADF74ED1102F601C00FED3EA /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = ADF74ED0102F601C00FED3EA /* libz.dylib */; };
 /* End PBXBuildFile section */
@@ -103,8 +102,6 @@
 		ADD11F380CD7A21E00E7A5C2 /* JBiPodLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = JBiPodLibrary.h; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		ADD11F390CD7A26000E7A5C2 /* JBiPodLibrary.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = JBiPodLibrary.m; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		ADDCD76C0C26A6640031B215 /* GNUmakefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 5; indentWidth = 8; path = GNUmakefile; sourceTree = "<group>"; tabWidth = 8; };
-		ADF74E8F102F07DC00FED3EA /* IPhoneDiskIPodLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IPhoneDiskIPodLibrary.h; sourceTree = "<group>"; };
-		ADF74E90102F07DC00FED3EA /* IPhoneDiskIPodLibrary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IPhoneDiskIPodLibrary.m; sourceTree = "<group>"; };
 		ADF74EC0102F2AF300FED3EA /* NSData+ZlibDecompression.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+ZlibDecompression.h"; sourceTree = "<group>"; };
 		ADF74EC1102F2AF300FED3EA /* NSData+ZlibDecompression.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+ZlibDecompression.m"; sourceTree = "<group>"; };
 		ADF74ED0102F601C00FED3EA /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = /usr/lib/libz.dylib; sourceTree = "<absolute>"; };
@@ -165,8 +162,6 @@
 				AD15AA5D0C05BC7400345C9E /* iPodLibrary.m */,
 				ADD11F380CD7A21E00E7A5C2 /* JBiPodLibrary.h */,
 				ADD11F390CD7A26000E7A5C2 /* JBiPodLibrary.m */,
-				ADF74E8F102F07DC00FED3EA /* IPhoneDiskIPodLibrary.h */,
-				ADF74E90102F07DC00FED3EA /* IPhoneDiskIPodLibrary.m */,
 				AD15A2170C03208500345C9E /* iTunesPlaylist.h */,
 				AD15A2180C03208500345C9E /* iTunesPlaylist.m */,
 				AD15A22A0C03248C00345C9E /* iTunesTrack.h */,
@@ -400,7 +395,6 @@
 				AD3D0D510DB8EEB2001D158B /* iTunesFSController.m in Sources */,
 				AD8118720F093DAB000786C9 /* NSImage+IconData.m in Sources */,
 				AD8119700F095144000786C9 /* FUSEOFSLookupContext.m in Sources */,
-				ADF74E91102F07DC00FED3EA /* IPhoneDiskIPodLibrary.m in Sources */,
 				ADF74EC2102F2AF300FED3EA /* NSData+ZlibDecompression.m in Sources */,
 				ADB59B751033716B002A2998 /* StreamReader.m in Sources */,
 			);
