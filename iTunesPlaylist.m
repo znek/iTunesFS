@@ -36,17 +36,20 @@
 #import "iTunesTrack.h"
 #import "NSString+Extensions.h"
 #import "iTunesFSFormatter.h"
+#import "NSObject+FUSEOFS.h"
 
 @interface iTunesPlaylist (Private)
 - (void)generatePrettyTrackNames;
 - (void)setName:(NSString *)_name;
 - (void)setTracks:(NSArray *)_tracks;
 - (void)setTrackNames:(NSArray *)_trackNames;
+- (void)addTrack:(iTunesTrack *)_track withName:(NSString *)_name;
 @end
 
 @implementation iTunesPlaylist
 
-static BOOL              doDebug           = NO;
+static BOOL doDebug = NO;
+static BOOL showPersistentID = NO;
 static iTunesFSFormatter *plTrackFormatter = nil;
 
 + (void)initialize {
@@ -58,6 +61,7 @@ static iTunesFSFormatter *plTrackFormatter = nil;
   didInit          = YES;
   ud               = [NSUserDefaults standardUserDefaults];
   doDebug          = [ud boolForKey:@"iTunesFileSystemDebugEnabled"];
+  showPersistentID = [ud boolForKey:@"ShowPersistentIDs"];
   fmt              = [ud stringForKey:@"PlaylistsTrackFormat"];
   plTrackFormatter = [[iTunesFSFormatter alloc] initWithFormatString:fmt];
   
@@ -65,10 +69,20 @@ static iTunesFSFormatter *plTrackFormatter = nil;
     NSLog(@"PlaylistsTrackFormat: %@", fmt);
 }
 
+- (id)init {
+  self = [super init];
+  if (self) {
+    self->tracks      = [[NSMutableArray alloc] initWithCapacity:10];
+    self->trackNames  = [[NSMutableArray alloc] initWithCapacity:10];
+    self->childrenMap = [[NSMutableDictionary alloc] initWithCapacity:5];
+  }
+  return self;
+}
+
 - (id)initWithITunesLibraryRepresentation:(NSDictionary *)_list
   lib:(iTunesLibrary *)_lib
 {
-  self = [super init];
+  self = [self init];
   if (self) {
     BOOL isFolder;
 
@@ -111,9 +125,6 @@ static iTunesFSFormatter *plTrackFormatter = nil;
       [ma release];
       [self generatePrettyTrackNames];
     }
-    else {
-      self->childrenMap = [[NSMutableDictionary alloc] initWithCapacity:5];
-    }
   }
   return self;
 }
@@ -121,7 +132,7 @@ static iTunesFSFormatter *plTrackFormatter = nil;
 - (id)initWithIPodLibraryRepresentation:(NSDictionary *)_list
   lib:(iTunesLibrary *)_lib
 {
-  self = [super init];
+  self = [self init];
   if (self) {
     NSArray        *items;
     NSMutableArray *ma;
@@ -170,24 +181,58 @@ static iTunesFSFormatter *plTrackFormatter = nil;
 /* private */
 
 - (void)generatePrettyTrackNames {
-  NSMutableArray *ma;
-  unsigned       i, count;
-
-  count = [self->tracks count];
-  ma    = [[NSMutableArray alloc] initWithCapacity:count];
-  for (i = 0; i < count; i++) {
-    iTunesTrack *trk;
-    unsigned    trkIndex;
-    NSString    *tn;
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  NSString   *fmtKey = [NSString stringWithFormat:@"PlaylistsTrackFormat[%@]",
+                         [self persistentId]];
+  NSString   *fmt    = [ud stringForKey:fmtKey];
+  iTunesFSFormatter *formatter;
+  if (fmt)
+    formatter = [[iTunesFSFormatter alloc] initWithFormatString:fmt];
+  else
+    formatter = plTrackFormatter;
+  
+  BOOL isPathFormat = [formatter isPathFormat];
+  if (isPathFormat) {
+    unsigned i, count = [self->tracks count];
+    for (i = 0; i < count; i++) {
+      iTunesTrack *trk     = [self trackAtIndex:i];
+      unsigned    trkIndex = i + 1;
+      [trk setPlaylistNumber:trkIndex];
+      NSArray *pathComponents = [formatter
+                                   pathComponentsByFormattingObject:trk];
+      iTunesPlaylist *pl = self;
+      NSString *pc;
+      unsigned k, pcCount = [pathComponents count];
+      for (k = 0; k < (pcCount - 1); k++) {
+        pc = [pathComponents objectAtIndex:k];
+        iTunesPlaylist *nextPl = [pl lookupPathComponent:pc inContext:nil];
+        if (!nextPl || ![nextPl isDirectory]) {
+          nextPl = [[iTunesPlaylist alloc] init];
+          [nextPl setName:pc];
+          [pl addChild:nextPl withName:pc];
+          [nextPl release];
+        }
+        pl = nextPl;
+      }
+      [pl addTrack:trk withName:[pathComponents objectAtIndex:k]];
+    }
     
-    trk      = [self trackAtIndex:i];
-    trkIndex = i + 1;
-    [trk setPlaylistNumber:trkIndex];
-    tn       = [plTrackFormatter stringValueByFormattingObject:trk];
-    [ma addObject:tn];
+    if (formatter != plTrackFormatter)
+      [formatter release];
   }
-  [self setTrackNames:ma];
-  [ma release];
+  else {
+    unsigned i, count  = [self->tracks count];
+    NSMutableArray *ma = [[NSMutableArray alloc] initWithCapacity:count];
+    for (i = 0; i < count; i++) {
+      iTunesTrack *trk     = [self trackAtIndex:i];
+      unsigned    trkIndex = i + 1;
+      [trk setPlaylistNumber:trkIndex];
+      NSString *tn = [formatter stringValueByFormattingObject:trk];
+      [ma addObject:tn];
+    }
+    [self setTrackNames:ma];
+    [ma release];
+  }
 }
 
 /* accessors */
@@ -198,7 +243,9 @@ static iTunesFSFormatter *plTrackFormatter = nil;
   self->name = _name;
 }
 - (NSString *)name {
-  return self->name;
+  if (!showPersistentID || !self->persistentId)
+    return self->name;
+  return [NSString stringWithFormat:@"%@[%@]", self->name, self->persistentId];
 }
 
 - (NSString *)persistentId {
@@ -208,10 +255,14 @@ static iTunesFSFormatter *plTrackFormatter = nil;
   return self->parentId;
 }
 
+- (void)addTrack:(iTunesTrack *)_track withName:(NSString *)_name {
+  [self->tracks addObject:_track];
+  [self->trackNames addObject:_name];
+}
+
 - (void)setTracks:(NSArray *)_tracks {
-  _tracks = [_tracks copy];
-  [self->tracks release];
-  self->tracks = _tracks;
+  [self->tracks removeAllObjects];
+  [self->tracks addObjectsFromArray:_tracks];
 }
 - (NSArray *)tracks {
   return self->tracks;
@@ -226,9 +277,8 @@ static iTunesFSFormatter *plTrackFormatter = nil;
 }
 
 - (void)setTrackNames:(NSArray *)_trackNames {
-  _trackNames = [_trackNames copy];
-  [self->trackNames release];
-  self->trackNames = _trackNames;
+  [self->trackNames removeAllObjects];
+  [self->trackNames addObjectsFromArray:_trackNames];
 }
 - (NSArray *)trackNames {
   return self->trackNames;
@@ -242,22 +292,30 @@ static iTunesFSFormatter *plTrackFormatter = nil;
 /* FUSEOFS */
 
 - (id)lookupPathComponent:(NSString *)_pc inContext:(id)_ctx {
-  // NOTE: it's either children or tracks, never both!
-  if (self->childrenMap)
-    return [self->childrenMap objectForKey:_pc];
+  id result;
 
-  NSUInteger idx;
+  result = [self->childrenMap objectForKey:_pc];
+  if (result)
+    return result;
 
-  idx = [[self trackNames] indexOfObject:_pc];
-  if (idx == NSNotFound) return nil;
-  return [self trackAtIndex:idx];
+  NSUInteger idx = [[self trackNames] indexOfObject:_pc];
+  if (idx != NSNotFound)
+    result = [self trackAtIndex:idx];
+  return result;
 }
+
 - (NSArray *)directoryContents {
-  // NOTE: it's either children or tracks, never both!
-  if (self->childrenMap)
+  if ([self->childrenMap count] && ![[self trackNames] count])
     return [self->childrenMap allKeys];
-  return [self trackNames];
+  else if (![self->childrenMap count] && [[self trackNames] count])
+    return [self trackNames];
+
+  NSMutableArray *names = [[NSMutableArray alloc]
+                                           initWithArray:self->trackNames];
+  [names addObjectsFromArray:[self->childrenMap allKeys]];
+  return [names autorelease];
 }
+
 - (BOOL)isDirectory {
   return YES;
 }

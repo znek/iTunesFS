@@ -51,6 +51,7 @@
 @interface iTunesFSFormatter (Private)
 - (void)setupFormattingOps;
 - (void)appendStringToFormattingOps:(NSString *)_s;
+- (NSString *)_stringValueByFormattingObject:(id)_obj;
 @end
 
 @implementation iTunesFSFormatter
@@ -144,10 +145,34 @@ static NSValue        *appendValueForKeyToBufferValue = nil;
   }
 }
 
+- (BOOL)isPathFormat {
+  return [self->format rangeOfString:@"/"].location != NSNotFound;
+}
+
 - (NSString *)stringValueByFormattingObject:(id)_obj {
+  return [[self _stringValueByFormattingObject:_obj]
+                properlyEscapedFSRepresentation];
+}
+
+- (NSArray *)pathComponentsByFormattingObject:(id)_obj {
+  NSString *path          = [self _stringValueByFormattingObject:_obj];
+  NSArray  *rawComponents = [path pathComponents];
+  int      i, count       = [rawComponents count];
+  NSMutableArray *components = [[NSMutableArray alloc] initWithCapacity:count];
+  for (i = 0; i < count; i++) {
+    NSString *rc = [rawComponents objectAtIndex:i];
+    NSString *c  = [[rc stringByTrimmingCharactersInSet:wsSet]
+                        properlyEscapedFSRepresentation];
+    if ([c length])
+      [components addObject:c];
+  }
+  return [components autorelease];
+}
+
+- (NSString *)_stringValueByFormattingObject:(id)_obj {
   iTunesFSFormattingResult *result;
-  unsigned                 i, count;
-  NSString                 *formattedString;
+  unsigned i, count;
+  NSString *formattedString;
 
   result = [[iTunesFSFormattingResult alloc] initWithTarget:_obj];
   count  = [self->formattingOps count];
@@ -276,7 +301,7 @@ static NSMutableDictionary *fmtCache = nil;
 }
 
 - (NSString *)formattedString {
-  return [[[self->buffer properlyEscapedFSRepresentation] copy] autorelease];
+  return [[self->buffer copy] autorelease];
 }
 
 @end /* iTunesFSFormattingResult */

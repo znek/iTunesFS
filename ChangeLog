@@ -1,3 +1,25 @@
+2010-12-18  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v1.1.14b1
+
+	* iTunesFSFormatter.[hm]: added -isPathFormat and
+	  -pathComponentsByFormattingObject: in order to determine if a
+	  formatter describes a path and if so, get this path (optimized
+	  by stripping empty path components and ready for display by
+	  properly escaping it)
+
+	* iTunesPlaylist.[hm]: changed internals to allow /both/ tracks and
+	  children to co-exist in a playlist (previously, this was impossible
+	  due to the way that it's impossible to mix both in iTunes).
+	  Added -name to also display the persistentId if the new
+	  "ShowPersistentIDs" default is set to YES.
+	  Added per-playlist formatters, which require the persistentId of
+	  playlists to be known. Changed -generatePrettyTrackNames to
+	  detect appropriate formatters and detect whether these describe a
+	  path (hierarchy). If so, a new virtual playlist hierarchy is
+	  created and tracks moved these new playlists in order to reflect
+	  this hierarchy.
+
 2010-09-22  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* v1.1.13

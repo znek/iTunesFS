@@ -44,6 +44,8 @@
 - (id)initWithFormatString:(NSString *)_format;
 
 - (NSString *)stringValueByFormattingObject:(id)_obj;
+- (BOOL)isPathFormat;
+- (NSArray *)pathComponentsByFormattingObject:(id)_obj;
 
 @end /* iTunesFSFormatter */
 
