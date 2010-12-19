@@ -38,7 +38,10 @@
 #import "iTunesFSFormatter.h"
 #import "NSObject+FUSEOFS.h"
 
+#define TRK_FMT @"PlaylistsTrackFormat[%@]"
+
 @interface iTunesPlaylist (Private)
+- (iTunesFSFormatter *)getTrackFormatter;
 - (void)generatePrettyTrackNames;
 - (void)setName:(NSString *)_name;
 - (void)setTracks:(NSArray *)_tracks;
@@ -180,22 +183,48 @@ static iTunesFSFormatter *plTrackFormatter = nil;
 
 /* private */
 
-- (void)generatePrettyTrackNames {
+- (iTunesFSFormatter *)getTrackFormatter {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  NSString   *fmtKey = [NSString stringWithFormat:@"PlaylistsTrackFormat[%@]",
-                         [self persistentId]];
-  NSString   *fmt    = [ud stringForKey:fmtKey];
-  iTunesFSFormatter *formatter;
-  if (fmt)
-    formatter = [[iTunesFSFormatter alloc] initWithFormatString:fmt];
-  else
-    formatter = plTrackFormatter;
-  
-  BOOL isPathFormat = [formatter isPathFormat];
-  if (isPathFormat) {
-    unsigned i, count = [self->tracks count];
+  NSString *fmtKey   = [NSString stringWithFormat:TRK_FMT, [self persistentId]];
+  NSString *fmt      = [ud stringForKey:fmtKey];
+  if (fmt) {
+    // is it an alias?
+    if ([fmt hasPrefix:@"@"] && ([fmt length] > 1)) {
+      fmt = [fmt substringFromIndex:1];
+      if (doDebug)
+        NSLog(@"%@ is an alias to %@", fmtKey, fmt);
+      fmtKey = [NSString stringWithFormat:TRK_FMT, fmt];
+      fmt    = [ud stringForKey:fmtKey];
+    }
+    if (fmt) {
+      return [[[iTunesFSFormatter alloc] initWithFormatString:fmt]
+                                         autorelease];
+    }
+    else {
+      if (doDebug)
+        NSLog(@"WARN: no format found for reference %@", fmtKey);
+    }
+  }
+  return plTrackFormatter;
+}
+
+- (void)generatePrettyTrackNames {
+  iTunesFSFormatter *formatter = [self getTrackFormatter];
+
+  if ([formatter isPathFormat]) {
+
+    // formatter describes a path, which can lead to a whole hierarchy
+    // of virtual playlists.
+    // for every track in this current playlist we need to traverse its
+    // formatter path and possibly create and add any virtual playlists
+    // necessary in that process.
+
+    NSArray *savedTracks = [self->tracks copy];
+    [self->tracks removeAllObjects];
+
+    unsigned i, count = [savedTracks count];
     for (i = 0; i < count; i++) {
-      iTunesTrack *trk     = [self trackAtIndex:i];
+      iTunesTrack *trk     = [savedTracks objectAtIndex:i];
       unsigned    trkIndex = i + 1;
       [trk setPlaylistNumber:trkIndex];
       NSArray *pathComponents = [formatter
@@ -216,9 +245,7 @@ static iTunesFSFormatter *plTrackFormatter = nil;
       }
       [pl addTrack:trk withName:[pathComponents objectAtIndex:k]];
     }
-    
-    if (formatter != plTrackFormatter)
-      [formatter release];
+    [savedTracks release];
   }
   else {
     unsigned i, count  = [self->tracks count];

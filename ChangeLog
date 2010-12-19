@@ -1,3 +1,9 @@
+2010-12-19  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* iTunesPlaylist.[hm]: added new -getTrackFormatter private method
+	  which also sports formatter lookup via aliases. Also, minor
+	  code cleanup and bugfixes in -generatePrettyTrackNames.
+
 2010-12-18  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* v1.1.14b1
