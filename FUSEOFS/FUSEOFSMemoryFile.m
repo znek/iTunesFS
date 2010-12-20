@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2007-2010, Marcus Müller <znek@mulle-kybernetik.com>.
+  Copyright (c) 2010, Marcus Müller <znek@mulle-kybernetik.com>.
   All rights reserved.
 
 
@@ -30,42 +30,69 @@
   POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef	__iTunesFS_iTunesPlaylist_H
-#define	__iTunesFS_iTunesPlaylist_H
+#import "FUSEOFSMemoryFile.h"
+#import "NSObject+FUSEOFS.h"
 
-#import <Foundation/Foundation.h>
+@implementation FUSEOFSMemoryFile
 
-@class iTunesLibrary;
-@class iTunesTrack;
+static NSDictionary *emptyDict = nil;
 
-@interface iTunesPlaylist : NSObject
-{
-  NSString *persistentId;
-  NSString *parentId;
-  NSString *name;
-  NSMutableArray *savedTracks;
-  NSMutableArray *tracks;
-  NSMutableArray *trackNames;
-  NSMutableDictionary *childrenMap;
-  id shadowFolder;
++ (void)initialize {
+  static BOOL didInit = NO;
+  
+  if (didInit) return;
+  didInit   = YES;
+  emptyDict = [[NSDictionary alloc] init];
 }
 
-- (id)initWithITunesLibraryRepresentation:(NSDictionary *)_list
-  lib:(iTunesLibrary *)_lib;
-- (id)initWithIPodLibraryRepresentation:(NSDictionary *)_list
-  lib:(iTunesLibrary *)_lib;
+- (void)dealloc {
+	[self->data  release];
+  [self->attrs release];
+	[super dealloc];
+}
 
-- (NSString *)name;
-- (NSString *)persistentId;
-- (NSString *)parentId;
-- (NSArray *)tracks;
+/* accessors */
 
-- (unsigned)count;
-- (iTunesTrack *)trackAtIndex:(unsigned)_idx;
-- (NSArray *)trackNames;
+- (void)setAttributes:(NSDictionary *)_attrs {
+  if (!self->attrs) {
+    self->attrs = [[NSMutableDictionary alloc] initWithCapacity:2];
+    [self->attrs setObject:NSFileTypeRegular forKey:NSFileType];
+  }
+  [self->attrs addEntriesFromDictionary:_attrs];
+}
 
-- (void)addChild:(iTunesPlaylist *)_child withName:(NSString *)_name;
+- (void)setData:(NSData *)_data {
+  if (self->data == _data) return;
+  [self->data release];
+  self->data = [_data copy];
+}
 
-@end /* iTunesPlaylist */
+/* FUSEOFS */
 
-#endif	/* __iTunesFS_iTunesPlaylist_H */
+- (id)lookupPathComponent:(NSString *)_pc inContext:(id)_ctx {
+  return nil;
+}
+
+/* reflection */
+
+- (BOOL)isDirectory {
+  return NO;
+}
+- (BOOL)isMutable {
+	return NO;
+}
+
+/* read */
+
+- (NSData *)fileContents {
+	return self->data;
+}
+- (NSArray *)directoryContents {
+  return nil;
+}
+- (NSDictionary *)fileAttributes {
+	return [[self->attrs copy] autorelease];
+}
+
+@end /* FUSEOFSMemoryFile */
+

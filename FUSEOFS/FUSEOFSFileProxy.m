@@ -31,8 +31,10 @@
 */
 
 #import "FUSEOFSFileProxy.h"
+#import "NSObject+FUSEOFS.h"
 
 @interface FUSEOFSFileProxy (Private)
+- (NSString *)getRelativePath:(NSString *)_pc;
 - (NSFileManager *)fileManager;
 @end
 
@@ -53,20 +55,95 @@
 
 /* private */
 
+- (NSString *)getRelativePath:(NSString *)_pc {
+  return [self->path stringByAppendingPathComponent:_pc];
+}
+
 - (NSFileManager *)fileManager {
   return [NSFileManager defaultManager];
 }
 
 /* FUSEOFS */
 
+- (id)lookupPathComponent:(NSString *)_pc inContext:(id)_ctx {
+  if ([self isDirectory]) {
+    if ([[self directoryContents] containsObject:_pc]) {
+      NSString *pcPath = [self getRelativePath:_pc];
+      return [[[FUSEOFSFileProxy alloc] initWithPath:pcPath] autorelease];
+    }
+  }
+  return nil;
+}
+
+/* reflection */
+
+- (BOOL)isDirectory {
+  BOOL isDirectory;
+  BOOL exists = [[self fileManager] fileExistsAtPath:self->path
+                                    isDirectory:&isDirectory];
+  if (!exists)
+    return NO;
+  return isDirectory;
+}
+
+- (BOOL)isMutable {
+  if (![self isDirectory])
+    return [[self fileManager] isWritableFileAtPath:self->path];
+  return YES; // TODO: FIXME
+}
+
+/* read */
+
 - (NSData *)fileContents {
-  return [[self fileManager] contentsAtPath:self->path];
+  if (![self isDirectory])
+    return [[self fileManager] contentsAtPath:self->path];
+  return nil;
 }
+
+- (NSArray *)directoryContents {
+  if ([self isDirectory])
+    return [[self fileManager] contentsOfDirectoryAtPath:self->path error:NULL];
+  return nil;
+}
+
 - (NSDictionary *)fileAttributes {
-  return [[self fileManager] fileAttributesAtPath:self->path traverseLink:YES];
+  return [[self fileManager] attributesOfItemAtPath:self->path error:NULL];
 }
-- (BOOL)isFile {
-  return YES;
+
+/* write */
+
+- (BOOL)createFileNamed:(NSString *)_name
+  withAttributes:(NSDictionary *)_attrs
+{
+  if (![self isDirectory]) return NO;
+  return [[self fileManager] createFileAtPath:[self getRelativePath:_name]
+                             contents:nil
+                             attributes:_attrs];
+}
+
+- (BOOL)createDirectoryNamed:(NSString *)_name
+  withAttributes:(NSDictionary *)_attrs
+{
+  if (![self isDirectory]) return NO;
+  return [[self fileManager] createDirectoryAtPath:[self getRelativePath:_name]
+                             withIntermediateDirectories:NO
+                             attributes:_attrs
+                             error:NULL];
+}
+
+- (BOOL)writeFileNamed:(NSString *)_name withData:(NSData *)_data {
+  if (![self isDirectory]) return NO;
+  
+  return [[self fileManager] createFileAtPath:[self getRelativePath:_name]
+                             contents:_data
+                             attributes:nil];
+}
+
+- (BOOL)removeItemNamed:(NSString *)_name {
+  if (![self isDirectory]) return NO;
+  
+  return [[self fileManager] removeItemAtPath:[self getRelativePath:_name]
+                             error:NULL];
 }
 
 @end /* FUSEOFSFileProxy */

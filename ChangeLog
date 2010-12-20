@@ -1,5 +1,30 @@
 2010-12-20  Marcus Mueller  <znek@mulle-kybernetik.com>
 
+	* v1.1.14b3
+
+	* NSObject+FUSEOFS.m: minor cleanup
+	
+	* FUSEOFSFileProxy.m: properly implemented to transparently work for
+	  files and folders
+
+	* FUSEOFSMemoryFile.[hm]: new class which acts as a properly attributed
+	  data object in memory
+
+	* FUSEOFSMemoryFolder.[hm]: new class which acts as a properly
+	  attributed folder object in memory
+
+	* FUSEObjectFileSystem.m: added lots of debugging logs via new
+	  'FUSEObjectFileSystemAccessDebugEnabled' user default. Added
+	  naive implementation of -moveItemAtPath:toPath:error: (works for
+	  file objects, only).
+
+	* iTunesPlaylist.[hm]: lots of cleanup in conjunction with granting
+	  write access to the playlist format file. Renamed this file from
+	  '.format' to 'PlaylistTrackFormatter.txt' and made it visible, if
+	  playlist isn't virtual. Implemented shadow-write cache in order to
+	  enable TextEdit.app to properly edit (and autosave) this file, which
+	  is probably the text editor of choice for a lot of people.
+
 	* v1.1.14b2
 
 	* iTunesFileSystem.m: cleanup

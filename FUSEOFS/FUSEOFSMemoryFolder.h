@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2007-2010, Marcus Müller <znek@mulle-kybernetik.com>.
+  Copyright (c) 2010, Marcus Müller <znek@mulle-kybernetik.com>.
   All rights reserved.
 
 
@@ -30,42 +30,19 @@
   POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef	__iTunesFS_iTunesPlaylist_H
-#define	__iTunesFS_iTunesPlaylist_H
+#ifndef	__FUSEOFS_FUSEOFSMemoryFolder_H
+#define	__FUSEOFS_FUSEOFSMemoryFolder_H
 
 #import <Foundation/Foundation.h>
 
-@class iTunesLibrary;
-@class iTunesTrack;
-
-@interface iTunesPlaylist : NSObject
+@interface FUSEOFSMemoryFolder : NSObject
 {
-  NSString *persistentId;
-  NSString *parentId;
-  NSString *name;
-  NSMutableArray *savedTracks;
-  NSMutableArray *tracks;
-  NSMutableArray *trackNames;
-  NSMutableDictionary *childrenMap;
-  id shadowFolder;
+	NSMutableDictionary *folder;
+	NSMutableDictionary *attrs;
 }
 
-- (id)initWithITunesLibraryRepresentation:(NSDictionary *)_list
-  lib:(iTunesLibrary *)_lib;
-- (id)initWithIPodLibraryRepresentation:(NSDictionary *)_list
-  lib:(iTunesLibrary *)_lib;
+- (void)setAttributes:(NSDictionary *)_attrs;
 
-- (NSString *)name;
-- (NSString *)persistentId;
-- (NSString *)parentId;
-- (NSArray *)tracks;
+@end /* FUSEOFSMemoryFolder */
 
-- (unsigned)count;
-- (iTunesTrack *)trackAtIndex:(unsigned)_idx;
-- (NSArray *)trackNames;
-
-- (void)addChild:(iTunesPlaylist *)_child withName:(NSString *)_name;
-
-@end /* iTunesPlaylist */
-
-#endif	/* __iTunesFS_iTunesPlaylist_H */
+#endif	/* __FUSEOFS_FUSEOFSMemoryFolder_H */

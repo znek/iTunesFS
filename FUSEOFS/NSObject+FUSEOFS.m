@@ -50,10 +50,8 @@
   return nil; 
 }
 - (NSDictionary *)fileAttributes {
-  NSMutableDictionary *attrs;
-  NSNumber            *perm;
-
-  attrs = [NSMutableDictionary dictionaryWithCapacity:2];
+  NSNumber *perm;
+  NSMutableDictionary *attrs = [NSMutableDictionary dictionaryWithCapacity:2];
   if ([self isDirectory]) {
     perm = [NSNumber numberWithInt:[self isMutable] ? 0777 : 0555];
     [attrs setObject:NSFileTypeDirectory forKey:NSFileType];

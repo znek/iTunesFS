@@ -22,6 +22,9 @@
 		AD37A2970C01C87E00DF1291 /* iTunesLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = AD37A2960C01C87E00DF1291 /* iTunesLibrary.m */; };
 		AD3D0D510DB8EEB2001D158B /* iTunesFSController.m in Sources */ = {isa = PBXBuildFile; fileRef = AD0667A70D87023C0095EDEF /* iTunesFSController.m */; };
 		AD5B5E7C0C0C1A70003B1650 /* NSObject+FUSEOFS.m in Sources */ = {isa = PBXBuildFile; fileRef = AD5B5E7B0C0C1A70003B1650 /* NSObject+FUSEOFS.m */; };
+		AD6A7B9E12BF807C0038FF7E /* FUSEOFSFileProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = AD20DC180C25AD8E00DB2A42 /* FUSEOFSFileProxy.m */; };
+		AD6A7C8912BFA7320038FF7E /* FUSEOFSMemoryFolder.m in Sources */ = {isa = PBXBuildFile; fileRef = AD6A7C8812BFA7320038FF7E /* FUSEOFSMemoryFolder.m */; };
+		AD6A7CA212BFB0D50038FF7E /* FUSEOFSMemoryFile.m in Sources */ = {isa = PBXBuildFile; fileRef = AD6A7CA112BFB0D50038FF7E /* FUSEOFSMemoryFile.m */; };
 		AD8118720F093DAB000786C9 /* NSImage+IconData.m in Sources */ = {isa = PBXBuildFile; fileRef = AD8118710F093DAB000786C9 /* NSImage+IconData.m */; };
 		AD8118830F093EA4000786C9 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD8118820F093EA4000786C9 /* Accelerate.framework */; };
 		AD8119700F095144000786C9 /* FUSEOFSLookupContext.m in Sources */ = {isa = PBXBuildFile; fileRef = AD81196F0F095144000786C9 /* FUSEOFSLookupContext.m */; };
@@ -76,6 +79,10 @@
 		AD5A40830C214FCB00B1A000 /* GNUmakefile.preamble */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 5; indentWidth = 8; path = GNUmakefile.preamble; sourceTree = "<group>"; tabWidth = 8; };
 		AD5B5E7A0C0C1A70003B1650 /* NSObject+FUSEOFS.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = "NSObject+FUSEOFS.h"; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		AD5B5E7B0C0C1A70003B1650 /* NSObject+FUSEOFS.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = "NSObject+FUSEOFS.m"; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
+		AD6A7C8712BFA7320038FF7E /* FUSEOFSMemoryFolder.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = FUSEOFSMemoryFolder.h; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
+		AD6A7C8812BFA7320038FF7E /* FUSEOFSMemoryFolder.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = FUSEOFSMemoryFolder.m; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
+		AD6A7CA012BFB0D50038FF7E /* FUSEOFSMemoryFile.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = FUSEOFSMemoryFile.h; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
+		AD6A7CA112BFB0D50038FF7E /* FUSEOFSMemoryFile.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = FUSEOFSMemoryFile.m; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		AD8118700F093DAB000786C9 /* NSImage+IconData.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = "NSImage+IconData.h"; sourceTree = "<group>"; };
 		AD8118710F093DAB000786C9 /* NSImage+IconData.m */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.objc; path = "NSImage+IconData.m"; sourceTree = "<group>"; };
 		AD8118820F093EA4000786C9 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = /System/Library/Frameworks/Accelerate.framework; sourceTree = "<absolute>"; };
@@ -223,6 +230,10 @@
 				AD5B5E7B0C0C1A70003B1650 /* NSObject+FUSEOFS.m */,
 				AD20DC170C25AD8E00DB2A42 /* FUSEOFSFileProxy.h */,
 				AD20DC180C25AD8E00DB2A42 /* FUSEOFSFileProxy.m */,
+				AD6A7C8712BFA7320038FF7E /* FUSEOFSMemoryFolder.h */,
+				AD6A7C8812BFA7320038FF7E /* FUSEOFSMemoryFolder.m */,
+				AD6A7CA012BFB0D50038FF7E /* FUSEOFSMemoryFile.h */,
+				AD6A7CA112BFB0D50038FF7E /* FUSEOFSMemoryFile.m */,
 			);
 			path = FUSEOFS;
 			sourceTree = "<group>";
@@ -398,6 +409,9 @@
 				AD8119700F095144000786C9 /* FUSEOFSLookupContext.m in Sources */,
 				ADF74EC2102F2AF300FED3EA /* NSData+ZlibDecompression.m in Sources */,
 				ADB59B751033716B002A2998 /* StreamReader.m in Sources */,
+				AD6A7B9E12BF807C0038FF7E /* FUSEOFSFileProxy.m in Sources */,
+				AD6A7C8912BFA7320038FF7E /* FUSEOFSMemoryFolder.m in Sources */,
+				AD6A7CA212BFB0D50038FF7E /* FUSEOFSMemoryFile.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
