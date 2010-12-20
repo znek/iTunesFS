@@ -37,6 +37,9 @@
 - (id)lookupPathComponent:(NSString *)_pc inContext:(id)_ctx {
   return nil;
 }
+
+/* attributes */
+
 - (NSArray *)directoryContents {
   return nil;
 }
@@ -91,6 +94,31 @@
 - (NSData *)iconData {
   return nil;
 }
+
+/* write support */
+
+- (BOOL)createFileNamed:(NSString *)_name
+  withAttributes:(NSDictionary *)_attrs
+{
+  return NO;
+}
+
+- (BOOL)createDirectoryNamed:(NSString *)_name
+  withAttributes:(NSDictionary *)_attrs
+{
+  return NO;
+}
+
+- (BOOL)writeFileNamed:(NSString *)_name withData:(NSData *)_data {
+  return NO;
+}
+
+- (BOOL)removeItemNamed:(NSString *)_name {
+  return NO;
+}
+
+/* reflection */
+
 - (BOOL)isDirectory {
   return NO;
 }
@@ -99,6 +127,38 @@
 }
 
 @end /* NSObject (FUSEOFS) */
+
+@implementation NSData (FUSEOFS)
+
+- (NSData *)fileContents {
+  return self;
+}
+
+@end /* NSData (FUSEOFS) */
+
+@implementation NSMutableData (FUSEOFS)
+
+- (BOOL)isMutable {
+  return YES;
+}
+
+@end /* NSMutableData (FUSEOFS) */
+
+@implementation NSString (FUSEOFS)
+
+- (NSData *)fileContents {
+  return [self dataUsingEncoding:NSUTF8StringEncoding];
+}
+
+@end /* NSString (FUSEOFS) */
+
+@implementation NSMutableString (FUSEOFS)
+
+- (BOOL)isMutable {
+  return YES;
+}
+
+@end /* NSMutableString (FUSEOFS) */
 
 @implementation NSDictionary (FUSEOFS)
 

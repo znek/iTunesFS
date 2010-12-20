@@ -354,19 +354,9 @@ static NSString *iPhoneDiskPath  = @"/Volumes/iPhoneDisk";
   [os addObject:@"debug"];
 #endif
   
-  // TODO: pretty lame, couldn't we set this using reflection on FS mutability?
-  [os addObject:@"rdonly"];
-
 #if 0
   // EXP: use this only for experiments
   [os addObject:@"daemon_timeout=10"];
-#endif
-
-#if 0
-  // TODO: (Dan) explain why we would need that option
-  // we know all filesizes beforehand from the various libraries' metadata,
-  // MUST we really guarantee that these are indeed correct?
-  [os addObject:@"direct_io"];
 #endif
 
   // TODO: get this from user defaults?

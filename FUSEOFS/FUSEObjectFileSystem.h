@@ -33,8 +33,6 @@
 #ifndef	__FUSEOFS_FUSEObjectFileSystem_H
 #define	__FUSEOFS_FUSEObjectFileSystem_H
 
-#import "FUSEFileSystem.h"
-
 @class GMUserFileSystem;
 
 @interface FUSEObjectFileSystem : NSObject
@@ -42,6 +40,8 @@
   GMUserFileSystem *fs;
   NSString         *mountPoint;
 }
+
++ (NSError *)errorWithCode:(int)_code;
 
 - (void)mountAtPath:(NSString *)_path;
 - (void)unmount;

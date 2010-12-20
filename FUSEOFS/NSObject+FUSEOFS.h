@@ -45,6 +45,15 @@
 - (NSData *)fileContents;
 - (NSString *)symbolicLinkTarget;
 
+/* write support */
+
+- (BOOL)createFileNamed:(NSString *)_name
+  withAttributes:(NSDictionary *)_attrs;
+- (BOOL)createDirectoryNamed:(NSString *)_name
+  withAttributes:(NSDictionary *)_attrs;
+- (BOOL)writeFileNamed:(NSString *)_name withData:(NSData *)_data;
+- (BOOL)removeItemNamed:(NSString *)_name;
+
 /* attributes */
 
 - (NSDictionary *)fileAttributes;

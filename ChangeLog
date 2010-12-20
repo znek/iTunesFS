@@ -1,3 +1,29 @@
+2010-12-20  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v1.1.14b2
+
+	* iTunesFileSystem.m: cleanup
+
+	* FUSEObjectFileSystem.[hm]: header cleanup, added +errorWithCode:
+	  convenience method. Added MacFUSE write methods and all remaining
+	  access methods (i.e. extended attributes) as skeletons. This
+	  needs a lot of improvement in order to become fully functional,
+	  but writing is good enough for iTunesFS, already.
+
+	* NSObject+FUSEOFS.[hm]: added write support (see above)
+
+	* iTunesFSFormatter.[hm]: exposed -formatString
+
+	* iTunesPlaylist.[hm]: reworked the way tracks and corresponding
+	  trackNames are being built, as these can change now during
+	  playlists' life at runtime. Added -getTrackFormatString in order
+	  to make this available via newly implemented write methods.
+	  A playlist exposes a virtual object called '.format' for reading,
+	  writing and removal. Currently, '.format' won't show up in
+	  directoryContents, though this might change via a default. The
+	  name isn't fixed yet, it might be better to call it differently
+	  and to always show it, but that depends on more research.
+
 2010-12-19  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* iTunesPlaylist.[hm]: added new -getTrackFormatter private method

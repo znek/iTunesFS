@@ -42,6 +42,7 @@
 }
 
 - (id)initWithFormatString:(NSString *)_format;
+- (NSString *)formatString;
 
 - (NSString *)stringValueByFormattingObject:(id)_obj;
 - (BOOL)isPathFormat;

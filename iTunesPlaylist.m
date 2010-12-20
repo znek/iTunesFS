@@ -41,11 +41,10 @@
 #define TRK_FMT @"PlaylistsTrackFormat[%@]"
 
 @interface iTunesPlaylist (Private)
+- (NSString *)getTrackFormatString;
 - (iTunesFSFormatter *)getTrackFormatter;
 - (void)generatePrettyTrackNames;
 - (void)setName:(NSString *)_name;
-- (void)setTracks:(NSArray *)_tracks;
-- (void)setTrackNames:(NSArray *)_trackNames;
 - (void)addTrack:(iTunesTrack *)_track withName:(NSString *)_name;
 @end
 
@@ -75,6 +74,7 @@ static iTunesFSFormatter *plTrackFormatter = nil;
 - (id)init {
   self = [super init];
   if (self) {
+    self->savedTracks = [[NSMutableArray alloc] initWithCapacity:10];
     self->tracks      = [[NSMutableArray alloc] initWithCapacity:10];
     self->trackNames  = [[NSMutableArray alloc] initWithCapacity:10];
     self->childrenMap = [[NSMutableDictionary alloc] initWithCapacity:5];
@@ -96,36 +96,24 @@ static iTunesFSFormatter *plTrackFormatter = nil;
     isFolder = [[_list objectForKey:@"Folder"] boolValue];
 
     if (!isFolder) {
-      NSArray        *items;
-      unsigned       i, count;
-      NSMutableArray *ma;
-
-      items = [_list objectForKey:@"Playlist Items"];
-      count = [items count];
-      ma    = [[NSMutableArray alloc] initWithCapacity:count];
+      NSArray  *items   = [_list objectForKey:@"Playlist Items"];
+      unsigned i, count = [items count];
 
       for (i = 0; i < count; i++) {
-        NSDictionary *item;
-        NSString     *trackID;
-        iTunesTrack  *trk;
-
-        item    = [items objectAtIndex:i];
-        trackID = [[item objectForKey:@"Track ID"] description];
-        trk     = [_lib trackWithID:trackID];
+        NSDictionary *item    = [items objectAtIndex:i];
+        NSString     *trackID = [[item objectForKey:@"Track ID"] description];
+        iTunesTrack  *trk     = [_lib trackWithID:trackID];
         if (!trk) {
-  #if 0
           /* NOTE: Rolf's library really sports these effects, seems to be
            * limited to Podcasts only.
            */
-          NSLog(@"INFO Playlist[%@]: found no track item for #%@",
-                self->name, trackID);
-  #endif
+          if (doDebug)
+            NSLog(@"INFO Playlist[%@]: found no track item for #%@",
+                  self->name, trackID);
           continue;
         }
-        [ma addObject:trk];
+        [self->savedTracks addObject:trk];
       }
-      [self setTracks:ma];
-      [ma release];
       [self generatePrettyTrackNames];
     }
   }
@@ -137,35 +125,24 @@ static iTunesFSFormatter *plTrackFormatter = nil;
 {
   self = [self init];
   if (self) {
-    NSArray        *items;
-    NSMutableArray *ma;
-    unsigned       i, count;
-    
     [self setName:[_list objectForKey:@"name"]];
 
-    items = [_list objectForKey:@"trackIDs"];
-    count = [items count];
-    ma = [[NSMutableArray alloc] initWithCapacity:count];
+    NSArray  *items   = [_list objectForKey:@"trackIDs"];
+    unsigned i, count = [items count];
     for (i = 0; i < count; i++) {
-      NSString     *trackID;
-      iTunesTrack  *trk;
-      
-      trackID = [items objectAtIndex:i];
-      trk     = [_lib trackWithID:trackID];
+      NSString    *trackID = [items objectAtIndex:i];
+      iTunesTrack *trk     = [_lib trackWithID:trackID];
       if (!trk) {
-#if 0
         /* NOTE: Rolf's library really sports these effects, seems to be
         * limited to Podcasts only.
         */
-        NSLog(@"INFO Playlist[%@]: found no track item for #%@",
-              self->name, trackID);
-#endif
+        if (doDebug)
+          NSLog(@"INFO Playlist[%@]: found no track item for #%@",
+                self->name, trackID);
         continue;
       }
-      [ma addObject:trk];
+      [self->savedTracks addObject:trk];
     }
-    [self setTracks:ma];
-    [ma release];
     [self generatePrettyTrackNames];
   }
   return self;
@@ -175,6 +152,7 @@ static iTunesFSFormatter *plTrackFormatter = nil;
   [self->persistentId release];
   [self->parentId     release];
   [self->name         release];
+  [self->savedTracks  release];
   [self->tracks       release];
   [self->trackNames   release];
   [self->childrenMap  release];
@@ -182,6 +160,15 @@ static iTunesFSFormatter *plTrackFormatter = nil;
 }
 
 /* private */
+
+- (NSString *)getTrackFormatString {
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  NSString *fmtKey   = [NSString stringWithFormat:TRK_FMT, [self persistentId]];
+  NSString *fmt      = [ud stringForKey:fmtKey];
+  if (!fmt)
+    fmt = [plTrackFormatter formatString];
+  return fmt;
+}
 
 - (iTunesFSFormatter *)getTrackFormatter {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
@@ -209,8 +196,21 @@ static iTunesFSFormatter *plTrackFormatter = nil;
 }
 
 - (void)generatePrettyTrackNames {
-  iTunesFSFormatter *formatter = [self getTrackFormatter];
+  [self->tracks     removeAllObjects];
+  [self->trackNames removeAllObjects];
 
+  NSArray *childrenKeys = [self->childrenMap allKeys];
+  unsigned i, count     = [childrenKeys count];
+  for (i = 0; i < count; i++) {
+    NSString       *childKey = [childrenKeys objectAtIndex:i];
+    iTunesPlaylist *child    = [self->childrenMap objectForKey:childKey];
+    if (![child persistentId]) {
+      // remove virtual child
+      [self->childrenMap removeObjectForKey:childKey];
+    }
+  }
+  
+  iTunesFSFormatter *formatter = [self getTrackFormatter];
   if ([formatter isPathFormat]) {
 
     // formatter describes a path, which can lead to a whole hierarchy
@@ -219,12 +219,9 @@ static iTunesFSFormatter *plTrackFormatter = nil;
     // formatter path and possibly create and add any virtual playlists
     // necessary in that process.
 
-    NSArray *savedTracks = [self->tracks copy];
-    [self->tracks removeAllObjects];
-
-    unsigned i, count = [savedTracks count];
+    unsigned i, count = [self->savedTracks count];
     for (i = 0; i < count; i++) {
-      iTunesTrack *trk     = [savedTracks objectAtIndex:i];
+      iTunesTrack *trk     = [self->savedTracks objectAtIndex:i];
       unsigned    trkIndex = i + 1;
       [trk setPlaylistNumber:trkIndex];
       NSArray *pathComponents = [formatter
@@ -245,20 +242,16 @@ static iTunesFSFormatter *plTrackFormatter = nil;
       }
       [pl addTrack:trk withName:[pathComponents objectAtIndex:k]];
     }
-    [savedTracks release];
   }
   else {
-    unsigned i, count  = [self->tracks count];
-    NSMutableArray *ma = [[NSMutableArray alloc] initWithCapacity:count];
+    unsigned i, count  = [self->savedTracks count];
     for (i = 0; i < count; i++) {
-      iTunesTrack *trk     = [self trackAtIndex:i];
+      iTunesTrack *trk     = [self->savedTracks objectAtIndex:i];
       unsigned    trkIndex = i + 1;
       [trk setPlaylistNumber:trkIndex];
       NSString *tn = [formatter stringValueByFormattingObject:trk];
-      [ma addObject:tn];
+      [self addTrack:trk withName:tn];
     }
-    [self setTrackNames:ma];
-    [ma release];
   }
 }
 
@@ -287,10 +280,6 @@ static iTunesFSFormatter *plTrackFormatter = nil;
   [self->trackNames addObject:_name];
 }
 
-- (void)setTracks:(NSArray *)_tracks {
-  [self->tracks removeAllObjects];
-  [self->tracks addObjectsFromArray:_tracks];
-}
 - (NSArray *)tracks {
   return self->tracks;
 }
@@ -303,10 +292,6 @@ static iTunesFSFormatter *plTrackFormatter = nil;
   return [self->tracks objectAtIndex:_idx];
 }
 
-- (void)setTrackNames:(NSArray *)_trackNames {
-  [self->trackNames removeAllObjects];
-  [self->trackNames addObjectsFromArray:_trackNames];
-}
 - (NSArray *)trackNames {
   return self->trackNames;
 }
@@ -319,9 +304,18 @@ static iTunesFSFormatter *plTrackFormatter = nil;
 /* FUSEOFS */
 
 - (id)lookupPathComponent:(NSString *)_pc inContext:(id)_ctx {
-  id result;
+  if ([_pc isEqualToString:@".format"]) {
+    // TODO: this needs to be an own object!
+    NSMutableString *format = [[NSMutableString alloc] initWithCapacity:300];
+    [format appendString:@"# "];
+    [format appendFormat:TRK_FMT, self->persistentId];
+    [format appendString:@"\n"];
+    [format appendString:[self getTrackFormatString]];
+    [format appendString:@"\n"];
+    return [format autorelease];
+  }
 
-  result = [self->childrenMap objectForKey:_pc];
+  id result = [self->childrenMap objectForKey:_pc];
   if (result)
     return result;
 
@@ -332,18 +326,25 @@ static iTunesFSFormatter *plTrackFormatter = nil;
 }
 
 - (NSArray *)directoryContents {
+#if 1
   if ([self->childrenMap count] && ![[self trackNames] count])
     return [self->childrenMap allKeys];
   else if (![self->childrenMap count] && [[self trackNames] count])
     return [self trackNames];
-
+#endif
   NSMutableArray *names = [[NSMutableArray alloc]
                                            initWithArray:self->trackNames];
   [names addObjectsFromArray:[self->childrenMap allKeys]];
+#if 0
+  [names addObject:@".format"];
+#endif
   return [names autorelease];
 }
 
 - (BOOL)isDirectory {
+  return YES;
+}
+- (BOOL)isMutable {
   return YES;
 }
 
@@ -359,6 +360,51 @@ static iTunesFSFormatter *plTrackFormatter = nil;
                          forKey:kGMUserFileSystemFinderFlagsKey];
 }
 #endif
+
+- (BOOL)createFileNamed:(NSString *)_name
+  withAttributes:(NSDictionary *)_attrs
+{
+  if (![_name isEqualToString:@".format"])
+    return NO;
+  NSLog(@"%s attrs:%@", _cmd, _attrs);
+  return YES;
+}
+
+- (BOOL)writeFileNamed:(NSString *)_name withData:(NSData *)_data {
+  if (![_name isEqualToString:@".format"])
+    return NO;
+
+  NSCharacterSet *trimSet = [NSCharacterSet characterSetWithCharactersInString:@"\n\r\t "];
+
+  NSString *rawDefault = [[[NSString alloc] initWithData:_data
+                                            encoding:NSUTF8StringEncoding]
+                                            autorelease];
+  rawDefault = [rawDefault stringByTrimmingCharactersInSet:trimSet];
+  NSArray  *lines      = [rawDefault componentsSeparatedByString:@"\n"];
+  NSString *newDefault = [lines lastObject];
+  if (newDefault) {
+    NSString *defaultKey = [NSString stringWithFormat:TRK_FMT,
+                                     self->persistentId];
+    [[NSUserDefaults standardUserDefaults] setObject:newDefault
+                                           forKey:defaultKey];
+    
+    [self generatePrettyTrackNames];
+  }
+  return YES;
+}
+
+- (BOOL)removeItemNamed:(NSString *)_name {
+  if (![_name isEqualToString:@".format"])
+    return NO;
+
+  NSString *defaultKey = [NSString stringWithFormat:TRK_FMT,
+                          self->persistentId];
+  [[NSUserDefaults standardUserDefaults] removeObjectForKey:defaultKey];
+  [self generatePrettyTrackNames];
+
+  return YES;
+}
+
 
 /* debugging */
 

@@ -80,6 +80,17 @@ static NSDictionary *emptyDict  = nil;
   return self;
 }
 
+- (void)dealloc {
+  // NOTE: these SHOULD already be gone (via -willUnmount)
+  [self->mountPoint release];
+  [self->fs         release];
+  [super dealloc];
+}
+
++ (NSError *)errorWithCode:(int)_code {
+  return [NSError errorWithDomain:NSPOSIXErrorDomain code:_code userInfo:nil];
+}
+
 - (void)mountAtPath:(NSString *)_path {
   self->mountPoint = [_path copy];
   [self->fs mountAtPath:self->mountPoint
@@ -111,20 +122,17 @@ static NSDictionary *emptyDict  = nil;
 }
 
 - (id)lookupPath:(NSString *)_path {
-  NSArray  *path;
-  id       obj;
-  id       ctx;
-  unsigned i, count;
-  
-  path  = [self pathFromFSPath:_path];
-  count = [path count];
+  NSArray  *path    = [self pathFromFSPath:_path];
+  unsigned i, count = [path count];
   if (!count) return nil;
 
-  ctx = [[FUSEOFSLookupContext alloc] init];
-  [ctx setClientObject:self];
-  obj = [self rootObject];
+  id obj = [self rootObject];
   if (debugLookup)
     NSLog(@"lookup [#0, %@] -> %@", [path objectAtIndex:0], obj);
+
+  id ctx = [[FUSEOFSLookupContext alloc] init];
+  [ctx setClientObject:self];
+
   for (i = 1; i < count; i++) {
     id co = obj;
     obj = [obj lookupPathComponent:[path objectAtIndex:i] inContext:ctx];
@@ -137,7 +145,7 @@ static NSDictionary *emptyDict  = nil;
   return obj;
 }
 
-/* required FUSE methods */
+/* required FUSE read methods */
 
 - (NSArray *)contentsOfDirectoryAtPath:(NSString *)_path
   error:(NSError **)_err
@@ -172,7 +180,7 @@ static NSDictionary *emptyDict  = nil;
   return [[self lookupPath:_path] symbolicLinkTarget];
 }
 
-/* optional FUSE methods */
+/* optional FUSE read methods */
 
 - (NSDictionary *)finderAttributesAtPath:(NSString *)_path 
   error:(NSError **)_err
@@ -195,22 +203,180 @@ static NSDictionary *emptyDict  = nil;
   return attr;
 }
 
-// we need to override this method because Finder attempts to create
-// several directories and the default MacFUSE implementation would
-// create a runtime error
-- (BOOL)createDirectoryAtPath:(NSString *)_path 
+/* required FUSE write methods */
+
+- (BOOL)createDirectoryAtPath:(NSString *)_path
   attributes:(NSDictionary *)_attrs
   error:(NSError **)_err
 {
-	return NO;
+  id obj = [self lookupPath:[_path stringByDeletingLastPathComponent]];
+  if (!obj || ![obj isMutable]) {
+    *_err = [FUSEObjectFileSystem errorWithCode:EACCES];
+    return NO;
+  }
+  return [obj createDirectoryNamed:[_path lastPathComponent]
+              withAttributes:_attrs];
 }
 
-- (NSArray *)fuseOptions {
-  NSMutableArray *os;
-  NSString       *volIconPath;
+- (BOOL)createFileAtPath:(NSString *)_path
+  attributes:(NSDictionary *)_attrs
+  userData:(id *)_ud
+  error:(NSError **)_err
+{
+  id obj = [self lookupPath:[_path stringByDeletingLastPathComponent]];
+  if (!obj || ![obj isMutable]) {
+    *_err = [FUSEObjectFileSystem errorWithCode:EACCES];
+    return NO;
+  }
+  return [obj createFileNamed:[_path lastPathComponent] withAttributes:_attrs];
+}
 
-  os          = [NSMutableArray array];
-  volIconPath = [[self rootObject] iconFileForPath:@"/"];
+- (BOOL)openFileAtPath:(NSString *)_path 
+  mode:(int)_mode
+  userData:(id *)_ud
+  error:(NSError **)_err
+{
+  if (_mode == O_RDONLY)
+    return [self lookupPath:_path] != nil;
+
+  id obj = [self lookupPath:[_path stringByDeletingLastPathComponent]];
+  return [obj isMutable];
+}
+
+- (void)releaseFileAtPath:(NSString *)_path
+  userData:(id)_ud
+{
+}
+
+- (int)writeFileAtPath:(NSString *)_path 
+  userData:(id)_ud 
+  buffer:(const char *)_buffer
+  size:(size_t)_size 
+  offset:(off_t)_offset
+  error:(NSError **)_err
+{
+  id obj = [self lookupPath:[_path stringByDeletingLastPathComponent]];
+  if (!obj || ![obj isMutable]) {
+    *_err = [FUSEObjectFileSystem errorWithCode:EACCES];
+    return -1;
+  }
+
+  NSData *data = [NSData dataWithBytesNoCopy:(void *)_buffer
+                         length:_size
+                         freeWhenDone:NO];
+  if([obj writeFileNamed:[_path lastPathComponent]
+          withData:data])
+    return _size;
+  else
+    return -1;
+}
+
+- (BOOL)moveItemAtPath:(NSString *)_src 
+  toPath:(NSString *)_dst
+  error:(NSError **)_err
+{
+  // TODO: Implement!
+  *_err = [FUSEObjectFileSystem errorWithCode:ENOTSUP];
+  return NO;
+}
+
+- (BOOL)removeItemAtPath:(NSString *)_path error:(NSError **)_err {
+  NSString *path = [_path stringByDeletingLastPathComponent];
+
+  id obj = [self lookupPath:path];
+  if (![obj isMutable]) {
+    *_err = [FUSEObjectFileSystem errorWithCode:EACCES];
+    return NO;
+  }
+  return [obj removeItemNamed:[_path lastPathComponent]];
+}
+
+/* optional write methods */
+
+- (BOOL)linkItemAtPath:(NSString *)_path
+  toPath:(NSString *)_otherPath
+  error:(NSError **)_err
+{
+  // TODO: Implement!
+  *_err = [FUSEObjectFileSystem errorWithCode:ENOTSUP];
+  return NO;
+}
+
+- (BOOL)createSymbolicLinkAtPath:(NSString *)_path 
+  withDestinationPath:(NSString *)_otherPath
+  error:(NSError **)_err
+{
+  // TODO: Implement!
+  *_err = [FUSEObjectFileSystem errorWithCode:ENOTSUP];
+  return NO;
+}
+
+- (BOOL)setAttributes:(NSDictionary *)_attrs 
+  ofItemAtPath:(NSString *)_path
+  userData:(id)_ud
+  error:(NSError **)_err
+{
+  // TODO: Implement!
+#if 0
+  *_err = [FUSEObjectFileSystem errorWithCode:ENOTSUP];
+  return NO;
+#endif
+  // NOTE: silently ignore these requests for now
+  return YES;
+}
+
+/* extended attributes */
+
+- (NSArray *)extendedAttributesOfItemAtPath:_path error:(NSError **)_err {
+  // TODO: Implement!
+  *_err = [FUSEObjectFileSystem errorWithCode:ENOTSUP];
+  return nil;
+}
+
+- (NSData *)valueOfExtendedAttribute:(NSString *)_name
+  ofItemAtPath:(NSString *)_path
+  position:(off_t)_pos
+  error:(NSError **)_err
+{
+  // TODO: Implement!
+  *_err = [FUSEObjectFileSystem errorWithCode:ENOTSUP];
+  return nil;
+}
+
+- (BOOL)setExtendedAttribute:(NSString *)_name 
+  ofItemAtPath:(NSString *)_path 
+  value:(NSData *)_value
+  position:(off_t)_pos
+  options:(int)_options
+  error:(NSError **)_err
+{
+  // TODO: Implement!
+  *_err = [FUSEObjectFileSystem errorWithCode:ENOTSUP];
+  return NO;
+}
+
+- (BOOL)removeExtendedAttribute:(NSString *)_name
+  ofItemAtPath:(NSString *)_path
+  error:(NSError **)_err
+{
+  // TODO: Implement!
+  *_err = [FUSEObjectFileSystem errorWithCode:ENOTSUP];
+  return NO;
+}
+
+/* FUSE helpers */
+
+- (NSArray *)fuseOptions {
+  NSMutableArray *os    = [NSMutableArray array];
+  NSString *volIconPath = [[self rootObject] iconFileForPath:@"/"];
+
+#if 0
+  // TODO: pretty lame, couldn't we set this using reflection on FS mutability?
+  [os addObject:@"rdonly"];
+#endif
+
+  // don't let FUSE cache anything for us
+  [os addObject:@"direct_io"];
 
   if (volIconPath) {
     // this is necessary, unfortunately

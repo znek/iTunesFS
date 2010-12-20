@@ -43,6 +43,7 @@
   NSString *persistentId;
   NSString *parentId;
   NSString *name;
+  NSMutableArray *savedTracks;
   NSMutableArray *tracks;
   NSMutableArray *trackNames;
   NSMutableDictionary *childrenMap;

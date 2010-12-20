@@ -92,6 +92,10 @@ static NSValue        *appendValueForKeyToBufferValue = nil;
   [super dealloc];
 }
 
+- (NSString *)formatString {
+  return self->format;
+}
+
 - (void)setupFormattingOps {
   NSRange         r, sr;
   unsigned        len, lastMark;
