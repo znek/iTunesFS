@@ -55,9 +55,11 @@
 		<key>iPodLibraryDebugEnabled</key>
 		<false/>
 		<key>AlbumsTrackFormat</key>
-		<string>%(name).%(ext)</string>
+		<string>%(name).%(ext.lowercaseString)</string>
 		<key>PlaylistsTrackFormat</key>
-		<string>%(playlistNumber#000) %(name).%(ext)</string>
+		<string>%(playlistNumber#000) %(name).%(ext.lowercaseString)</string>
+		<key>PlaylistsTrackFormat[folders]</key>
+		<string>%(artist) / %(album) / %(trackNumber#00) %(name).%(ext.lowercaseString)</string>
 		<key>AutoOpenInFinder</key>
 		<true/>
 	</dict>
