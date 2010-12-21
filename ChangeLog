@@ -26,7 +26,7 @@
 	* v1.1.14b3
 
 	* NSObject+FUSEOFS.m: minor cleanup
-	
+
 	* FUSEOFSFileProxy.m: properly implemented to transparently work for
 	  files and folders
 

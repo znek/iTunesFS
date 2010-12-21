@@ -142,11 +142,9 @@
 				ADBDA9320C02CFA0004CF795 /* COPYRIGHT */,
 				AD15A6520C0462ED00345C9E /* ChangeLog */,
 				ADBDA91F0C02CF48004CF795 /* Version */,
-				ADF74EBF102F2ADD00FED3EA /* Extensions */,
-				AD5A407C0C214FAA00B1A000 /* GNUstep */,
 				AD20DC1E0C25AD9D00DB2A42 /* FUSEOFS */,
 				08FB7795FE84155DC02AAC07 /* iTunesFS */,
-				AD81186F0F093D85000786C9 /* filesystems-objc-support */,
+				AD5A407C0C214FAA00B1A000 /* GNUstep */,
 				7FEA82C10B456A36001441DE /* Resources */,
 				AD5A407D0C214FCB00B1A000 /* FUSEObjC-GNUstep */,
 				ADBDAB040C02F664004CF795 /* Scripts */,
@@ -161,8 +159,6 @@
 			isa = PBXGroup;
 			children = (
 				32A70AAB03705E1F00C91783 /* common.h */,
-				AD0667A60D87023C0095EDEF /* iTunesFSController.h */,
-				AD0667A70D87023C0095EDEF /* iTunesFSController.m */,
 				7F74EF2B0B4C1BEC00CFA0C0 /* iTunesFileSystem.h */,
 				7F74EF2C0B4C1BEC00CFA0C0 /* iTunesFileSystem.m */,
 				AD37A2950C01C87E00DF1291 /* iTunesLibrary.h */,
@@ -175,16 +171,12 @@
 				AD15A2180C03208500345C9E /* iTunesPlaylist.m */,
 				AD15A22A0C03248C00345C9E /* iTunesTrack.h */,
 				AD15A22B0C03248C00345C9E /* iTunesTrack.m */,
-				AD15A4D20C04433D00345C9E /* Watchdog.h */,
-				AD15A4D30C04433D00345C9E /* Watchdog.m */,
-				ADBDABA70C02FF10004CF795 /* NSString+Extensions.h */,
-				ADBDABA80C02FF10004CF795 /* NSString+Extensions.m */,
-				AD2186D30C0D4805008FB568 /* NSURL+Extensions.h */,
-				AD2186D40C0D4805008FB568 /* NSURL+Extensions.m */,
 				AD6A7DB712C0BB770038FF7E /* iTunesFormatFile.h */,
 				AD6A7DB812C0BB770038FF7E /* iTunesFormatFile.m */,
 				AD21E2FD0C32D49800D827BE /* iTunesFSFormatter.h */,
 				AD21E2FE0C32D49800D827BE /* iTunesFSFormatter.m */,
+				AD0667A60D87023C0095EDEF /* iTunesFSController.h */,
+				AD0667A70D87023C0095EDEF /* iTunesFSController.m */,
 				AD0667DE0D870B520095EDEF /* main.m */,
 				ADB59B7610337187002A2998 /* Support */,
 			);
@@ -225,19 +217,19 @@
 		AD20DC1E0C25AD9D00DB2A42 /* FUSEOFS */ = {
 			isa = PBXGroup;
 			children = (
-				ADDCD7820C26A7E00031B215 /* GNUstep */,
+				AD5B5E7A0C0C1A70003B1650 /* NSObject+FUSEOFS.h */,
+				AD5B5E7B0C0C1A70003B1650 /* NSObject+FUSEOFS.m */,
 				AD20DB510C259F6F00DB2A42 /* FUSEObjectFileSystem.h */,
 				AD20DB520C259F6F00DB2A42 /* FUSEObjectFileSystem.m */,
 				AD81196E0F095144000786C9 /* FUSEOFSLookupContext.h */,
 				AD81196F0F095144000786C9 /* FUSEOFSLookupContext.m */,
-				AD5B5E7A0C0C1A70003B1650 /* NSObject+FUSEOFS.h */,
-				AD5B5E7B0C0C1A70003B1650 /* NSObject+FUSEOFS.m */,
 				AD20DC170C25AD8E00DB2A42 /* FUSEOFSFileProxy.h */,
 				AD20DC180C25AD8E00DB2A42 /* FUSEOFSFileProxy.m */,
 				AD6A7C8712BFA7320038FF7E /* FUSEOFSMemoryFolder.h */,
 				AD6A7C8812BFA7320038FF7E /* FUSEOFSMemoryFolder.m */,
 				AD6A7CA012BFB0D50038FF7E /* FUSEOFSMemoryFile.h */,
 				AD6A7CA112BFB0D50038FF7E /* FUSEOFSMemoryFile.m */,
+				ADDCD7820C26A7E00031B215 /* GNUstep */,
 			);
 			path = FUSEOFS;
 			sourceTree = "<group>";
@@ -282,8 +274,17 @@
 		ADB59B7610337187002A2998 /* Support */ = {
 			isa = PBXGroup;
 			children = (
+				AD81186F0F093D85000786C9 /* filesystems-objc-support */,
+				AD15A4D20C04433D00345C9E /* Watchdog.h */,
+				AD15A4D30C04433D00345C9E /* Watchdog.m */,
 				ADB59B731033716B002A2998 /* StreamReader.h */,
 				ADB59B741033716B002A2998 /* StreamReader.m */,
+				ADBDABA70C02FF10004CF795 /* NSString+Extensions.h */,
+				ADBDABA80C02FF10004CF795 /* NSString+Extensions.m */,
+				AD2186D30C0D4805008FB568 /* NSURL+Extensions.h */,
+				AD2186D40C0D4805008FB568 /* NSURL+Extensions.m */,
+				ADF74EC0102F2AF300FED3EA /* NSData+ZlibDecompression.h */,
+				ADF74EC1102F2AF300FED3EA /* NSData+ZlibDecompression.m */,
 			);
 			name = Support;
 			sourceTree = "<group>";
@@ -302,15 +303,6 @@
 				ADDCD76C0C26A6640031B215 /* GNUmakefile */,
 			);
 			name = GNUstep;
-			sourceTree = "<group>";
-		};
-		ADF74EBF102F2ADD00FED3EA /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				ADF74EC0102F2AF300FED3EA /* NSData+ZlibDecompression.h */,
-				ADF74EC1102F2AF300FED3EA /* NSData+ZlibDecompression.m */,
-			);
-			name = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
