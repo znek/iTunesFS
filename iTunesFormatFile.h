@@ -41,6 +41,7 @@
 {
 	NSString *defaultTemplate;
   NSString *defaultKey;
+  BOOL needsSetup;
 }
 
 - (id)initWithDefaultTemplate:(NSString *)_defTemplate

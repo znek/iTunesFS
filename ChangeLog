@@ -3,7 +3,21 @@
 	* English.lproj/PlaylistsTrackFormat.txt: Help text for use in
 	  iTunesFormatFile, giving examples for a quick headstart
 
-	* iTunesFormatFile.m: loads help text from a localizable file now
+	* iTunesFormatFile.m: loads help text from a localizable file now.
+	  Lazyfied setup, added support for hinting at used text encoding
+	  via 'com.apple.TextEncoding' extended attribute.
+
+	* NSObject+FUSEOFS.[hm]: added api for dealing with extended
+	  attributes
+
+	* FUSEObjectFileSystem.m: implemented extended attributes functionality
+	
+	* FUSEOFSMemoryObject.[hm]: new class, suiting as (new) abstract base
+	  class for FUSEMemoryFile and FUSEMemoryFolder.
+
+	* FUSEOFSMemoryFile.[hm]: code refactoring
+	
+	* FUSEOFSMemoryFolder.[hm]: code refactoring
 
 2010-12-21  Marcus Mueller  <znek@mulle-kybernetik.com>
 

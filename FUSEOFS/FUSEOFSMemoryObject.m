@@ -30,63 +30,57 @@
   POSSIBILITY OF SUCH DAMAGE.
 */
 
-#import "FUSEOFSMemoryFile.h"
+#import "FUSEOFSMemoryObject.h"
 #import "NSObject+FUSEOFS.h"
 
-@implementation FUSEOFSMemoryFile
+@implementation FUSEOFSMemoryObject
 
 - (void)dealloc {
-  [self->data  release];
-  [super dealloc];
+	[self->attrs    release];
+	[self->extAttrs release];
+	[super dealloc];
 }
 
-/* accessors */
+- (NSDictionary *)fileAttributes {
+  if (!self->attrs)
+    self->attrs = [[NSMutableDictionary alloc] initWithCapacity:6];
 
-- (void)setFileContents:(NSData *)_data {
-  if (self->data == _data) return;
-  [self->data release];
-  self->data = [_data copy];
-  
-  NSDate *now = [NSDate date];
+  BOOL isDirectory = [self isDirectory];
+  if (!isDirectory && ![self->attrs objectForKey:NSFileSize]) {
+    NSNumber *fileSize = [NSNumber numberWithUnsignedInteger:
+                                   [[self fileContents] length]];
+    [self->attrs setObject:fileSize forKey:NSFileSize];
+  }
+  if (![self->attrs objectForKey:NSFileType]) {
+    [self->attrs setObject:isDirectory ? NSFileTypeDirectory : NSFileTypeRegular
+                 forKey:NSFileType];
+  }
+	return [[self->attrs copy] autorelease];
+}
+
+- (BOOL)setFileAttributes:(NSDictionary *)_attrs {
   if (!self->attrs) {
     self->attrs = [[NSMutableDictionary alloc] initWithCapacity:6];
-    [self->attrs setObject:now forKey:NSFileCreationDate];
+    [self->attrs setObject:[NSCalendarDate date] forKey:NSFileCreationDate];
   }
-  [self->attrs setObject:now forKey:NSFileModificationDate];
-  [self->attrs setObject:[NSNumber numberWithUnsignedInteger:[_data length]]
-               forKey:NSFileSize];
-#if 0
-  if ([_data length] < 1000) {
-    NSLog(@"%s data:\n%@", _cmd,
-          [[[NSString alloc] initWithData:_data
-                             encoding:NSUTF8StringEncoding] autorelease]);
-  }
-#endif
-}
-
-/* FUSEOFS */
-
-- (id)lookupPathComponent:(NSString *)_pc inContext:(id)_ctx {
-  return nil;
-}
-
-/* reflection */
-
-- (BOOL)isDirectory {
-  return NO;
-}
-- (BOOL)isMutable {
+  if (_attrs)
+    [self->attrs addEntriesFromDictionary:_attrs];
   return YES;
 }
 
-/* read */
-
-- (NSData *)fileContents {
-  return self->data;
+- (NSDictionary *)extendedFileAttributes {
+  return [[self->extAttrs copy] autorelease];
 }
-- (NSArray *)directoryContents {
-  return nil;
+- (BOOL)setExtendedAttribute:(NSString *)_name value:(NSData *)_value {
+  if (!self->extAttrs)
+    self->extAttrs = [[NSMutableDictionary alloc] initWithCapacity:2];
+  [self->extAttrs setObject:_value forKey:_name];
+  return YES;
+}
+- (BOOL)removeExtendedAttribute:(NSString *)_name {
+  if (![self->extAttrs objectForKey:_name]) return NO;
+  [self->extAttrs removeObjectForKey:_name];
+  return YES;
 }
 
-@end /* FUSEOFSMemoryFile */
-
+@end /* FUSEOFSMemoryObject */

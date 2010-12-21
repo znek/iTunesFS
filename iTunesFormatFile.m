@@ -32,6 +32,7 @@
 
 #import "iTunesFormatFile.h"
 #import "iTunesFSFormatter.h"
+#import "NSObject+FUSEOFS.h"
 
 @interface iTunesFormatFile (Private)
 - (void)_setup;
@@ -66,7 +67,7 @@ static NSCharacterSet *trimSet = nil;
     if (_templateId) {
       self->defaultKey = [[self defaultKeyForTemplateId:_templateId] copy];
     }
-    [self _setup];
+    self->needsSetup = YES;
   }
   return self;
 }
@@ -128,6 +129,8 @@ static NSCharacterSet *trimSet = nil;
   return fmt;
 }
 
+/* accessors */
+
 - (iTunesFSFormatter *)getFormatter {
   NSString *fmt;
 
@@ -157,14 +160,14 @@ static NSCharacterSet *trimSet = nil;
   return [[[iTunesFSFormatter alloc] initWithFormatString:fmt] autorelease];
 }
 
-/* accessors */
-
 - (void)remove {
   if (self->defaultKey) {
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:self->defaultKey];
   }
-  [self _setup];
+  self->needsSetup = YES;
 }
+
+/* FUSEOFS */
 
 - (void)setFileContents:(NSData *)_data {
   // NOTE: this is just a quick hack, but should be refactored to a more
@@ -181,7 +184,7 @@ static NSCharacterSet *trimSet = nil;
   if (newDefault && [newDefault length]) {
     [[NSUserDefaults standardUserDefaults] setObject:newDefault
                                            forKey:self->defaultKey];
-    [self _setup];
+    self->needsSetup = YES;
     if (doDebug)
       NSLog(@"%s %@ = %@", _cmd, self->defaultKey, newDefault);
   }
@@ -190,6 +193,31 @@ static NSCharacterSet *trimSet = nil;
     if (doDebug)
       NSLog(@"%s -> removed %@", _cmd, self->defaultKey);
   }
+}
+
+- (NSData *)fileContents {
+  if (self->needsSetup) {
+    [self _setup];
+    self->needsSetup = NO;
+  }
+  return [super fileContents];
+}
+
+- (NSDictionary *)extendedFileAttributes {
+  if (!self->extAttrs) {
+    static NSData *attrVal = nil;
+    if (!attrVal) {
+      CFStringRef ianaCharSetName = 
+        CFStringConvertEncodingToIANACharSetName(kCFStringEncodingUTF8);
+      
+      NSString *attr = [NSString stringWithFormat:@"%@;%d", ianaCharSetName,
+                                                  kCFStringEncodingUTF8];
+      attrVal = [[attr dataUsingEncoding:NSASCIIStringEncoding] copy];
+    }
+    self->extAttrs = [[NSMutableDictionary alloc] initWithCapacity:2];
+    [self setExtendedAttribute:@"com.apple.TextEncoding" value:attrVal];
+  }
+  return [super extendedFileAttributes];
 }
 
 @end /* iTunesFormatFile */

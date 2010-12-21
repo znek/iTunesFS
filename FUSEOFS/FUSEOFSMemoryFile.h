@@ -33,15 +33,13 @@
 #ifndef	__FUSEOFS_FUSEOFSMemoryFile_H
 #define	__FUSEOFS_FUSEOFSMemoryFile_H
 
-#import <Foundation/Foundation.h>
+#import "FUSEOFSMemoryObject.h"
 
-@interface FUSEOFSMemoryFile : NSObject
+@interface FUSEOFSMemoryFile : FUSEOFSMemoryObject
 {
   NSData *data;
-	NSMutableDictionary *attrs;
 }
 
-- (BOOL)setFileAttributes:(NSDictionary *)_attrs;
 - (void)setFileContents:(NSData *)_data;
 
 @end /* FUSEOFSMemoryFile */

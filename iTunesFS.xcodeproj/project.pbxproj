@@ -26,6 +26,7 @@
 		AD6A7CA212BFB0D50038FF7E /* FUSEOFSMemoryFile.m in Sources */ = {isa = PBXBuildFile; fileRef = AD6A7CA112BFB0D50038FF7E /* FUSEOFSMemoryFile.m */; };
 		AD6A7DB912C0BB770038FF7E /* iTunesFormatFile.m in Sources */ = {isa = PBXBuildFile; fileRef = AD6A7DB812C0BB770038FF7E /* iTunesFormatFile.m */; };
 		AD6A806D12C11C110038FF7E /* PlaylistsTrackFormat.txt in Resources */ = {isa = PBXBuildFile; fileRef = AD6A806B12C11C110038FF7E /* PlaylistsTrackFormat.txt */; };
+		AD6A80D312C146D40038FF7E /* FUSEOFSMemoryObject.m in Sources */ = {isa = PBXBuildFile; fileRef = AD6A80D212C146D40038FF7E /* FUSEOFSMemoryObject.m */; };
 		AD8118720F093DAB000786C9 /* NSImage+IconData.m in Sources */ = {isa = PBXBuildFile; fileRef = AD8118710F093DAB000786C9 /* NSImage+IconData.m */; };
 		AD8118830F093EA4000786C9 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD8118820F093EA4000786C9 /* Accelerate.framework */; };
 		AD8119700F095144000786C9 /* FUSEOFSLookupContext.m in Sources */ = {isa = PBXBuildFile; fileRef = AD81196F0F095144000786C9 /* FUSEOFSLookupContext.m */; };
@@ -87,6 +88,8 @@
 		AD6A7DB712C0BB770038FF7E /* iTunesFormatFile.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = iTunesFormatFile.h; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		AD6A7DB812C0BB770038FF7E /* iTunesFormatFile.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = iTunesFormatFile.m; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		AD6A806C12C11C110038FF7E /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = English; path = English.lproj/PlaylistsTrackFormat.txt; sourceTree = "<group>"; };
+		AD6A80D112C146D40038FF7E /* FUSEOFSMemoryObject.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = FUSEOFSMemoryObject.h; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
+		AD6A80D212C146D40038FF7E /* FUSEOFSMemoryObject.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = FUSEOFSMemoryObject.m; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		AD8118700F093DAB000786C9 /* NSImage+IconData.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = "NSImage+IconData.h"; sourceTree = "<group>"; };
 		AD8118710F093DAB000786C9 /* NSImage+IconData.m */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.objc; path = "NSImage+IconData.m"; sourceTree = "<group>"; };
 		AD8118820F093EA4000786C9 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = /System/Library/Frameworks/Accelerate.framework; sourceTree = "<absolute>"; };
@@ -228,10 +231,12 @@
 				AD81196F0F095144000786C9 /* FUSEOFSLookupContext.m */,
 				AD20DC170C25AD8E00DB2A42 /* FUSEOFSFileProxy.h */,
 				AD20DC180C25AD8E00DB2A42 /* FUSEOFSFileProxy.m */,
-				AD6A7C8712BFA7320038FF7E /* FUSEOFSMemoryFolder.h */,
-				AD6A7C8812BFA7320038FF7E /* FUSEOFSMemoryFolder.m */,
+				AD6A80D112C146D40038FF7E /* FUSEOFSMemoryObject.h */,
+				AD6A80D212C146D40038FF7E /* FUSEOFSMemoryObject.m */,
 				AD6A7CA012BFB0D50038FF7E /* FUSEOFSMemoryFile.h */,
 				AD6A7CA112BFB0D50038FF7E /* FUSEOFSMemoryFile.m */,
+				AD6A7C8712BFA7320038FF7E /* FUSEOFSMemoryFolder.h */,
+				AD6A7C8812BFA7320038FF7E /* FUSEOFSMemoryFolder.m */,
 				ADDCD7820C26A7E00031B215 /* GNUstep */,
 			);
 			path = FUSEOFS;
@@ -412,6 +417,7 @@
 				AD6A7C8912BFA7320038FF7E /* FUSEOFSMemoryFolder.m in Sources */,
 				AD6A7CA212BFB0D50038FF7E /* FUSEOFSMemoryFile.m in Sources */,
 				AD6A7DB912C0BB770038FF7E /* iTunesFormatFile.m in Sources */,
+				AD6A80D312C146D40038FF7E /* FUSEOFSMemoryObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

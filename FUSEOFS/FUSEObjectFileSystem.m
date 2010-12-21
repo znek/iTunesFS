@@ -57,6 +57,7 @@ static BOOL         debugAccess = NO;
 static NSDictionary *fileDict   = nil;
 static NSDictionary *dirDict    = nil;
 static NSDictionary *emptyDict  = nil;
+static NSArray      *emptyArray = nil;
 
 + (void)initialize {
   static BOOL    didInit = NO;
@@ -70,6 +71,7 @@ static NSDictionary *emptyDict  = nil;
   fileDict    = [[NSDictionary alloc] initWithObjectsAndKeys:NSFileTypeRegular, NSFileType, nil];
   dirDict     = [[NSDictionary alloc] initWithObjectsAndKeys:NSFileTypeDirectory, NSFileType, nil];
   emptyDict   = [[NSDictionary alloc] init];
+  emptyArray  = [[NSArray alloc] init];
 }
 
 - (id)init {
@@ -411,12 +413,11 @@ static NSDictionary *emptyDict  = nil;
 /* extended attributes */
 
 - (NSArray *)extendedAttributesOfItemAtPath:_path error:(NSError **)_err {
+  NSDictionary *extAttrs = [[self lookupPath:_path] extendedFileAttributes];
+  NSArray      *names    = extAttrs ? [extAttrs allKeys] : emptyArray;
   if (debugAccess)
-    NSLog(@"%s path:%@ -> [nil]", _cmd, _path);
-
-  // TODO: Implement!
-  *_err = [FUSEObjectFileSystem errorWithCode:ENOTSUP];
-  return nil;
+    NSLog(@"%s path:%@ -> %@", _cmd, _path, names);
+  return names;
 }
 
 - (NSData *)valueOfExtendedAttribute:(NSString *)_name
@@ -424,12 +425,11 @@ static NSDictionary *emptyDict  = nil;
   position:(off_t)_pos
   error:(NSError **)_err
 {
+  NSDictionary *extAttrs = [[self lookupPath:_path] extendedFileAttributes];
+  NSData       *value    = [extAttrs objectForKey:_name];
   if (debugAccess && 0)
-    NSLog(@"%s path:%@ name:%@ -> [nil]", _cmd, _path, _name);
-
-  // TODO: Implement!
-  *_err = [FUSEObjectFileSystem errorWithCode:ENOTSUP];
-  return nil;
+    NSLog(@"%s path:%@ name:%@ -> %@", _cmd, _path, _name, value);
+  return value;
 }
 
 - (BOOL)setExtendedAttribute:(NSString *)_name 
@@ -439,24 +439,36 @@ static NSDictionary *emptyDict  = nil;
   options:(int)_options
   error:(NSError **)_err
 {
+  BOOL success;
+  id obj = [self lookupPath:_path];
+  if (obj) {
+    success = [obj setExtendedAttribute:_name value:_value];
+  }
+  else {
+    success = NO;
+  }
   if (debugAccess)
-    NSLog(@"%s path:%@ name:%@ -> [NO]", _cmd, _path, _name);
-
-  // TODO: Implement!
-  *_err = [FUSEObjectFileSystem errorWithCode:ENOTSUP];
-  return NO;
+    NSLog(@"%s path:%@ name:%@ -> [%s]",
+          _cmd, _path, _name, success ? "YES" : "NO");
+  return success;
 }
 
 - (BOOL)removeExtendedAttribute:(NSString *)_name
   ofItemAtPath:(NSString *)_path
   error:(NSError **)_err
 {
+  BOOL success;
+  id obj = [self lookupPath:_path];
+  if (obj) {
+    success = [obj removeExtendedAttribute:_name];
+  }
+  else {
+    success = NO;
+  }
   if (debugAccess)
-    NSLog(@"%s path:%@ name:%@ -> [NO]", _cmd, _path, _name);
-
-  // TODO: Implement!
-  *_err = [FUSEObjectFileSystem errorWithCode:ENOTSUP];
-  return NO;
+    NSLog(@"%s path:%@ name:%@ -> [%s]",
+          _cmd, _path, _name, success ? "YES" : "NO");
+  return success;
 }
 
 /* FUSE helpers */

@@ -68,15 +68,10 @@
   [attrs setObject:perm forKey:NSFilePosixPermissions];
   return attrs;
 }
-- (NSDictionary *)fileSystemAttributes {
+- (NSDictionary *)extendedFileAttributes {
   return nil;
 }
-- (NSDictionary *)finderAttributes {
-  if ([self iconData]) {
-    NSNumber *finderFlags = [NSNumber numberWithLong:kHasCustomIcon];
-    return [NSDictionary dictionaryWithObject:finderFlags
-						 forKey:kGMUserFileSystemFinderFlagsKey];
-  }
+- (NSDictionary *)fileSystemAttributes {
   return nil;
 }
 - (NSDictionary *)resourceAttributes {
@@ -85,6 +80,14 @@
   if ((iconData = [self iconData])) {
     return [NSDictionary dictionaryWithObject:iconData
                          forKey:kGMUserFileSystemCustomIconDataKey];
+  }
+  return nil;
+}
+- (NSDictionary *)finderAttributes {
+  if ([self iconData]) {
+    NSNumber *finderFlags = [NSNumber numberWithLong:kHasCustomIcon];
+    return [NSDictionary dictionaryWithObject:finderFlags
+                                       forKey:kGMUserFileSystemFinderFlagsKey];
   }
   return nil;
 }
@@ -116,6 +119,13 @@
 }
 
 - (BOOL)setFileAttributes:(NSDictionary *)_attrs {
+  return NO;
+}
+
+- (BOOL)setExtendedAttribute:(NSString *)_name value:(NSData *)_value {
+  return NO;
+}
+- (BOOL)removeExtendedAttribute:(NSString *)_name {
   return NO;
 }
 

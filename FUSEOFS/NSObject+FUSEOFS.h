@@ -59,7 +59,12 @@
 - (NSDictionary *)fileAttributes;
 - (BOOL)setFileAttributes:(NSDictionary *)_attrs;
 
+- (NSDictionary *)extendedFileAttributes;
+- (BOOL)setExtendedAttribute:(NSString *)_name value:(NSData *)_value;
+- (BOOL)removeExtendedAttribute:(NSString *)_name;
+
 - (NSDictionary *)fileSystemAttributes;
+
 
 /* MacOS X _only_ attributes */
 

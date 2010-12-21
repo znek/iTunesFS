@@ -48,7 +48,6 @@ static NSArray *emptyArray = nil;
 
 - (void)dealloc {
 	[self->folder release];
-  [self->attrs  release];
 	[super dealloc];
 }
 
@@ -58,6 +57,7 @@ static NSArray *emptyArray = nil;
   if (!self->folder)
     self->folder = [[NSMutableDictionary alloc] initWithCapacity:5];
   [self->folder setObject:_item forKey:_name];
+  // self->attrs does already exist at this point
   [self->attrs setObject:[NSCalendarDate date] forKey:NSFileModificationDate];
 }
 
@@ -86,18 +86,6 @@ static NSArray *emptyArray = nil;
     return emptyArray;
 
   return [self->folder allKeys];
-}
-- (NSDictionary *)fileAttributes {
-	return [[self->attrs copy] autorelease];
-}
-- (BOOL)setFileAttributes:(NSDictionary *)_attrs {
-  if (!self->attrs) {
-    self->attrs = [[NSMutableDictionary alloc] initWithCapacity:4];
-    [self->attrs setObject:[NSCalendarDate date] forKey:NSFileCreationDate];
-    [self->attrs setObject:NSFileTypeDirectory forKey:NSFileType];
-  }
-  [self->attrs addEntriesFromDictionary:_attrs];
-  return YES;
 }
 
 /* write */
