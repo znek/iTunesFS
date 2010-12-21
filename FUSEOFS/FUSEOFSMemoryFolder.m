@@ -52,22 +52,13 @@ static NSArray *emptyArray = nil;
 	[super dealloc];
 }
 
-/* accessors */
-
-- (void)setAttributes:(NSDictionary *)_attrs {
-  if (!self->attrs) {
-    self->attrs = [[NSMutableDictionary alloc] initWithCapacity:2];
-    [self->attrs setObject:NSFileTypeDirectory forKey:NSFileType];
-  }
-  [self->attrs addEntriesFromDictionary:_attrs];
-}
-
 /* private */
 
 - (void)setItem:(id)_item forName:(NSString *)_name {
   if (!self->folder)
     self->folder = [[NSMutableDictionary alloc] initWithCapacity:5];
   [self->folder setObject:_item forKey:_name];
+  [self->attrs setObject:[NSCalendarDate date] forKey:NSFileModificationDate];
 }
 
 /* FUSEOFS */
@@ -99,6 +90,15 @@ static NSArray *emptyArray = nil;
 - (NSDictionary *)fileAttributes {
 	return [[self->attrs copy] autorelease];
 }
+- (BOOL)setFileAttributes:(NSDictionary *)_attrs {
+  if (!self->attrs) {
+    self->attrs = [[NSMutableDictionary alloc] initWithCapacity:4];
+    [self->attrs setObject:[NSCalendarDate date] forKey:NSFileCreationDate];
+    [self->attrs setObject:NSFileTypeDirectory forKey:NSFileType];
+  }
+  [self->attrs addEntriesFromDictionary:_attrs];
+  return YES;
+}
 
 /* write */
 
@@ -109,7 +109,7 @@ static NSArray *emptyArray = nil;
   if (obj) return NO;
 
   FUSEOFSMemoryFile *item = [[FUSEOFSMemoryFile alloc] init];
-  [item setAttributes:_attrs];
+  [item setFileAttributes:_attrs];
   [self setItem:item forName:_name];
   [item release];
   return YES;
@@ -121,8 +121,8 @@ static NSArray *emptyArray = nil;
   id obj = [self->folder objectForKey:_name];
   if (obj) return NO;
 
-  FUSEOFSMemoryFile *item = [[FUSEOFSMemoryFolder alloc] init];
-  [item setAttributes:_attrs];
+  FUSEOFSMemoryFolder *item = [[FUSEOFSMemoryFolder alloc] init];
+  [item setFileAttributes:_attrs];
   [self setItem:item forName:_name];
   [item release];
   return YES;
@@ -135,12 +135,13 @@ static NSArray *emptyArray = nil;
     [self setItem:item forName:_name];
     [item release];
   }
-  [item setData:_data];
+  [item setFileContents:_data];
   return YES;
 }
 
 - (BOOL)removeItemNamed:(NSString *)_name {
-	[self->folder removeObjectForKey:_name];
+  if (![self->folder objectForKey:_name]) return NO;
+  [self->folder removeObjectForKey:_name];
 	return YES;
 }
 

@@ -38,18 +38,12 @@
 #import "iTunesFSFormatter.h"
 #import "NSObject+FUSEOFS.h"
 #import "FUSEOFSMemoryFolder.h"
-#import "FUSEOFSFileProxy.h"
+#import "iTunesFormatFile.h"
 
 @interface iTunesPlaylist (Private)
 - (BOOL)hasTrackFormatFile;
 - (BOOL)showsTrackFormatFile;
 - (NSString *)trackFormatFileName;
-- (NSString *)trackFormatDefaultKey;
-- (NSString *)trackFormatDefaultKeyForID:(NSString *)_id;
-
-- (NSString *)getTrackFormatString;
-- (iTunesFSFormatter *)getTrackFormatter;
-
 - (void)generatePrettyTrackNames;
 - (void)setName:(NSString *)_name;
 - (void)addTrack:(iTunesTrack *)_track withName:(NSString *)_name;
@@ -59,23 +53,16 @@
 
 static BOOL doDebug = NO;
 static BOOL showPersistentID = NO;
-static iTunesFSFormatter *plTrackFormatter = nil;
 
 + (void)initialize {
   static BOOL    didInit = NO;
   NSUserDefaults *ud;
-  NSString       *fmt;
   
   if (didInit) return;
   didInit          = YES;
   ud               = [NSUserDefaults standardUserDefaults];
   doDebug          = [ud boolForKey:@"iTunesFileSystemDebugEnabled"];
   showPersistentID = [ud boolForKey:@"ShowPersistentIDs"];
-  fmt              = [ud stringForKey:@"PlaylistsTrackFormat"];
-  plTrackFormatter = [[iTunesFSFormatter alloc] initWithFormatString:fmt];
-  
-  if (doDebug)
-    NSLog(@"PlaylistsTrackFormat: %@", fmt);
 }
 
 - (id)init {
@@ -85,11 +72,8 @@ static iTunesFSFormatter *plTrackFormatter = nil;
     self->tracks       = [[NSMutableArray alloc] initWithCapacity:10];
     self->trackNames   = [[NSMutableArray alloc] initWithCapacity:10];
     self->childrenMap  = [[NSMutableDictionary alloc] initWithCapacity:5];
-#if 0
+    // NOTE: cannot initialize trackFormatFile here, needs lazy init
     self->shadowFolder = [[FUSEOFSMemoryFolder alloc] init];
-#else
-    self->shadowFolder = [[FUSEOFSFileProxy alloc] initWithPath:@"/tmp/xxx"];
-#endif
   }
   return self;
 }
@@ -169,6 +153,7 @@ static iTunesFSFormatter *plTrackFormatter = nil;
   [self->trackNames   release];
   [self->childrenMap  release];
   [self->shadowFolder release];
+  [self->trackFormatFile release];
   [super dealloc];
 }
 
@@ -185,53 +170,13 @@ static iTunesFSFormatter *plTrackFormatter = nil;
 - (NSString *)trackFormatFileName {
   return @"PlaylistsTrackFormat.txt";
 }
-- (NSString *)trackFormatDefaultKey {
-  if (!self->persistentId) return nil;
-  return [self trackFormatDefaultKeyForID:[self persistentId]];
-}
-- (NSString *)trackFormatDefaultKeyForID:(NSString *)_id {
-  return [NSString stringWithFormat:@"PlaylistsTrackFormat[%@]", _id];
-}
-
-- (NSString *)getTrackFormatString {
-  NSString *defKey = [self trackFormatDefaultKey];
-  if (!defKey)
-    return [plTrackFormatter formatString];
-
-  NSString *fmt = [[NSUserDefaults standardUserDefaults] stringForKey:defKey];
-  if (!fmt)
-    fmt = [plTrackFormatter formatString];
-  return fmt;
-}
-
-- (iTunesFSFormatter *)getTrackFormatter {
-  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  NSString *fmtKey   = [self trackFormatDefaultKey];
-  if (fmtKey) {
-    NSString *fmt = [ud stringForKey:fmtKey];
-    if (fmt) {
-      // is it an alias?
-      if ([fmt hasPrefix:@"@"] && ([fmt length] > 1)) {
-        fmt = [fmt substringFromIndex:1];
-        if (doDebug)
-          NSLog(@"%@ is an alias to %@", fmtKey, fmt);
-        fmtKey = [self trackFormatDefaultKeyForID:fmt];
-        fmt    = [ud stringForKey:fmtKey];
-      }
-      if (fmt) {
-        return [[[iTunesFSFormatter alloc] initWithFormatString:fmt]
-                                           autorelease];
-      }
-      else {
-        if (doDebug)
-          NSLog(@"WARN: no format found for reference %@", fmtKey);
-      }
-    }
-  }
-  return plTrackFormatter;
-}
 
 - (void)generatePrettyTrackNames {
+  if (!self->trackFormatFile) {
+    self->trackFormatFile = [[iTunesFormatFile alloc]
+                               initWithDefaultTemplate:@"PlaylistsTrackFormat"
+                               templateId:self->persistentId];
+  }
   [self->tracks     removeAllObjects];
   [self->trackNames removeAllObjects];
 
@@ -246,7 +191,7 @@ static iTunesFSFormatter *plTrackFormatter = nil;
     }
   }
   
-  iTunesFSFormatter *formatter = [self getTrackFormatter];
+  iTunesFSFormatter *formatter = [self->trackFormatFile getFormatter];
   if ([formatter isPathFormat]) {
 
     // formatter describes a path, which can lead to a whole hierarchy
@@ -343,14 +288,7 @@ static iTunesFSFormatter *plTrackFormatter = nil;
   if ([_pc isEqualToString:[self trackFormatFileName]] &&
       [self hasTrackFormatFile])
   {
-    // TODO: this SHOULD be an own object!
-    NSMutableString *format = [[NSMutableString alloc] initWithCapacity:300];
-    [format appendString:@"# "];
-    [format appendFormat:[self trackFormatDefaultKey]];
-    [format appendString:@"\n"];
-    [format appendString:[self getTrackFormatString]];
-    [format appendString:@"\n"];
-    return [format autorelease];
+    return self->trackFormatFile;
   }
 
   id result = [self->childrenMap objectForKey:_pc];
@@ -379,7 +317,9 @@ static iTunesFSFormatter *plTrackFormatter = nil;
   [names addObjectsFromArray:[self->childrenMap allKeys]];
   if ([self showsTrackFormatFile]) {
     [names addObject:[self trackFormatFileName]];
-//    [names addObjectsFromArray:[self->shadowFolder directoryContents]];
+#if 0
+    [names addObjectsFromArray:[self->shadowFolder directoryContents]];
+#endif
   }
   return [names autorelease];
 }
@@ -403,6 +343,15 @@ static iTunesFSFormatter *plTrackFormatter = nil;
                          forKey:kGMUserFileSystemFinderFlagsKey];
 }
 #endif
+
+- (NSDictionary *)fileAttributes {
+  NSMutableDictionary *attrs = [NSMutableDictionary dictionaryWithCapacity:3];
+  [attrs setObject:NSFileTypeDirectory forKey:NSFileType];
+  [attrs setObject:[NSNumber numberWithBool:YES] forKey:NSFileExtensionHidden];
+  NSNumber *perm = [NSNumber numberWithInt:[self isMutable] ? 0777 : 0555];
+  [attrs setObject:perm forKey:NSFilePosixPermissions];
+  return attrs;
+}
 
 #if 0
 - (BOOL)createFileNamed:(NSString *)_name
@@ -429,25 +378,7 @@ static iTunesFSFormatter *plTrackFormatter = nil;
   if (![_name isEqualToString:[self trackFormatFileName]])
     return [self->shadowFolder writeFileNamed:_name withData:_data];
 
-  // NOTE: this is just a quick hack, but should be refactored to a more
-  // robust implementation once we settle on this concept.
-
-  NSCharacterSet *trimSet    = [NSCharacterSet
-                                characterSetWithCharactersInString:@"\n\r\t "];
-  NSString       *rawDefault = [[[NSString alloc] initWithData:_data
-                                                  encoding:NSUTF8StringEncoding]
-                                                  autorelease];
-  rawDefault = [rawDefault stringByTrimmingCharactersInSet:trimSet];
-  NSArray  *lines      = [rawDefault componentsSeparatedByString:@"\n"];
-  NSString *newDefault = [lines lastObject];
-  if (newDefault && [newDefault length]) {
-    [[NSUserDefaults standardUserDefaults] setObject:newDefault
-                                           forKey:[self trackFormatDefaultKey]];
-  }
-  else {
-    [[NSUserDefaults standardUserDefaults]
-                     removeObjectForKey:[self trackFormatDefaultKey]];
-  }
+  [self->trackFormatFile setFileContents:_data];
   [self generatePrettyTrackNames];
   return YES;
 }
@@ -457,8 +388,7 @@ static iTunesFSFormatter *plTrackFormatter = nil;
     return NO;
 
   if ([_name isEqualToString:[self trackFormatFileName]]) {
-    [[NSUserDefaults standardUserDefaults]
-                     removeObjectForKey:[self trackFormatDefaultKey]];
+    [self->trackFormatFile remove];
     [self generatePrettyTrackNames];
     return YES;
   }

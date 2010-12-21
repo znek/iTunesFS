@@ -35,6 +35,7 @@
 
 #import <Foundation/Foundation.h>
 
+@class iTunesFormatFile;
 @class iTunesLibrary;
 @class iTunesTrack;
 
@@ -47,6 +48,7 @@
   NSMutableArray *tracks;
   NSMutableArray *trackNames;
   NSMutableDictionary *childrenMap;
+  iTunesFormatFile *trackFormatFile;
   id shadowFolder;
 }
 

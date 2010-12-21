@@ -1,3 +1,26 @@
+2010-12-21  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v1.1.14b4
+
+	* iTunesFormatFile.[hm]: new FUSEOFSMemoryFile subclass, implementing
+	  a generic iTunesFSFormatter format string interface. Debug logging
+	  can be turned on via new 'iTunesFormatFileDebugEnabled' default.
+
+	* iTunesPlaylist.[hm]: implemented track format via new
+	  iTunesFormatFile.
+
+	* NSObject+FUSEOFS.[hm]: added -setFileAttributes: api
+
+	* FUSEOFSMemoryFile.[hm]: renamed -setData: to -setFileContents,
+	  renamed -setAttributes: to -setFileAttributes:
+
+	* FUSEOFSMemoryFolder.[hm]: renamed -setAttributes: to
+	  -setFileAttributes:, minor fixes and improvements
+
+	* FUSEObjectFileSystem.m: massively improved debug logging,
+	  improved moveItemAtPath:toPath:error: and fixed a major bug
+	  in writeFileAtPath:...
+
 2010-12-20  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* v1.1.14b3

@@ -35,16 +35,6 @@
 
 @implementation FUSEOFSMemoryFile
 
-static NSDictionary *emptyDict = nil;
-
-+ (void)initialize {
-  static BOOL didInit = NO;
-  
-  if (didInit) return;
-  didInit   = YES;
-  emptyDict = [[NSDictionary alloc] init];
-}
-
 - (void)dealloc {
 	[self->data  release];
   [self->attrs release];
@@ -53,18 +43,18 @@ static NSDictionary *emptyDict = nil;
 
 /* accessors */
 
-- (void)setAttributes:(NSDictionary *)_attrs {
-  if (!self->attrs) {
-    self->attrs = [[NSMutableDictionary alloc] initWithCapacity:2];
-    [self->attrs setObject:NSFileTypeRegular forKey:NSFileType];
-  }
-  [self->attrs addEntriesFromDictionary:_attrs];
-}
-
-- (void)setData:(NSData *)_data {
+- (void)setFileContents:(NSData *)_data {
   if (self->data == _data) return;
   [self->data release];
   self->data = [_data copy];
+  [self->attrs setObject:[NSNumber numberWithInt:[_data length]]
+               forKey:NSFileSize];
+  [self->attrs setObject:[NSCalendarDate date] forKey:NSFileModificationDate];
+#if 0
+  if ([_data length] < 1000) {
+    NSLog(@"%s data:\n%@", _cmd, [[[NSString alloc] initWithData:_data encoding:NSUTF8StringEncoding] autorelease]);
+  }
+#endif
 }
 
 /* FUSEOFS */
@@ -79,7 +69,7 @@ static NSDictionary *emptyDict = nil;
   return NO;
 }
 - (BOOL)isMutable {
-	return NO;
+	return YES;
 }
 
 /* read */
@@ -92,6 +82,16 @@ static NSDictionary *emptyDict = nil;
 }
 - (NSDictionary *)fileAttributes {
 	return [[self->attrs copy] autorelease];
+}
+- (BOOL)setFileAttributes:(NSDictionary *)_attrs {
+  if (!self->attrs) {
+    self->attrs = [[NSMutableDictionary alloc] initWithCapacity:6];
+    [self->attrs setObject:[NSCalendarDate date] forKey:NSFileCreationDate];
+    [self->attrs setObject:NSFileTypeRegular forKey:NSFileType];
+    [self->attrs setObject:[NSNumber numberWithInt:0] forKey:NSFileSize];
+  }
+  [self->attrs addEntriesFromDictionary:_attrs];
+  return YES;
 }
 
 @end /* FUSEOFSMemoryFile */

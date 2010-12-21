@@ -115,6 +115,10 @@
   return NO;
 }
 
+- (BOOL)setFileAttributes:(NSDictionary *)_attrs {
+  return NO;
+}
+
 /* reflection */
 
 - (BOOL)isDirectory {

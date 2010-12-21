@@ -212,16 +212,20 @@ static NSDictionary *emptyDict  = nil;
   attributes:(NSDictionary *)_attrs
   error:(NSError **)_err
 {
-  if (debugAccess)
-    NSLog(@"%s path:%@ attrs:%@", _cmd, _path, _attrs);
-
   id obj = [self lookupPath:[_path stringByDeletingLastPathComponent]];
   if (!obj || ![obj isMutable]) {
     *_err = [FUSEObjectFileSystem errorWithCode:EACCES];
+    if (debugAccess)
+      NSLog(@"%s path:%@ attrs:%@ -> [NO] (EACCESS / ![obj isMutable])",
+            _cmd, _path, _attrs);
     return NO;
   }
-  return [obj createDirectoryNamed:[_path lastPathComponent]
-              withAttributes:_attrs];
+  BOOL success = [obj createDirectoryNamed:[_path lastPathComponent]
+                      withAttributes:_attrs];
+  if (debugAccess)
+    NSLog(@"%s path:%@ attrs:%@ -> [%s]",
+          _cmd, _path, _attrs, success ? "YES" : "NO");
+  return success;
 }
 
 - (BOOL)createFileAtPath:(NSString *)_path
@@ -229,15 +233,20 @@ static NSDictionary *emptyDict  = nil;
   userData:(id *)_ud
   error:(NSError **)_err
 {
-  if (debugAccess)
-    NSLog(@"%s path:%@ attrs:%@", _cmd, _path, _attrs);
-
   id obj = [self lookupPath:[_path stringByDeletingLastPathComponent]];
   if (!obj || ![obj isMutable]) {
     *_err = [FUSEObjectFileSystem errorWithCode:EACCES];
+    if (debugAccess)
+      NSLog(@"%s path:%@ attrs:%@ -> [NO] (EACCESS / ![obj isMutable])",
+            _cmd, _path, _attrs);
     return NO;
   }
-  return [obj createFileNamed:[_path lastPathComponent] withAttributes:_attrs];
+  BOOL success = [obj createFileNamed:[_path lastPathComponent]
+                      withAttributes:_attrs];
+  if (debugAccess)
+    NSLog(@"%s path:%@ attrs:%@ -> [%s]",
+          _cmd, _path, _attrs, success ? "YES" : "NO");
+  return success;
 }
 
 - (BOOL)openFileAtPath:(NSString *)_path 
@@ -245,14 +254,20 @@ static NSDictionary *emptyDict  = nil;
   userData:(id *)_ud
   error:(NSError **)_err
 {
+  if (_mode == O_RDONLY) {
+    BOOL success = ([self lookupPath:_path] != nil);
+    if (debugAccess)
+      NSLog(@"%s path:%@ -> [%s]",
+            _cmd, _path, success ? "YES" : "NO");
+    return success;
+  }
+
+  id   obj     = [self lookupPath:[_path stringByDeletingLastPathComponent]];
+  BOOL success = [obj isMutable];
   if (debugAccess)
-    NSLog(@"%s path:%@", _cmd, _path);
-
-  if (_mode == O_RDONLY)
-    return [self lookupPath:_path] != nil;
-
-  id obj = [self lookupPath:[_path stringByDeletingLastPathComponent]];
-  return [obj isMutable];
+    NSLog(@"%s path:%@ -> [%s]",
+          _cmd, _path, success ? "YES" : "NO");
+  return success;
 }
 
 - (void)releaseFileAtPath:(NSString *)_path
@@ -267,62 +282,90 @@ static NSDictionary *emptyDict  = nil;
   offset:(off_t)_offset
   error:(NSError **)_err
 {
-  if (debugAccess)
-    NSLog(@"%s path:%@", _cmd, _path);
-
   id obj = [self lookupPath:[_path stringByDeletingLastPathComponent]];
   if (!obj || ![obj isMutable]) {
     *_err = [FUSEObjectFileSystem errorWithCode:EACCES];
+    if (debugAccess)
+      NSLog(@"%s path:%@ -> [NO] (EACCES / ![obj isMutable])", _cmd, _path);
     return -1;
   }
 
-  NSData *data = [NSData dataWithBytesNoCopy:(void *)_buffer
-                         length:_size
-                         freeWhenDone:NO];
+  NSData *data = [NSData dataWithBytes:(void *)_buffer length:_size];
   if([obj writeFileNamed:[_path lastPathComponent]
           withData:data])
+  {
+    if (debugAccess)
+      NSLog(@"%s path:%@ -> [OK]", _cmd, _path);
     return _size;
-  else
+  }
+  else {
+    if (debugAccess)
+      NSLog(@"%s path:%@ -> [NO] (writeFileNamed:withData: failed)",
+            _cmd, _path);
     return -1;
+  }
 }
 
 - (BOOL)moveItemAtPath:(NSString *)_src 
   toPath:(NSString *)_dst
   error:(NSError **)_err
 {
-  if (debugAccess)
-    NSLog(@"%s path:%@ toPath:%@", _cmd, _src, _dst);
-
   // TODO: Fix this method to allow moving directories!
   id src = [self lookupPath:_src];
-  if (!src) return NO;
+  if (!src) {
+    if (debugAccess)
+      NSLog(@"%s path:%@ toPath:%@ -> [NO] (![self lookupPath:_src])",
+            _cmd, _src, _dst);
+    return NO;
+  }
   id dst = [self lookupPath:[_dst stringByDeletingLastPathComponent]];
-  if (!dst) return NO;
-  if (![dst writeFileNamed:[_dst lastPathComponent]
-            withData:[src fileContents]])
+  if (!dst) {
+    if (debugAccess)
+      NSLog(@"%s path:%@ toPath:%@ -> [NO] (!dst)",
+            _cmd, _src, _dst);
+    return NO;
+  }
+
+  NSString *dstName = [_dst lastPathComponent];
+
+  // NOTE: this doesn't matter if it fails!
+  [dst createFileNamed:dstName withAttributes:[src fileAttributes]];
+  if (![dst writeFileNamed:dstName withData:[src fileContents]])
   {
+    if (debugAccess)
+      NSLog(@"%s path:%@ toPath:%@ -> [NO] (![dst writeFileNamed:withData:])",
+            _cmd, _src, _dst);
     return NO;
   }
-  src = [self lookupPath:[_src stringByDeletingLastPathComponent]];
-  if (![src removeItemNamed:[_src lastPathComponent]]) {
+
+  id srcFolder = [self lookupPath:[_src stringByDeletingLastPathComponent]];
+  if (![srcFolder removeItemNamed:[_src lastPathComponent]]) {
     [dst removeItemNamed:[_dst lastPathComponent]];
+    if (debugAccess)
+      NSLog(@"%s path:%@ toPath:%@ -> [NO] (![srcFolder removeItemNamed:])",
+            _cmd, _src, _dst);
     return NO;
   }
+
+  if (debugAccess)
+    NSLog(@"%s path:%@ toPath:%@ -> [YES]", _cmd, _src, _dst);
   return YES;
 }
 
 - (BOOL)removeItemAtPath:(NSString *)_path error:(NSError **)_err {
-  if (debugAccess)
-    NSLog(@"%s path:%@", _cmd, _path);
-
   NSString *path = [_path stringByDeletingLastPathComponent];
 
   id obj = [self lookupPath:path];
   if (![obj isMutable]) {
     *_err = [FUSEObjectFileSystem errorWithCode:EACCES];
+    if (debugAccess)
+      NSLog(@"%s path:%@ -> [NO] (EACCES ![obj isMutable])", _cmd, _path);
     return NO;
   }
-  return [obj removeItemNamed:[_path lastPathComponent]];
+  BOOL success = [obj removeItemNamed:[_path lastPathComponent]];
+  if (debugAccess)
+    NSLog(@"%s path:%@ -> [%s]", _cmd, _path, success ? "YES" : "NO");
+  return success;
 }
 
 /* optional write methods */
@@ -333,7 +376,7 @@ static NSDictionary *emptyDict  = nil;
   error:(NSError **)_err
 {
   if (debugAccess)
-    NSLog(@"%s path:%@ toPath:%@", _cmd, _src, _dst);
+    NSLog(@"%s path:%@ toPath:%@ -> [NO]", _cmd, _src, _dst);
 
   // TODO: Implement!
   *_err = [FUSEObjectFileSystem errorWithCode:ENOTSUP];
@@ -345,7 +388,7 @@ static NSDictionary *emptyDict  = nil;
   error:(NSError **)_err
 {
   if (debugAccess)
-    NSLog(@"%s path:%@ toPath:%@", _cmd, _src, _dst);
+    NSLog(@"%s path:%@ toPath:%@ -> [NO]", _cmd, _src, _dst);
 
   // TODO: Implement!
   *_err = [FUSEObjectFileSystem errorWithCode:ENOTSUP];
@@ -357,23 +400,19 @@ static NSDictionary *emptyDict  = nil;
   userData:(id)_ud
   error:(NSError **)_err
 {
+  BOOL success = [(NSObject *)[self lookupPath:_path] setFileAttributes:_attrs];
   if (debugAccess)
-    NSLog(@"%s path:%@ attrs:%@", _cmd, _path, _attrs);
+    NSLog(@"%s path:%@ attrs:%@ -> [%s]",
+          _cmd, _path, _attrs, success ? "YES" : "NO");
 
-  // TODO: Implement!
-#if 0
-  *_err = [FUSEObjectFileSystem errorWithCode:ENOTSUP];
-  return NO;
-#endif
-  // NOTE: silently ignore these requests for now
-  return YES;
+  return success;
 }
 
 /* extended attributes */
 
 - (NSArray *)extendedAttributesOfItemAtPath:_path error:(NSError **)_err {
   if (debugAccess)
-    NSLog(@"%s path:%@", _cmd, _path);
+    NSLog(@"%s path:%@ -> [nil]", _cmd, _path);
 
   // TODO: Implement!
   *_err = [FUSEObjectFileSystem errorWithCode:ENOTSUP];
@@ -386,7 +425,7 @@ static NSDictionary *emptyDict  = nil;
   error:(NSError **)_err
 {
   if (debugAccess && 0)
-    NSLog(@"%s path:%@ name:%@", _cmd, _path, _name);
+    NSLog(@"%s path:%@ name:%@ -> [nil]", _cmd, _path, _name);
 
   // TODO: Implement!
   *_err = [FUSEObjectFileSystem errorWithCode:ENOTSUP];
@@ -401,7 +440,7 @@ static NSDictionary *emptyDict  = nil;
   error:(NSError **)_err
 {
   if (debugAccess)
-    NSLog(@"%s path:%@ name:%@", _cmd, _path, _name);
+    NSLog(@"%s path:%@ name:%@ -> [NO]", _cmd, _path, _name);
 
   // TODO: Implement!
   *_err = [FUSEObjectFileSystem errorWithCode:ENOTSUP];
@@ -413,7 +452,7 @@ static NSDictionary *emptyDict  = nil;
   error:(NSError **)_err
 {
   if (debugAccess)
-    NSLog(@"%s path:%@ name:%@", _cmd, _path, _name);
+    NSLog(@"%s path:%@ name:%@ -> [NO]", _cmd, _path, _name);
 
   // TODO: Implement!
   *_err = [FUSEObjectFileSystem errorWithCode:ENOTSUP];

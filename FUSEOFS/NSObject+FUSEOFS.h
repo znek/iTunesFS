@@ -57,6 +57,8 @@
 /* attributes */
 
 - (NSDictionary *)fileAttributes;
+- (BOOL)setFileAttributes:(NSDictionary *)_attrs;
+
 - (NSDictionary *)fileSystemAttributes;
 
 /* MacOS X _only_ attributes */

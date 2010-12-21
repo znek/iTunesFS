@@ -30,20 +30,26 @@
   POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef	__FUSEOFS_FUSEOFSMemoryFile_H
-#define	__FUSEOFS_FUSEOFSMemoryFile_H
+#ifndef	__iTunesFS_iTunesFormatFile_H
+#define	__iTunesFS_iTunesFormatFile_H
 
-#import <Foundation/Foundation.h>
+#import "FUSEOFSMemoryFile.h"
 
-@interface FUSEOFSMemoryFile : NSObject
+@class iTunesFSFormatter;
+
+@interface iTunesFormatFile : FUSEOFSMemoryFile
 {
-  NSData *data;
-	NSMutableDictionary *attrs;
+	NSString *defaultTemplate;
+  NSString *defaultKey;
 }
 
-- (BOOL)setFileAttributes:(NSDictionary *)_attrs;
-- (void)setFileContents:(NSData *)_data;
+- (id)initWithDefaultTemplate:(NSString *)_defTemplate
+  templateId:(NSString *)_templateId;
 
-@end /* FUSEOFSMemoryFile */
+- (void)remove;
 
-#endif	/* __FUSEOFSMemoryFile_H */
+- (iTunesFSFormatter *)getFormatter;
+
+@end /* iTunesFormatFile */
+
+#endif	/* __iTunesFS_iTunesFormatFile_H */
