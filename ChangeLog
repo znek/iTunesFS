@@ -1,5 +1,10 @@
 2010-12-21  Marcus Mueller  <znek@mulle-kybernetik.com>
 
+	* FUSEObjectFileSystem.m: added workaround for a MacFUSE bug which
+	  prevented deleting extended attributes
+
+	* v1.1.14b5
+
 	* English.lproj/PlaylistsTrackFormat.txt: Help text for use in
 	  iTunesFormatFile, giving examples for a quick headstart
 

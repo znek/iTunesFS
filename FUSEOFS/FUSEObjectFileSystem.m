@@ -453,6 +453,23 @@ static NSArray      *emptyArray = nil;
   return success;
 }
 
+// NOTE: workaround for a bug in MacFUSE...
+// GMUserFileSystem.m:1589 tests this selector instead of
+// removeExtendedAttribute:ofItemAtPath:error:
+- (BOOL)setExtendedAttribute:(NSString *)_name 
+  ofItemAtPath:(NSString *)_path 
+  value:(NSData *)_value
+  flags:(int)_options
+  error:(NSError **)_err
+{
+  return [self setExtendedAttribute:_name
+               ofItemAtPath:_path
+               value:_value
+               position:0
+               options:_options
+               error:_err];
+}
+
 - (BOOL)removeExtendedAttribute:(NSString *)_name
   ofItemAtPath:(NSString *)_path
   error:(NSError **)_err
