@@ -1,5 +1,12 @@
 2010-12-21  Marcus Mueller  <znek@mulle-kybernetik.com>
 
+	* English.lproj/PlaylistsTrackFormat.txt: Help text for use in
+	  iTunesFormatFile, giving examples for a quick headstart
+
+	* iTunesFormatFile.m: loads help text from a localizable file now
+
+2010-12-21  Marcus Mueller  <znek@mulle-kybernetik.com>
+
 	* v1.1.14b4
 
 	* iTunesFormatFile.[hm]: new FUSEOFSMemoryFile subclass, implementing

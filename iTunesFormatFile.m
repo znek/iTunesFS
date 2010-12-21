@@ -80,13 +80,26 @@ static NSCharacterSet *trimSet = nil;
 /* private */
 
 - (void)_setup {
-  // TODO: get format explanation from file, possible via use of
-  // 'defaultTemplate'
+  static NSString *helpText = nil;
+  if (!helpText) {
+    NSString *htPath = [[NSBundle mainBundle]
+                                  pathForResource:self->defaultTemplate
+                                  ofType:@"txt"];
+    if (htPath) {
+      helpText = [[NSString alloc] initWithContentsOfFile:htPath
+                                   encoding:NSUTF8StringEncoding
+                                   error:NULL];
+    }
+  }
 
-  NSMutableString *format = [[NSMutableString alloc] initWithCapacity:300];
+  NSMutableString *format = [[NSMutableString alloc] initWithCapacity:1024];
   [format appendString:@"# "];
   [format appendString:self->defaultKey];
-  [format appendString:@"\n"];
+  [format appendString:@"\n#\n"];
+  if (helpText) {
+    [format appendString:helpText];
+    [format appendString:@"\n"];
+  }
   [format appendString:[self templateFormatString]];
   [format appendString:@"\n"];
   NSData *formatData = [format dataUsingEncoding:NSUTF8StringEncoding];

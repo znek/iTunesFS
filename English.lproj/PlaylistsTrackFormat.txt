@@ -1,0 +1,15 @@
+# PROPERTIES
+#
+# %(name)
+# %(album)
+# %(artist)
+# %(extension) OR %(ext)
+# %(trackNumber)
+# %(playlistNumber)
+#
+# EXAMPLES
+#
+# %(playlistNumber#0) %(name).%(ext.lowercaseString)
+# %(playlistNumber#000) %(name).%(ext.lowercaseString)
+# %(artists) / %(albums) / %(trackNumber#00) %(name) %(ext.lowercaseString)
+# @folders
