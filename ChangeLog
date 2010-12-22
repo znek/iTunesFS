@@ -1,7 +1,24 @@
+2010-12-22  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* NSObject+FUSEOFS.[hm]: changed layout and renamed every wording of
+	  'directory' into 'container'.
+
+	* iTunesFileSystem.m, iTunesLibrary.m, iTunesPlaylist.m,
+	  FUSEObjectFileSystem.m, FUSEOFSFileProxy.m, FUSEOFSMemoryFile.m,
+	  FUSEOFSMemoryObject.m
+
+	* FUSEOFSMemoryFolder.[hm]: renamed to FUSEOFSMemoryContainer
+
+	* FUSEOFSMemoryContainer.[hm]: see above
+
+	* FUSEObjectFileSystem.m: minor fix for valueOfExtendedAttribute:...
+
 2010-12-21  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* FUSEObjectFileSystem.m: added workaround for a MacFUSE bug which
-	  prevented deleting extended attributes
+	  prevented deleting extended attributes - this triggers an annoying
+	  warning upon startup (we're implementing a deprecated method) which
+	  is totally harmless.
 
 	* v1.1.14b5
 
