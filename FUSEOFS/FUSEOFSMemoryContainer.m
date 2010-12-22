@@ -30,11 +30,11 @@
   POSSIBILITY OF SUCH DAMAGE.
 */
 
-#import "FUSEOFSMemoryFolder.h"
+#import "FUSEOFSMemoryContainer.h"
 #import "NSObject+FUSEOFS.h"
 #import "FUSEOFSMemoryFile.h"
 
-@implementation FUSEOFSMemoryFolder
+@implementation FUSEOFSMemoryContainer
 
 static NSArray *emptyArray = nil;
 
@@ -69,7 +69,7 @@ static NSArray *emptyArray = nil;
 
 /* reflection */
 
-- (BOOL)isDirectory {
+- (BOOL)isContainer {
   return YES;
 }
 - (BOOL)isMutable {
@@ -78,14 +78,11 @@ static NSArray *emptyArray = nil;
 
 /* read */
 
-- (NSData *)fileContents {
-	return nil;
-}
-- (NSArray *)directoryContents {
+- (NSArray *)containerContents {
   if (!self->folder)
     return emptyArray;
 
-  return [self->folder allKeys];
+  return [self->folder containerContents];
 }
 
 /* write */
@@ -103,13 +100,13 @@ static NSArray *emptyArray = nil;
   return YES;
 }
 
-- (BOOL)createDirectoryNamed:(NSString *)_name
+- (BOOL)createContainerNamed:(NSString *)_name
   withAttributes:(NSDictionary *)_attrs
 {
   id obj = [self->folder objectForKey:_name];
   if (obj) return NO;
 
-  FUSEOFSMemoryFolder *item = [[FUSEOFSMemoryFolder alloc] init];
+  FUSEOFSMemoryContainer *item = [[FUSEOFSMemoryContainer alloc] init];
   [item setFileAttributes:_attrs];
   [self setItem:item forName:_name];
   [item release];
@@ -133,4 +130,4 @@ static NSArray *emptyArray = nil;
 	return YES;
 }
 
-@end /* FUSEOFSMemoryFolder */
+@end /* FUSEOFSMemoryContainer */

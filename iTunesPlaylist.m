@@ -37,7 +37,7 @@
 #import "NSString+Extensions.h"
 #import "iTunesFSFormatter.h"
 #import "NSObject+FUSEOFS.h"
-#import "FUSEOFSMemoryFolder.h"
+#import "FUSEOFSMemoryContainer.h"
 #import "iTunesFormatFile.h"
 
 @interface iTunesPlaylist (Private)
@@ -73,7 +73,7 @@ static BOOL showPersistentID = NO;
     self->trackNames   = [[NSMutableArray alloc] initWithCapacity:10];
     self->childrenMap  = [[NSMutableDictionary alloc] initWithCapacity:5];
     // NOTE: cannot initialize trackFormatFile here, needs lazy init
-    self->shadowFolder = [[FUSEOFSMemoryFolder alloc] init];
+    self->shadowFolder = [[FUSEOFSMemoryContainer alloc] init];
   }
   return self;
 }
@@ -213,7 +213,7 @@ static BOOL showPersistentID = NO;
       for (k = 0; k < (pcCount - 1); k++) {
         pc = [pathComponents objectAtIndex:k];
         iTunesPlaylist *nextPl = [pl lookupPathComponent:pc inContext:nil];
-        if (!nextPl || ![nextPl isDirectory]) {
+        if (!nextPl || ![nextPl isContainer]) {
           nextPl = [[iTunesPlaylist alloc] init];
           [nextPl setName:pc];
           [pl addChild:nextPl withName:pc];
@@ -303,7 +303,7 @@ static BOOL showPersistentID = NO;
   return result;
 }
 
-- (NSArray *)directoryContents {
+- (NSArray *)containerContents {
   if (![self showsTrackFormatFile]) {
     // in this case, we can possibly eliminate an unnecessary copy
     if ([self->childrenMap count] && ![[self trackNames] count])
@@ -318,13 +318,13 @@ static BOOL showPersistentID = NO;
   if ([self showsTrackFormatFile]) {
     [names addObject:[self trackFormatFileName]];
 #if 0
-    [names addObjectsFromArray:[self->shadowFolder directoryContents]];
+    [names addObjectsFromArray:[self->shadowFolder containerContents]];
 #endif
   }
   return [names autorelease];
 }
 
-- (BOOL)isDirectory {
+- (BOOL)isContainer {
   return YES;
 }
 - (BOOL)isMutable {
@@ -366,10 +366,10 @@ static BOOL showPersistentID = NO;
 }
 #endif
 
-- (BOOL)createDirectoryNamed:(NSString *)_name
+- (BOOL)createContainerNamed:(NSString *)_name
   withAttributes:(NSDictionary *)_attrs
 {
-  return [self->shadowFolder createDirectoryNamed:_name withAttributes:_attrs];
+  return [self->shadowFolder createContainerNamed:_name withAttributes:_attrs];
 }
 
 - (BOOL)writeFileNamed:(NSString *)_name withData:(NSData *)_data {

@@ -154,7 +154,7 @@ static NSArray      *emptyArray = nil;
 - (NSArray *)contentsOfDirectoryAtPath:(NSString *)_path
   error:(NSError **)_err
 {
-  return [[self lookupPath:_path] directoryContents];
+  return [[self lookupPath:_path] containerContents];
 }
 
 - (NSDictionary *)attributesOfItemAtPath:(NSString *)_path
@@ -165,7 +165,7 @@ static NSArray      *emptyArray = nil;
   if (!obj) return nil;
   NSDictionary *attr = [obj fileAttributes];
   if (!attr) {
-    if ([obj isDirectory])
+    if ([obj isContainer])
       return dirDict;
     else
       return fileDict;
@@ -222,7 +222,7 @@ static NSArray      *emptyArray = nil;
             _cmd, _path, _attrs);
     return NO;
   }
-  BOOL success = [obj createDirectoryNamed:[_path lastPathComponent]
+  BOOL success = [obj createContainerNamed:[_path lastPathComponent]
                       withAttributes:_attrs];
   if (debugAccess)
     NSLog(@"%s path:%@ attrs:%@ -> [%s]",
@@ -427,6 +427,8 @@ static NSArray      *emptyArray = nil;
 {
   NSDictionary *extAttrs = [[self lookupPath:_path] extendedFileAttributes];
   NSData       *value    = [extAttrs objectForKey:_name];
+  if (_pos)
+    value = [value subdataWithRange:NSMakeRange(_pos, [value length] - _pos)];
   if (debugAccess && 0)
     NSLog(@"%s path:%@ name:%@ -> %@", _cmd, _path, _name, value);
   return value;

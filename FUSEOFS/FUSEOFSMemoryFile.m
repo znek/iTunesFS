@@ -72,7 +72,7 @@
 
 /* reflection */
 
-- (BOOL)isDirectory {
+- (BOOL)isContainer {
   return NO;
 }
 - (BOOL)isMutable {
@@ -83,9 +83,6 @@
 
 - (NSData *)fileContents {
   return self->data;
-}
-- (NSArray *)directoryContents {
-  return nil;
 }
 
 @end /* FUSEOFSMemoryFile */

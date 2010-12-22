@@ -469,17 +469,17 @@ static NSDictionary      *burnFolderFinderInfo = nil;
   return [self->virtMap lookupPathComponent:_pc inContext:_ctx];
 }
 
-- (NSArray *)directoryContents {
+- (NSArray *)containerContents {
   if (!useCategories) {
     if ([self->plMap count] != 1)
       return [self playlistNames];
     // return all tracknames in case there's just one playlist (iPod shuffle)
-    return [[[self->plMap allValues] lastObject] directoryContents];
+    return [[[self->plMap allValues] lastObject] containerContents];
   }
-  return [self->virtMap directoryContents];
+  return [self->virtMap containerContents];
 }
 
-- (BOOL)isDirectory {
+- (BOOL)isContainer {
   return YES;
 }
 - (NSData *)iconData {

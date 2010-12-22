@@ -45,14 +45,14 @@
   if (!self->attrs)
     self->attrs = [[NSMutableDictionary alloc] initWithCapacity:6];
 
-  BOOL isDirectory = [self isDirectory];
-  if (!isDirectory && ![self->attrs objectForKey:NSFileSize]) {
+  BOOL isContainer = [self isContainer];
+  if (!isContainer && ![self->attrs objectForKey:NSFileSize]) {
     NSNumber *fileSize = [NSNumber numberWithUnsignedInteger:
                                    [[self fileContents] length]];
     [self->attrs setObject:fileSize forKey:NSFileSize];
   }
   if (![self->attrs objectForKey:NSFileType]) {
-    [self->attrs setObject:isDirectory ? NSFileTypeDirectory : NSFileTypeRegular
+    [self->attrs setObject:isContainer ? NSFileTypeDirectory : NSFileTypeRegular
                  forKey:NSFileType];
   }
 	return [[self->attrs copy] autorelease];

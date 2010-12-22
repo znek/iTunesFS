@@ -34,13 +34,26 @@
 
 @implementation NSObject (FUSEOFS)
 
+/* lookup */
+
 - (id)lookupPathComponent:(NSString *)_pc inContext:(id)_ctx {
   return nil;
 }
 
+
+/* reflection */
+
+- (BOOL)isContainer {
+  return NO;
+}
+- (BOOL)isMutable {
+  return NO;
+}
+
+
 /* attributes */
 
-- (NSArray *)directoryContents {
+- (NSArray *)containerContents {
   return nil;
 }
 - (NSData *)fileContents {
@@ -52,7 +65,7 @@
 - (NSDictionary *)fileAttributes {
   NSNumber *perm;
   NSMutableDictionary *attrs = [NSMutableDictionary dictionaryWithCapacity:2];
-  if ([self isDirectory]) {
+  if ([self isContainer]) {
     perm = [NSNumber numberWithInt:[self isMutable] ? 0777 : 0555];
     [attrs setObject:NSFileTypeDirectory forKey:NSFileType];
     [attrs setObject:[self symbolicLinkTarget] ? NSFileTypeSymbolicLink
@@ -104,7 +117,7 @@
   return NO;
 }
 
-- (BOOL)createDirectoryNamed:(NSString *)_name
+- (BOOL)createContainerNamed:(NSString *)_name
   withAttributes:(NSDictionary *)_attrs
 {
   return NO;
@@ -126,15 +139,6 @@
   return NO;
 }
 - (BOOL)removeExtendedAttribute:(NSString *)_name {
-  return NO;
-}
-
-/* reflection */
-
-- (BOOL)isDirectory {
-  return NO;
-}
-- (BOOL)isMutable {
   return NO;
 }
 
@@ -200,14 +204,14 @@
 	return nil;
 }
 
-- (NSArray *)directoryContents {
+- (NSArray *)containerContents {
   if (![self objectForKey:@"_FinderAttributes"])
     return [self allKeys];
   NSMutableArray *keys = [[[self allKeys] mutableCopy] autorelease];
   [keys removeObject:@"_FinderAttributes"];
   return keys;
 }
-- (BOOL)isDirectory {
+- (BOOL)isContainer {
   return YES;
 }
 

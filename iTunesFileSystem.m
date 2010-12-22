@@ -298,7 +298,7 @@ static NSString *iPhoneDiskPath  = @"/Volumes/iPhoneDisk";
   return [obj lookupPathComponent:_pc inContext:_ctx];
 }
 
-- (NSArray *)directoryContents {
+- (NSArray *)containerContents {
   // TODO: fake Spotlight database
   NSObject *obj;
   
@@ -306,7 +306,7 @@ static NSString *iPhoneDiskPath  = @"/Volumes/iPhoneDisk";
     obj = [[self->libMap allValues] lastObject];
   else
     obj = self->libMap;
-  return [obj directoryContents];
+  return [obj containerContents];
 }
 
 - (NSDictionary *)fileSystemAttributes {
@@ -318,7 +318,7 @@ static NSString *iPhoneDiskPath  = @"/Volumes/iPhoneDisk";
   return [attrs autorelease];
 }
 
-- (BOOL)isDirectory {
+- (BOOL)isContainer {
   return YES;
 }
 

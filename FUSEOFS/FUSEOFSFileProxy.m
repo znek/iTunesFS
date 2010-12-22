@@ -66,8 +66,8 @@
 /* FUSEOFS */
 
 - (id)lookupPathComponent:(NSString *)_pc inContext:(id)_ctx {
-  if ([self isDirectory]) {
-    if ([[self directoryContents] containsObject:_pc]) {
+  if ([self isContainer]) {
+    if ([[self containerContents] containsObject:_pc]) {
       NSString *pcPath = [self getRelativePath:_pc];
       return [[[FUSEOFSFileProxy alloc] initWithPath:pcPath] autorelease];
     }
@@ -77,17 +77,17 @@
 
 /* reflection */
 
-- (BOOL)isDirectory {
-  BOOL isDirectory;
+- (BOOL)isContainer {
+  BOOL isContainer;
   BOOL exists = [[self fileManager] fileExistsAtPath:self->path
-                                    isDirectory:&isDirectory];
+                                    isDirectory:&isContainer];
   if (!exists)
     return NO;
-  return isDirectory;
+  return isContainer;
 }
 
 - (BOOL)isMutable {
-  if (![self isDirectory])
+  if (![self isContainer])
     return [[self fileManager] isWritableFileAtPath:self->path];
   return YES; // TODO: FIXME
 }
@@ -95,13 +95,13 @@
 /* read */
 
 - (NSData *)fileContents {
-  if (![self isDirectory])
+  if (![self isContainer])
     return [[self fileManager] contentsAtPath:self->path];
   return nil;
 }
 
-- (NSArray *)directoryContents {
-  if ([self isDirectory])
+- (NSArray *)containerContents {
+  if ([self isContainer])
     return [[self fileManager] contentsOfDirectoryAtPath:self->path error:NULL];
   return nil;
 }
@@ -115,16 +115,16 @@
 - (BOOL)createFileNamed:(NSString *)_name
   withAttributes:(NSDictionary *)_attrs
 {
-  if (![self isDirectory]) return NO;
+  if (![self isContainer]) return NO;
   return [[self fileManager] createFileAtPath:[self getRelativePath:_name]
                              contents:nil
                              attributes:_attrs];
 }
 
-- (BOOL)createDirectoryNamed:(NSString *)_name
+- (BOOL)createContainerNamed:(NSString *)_name
   withAttributes:(NSDictionary *)_attrs
 {
-  if (![self isDirectory]) return NO;
+  if (![self isContainer]) return NO;
   return [[self fileManager] createDirectoryAtPath:[self getRelativePath:_name]
                              withIntermediateDirectories:NO
                              attributes:_attrs
@@ -132,7 +132,7 @@
 }
 
 - (BOOL)writeFileNamed:(NSString *)_name withData:(NSData *)_data {
-  if (![self isDirectory]) return NO;
+  if (![self isContainer]) return NO;
   
   return [[self fileManager] createFileAtPath:[self getRelativePath:_name]
                              contents:_data
@@ -140,7 +140,7 @@
 }
 
 - (BOOL)removeItemNamed:(NSString *)_name {
-  if (![self isDirectory]) return NO;
+  if (![self isContainer]) return NO;
   
   return [[self fileManager] removeItemAtPath:[self getRelativePath:_name]
                              error:NULL];

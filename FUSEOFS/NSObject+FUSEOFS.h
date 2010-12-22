@@ -41,23 +41,39 @@
 
 - (id)lookupPathComponent:(NSString *)_pc inContext:(id)_ctx;
 
-- (NSArray *)directoryContents;
+
+/* reflection */
+
+- (BOOL)isContainer;
+- (BOOL)isMutable;
+
+// containers need to implement this
+- (NSArray *)containerContents;
+
+// files need to implement this
 - (NSData *)fileContents;
+
+// files or containers may implement this
 - (NSString *)symbolicLinkTarget;
 
-/* write support */
+
+/* container write support */
 
 - (BOOL)createFileNamed:(NSString *)_name
   withAttributes:(NSDictionary *)_attrs;
-- (BOOL)createDirectoryNamed:(NSString *)_name
+- (BOOL)createContainerNamed:(NSString *)_name
   withAttributes:(NSDictionary *)_attrs;
 - (BOOL)writeFileNamed:(NSString *)_name withData:(NSData *)_data;
 - (BOOL)removeItemNamed:(NSString *)_name;
+
 
 /* attributes */
 
 - (NSDictionary *)fileAttributes;
 - (BOOL)setFileAttributes:(NSDictionary *)_attrs;
+
+
+/* extended attributes */
 
 - (NSDictionary *)extendedFileAttributes;
 - (BOOL)setExtendedAttribute:(NSString *)_name value:(NSData *)_value;
@@ -71,16 +87,12 @@
 - (NSDictionary *)finderAttributes;
 - (NSDictionary *)resourceAttributes;
 
+
 /* misc */
 
 // NOTE: the format of iconData is platform dependend - on MacOS X MacFUSE
 // expects this to be 'icns' data
 - (NSData *)iconData;
-
-/* reflection */
-
-- (BOOL)isDirectory;
-- (BOOL)isMutable;
 
 @end /* NSObject (FUSEOFS) */
 

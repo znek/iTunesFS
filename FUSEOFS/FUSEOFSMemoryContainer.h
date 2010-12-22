@@ -30,16 +30,16 @@
   POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef	__FUSEOFS_FUSEOFSMemoryFolder_H
-#define	__FUSEOFS_FUSEOFSMemoryFolder_H
+#ifndef	__FUSEOFS_FUSEOFSMemoryContainer_H
+#define	__FUSEOFS_FUSEOFSMemoryContainer_H
 
 #import "FUSEOFSMemoryObject.h"
 
-@interface FUSEOFSMemoryFolder : FUSEOFSMemoryObject
+@interface FUSEOFSMemoryContainer : FUSEOFSMemoryObject
 {
 	NSMutableDictionary *folder;
 }
 
-@end /* FUSEOFSMemoryFolder */
+@end /* FUSEOFSMemoryContainer */
 
-#endif	/* __FUSEOFS_FUSEOFSMemoryFolder_H */
+#endif	/* __FUSEOFS_FUSEOFSMemoryContainer_H */
