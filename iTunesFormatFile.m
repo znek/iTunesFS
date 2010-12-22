@@ -188,8 +188,21 @@ static NSCharacterSet *trimSet = nil;
   if (doDebug)
     NSLog(@"%s rawDefault(before trimming):\n%@", _cmd, rawDefault);
   rawDefault = [rawDefault stringByTrimmingCharactersInSet:trimSet];
+
+  NSString *newDefault = nil;
   NSArray  *lines      = [rawDefault componentsSeparatedByString:@"\n"];
-  NSString *newDefault = [lines lastObject];
+  int      i, count    = [lines count];
+  for (i = count - 1; i >= 0; i--) {
+    NSString *line = [lines objectAtIndex:i];
+    if (![line hasPrefix:@"#"]) {
+      line = [line stringByTrimmingCharactersInSet:trimSet];
+      if ([line length]) {
+        newDefault = line;
+        break;
+      }
+    }
+  }
+
   if (newDefault && [newDefault length]) {
     NSString *defKey = self->defaultKey ? self->defaultKey
                                         : self->defaultTemplate;

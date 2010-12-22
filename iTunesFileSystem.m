@@ -63,7 +63,8 @@ static BOOL doDebug          = NO;
 static BOOL ignoreITunes     = NO;
 static BOOL ignoreIPods      = NO;
 static BOOL allowOtherOption = NO;
-static BOOL showFormatterFiles = YES;
+static BOOL showFormatFiles  = YES;
+static BOOL useCategories    = YES;
 
 static NSString *fsIconPath      = nil;
 static NSArray  *fakeVolumePaths = nil;
@@ -85,6 +86,8 @@ static NSString *albumsTrackFormatFileName    = @"AlbumsTrackFormat.txt";
   ignoreITunes     = [ud boolForKey:@"NoITunes"];
   ignoreIPods      = [ud boolForKey:@"NoIPods"];
   allowOtherOption = [ud boolForKey:@"FUSEOptionAllowOther"];
+  showFormatFiles  = [ud boolForKey:@"ShowFormatFiles"];
+  useCategories    = [ud boolForKey:@"UseCategories"];
 
   if (ignoreITunes && ignoreIPods)
     NSLog(@"ERROR: ignoring iTunes and iPods doesn't make sense at all.");
@@ -343,11 +346,12 @@ static NSString *albumsTrackFormatFileName    = @"AlbumsTrackFormat.txt";
   else
     obj = self->libMap;
   
-  if (showFormatterFiles) {
+  if (showFormatFiles) {
     NSMutableArray *contents = [[NSMutableArray alloc] initWithCapacity:10];
     [contents addObjectsFromArray:[obj containerContents]];
     [contents addObject:playlistsTrackFormatFileName];
-    [contents addObject:albumsTrackFormatFileName];
+    if (useCategories)
+      [contents addObject:albumsTrackFormatFileName];
     return [contents autorelease];
   }
   return [obj containerContents];
@@ -386,7 +390,8 @@ static NSString *albumsTrackFormatFileName    = @"AlbumsTrackFormat.txt";
   }
   if ([_name isEqualToString:albumsTrackFormatFileName]) {
     [self->albumsTrackFormatFile setFileContents:_data];
-    [self reload];
+    if (useCategories)
+      [self reload];
     return YES;
   }
   return [self->shadowFolder writeFileNamed:_name withData:_data];

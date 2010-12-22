@@ -1,5 +1,14 @@
 2010-12-22  Marcus Mueller  <znek@mulle-kybernetik.com>
 
+	* v1.2.0
+
+	* iTunesFileSystem.m: only show AlbumsTrackFormat.txt if new
+	  'ShowFormatFiles' default is YES and 'UseCategories' is YES
+
+	* iTunesFormatFile.m: ignore lines starting with '#' altogether
+
+	* iTunesPlaylist.m: use new 'ShowFormatFiles' default
+
 	* v1.2.0b1
 
 	* NSObject+FUSEOFS.[hm]: changed layout and renamed every wording of

@@ -7,7 +7,7 @@
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleGetInfoString</key>
-	<string>iTunesFS version 1.2.0b1, Copyright 2007-2010 Mulle kybernetiK.</string>
+	<string>iTunesFS version 1.2.0, Copyright 2007-2010 Mulle kybernetiK.</string>
 	<key>CFBundleIconFile</key>
 	<string>iTunesFS</string>
 	<key>CFBundleIdentifier</key>
@@ -19,11 +19,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.2.0b1</string>
+	<string>1.2.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1.2.0b1</string>
+	<string>1.2.0</string>
 	<key>FUSEFileSystemClass</key>
 	<string>iTunesFileSystem</string>
 	<key>LSUIElement</key>
@@ -40,10 +40,10 @@
 		<string>iTunesFS</string>
 		<key>FUSEMountPath</key>
 		<string>/Volumes/iTunesFS</string>
-		<key>DetailedTrackNames</key>
-		<false/>
 		<key>NoIPods</key>
 		<false/>
+		<key>AutoOpenInFinder</key>
+		<true/>
 		<key>SymbolicLinks</key>
 		<false/>
 		<key>UseCategories</key>
@@ -54,14 +54,14 @@
 		<false/>
 		<key>iPodLibraryDebugEnabled</key>
 		<false/>
+		<key>ShowFormatFiles</key>
+		<true/>
 		<key>AlbumsTrackFormat</key>
 		<string>%(name).%(ext.lowercaseString)</string>
 		<key>PlaylistsTrackFormat</key>
 		<string>%(playlistNumber#000) %(name).%(ext.lowercaseString)</string>
 		<key>PlaylistsTrackFormat[folders]</key>
 		<string>%(artist) / %(album) / %(trackNumber#00) %(name).%(ext.lowercaseString)</string>
-		<key>AutoOpenInFinder</key>
-		<true/>
 	</dict>
 </dict>
 </plist>

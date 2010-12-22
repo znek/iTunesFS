@@ -61,10 +61,11 @@ static NSString *trackFormatFileName = @"PlaylistsTrackFormat.txt";
   NSUserDefaults *ud;
   
   if (didInit) return;
-  didInit          = YES;
-  ud               = [NSUserDefaults standardUserDefaults];
-  doDebug          = [ud boolForKey:@"iTunesFileSystemDebugEnabled"];
-  showPersistentID = [ud boolForKey:@"ShowPersistentIDs"];
+  didInit  = YES;
+  ud       = [NSUserDefaults standardUserDefaults];
+  doDebug  = [ud boolForKey:@"iTunesFileSystemDebugEnabled"];
+  showPersistentID    = [ud boolForKey:@"ShowPersistentIDs"];
+  showTrackFormatFile = [ud boolForKey:@"ShowFormatFiles"];
 }
 
 - (id)init {
