@@ -27,6 +27,7 @@
 		AD6A7DB912C0BB770038FF7E /* iTunesFormatFile.m in Sources */ = {isa = PBXBuildFile; fileRef = AD6A7DB812C0BB770038FF7E /* iTunesFormatFile.m */; };
 		AD6A806D12C11C110038FF7E /* PlaylistsTrackFormat.txt in Resources */ = {isa = PBXBuildFile; fileRef = AD6A806B12C11C110038FF7E /* PlaylistsTrackFormat.txt */; };
 		AD6A80D312C146D40038FF7E /* FUSEOFSMemoryObject.m in Sources */ = {isa = PBXBuildFile; fileRef = AD6A80D212C146D40038FF7E /* FUSEOFSMemoryObject.m */; };
+		AD6A830712C1AF530038FF7E /* AlbumsTrackFormat.txt in Resources */ = {isa = PBXBuildFile; fileRef = AD6A830512C1AF530038FF7E /* AlbumsTrackFormat.txt */; };
 		AD8118720F093DAB000786C9 /* NSImage+IconData.m in Sources */ = {isa = PBXBuildFile; fileRef = AD8118710F093DAB000786C9 /* NSImage+IconData.m */; };
 		AD8118830F093EA4000786C9 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD8118820F093EA4000786C9 /* Accelerate.framework */; };
 		AD8119700F095144000786C9 /* FUSEOFSLookupContext.m in Sources */ = {isa = PBXBuildFile; fileRef = AD81196F0F095144000786C9 /* FUSEOFSLookupContext.m */; };
@@ -90,6 +91,7 @@
 		AD6A806C12C11C110038FF7E /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = English; path = English.lproj/PlaylistsTrackFormat.txt; sourceTree = "<group>"; };
 		AD6A80D112C146D40038FF7E /* FUSEOFSMemoryObject.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = FUSEOFSMemoryObject.h; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		AD6A80D212C146D40038FF7E /* FUSEOFSMemoryObject.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = FUSEOFSMemoryObject.m; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
+		AD6A830612C1AF530038FF7E /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = English; path = English.lproj/AlbumsTrackFormat.txt; sourceTree = "<group>"; };
 		AD8118700F093DAB000786C9 /* NSImage+IconData.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = "NSImage+IconData.h"; sourceTree = "<group>"; };
 		AD8118710F093DAB000786C9 /* NSImage+IconData.m */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.objc; path = "NSImage+IconData.m"; sourceTree = "<group>"; };
 		AD8118820F093EA4000786C9 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = /System/Library/Frameworks/Accelerate.framework; sourceTree = "<absolute>"; };
@@ -211,6 +213,7 @@
 			isa = PBXGroup;
 			children = (
 				AD37A2030C01C58000DF1291 /* MainMenu.nib */,
+				AD6A830512C1AF530038FF7E /* AlbumsTrackFormat.txt */,
 				AD6A806B12C11C110038FF7E /* PlaylistsTrackFormat.txt */,
 				ADAADA9A0C2111390024D899 /* Localizable.strings */,
 				7F3DBD070B4422C200A48059 /* Info.plist */,
@@ -369,6 +372,7 @@
 				ADAADA9B0C2111390024D899 /* Localizable.strings in Resources */,
 				ADBDA9CC0C02E7A5004CF795 /* iTunesFS.icns in Resources */,
 				AD6A806D12C11C110038FF7E /* PlaylistsTrackFormat.txt in Resources */,
+				AD6A830712C1AF530038FF7E /* AlbumsTrackFormat.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -438,6 +442,14 @@
 				AD6A806C12C11C110038FF7E /* English */,
 			);
 			name = PlaylistsTrackFormat.txt;
+			sourceTree = "<group>";
+		};
+		AD6A830512C1AF530038FF7E /* AlbumsTrackFormat.txt */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AD6A830612C1AF530038FF7E /* English */,
+			);
+			name = AlbumsTrackFormat.txt;
 			sourceTree = "<group>";
 		};
 		ADAADA9A0C2111390024D899 /* Localizable.strings */ = {

@@ -36,6 +36,8 @@
 #import "iPodLibrary.h"
 #import "JBiPodLibrary.h"
 #import "NSObject+FUSEOFS.h"
+#import "FUSEOFSMemoryContainer.h"
+#import "iTunesFormatFile.h"
 
 @interface iTunesFileSystem (Private)
 - (void)addLibrary:(iTunesLibrary *)_lib;
@@ -44,6 +46,8 @@
 - (void)didUnmountRemovableDevice:(NSNotification *)_notif;
 
 - (BOOL)showLibraries;
+
+- (void)reload;
 
 - (NSArray *)pathFromFSPath:(NSString *)_path;
 - (id)lookupPath:(NSString *)_path;
@@ -55,13 +59,17 @@
 
 @implementation iTunesFileSystem
 
-static BOOL     doDebug          = NO;
-static BOOL     ignoreITunes     = NO;
-static BOOL     ignoreIPods      = NO;
-static BOOL     allowOtherOption = NO;
+static BOOL doDebug          = NO;
+static BOOL ignoreITunes     = NO;
+static BOOL ignoreIPods      = NO;
+static BOOL allowOtherOption = NO;
+static BOOL showFormatterFiles = YES;
+
 static NSString *fsIconPath      = nil;
 static NSArray  *fakeVolumePaths = nil;
 static NSString *iPhoneDiskPath  = @"/Volumes/iPhoneDisk";
+static NSString *playlistsTrackFormatFileName = @"PlaylistsTrackFormat.txt";
+static NSString *albumsTrackFormatFileName    = @"AlbumsTrackFormat.txt";
 
 + (void)initialize {
   static BOOL didInit = NO;
@@ -91,13 +99,21 @@ static NSString *iPhoneDiskPath  = @"/Volumes/iPhoneDisk";
 /* NSObject(GMUserFileSystemLifecycle) */
 
 - (void)willMount {
-  iTunesLibrary *lib;
-
   if (doDebug)
     NSLog(@"iTunesFileSystem will mount now");
 
   self->libMap = [[NSMutableDictionary alloc] initWithCapacity:3];
   self->volMap = [[NSMutableDictionary alloc] initWithCapacity:3];
+
+  self->playlistsTrackFormatFile =
+    [[iTunesFormatFile alloc] initWithDefaultTemplate:@"PlaylistsTrackFormat"
+                              templateId:nil];
+  self->albumsTrackFormatFile =
+    [[iTunesFormatFile alloc] initWithDefaultTemplate:@"AlbumsTrackFormat"
+                              templateId:nil];
+  self->shadowFolder = [[FUSEOFSMemoryContainer alloc] init];
+
+  iTunesLibrary *lib;
 
   // add default library
   if (!ignoreITunes) {
@@ -186,7 +202,11 @@ static NSString *iPhoneDiskPath  = @"/Volumes/iPhoneDisk";
   [localPool release];
 
   [self->libMap release];
-	
+
+  [self->playlistsTrackFormatFile release];
+  [self->albumsTrackFormatFile    release];
+  [self->shadowFolder release];
+  
   [super willUnmount];
 }
 
@@ -270,6 +290,8 @@ static NSString *iPhoneDiskPath  = @"/Volumes/iPhoneDisk";
   if (doDebug)
     NSLog(@"will remove library %@", _lib);
 
+  [_lib close];
+
   NSString *path = [_lib mountPoint];
   if (path)
     [self->volMap removeObjectForKey:path];
@@ -277,6 +299,14 @@ static NSString *iPhoneDiskPath  = @"/Volumes/iPhoneDisk";
 }
 
 /* private */
+
+- (void)reload {
+  NSArray    *libs    = [self->libMap allValues];
+  NSUInteger i, count = [libs count];
+  for (i = 0; i < count; i++) {
+    [[libs objectAtIndex:i] reload];
+  }
+}
 
 - (BOOL)showLibraries {
   if (ignoreIPods) return NO;
@@ -287,25 +317,39 @@ static NSString *iPhoneDiskPath  = @"/Volumes/iPhoneDisk";
 /* FUSEOFS */
 
 - (id)lookupPathComponent:(NSString *)_pc inContext:(id)_ctx {
-  // TODO: add fake Spotlight entries
-  NSObject *obj;
-  
+  if ([_pc isEqualToString:playlistsTrackFormatFileName])
+    return self->playlistsTrackFormatFile;
+  else if ([_pc isEqualToString:albumsTrackFormatFileName])
+    return self->albumsTrackFormatFile;
+
+  id obj;
+
   if (![self showLibraries])
     obj = [[self->libMap allValues] lastObject];
   else
     obj = self->libMap;
 
-  return [obj lookupPathComponent:_pc inContext:_ctx];
+  obj = [obj lookupPathComponent:_pc inContext:_ctx];
+  if (!obj)
+    obj = [self->shadowFolder lookupPathComponent:_pc inContext:_ctx];
+  return obj;
 }
 
 - (NSArray *)containerContents {
-  // TODO: fake Spotlight database
   NSObject *obj;
   
   if (![self showLibraries])
     obj = [[self->libMap allValues] lastObject];
   else
     obj = self->libMap;
+  
+  if (showFormatterFiles) {
+    NSMutableArray *contents = [[NSMutableArray alloc] initWithCapacity:10];
+    [contents addObjectsFromArray:[obj containerContents]];
+    [contents addObject:playlistsTrackFormatFileName];
+    [contents addObject:albumsTrackFormatFileName];
+    return [contents autorelease];
+  }
   return [obj containerContents];
 }
 
@@ -321,6 +365,41 @@ static NSString *iPhoneDiskPath  = @"/Volumes/iPhoneDisk";
 - (BOOL)isContainer {
   return YES;
 }
+- (BOOL)isMutable {
+  return YES;
+}
+
+- (BOOL)createContainerNamed:(NSString *)_name
+  withAttributes:(NSDictionary *)_attrs
+{
+  if ([_name isEqualToString:@".Trashes"]) return NO;
+  if ([_name isEqualToString:@".TemporaryItems"]) return NO;
+
+  return [self->shadowFolder createContainerNamed:_name withAttributes:_attrs];
+}
+
+- (BOOL)writeFileNamed:(NSString *)_name withData:(NSData *)_data {
+  if ([_name isEqualToString:playlistsTrackFormatFileName]) {
+    [self->playlistsTrackFormatFile setFileContents:_data];
+    [self reload];
+    return YES;
+  }
+  if ([_name isEqualToString:albumsTrackFormatFileName]) {
+    [self->albumsTrackFormatFile setFileContents:_data];
+    [self reload];
+    return YES;
+  }
+  return [self->shadowFolder writeFileNamed:_name withData:_data];
+}
+
+- (BOOL)removeItemNamed:(NSString *)_name {
+  if ([_name isEqualToString:playlistsTrackFormatFileName])
+    return YES;
+  if ([_name isEqualToString:albumsTrackFormatFileName])
+    return YES;
+  return [self->shadowFolder removeItemNamed:_name];
+}
+
 
 /* optional */
 

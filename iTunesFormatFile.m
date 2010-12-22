@@ -81,7 +81,11 @@ static NSCharacterSet *trimSet = nil;
 /* private */
 
 - (void)_setup {
-  static NSString *helpText = nil;
+  static NSMutableDictionary *helpTextMap = nil;
+  if (!helpTextMap)
+    helpTextMap = [[NSMutableDictionary alloc] initWithCapacity:2];
+  
+  NSString *helpText = [helpTextMap objectForKey:self->defaultTemplate];
   if (!helpText) {
     NSString *htPath = [[NSBundle mainBundle]
                                   pathForResource:self->defaultTemplate
@@ -90,12 +94,17 @@ static NSCharacterSet *trimSet = nil;
       helpText = [[NSString alloc] initWithContentsOfFile:htPath
                                    encoding:NSUTF8StringEncoding
                                    error:NULL];
+      if (helpText) {
+        [helpTextMap setObject:helpText forKey:self->defaultTemplate];
+        [helpText release];
+      }
     }
   }
 
   NSMutableString *format = [[NSMutableString alloc] initWithCapacity:1024];
   [format appendString:@"# "];
-  [format appendString:self->defaultKey];
+  [format appendString:self->defaultKey ? self->defaultKey
+                                        : self->defaultTemplate];
   [format appendString:@"\n#\n"];
   if (helpText) {
     [format appendString:helpText];
@@ -182,16 +191,19 @@ static NSCharacterSet *trimSet = nil;
   NSArray  *lines      = [rawDefault componentsSeparatedByString:@"\n"];
   NSString *newDefault = [lines lastObject];
   if (newDefault && [newDefault length]) {
-    [[NSUserDefaults standardUserDefaults] setObject:newDefault
-                                           forKey:self->defaultKey];
+    NSString *defKey = self->defaultKey ? self->defaultKey
+                                        : self->defaultTemplate;
+    [[NSUserDefaults standardUserDefaults] setObject:newDefault forKey:defKey];
     self->needsSetup = YES;
     if (doDebug)
-      NSLog(@"%s %@ = %@", _cmd, self->defaultKey, newDefault);
+      NSLog(@"%s %@ = %@", _cmd, defKey, newDefault);
   }
   else {
-    [self remove];
-    if (doDebug)
-      NSLog(@"%s -> removed %@", _cmd, self->defaultKey);
+    if (self->defaultKey) {
+      [self remove];
+      if (doDebug)
+        NSLog(@"%s -> removed %@", _cmd, self->defaultKey);
+    }
   }
 }
 

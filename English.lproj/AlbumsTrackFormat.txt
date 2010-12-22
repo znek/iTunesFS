@@ -1,0 +1,19 @@
+# NOTE
+#
+# Creating virtual folders via use of "/" in format strings
+# doesn't work for AlbumsTrackFormat!
+#
+# PROPERTIES
+#
+# %(name)
+# %(album)
+# %(artist)
+# %(extension) OR %(ext)
+# %(trackNumber)
+#
+# EXAMPLES
+#
+# %(trackNumber#0) %(name).%(ext.lowercaseString)
+# %(trackNumber#00) %(name).%(ext.lowercaseString)
+# %(name) - %(artist).%(ext.lowercaseString)
+# %(name).%(ext.lowercaseString)

@@ -39,6 +39,9 @@
 {
   NSMutableDictionary *libMap;
   NSMutableDictionary *volMap; // iPods only
+  id playlistsTrackFormatFile;
+  id albumsTrackFormatFile;
+  id shadowFolder;
 }
 
 @end /* iTunesFileSystem */

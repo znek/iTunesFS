@@ -43,21 +43,20 @@
 
 @implementation iTunesLibrary
 
-static BOOL              doDebug               = NO;
-static BOOL              useCategories         = NO;
-static BOOL              mimicIPodNav          = NO;
-static BOOL              useBurnFolderNames    = YES;
-static NSString          *libraryPath          = nil;
-static NSData            *libraryIconData      = nil;
-static NSString          *kPlaylists           = @"Playlists";
-static NSString			     *kCompilations		     = @"Compilations";
-static NSString          *kArtists             = @"Artists";
-static NSString          *kAlbums              = @"Albums";
-static NSString          *kSongs               = @"Songs";
-static NSString          *kUnknown             = @"Unknown";
-static NSString          *kAll                 = @"All";
-static iTunesFSFormatter *albumsTrackFormatter = nil;
-static NSDictionary      *burnFolderFinderInfo = nil;
+static BOOL doDebug       = NO;
+static BOOL useCategories = NO;
+static BOOL mimicIPodNav  = NO;
+static BOOL useBurnFolderNames = YES;
+
+static NSString *libraryPath     = nil;
+static NSData   *libraryIconData = nil;
+static NSString *kPlaylists      = @"Playlists";
+static NSString	*kCompilations	 = @"Compilations";
+static NSString *kArtists        = @"Artists";
+static NSString *kAlbums         = @"Albums";
+static NSString *kSongs          = @"Songs";
+static NSString *kUnknown        = @"Unknown";
+static NSString *kAll            = @"All";
 
 + (void)initialize {
   static BOOL didInit = NO;
@@ -121,19 +120,6 @@ static NSDictionary      *burnFolderFinderInfo = nil;
                                       properlyEscapedFSRepresentation] copy];
   kAll          = [[NSLocalizedString(@"All",       "All")
                                       properlyEscapedFSRepresentation] copy];
-
-  if (useBurnFolderNames) {
-     
-		NSNumber *finderFlags = [NSNumber numberWithLong:kNameLocked];
-		burnFolderFinderInfo  = [NSDictionary dictionaryWithObject:finderFlags
-                                          forKey:kGMUserFileSystemFinderFlagsKey];
-  }
-
-  NSString *fmt = [ud stringForKey:@"AlbumsTrackFormat"];
-  albumsTrackFormatter = [[iTunesFSFormatter alloc] initWithFormatString:fmt];
-
-  if (doDebug)
-    NSLog(@"AlbumsTrackFormat: %@", fmt);
 
   if (doDebug && useCategories)
     NSLog(@"Using categories (virtual folder hierarchy)");
@@ -278,10 +264,6 @@ static NSDictionary      *burnFolderFinderInfo = nil;
 }
 
 - (void)reloadVirtualMaps {
-  NSMutableDictionary *albums, *artists, *compilations;
-  NSArray             *tracks, *allAlbums;
-  unsigned            count, i;
-
   if (!useCategories) return;
 
   [self->virtMap removeObjectForKey:kPlaylists];
@@ -295,17 +277,23 @@ static NSDictionary      *burnFolderFinderInfo = nil;
     [self->virtMap setObject:self->plMap forKey:kPlaylists];
   }
 
+  NSString *fmt = [[NSUserDefaults standardUserDefaults]
+                                   stringForKey:@"AlbumsTrackFormat"];
+  iTunesFSFormatter *formatter = [[iTunesFSFormatter alloc]
+                                                     initWithFormatString:fmt];
+
+  NSMutableDictionary *albums, *artists, *compilations;
   albums       = [self->virtMap objectForKey:kAlbums];
   artists      = [self->virtMap objectForKey:kArtists];
   compilations = [self->virtMap objectForKey:kCompilations];
-  
+
   [albums       removeAllObjects];
   [artists      removeAllObjects];
   [compilations removeAllObjects];
 
-  tracks = [self->trackMap allValues];
-  count  = [tracks count];
-  for (i = 0; i < count; i++) {
+  NSArray *tracks = [self->trackMap allValues];
+  unsigned count  = [tracks count];
+  for (unsigned i = 0; i < count; i++) {
     iTunesTrack *track;
     NSString            *artist, *album;
     NSString            *formattedArtist, *formattedAlbum, *formattedName;
@@ -316,7 +304,7 @@ static NSDictionary      *burnFolderFinderInfo = nil;
     if (!artist) artist = kUnknown;
     album  = [track album];
     if (!album)  album  = kUnknown;
-    
+
     formattedArtist = [self burnFolderNameFromFolderName:artist];
     formattedAlbum  = [self burnFolderNameFromFolderName:album];
     artistAlbums    = [artists objectForKey:formattedArtist];
@@ -331,9 +319,9 @@ static NSDictionary      *burnFolderFinderInfo = nil;
       [artistAlbums setObject:albumTracks forKey:formattedAlbum];
       [albumTracks release];
     }
-    formattedName = [albumsTrackFormatter stringValueByFormattingObject:track];
+    formattedName = [formatter stringValueByFormattingObject:track];
     [albumTracks setObject:track forKey:formattedName];
-    
+
     // now, for albums only
     albumTracks = [albums objectForKey:formattedAlbum];
     if (!albumTracks) {
@@ -341,19 +329,21 @@ static NSDictionary      *burnFolderFinderInfo = nil;
       [albums setObject:albumTracks forKey:formattedAlbum];
       [albumTracks release];
     }
-    formattedName = [albumsTrackFormatter stringValueByFormattingObject:track];
+    formattedName = [formatter stringValueByFormattingObject:track];
     [albumTracks setObject:track forKey:formattedName];
   }
-  
+
+  NSArray *allAlbums;
+
   allAlbums = [albums allValues];
-  count = [allAlbums count];
-  for (i = 0; i < count; i++) {
+  count     = [allAlbums count];
+  for (unsigned i = 0; i < count; i++) {
     NSMutableDictionary *thisAlbum;
     NSString            *artist, *album;
 
     thisAlbum = [allAlbums objectAtIndex:i];
     tracks    = [thisAlbum allValues];
-    
+
     artist = [[tracks objectAtIndex:0] artist];
     if (!artist) artist = kUnknown;
     album = [[tracks objectAtIndex:0] album];
@@ -387,7 +377,7 @@ static NSDictionary      *burnFolderFinderInfo = nil;
 
     allAlbums = [artists allValues];
     count     = [allAlbums count];
-    for (i = 0; i < count; i++) {
+    for (unsigned i = 0; i < count; i++) {
       NSMutableDictionary *artistAlbums;
       unsigned            aCount, k;
 
@@ -396,7 +386,7 @@ static NSDictionary      *burnFolderFinderInfo = nil;
       if (aCount > 1) {
         NSArray             *allArtistAlbums;
         NSMutableDictionary *allTracks;
-        
+
         allTracks = [[NSMutableDictionary alloc] initWithCapacity:10 * aCount];
         [artistAlbums setObject:allTracks forKey:kAll];
         [allTracks release];
@@ -455,9 +445,7 @@ static NSDictionary      *burnFolderFinderInfo = nil;
 
 - (id)lookupPathComponent:(NSString *)_pc inContext:(id)_ctx {
   if (!useCategories) {
-    unsigned count;
-    
-    count = [self->plMap count];
+    unsigned count = [self->plMap count];
     if (count == 0) return nil; // no playlists, no entries
     if (count == 1) {
       // hide single playlist altogether (i.e. iPod shuffle)
@@ -479,11 +467,12 @@ static NSDictionary      *burnFolderFinderInfo = nil;
   return [self->virtMap containerContents];
 }
 
-- (BOOL)isContainer {
-  return YES;
-}
 - (NSData *)iconData {
   return libraryIconData;
+}
+
+- (BOOL)isContainer {
+  return YES;
 }
 
 /* burn folder support */

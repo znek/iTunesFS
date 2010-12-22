@@ -42,7 +42,7 @@
 
 @interface iTunesPlaylist (Private)
 - (BOOL)hasTrackFormatFile;
-- (BOOL)showsTrackFormatFile;
+- (BOOL)showTrackFormatFile;
 - (NSString *)trackFormatFileName;
 - (void)generatePrettyTrackNames;
 - (void)setName:(NSString *)_name;
@@ -52,7 +52,9 @@
 @implementation iTunesPlaylist
 
 static BOOL doDebug = NO;
-static BOOL showPersistentID = NO;
+static BOOL showPersistentID    = NO;
+static BOOL showTrackFormatFile = YES;
+static NSString *trackFormatFileName = @"PlaylistsTrackFormat.txt";
 
 + (void)initialize {
   static BOOL    didInit = NO;
@@ -162,13 +164,10 @@ static BOOL showPersistentID = NO;
 - (BOOL)hasTrackFormatFile {
   return self->persistentId != nil;
 }
-- (BOOL)showsTrackFormatFile {
+- (BOOL)showTrackFormatFile {
   if (![self hasTrackFormatFile])
     return NO;
-  return YES;
-}
-- (NSString *)trackFormatFileName {
-  return @"PlaylistsTrackFormat.txt";
+  return showTrackFormatFile;
 }
 
 - (void)generatePrettyTrackNames {
@@ -285,7 +284,7 @@ static BOOL showPersistentID = NO;
 /* FUSEOFS */
 
 - (id)lookupPathComponent:(NSString *)_pc inContext:(id)_ctx {
-  if ([_pc isEqualToString:[self trackFormatFileName]] &&
+  if ([_pc isEqualToString:trackFormatFileName] &&
       [self hasTrackFormatFile])
   {
     return self->trackFormatFile;
@@ -304,7 +303,7 @@ static BOOL showPersistentID = NO;
 }
 
 - (NSArray *)containerContents {
-  if (![self showsTrackFormatFile]) {
+  if (![self showTrackFormatFile]) {
     // in this case, we can possibly eliminate an unnecessary copy
     if ([self->childrenMap count] && ![[self trackNames] count])
       return [self->childrenMap allKeys];
@@ -315,8 +314,8 @@ static BOOL showPersistentID = NO;
   NSMutableArray *names = [[NSMutableArray alloc]
                                            initWithArray:self->trackNames];
   [names addObjectsFromArray:[self->childrenMap allKeys]];
-  if ([self showsTrackFormatFile]) {
-    [names addObject:[self trackFormatFileName]];
+  if ([self showTrackFormatFile]) {
+    [names addObject:trackFormatFileName];
 #if 0
     [names addObjectsFromArray:[self->shadowFolder containerContents]];
 #endif
@@ -359,7 +358,7 @@ static BOOL showPersistentID = NO;
 {
   if (![self hasTrackFormatFile])
     return NO;
-  if (![_name isEqualTo:[self trackFormatFileName]])
+  if (![_name isEqualTo:trackFormatFileName])
     return NO;
 
   return YES;
@@ -375,7 +374,7 @@ static BOOL showPersistentID = NO;
 - (BOOL)writeFileNamed:(NSString *)_name withData:(NSData *)_data {
   if (![self hasTrackFormatFile])
     return NO;
-  if (![_name isEqualToString:[self trackFormatFileName]])
+  if (![_name isEqualToString:trackFormatFileName])
     return [self->shadowFolder writeFileNamed:_name withData:_data];
 
   [self->trackFormatFile setFileContents:_data];
@@ -387,7 +386,7 @@ static BOOL showPersistentID = NO;
   if (![self hasTrackFormatFile])
     return NO;
 
-  if ([_name isEqualToString:[self trackFormatFileName]]) {
+  if ([_name isEqualToString:trackFormatFileName]) {
     [self->trackFormatFile remove];
     [self generatePrettyTrackNames];
     return YES;

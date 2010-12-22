@@ -1,5 +1,7 @@
 2010-12-22  Marcus Mueller  <znek@mulle-kybernetik.com>
 
+	* v1.2.0b1
+
 	* NSObject+FUSEOFS.[hm]: changed layout and renamed every wording of
 	  'directory' into 'container'.
 
@@ -12,6 +14,16 @@
 	* FUSEOFSMemoryContainer.[hm]: see above
 
 	* FUSEObjectFileSystem.m: minor fix for valueOfExtendedAttribute:...
+
+	* iTunesFileSystem.[hm]: implemented 'AlbumsTrackFormat.txt' and
+	  'PlaylistsTrackFormat.txt' for global default manipulation
+
+	* iTunesFormatFile.m: bugfixes
+
+	* iTunesLibrary.m: removed caching of albumsTrackFormat, which can
+	  change during runtime. Some code cleanup.
+
+	* English.lproj/AlbumsTrackFormat.txt: help text added
 
 2010-12-21  Marcus Mueller  <znek@mulle-kybernetik.com>
 
