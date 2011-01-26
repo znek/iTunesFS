@@ -32,8 +32,8 @@
 
 #import "common.h"
 #import "iTunesTrack.h"
-#import "NSString+FUSEOFS.h"
 #import "NSURL+Extensions.h"
+#import "NSObject+FUSEOFS.h"
 
 @interface iTunesTrack (Private)
 - (NSString *)prettyName;

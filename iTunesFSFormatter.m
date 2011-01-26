@@ -32,7 +32,7 @@
 
 #import "common.h"
 #import "iTunesFSFormatter.h"
-#import "NSString+FUSEOFS.h"
+#import "NSObject+FUSEOFS.h"
 
 @interface iTunesFSFormattingResult : NSObject
 {

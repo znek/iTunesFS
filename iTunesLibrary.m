@@ -40,7 +40,6 @@
 #import "NSObject+FUSEOFS.h"
 #import "iTunesFSFormatter.h"
 #import "NSImage+IconData.h"
-#import "NSString+FUSEOFS.h"
 
 @implementation iTunesLibrary
 

@@ -34,7 +34,7 @@
 #import "iPodLibrary.h"
 #import <AppKit/AppKit.h>
 #import "NSString+Extensions.h"
-#import "NSString+FUSEOFS.h"
+#import "NSObject+FUSEOFS.h"
 #import "iTunesPlaylist.h"
 #import "iTunesTrack.h"
 #import "NSImage+IconData.h"
