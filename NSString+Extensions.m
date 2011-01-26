@@ -33,39 +33,6 @@
 #include "common.h"
 #include "NSString+Extensions.h"
 
-@implementation NSString (iTunesFSExtensions)
-
-- (NSString *)properlyEscapedFSRepresentation {
-  static NSString       *colon     = nil;
-  static NSCharacterSet *escapeSet = nil;
-
-  NSRange         r;
-  NSMutableString *proper;
-
-  if (!colon) {
-    const unichar colonChar = 0xFF1A; // 0xFE55
-    colon     = [[NSString alloc] initWithCharacters:&colonChar length:1]; 
-    escapeSet = [[NSCharacterSet characterSetWithCharactersInString:@"/:"]
-                                 copy];
-  }
-
-  // NOTE: we _always_ need to normalize the string into decomposed form!
-  // ref: http://developer.apple.com/qa/qa2001/qa1235.html
-  proper = [[self mutableCopy] autorelease];
-  CFStringNormalize((CFMutableStringRef)proper, kCFStringNormalizationFormD);
-
-  r = [self rangeOfCharacterFromSet:escapeSet];
-  if (r.location == NSNotFound)
-	  return proper;
-
-  r.length = [self length] - r.location;
-  [proper replaceOccurrencesOfString:@":" withString:colon options:0 range:r];
-  [proper replaceOccurrencesOfString:@"/" withString:@":"  options:0 range:r];
-  return proper;
-}
-
-@end /* NSString (iTunesFSExtensions) */
-
 @implementation NSString (iTunesFSLittleEndianUnicode)
 
 static char littleEndianUnicodeBom[2] = {0xFF, 0xFE};

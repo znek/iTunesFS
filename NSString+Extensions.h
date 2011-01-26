@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2007-2010, Marcus Müller <znek@mulle-kybernetik.com>.
+  Copyright (c) 2007-2011, Marcus Müller <znek@mulle-kybernetik.com>.
   All rights reserved.
 
 
@@ -34,12 +34,6 @@
 #define	__iTunesFS_NSString_Extensions_H
 
 #import <Foundation/Foundation.h>
-
-@interface NSString (iTunesFSExtensions)
-
-- (NSString *)properlyEscapedFSRepresentation;
-
-@end /* NSString (iTunesFSExtensions) */
 
 @interface NSString (iTunesFSLittleEndianUnicode)
 

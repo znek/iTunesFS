@@ -4,6 +4,12 @@
 
 	* FUSEOFS is an svn:external now
 
+	* NSString+Extensions.[hm]: moved -properlyEscapedFSRepresentation to
+	  FUSEOFS/NSString+FUSEOFS.[hm]
+
+	* iPodLibrary.m, iTunesFSFormatter.m, iTunesLibrary.m, iTunesTrack.m:
+	  adjusted includes
+
 2010-12-22  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* v1.2.0

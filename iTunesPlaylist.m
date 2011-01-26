@@ -34,9 +34,9 @@
 #import "iTunesPlaylist.h"
 #import "iTunesLibrary.h"
 #import "iTunesTrack.h"
-#import "NSString+Extensions.h"
 #import "iTunesFSFormatter.h"
 #import "NSObject+FUSEOFS.h"
+#import "NSString+FUSEOFS.h"
 #import "FUSEOFSMemoryContainer.h"
 #import "iTunesFormatFile.h"
 
