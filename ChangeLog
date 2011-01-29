@@ -1,3 +1,12 @@
+2011-01-29  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* iTunesFSController.[hm]: removed. Added a new FUSEOFSAppController
+	  in FUSEOFS which does everything iTunesFS requires in a more
+	  abstracted manner.
+
+	* Info.plist: added new "FUSEObjectFileSystemClass" user default
+	  for FUSEOFSAppController.
+
 2011-01-26  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* GNUmakefile: first changes for gnustep-make 2.4.0 compat

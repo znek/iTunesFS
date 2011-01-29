@@ -7,7 +7,7 @@
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleGetInfoString</key>
-	<string>iTunesFS version 1.2.0, Copyright 2007-2010 Mulle kybernetiK.</string>
+	<string>iTunesFS version 1.2.0, Copyright 2007-2011 Mulle kybernetiK.</string>
 	<key>CFBundleIconFile</key>
 	<string>iTunesFS</string>
 	<key>CFBundleIdentifier</key>
@@ -36,6 +36,8 @@
 	<string>NSApplication</string>
 	<key>NSUserDefaults</key>
 	<dict>
+    <key>FUSEObjectFileSystemClass</key>
+    <string>iTunesFileSystem</string>
 		<key>FUSEMountName</key>
 		<string>iTunesFS</string>
 		<key>FUSEMountPath</key>
