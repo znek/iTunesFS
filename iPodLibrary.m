@@ -288,7 +288,7 @@ static NSMutableDictionary *codeSelMap = nil;
         // compressed!
         if (version >= 0x28) {
           if (doDebug && debugIsVerbose) {
-            NSLog(@"[0x%08lx] database is compressed (version: 0x%x), "
+            NSLog(@"[0x%08lx] database is compressed (version: 0x%lu), "
                   "decompressing", filePos, version);
           }
 
@@ -310,8 +310,8 @@ static NSMutableDictionary *codeSelMap = nil;
     else if (memcmp(fsbb->code, "sd", 2) == 0) { // a list type header
       if (fsbb->count != 1 && fsbb->count != 2) {
         if (doDebug) {
-          NSLog(@"WARN: [0x%08lx] unknown list type header '%d', "
-                "jump:0x%x length:0x%x",
+          NSLog(@"WARN: [0x%08lx] unknown list type header '%lu, "
+                "jump:0x%lulength:0x%lu",
                 filePos, fsbb->count, fsbb->jump, fsbb->myLen);
         }
       }
@@ -432,7 +432,7 @@ static NSMutableDictionary *codeSelMap = nil;
     else { // unknown code
       if (doDebug) {
         NSLog(@"WARN: [0x%08lx] unknown code '%c%c', "
-              "jump:0x%x length:0x%x count:0x%x",
+              "jump:0x%lu length:0x%lu count:0x%lu",
               filePos, fsbb->code[0], fsbb->code[1],
               fsbb->jump, fsbb->myLen, fsbb->count);
       }

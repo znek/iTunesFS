@@ -335,6 +335,8 @@ static NSString *kAll            = @"All";
     [albumTracks setObject:track forKey:formattedName];
   }
 
+  [formatter release];
+
   NSArray *allAlbums;
 
   allAlbums = [albums allValues];

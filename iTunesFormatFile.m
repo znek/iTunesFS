@@ -146,7 +146,7 @@ static NSCharacterSet *trimSet = nil;
   if (self->defaultKey) {
     NSUserDefaults *ud     = [NSUserDefaults standardUserDefaults];
     NSString       *fmtKey = self->defaultKey;
-    if (fmt = [ud stringForKey:fmtKey]) {
+    if ((fmt = [ud stringForKey:fmtKey])) {
       // is it an alias?
       if ([fmt hasPrefix:@"@"] && ([fmt length] > 1)) {
         fmt = [fmt substringFromIndex:1];
@@ -186,7 +186,8 @@ static NSCharacterSet *trimSet = nil;
                                             encoding:NSUTF8StringEncoding]
                                             autorelease];
   if (doDebug)
-    NSLog(@"%s rawDefault(before trimming):\n%@", _cmd, rawDefault);
+    NSLog(@"%@ rawDefault(before trimming):\n%@",
+          NSStringFromSelector(_cmd), rawDefault);
   rawDefault = [rawDefault stringByTrimmingCharactersInSet:trimSet];
 
   NSString *newDefault = nil;
@@ -209,13 +210,14 @@ static NSCharacterSet *trimSet = nil;
     [[NSUserDefaults standardUserDefaults] setObject:newDefault forKey:defKey];
     self->needsSetup = YES;
     if (doDebug)
-      NSLog(@"%s %@ = %@", _cmd, defKey, newDefault);
+      NSLog(@"%@ %@ = %@", NSStringFromSelector(_cmd), defKey, newDefault);
   }
   else {
     if (self->defaultKey) {
       [self remove];
       if (doDebug)
-        NSLog(@"%s -> removed %@", _cmd, self->defaultKey);
+        NSLog(@"%@ -> removed %@",
+              NSStringFromSelector(_cmd), self->defaultKey);
     }
   }
 }

@@ -1,3 +1,13 @@
+2011-02-07  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* iTunesLibrary.m: fixed a leak
+
+	* iPodLibrary.m: fixed format strings
+
+	* iTunesFormatFile.m: fixed format strings and conditional
+	  expression
+
+
 2011-02-06  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* GNUmakefile*, *.[hm]: ported to GNUstep
