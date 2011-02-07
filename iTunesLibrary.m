@@ -39,7 +39,9 @@
 #import "Watchdog.h"
 #import "NSObject+FUSEOFS.h"
 #import "iTunesFSFormatter.h"
+#ifndef GNU_GUI_LIBRARY
 #import "NSImage+IconData.h"
+#endif
 
 @implementation iTunesLibrary
 

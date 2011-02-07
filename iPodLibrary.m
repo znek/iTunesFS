@@ -37,9 +37,11 @@
 #import "NSObject+FUSEOFS.h"
 #import "iTunesPlaylist.h"
 #import "iTunesTrack.h"
-#import "NSImage+IconData.h"
 #import "NSData+ZlibDecompression.h"
 #import "StreamReader.h"
+#ifndef GNU_GUI_LIBRARY
+#import "NSImage+IconData.h"
+#endif
 
 #if __LP64__ || NS_BUILD_32_LIKE_64
   typedef unsigned int ITDBUInt32;
@@ -570,7 +572,11 @@ static NSMutableDictionary *codeSelMap = nil;
 
 - (NSData *)iconData {
   NSImage *icon = [[NSWorkspace sharedWorkspace] iconForFile:self->mountPoint];
+#ifndef GNU_GUI_LIBRARY
   return [icon icnsDataWithWidth:512];
+#else
+  return [icon TIFFRepresentation];
+#endif
 }
 
 @end /* iPodLibrary */

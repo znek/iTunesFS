@@ -34,8 +34,8 @@
 #define	__iTunesFS_common_H_
 
 #ifdef __OBJC__
-#import <Cocoa/Cocoa.h>
-#import <MacFUSE/MacFUSE.h>
+#import <Foundation/Foundation.h>
+#import "FUSESupport.h"
 #endif
 
 #endif /* __iTunesFS_common_H_ */

@@ -32,6 +32,7 @@
 
 #import "common.h"
 #import "iTunesFileSystem.h"
+#import "AppKit/AppKit.h"
 #import "iTunesLibrary.h"
 #import "iPodLibrary.h"
 #import "JBiPodLibrary.h"
@@ -260,7 +261,7 @@ static NSString *albumsTrackFormatFileName    = @"AlbumsTrackFormat.txt";
   path = [[_notif userInfo] objectForKey:@"NSDevicePath"];
   lib  = [self->volMap objectForKey:path];
   if (lib) {
-    BOOL prevShowLibraries;
+    BOOL prevShowLibraries = [self showLibraries];
 
     if (doDebug)
       NSLog(@"Will remove library for unmounted iPod at path: %@", path);

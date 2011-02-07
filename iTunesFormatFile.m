@@ -228,6 +228,7 @@ static NSCharacterSet *trimSet = nil;
   return [super fileContents];
 }
 
+#ifndef NO_OSX_ADDITIONS
 - (NSDictionary *)extendedFileAttributes {
   if (!self->extAttrs) {
     static NSData *attrVal = nil;
@@ -244,5 +245,6 @@ static NSCharacterSet *trimSet = nil;
   }
   return [super extendedFileAttributes];
 }
+#endif
 
 @end /* iTunesFormatFile */

@@ -24,46 +24,44 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>1.2.0</string>
-	<key>FUSEFileSystemClass</key>
-	<string>iTunesFileSystem</string>
 	<key>LSUIElement</key>
 	<string>1</string>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright 2007-2010 Mulle kybernetiK.</string>
+	<string>Copyright 2007-2011 Mulle kybernetiK.</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 	<key>NSUserDefaults</key>
 	<dict>
-    <key>FUSEObjectFileSystemClass</key>
-    <string>iTunesFileSystem</string>
+		<key>AlbumsTrackFormat</key>
+		<string>%(name).%(ext.lowercaseString)</string>
+		<key>AutoOpenInFinder</key>
+		<true/>
 		<key>FUSEMountName</key>
 		<string>iTunesFS</string>
 		<key>FUSEMountPath</key>
 		<string>/Volumes/iTunesFS</string>
+		<key>FUSEObjectFileSystemClass</key>
+		<string>iTunesFileSystem</string>
+		<key>iPodLibraryDebugEnabled</key>
+		<false/>
+		<key>iTunesFileSystemDebugEnabled</key>
+		<false/>
+		<key>iTunesFSDebugPathLookup</key>
+		<false/>
 		<key>NoIPods</key>
 		<false/>
-		<key>AutoOpenInFinder</key>
+		<key>PlaylistsTrackFormat</key>
+		<string>%(playlistNumber#000) %(name).%(ext.lowercaseString)</string>
+		<key>PlaylistsTrackFormat[folders]</key>
+		<string>%(artist) / %(album) / %(trackNumber#00) %(name).%(ext.lowercaseString)</string>
+		<key>ShowFormatFiles</key>
 		<true/>
 		<key>SymbolicLinks</key>
 		<false/>
 		<key>UseCategories</key>
 		<true/>
-		<key>iTunesFileSystemDebugEnabled</key>
-		<false/>
-		<key>iTunesFSDebugPathLookup</key>
-		<false/>
-		<key>iPodLibraryDebugEnabled</key>
-		<false/>
-		<key>ShowFormatFiles</key>
-		<true/>
-		<key>AlbumsTrackFormat</key>
-		<string>%(name).%(ext.lowercaseString)</string>
-		<key>PlaylistsTrackFormat</key>
-		<string>%(playlistNumber#000) %(name).%(ext.lowercaseString)</string>
-		<key>PlaylistsTrackFormat[folders]</key>
-		<string>%(artist) / %(album) / %(trackNumber#00) %(name).%(ext.lowercaseString)</string>
 	</dict>
 </dict>
 </plist>
