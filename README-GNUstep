@@ -1,22 +1,29 @@
 About the GNUstep port
 ======================
 
-This port was done using a recent (r25225) svn trunk revision of
-GNUstep (http://www.gnustep.org). The system used for the port is running
-FreeBSD 6.2-STABLE, which has a native kqueue() implementation. Also,
-I used the fusefs BSD port from the ports collection, fusefs-kmod-0.3.0_5.
+This port was done using a recent (2011-01-25) svn trunk revision of
+GNUstep (http://www.gnustep.org), utilizing gnustep-make 2.4.0.
+
+The system used for the port is running FreeBSD 8.2-RC3,
+which has a native kqueue() implementation.
+
+I used the fusefs-libs BSD port from the ports collection, fusefs-libs-2.7.4.
 
 It's probably a good idea to include autoconf magic for figuring out all
 compile time requirements, but for the time being it's just not here.
 
 
-FUSEObjC-GNUstep
-================
+FUSEOFS/GSFUSE
+==============
 
-This is a port of FUSEObjC (original version referenced in the FUSEObjC
-folder) which basically removes all HFS+ and Finder related stuff. This
-should be generic enough to allow for compilation on systems other than
-Mac OS X.
+This is a fork of sdk-objc from MacFUSE which allows conditional compilation
+of Mac OS X "extensions" (HFS+ and Finder related methods).
+The GNUstep Makefile currently drops all MacFUSE-only functionality when the
+used Foundation framework/library isn't the Apple implementation.
+
+I'm still a bit undecided whether to base the Mac OS X version on this fork,
+but at the moment this just hasn't happened and probably won't in the near
+future.
 
 
 EXAMPLE

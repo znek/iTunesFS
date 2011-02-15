@@ -1,3 +1,19 @@
+2011-02-14  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* README-GNUstep: updated
+
+	* COPYING, COPYRIGHT: it's 2011 by now
+
+	* GNUmakefile: added main.m
+
+	* iTunesFileSystem.m: properly implemented -needsLocalOption for
+	  GNUstep
+
+	* English.lproj/MainMenu.gorm: changed application delegate to
+	  FUSEOFSAppController
+
+	* iTunesFSInfo.plist: added new defaults for GNUstep
+
 2011-02-07  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* iTunesLibrary.m: fixed a leak
@@ -6,7 +22,6 @@
 
 	* iTunesFormatFile.m: fixed format strings and conditional
 	  expression
-
 
 2011-02-06  Marcus Mueller  <znek@mulle-kybernetik.com>
 

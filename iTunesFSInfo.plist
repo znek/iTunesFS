@@ -1,10 +1,13 @@
 {
-	FUSEFileSystemClass = iTunesFileSystem;
-	"NSHumanReadableCopyright" = "Copyright 2007-2010 Mulle kybernetiK.";
+	NSHumanReadableCopyright = "Copyright 2007-2011 Mulle kybernetiK.";
 	NSUserDefaults = {
-		FUSEMountPath = "/tmp/iTunesFS";
-		UseCategories = YES;
-		AlbumsTrackFormat = "%(name).%(ext)";
-		PlaylistsTrackFormat = "%(playlistNumber) %(name).%(ext)";
+		FUSEMountName			  		= "iTunesFS";
+		FUSEMountPath             		= "/tmp/iTunesFS";
+		FUSEObjectFileSystemClass 		= "iTunesFileSystem";
+		UseCategories             		= YES;
+		AlbumsTrackFormat         		= "%(name).%(ext)";
+		PlaylistsTrackFormat      	    = "%(playlistNumber#000) %(name).%(ext)";
+        "PlaylistsTrackFormat[folders]" = "%(artist) / %(album) / %(trackNumber#00) %(name).%(ext.lowercaseString)";
+		ShowFormatFiles           		= YES;
 	};
 }

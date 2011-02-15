@@ -29,6 +29,8 @@ iTunesFS_SUBPROJECTS      = FUSEOFS
 iTunesFS_OBJC_PRECOMPILED_HEADERS = common.h
 
 iTunesFS_OBJC_FILES +=				\
+	main.m					\
+						\
 	iTunesFileSystem.m			\
 						\
 	iTunesLibrary.m				\

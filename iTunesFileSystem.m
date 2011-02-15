@@ -417,10 +417,14 @@ static NSString *albumsTrackFormatFileName    = @"AlbumsTrackFormat.txt";
  * marked as "local" in sidebar
  */
 - (BOOL)needsLocalOption {
+#ifndef NO_OSX_ADDITIONS
   NSString *osVer = [[NSProcessInfo processInfo] operatingSystemVersionString];
   
   if ([osVer rangeOfString:@"10.4"].length != 0) return NO;
   return YES;
+#else
+  return NO;
+#endif
 }
 
 - (BOOL)wantsAllowOtherOption {
