@@ -82,7 +82,7 @@
 		AD4C4F2512FF0E050057C045 /* GMDataBackedFileDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = GMDataBackedFileDelegate.h; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		AD4C4F2612FF0E050057C045 /* GMDataBackedFileDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = GMDataBackedFileDelegate.m; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		AD4C4F2712FF0E050057C045 /* GMDTrace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMDTrace.h; sourceTree = "<group>"; };
-		AD5A40700C214A1900B1A000 /* README-GNUstep */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; path = "README-GNUstep"; sourceTree = "<group>"; };
+		AD5A40700C214A1900B1A000 /* README-GNUstep */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; path = "README-GNUstep"; sourceTree = "<group>"; usesTabs = 0; };
 		AD5A40820C214FCB00B1A000 /* GNUmakefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 5; indentWidth = 8; path = GNUmakefile; sourceTree = "<group>"; tabWidth = 8; };
 		AD5A40830C214FCB00B1A000 /* GNUmakefile.preamble */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 5; indentWidth = 8; path = GNUmakefile.preamble; sourceTree = "<group>"; tabWidth = 8; };
 		AD5B5E7A0C0C1A70003B1650 /* NSObject+FUSEOFS.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = "NSObject+FUSEOFS.h"; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };

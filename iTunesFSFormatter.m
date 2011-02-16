@@ -239,9 +239,7 @@ static NSMutableDictionary *fmtCache = nil;
   if (!formatter) {
     formatter = [[NSNumberFormatter alloc] init];
     [formatter setFormat:_fmt];
-#ifndef GNUSTEP_BASE_LIBRARY
     [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
-#endif
     [fmtCache setObject:formatter forKey:cacheKey];
     [formatter release];
   }

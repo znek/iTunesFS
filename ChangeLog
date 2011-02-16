@@ -1,3 +1,12 @@
+2011-02-16  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* iTunesFileSystem.m: volname is a MacFUSE-only option
+
+	* iTunesFSFormatter.m: removed old workaround for GNUstep, but there
+	  are still problems (see README-GNUstep)
+
+	* README-GNUstep: updated
+
 2011-02-14  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* README-GNUstep: updated

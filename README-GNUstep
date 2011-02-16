@@ -26,6 +26,20 @@ but at the moment this just hasn't happened and probably won't in the near
 future.
 
 
+PROBLEMS
+========
+
+- NSNumberFormatter currently produces NaN for NSIntNumber values, which
+  needs some investigation and is either a bug in GNUstep base or something
+  which needs a different configuration in GNUstep base.
+
+- The AppKit requirement isn't something I'm too happy with, I'd prefer to
+  have a tool instead (similar to sshfs and the like).
+
+- On FreeBSD 8.2rc3 I needed to grant permissions for /dev/fuse0:
+  $ sudo chmod o+rw /dev/fuse0 
+
+
 EXAMPLE
 =======
 
@@ -33,7 +47,8 @@ There's a tiny, handcrafted (in all senses ;-) version of an iTunes Music
 Library XML file in the "examples" folder. After you have built the
 iTunesFS.app, use this command in a shell for starting the file system:
 
-$ openapp ./iTunesFS.app -Library examples/iTunesMusicLibrary.xml
+$ openapp ./iTunesFS.app -Library /tmp/iTunesMusicLibrary.xml \
+						 -iTunesFileSystemDebugEnabled YES
 
 You will then be able to browse the iTunes library, i.e.:
 

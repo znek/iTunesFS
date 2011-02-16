@@ -448,8 +448,10 @@ static NSString *albumsTrackFormatFileName    = @"AlbumsTrackFormat.txt";
   [os addObject:@"daemon_timeout=10"];
 #endif
 
+#ifndef NO_OSX_ADDITIONS
   // TODO: get this from user defaults?
   [os addObject:@"volname=iTunesFS"];
+#endif
 
   if ([self wantsAllowOtherOption])
     [os addObject:@"allow_other"];
