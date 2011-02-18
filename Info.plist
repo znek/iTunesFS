@@ -24,6 +24,8 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>1.2.1b1</string>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.utilities</string>
 	<key>LSUIElement</key>
 	<string>1</string>
 	<key>NSHumanReadableCopyright</key>
@@ -44,12 +46,6 @@
 		<string>/Volumes/iTunesFS</string>
 		<key>FUSEObjectFileSystemClass</key>
 		<string>iTunesFileSystem</string>
-		<key>iPodLibraryDebugEnabled</key>
-		<false/>
-		<key>iTunesFileSystemDebugEnabled</key>
-		<false/>
-		<key>iTunesFSDebugPathLookup</key>
-		<false/>
 		<key>NoIPods</key>
 		<false/>
 		<key>PlaylistsTrackFormat</key>
@@ -62,6 +58,12 @@
 		<false/>
 		<key>UseCategories</key>
 		<true/>
+		<key>iPodLibraryDebugEnabled</key>
+		<false/>
+		<key>iTunesFSDebugPathLookup</key>
+		<false/>
+		<key>iTunesFileSystemDebugEnabled</key>
+		<false/>
 	</dict>
 </dict>
 </plist>

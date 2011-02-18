@@ -240,6 +240,7 @@ static NSMutableDictionary *fmtCache = nil;
     formatter = [[NSNumberFormatter alloc] init];
     [formatter setFormat:_fmt];
     [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+    [formatter setFormatterBehavior:NSNumberFormatterBehavior10_0];
     [fmtCache setObject:formatter forKey:cacheKey];
     [formatter release];
   }
