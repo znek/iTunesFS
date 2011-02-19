@@ -73,21 +73,15 @@ static NSString *locationDestinationPrefix = nil;
 - (id)initWithITunesLibraryRepresentation:(NSDictionary *)_track {
   self = [super init];
   if (self) {
-    NSString            *name;
-    NSNumber            *tn;
-    NSString            *location;
-    NSMutableDictionary *attrs;
-    id                  tmp;
-
     self->artist = [[[_track objectForKey:@"Artist"]
                              properlyEscapedFSRepresentation] copy];
     self->album  = [[[_track objectForKey:@"Album"]
                              properlyEscapedFSRepresentation] copy];
 
-    tn = [_track objectForKey:@"Track Number"];
+    NSNumber *tn = [_track objectForKey:@"Track Number"];
     [self setTrackNumber:[tn unsignedIntValue]];
 
-    name = [_track objectForKey:@"Name"];
+    NSString *name = [_track objectForKey:@"Name"];
     if (name) {
       [self setPrettyName:[name properlyEscapedFSRepresentation]];
     }
@@ -95,7 +89,7 @@ static NSString *locationDestinationPrefix = nil;
       NSLog(@"WARN: track without name! REP:%@", _track);
       [self setPrettyName:@"Empty"];
     }
-    location = [_track objectForKey:@"Location"];
+    NSString *location = [_track objectForKey:@"Location"];
     if (location) {
       if ([location hasPrefix:@"file"]) {
         self->ext = [[location pathExtension] copy];
@@ -117,7 +111,10 @@ static NSString *locationDestinationPrefix = nil;
       [self setUrl:[NSURL URLWithString:location]];
     }
 
-    attrs = [[NSMutableDictionary alloc] initWithCapacity:3];
+    NSMutableDictionary *attrs = [[NSMutableDictionary alloc]
+                                                       initWithCapacity:3];
+    id tmp;
+
     if ([[self url] isFileURL]) {
       tmp = [_track objectForKey:@"Size"];
       if (tmp)
@@ -137,11 +134,14 @@ static NSString *locationDestinationPrefix = nil;
     }
     if (useSymbolicLinks)
       [attrs setObject:NSFileTypeSymbolicLink forKey:NSFileType];
-	else
-	  [attrs setObject:NSFileTypeRegular forKey:NSFileType];
+		else
+	  	[attrs setObject:NSFileTypeRegular forKey:NSFileType];
 
     [self setAttributes:attrs];
     [attrs release];
+    
+    self->genre    = [[_track objectForKey:@"Genre"]    copy];
+    self->grouping = [[_track objectForKey:@"Grouping"] copy];
   }
   return self;
 }
@@ -210,6 +210,8 @@ static NSString *locationDestinationPrefix = nil;
   [self->url        release];
   [self->attributes release];
   [self->ext        release];
+  [self->genre		  release];
+  [self->grouping   release];
   [super dealloc];
 }
 
@@ -232,6 +234,12 @@ static NSString *locationDestinationPrefix = nil;
 }
 - (NSString *)artist {
   return self->artist;
+}
+- (NSString *)genre {
+  return self->genre;
+}
+- (NSString *)grouping {
+  return self->grouping;
 }
 
 - (void)setUrl:(NSURL *)_url {
@@ -289,7 +297,7 @@ static NSString *locationDestinationPrefix = nil;
     return [[self->url description] dataUsingEncoding:NSUTF8StringEncoding];
   }
   path = [self->url properlyEscapedPath];
-#if ! GNUSTEP_BASE_LIBRARY
+#ifndef GNUSTEP_BASE_LIBRARY
   return [NSData dataWithContentsOfFile:path
                  options:NSUncachedRead
                  error:NULL];

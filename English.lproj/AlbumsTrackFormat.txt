@@ -8,6 +8,8 @@
 # %(name)
 # %(album)
 # %(artist)
+# %(genre)
+# %(grouping)
 # %(extension) OR %(ext)
 # %(trackNumber)
 #

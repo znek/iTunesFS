@@ -43,6 +43,8 @@
   NSURL        *url;
   NSDictionary *attributes;
   NSString     *ext;
+  NSString     *genre;
+  NSString     *grouping;
   unsigned     trackNumber;
   unsigned     playlistNumber; // transient
 }
@@ -56,6 +58,9 @@
 
 - (NSString *)extension;
 - (NSString *)ext;
+
+- (NSString *)genre;
+- (NSString *)grouping;
 
 - (unsigned)trackNumber;
 

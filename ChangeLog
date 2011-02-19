@@ -1,3 +1,15 @@
+2011-02-19  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v1.2.1b1
+
+	* iTunesTrack.[hm]: added -genre and -grouping as properties for
+	  formatting tracks on user request
+
+	* English.lproj/{AlbumsTrackFormat.txt, PlaylistsTrackFormat.txt}:
+	  documented %(genre) and %(grouping)
+
+	* README-GNUstep: updated
+
 2011-02-18  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* iTunesFSFormatter.m: set formatter behaviour explicitly to 10.0
