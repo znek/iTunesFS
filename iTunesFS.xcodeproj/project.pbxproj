@@ -402,6 +402,7 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "TMP_SUBST_FILE_PATH=/tmp/${INFOPLIST_FILE}.$$\n\n# retrieve the current version information\n. Version\n\necho \"Version --> v${MAJOR_VERSION}.${MINOR_VERSION}.${SUBMINOR_VERSION}\"\n\ncp ${INFOPLIST_FILE} ${TMP_SUBST_FILE_PATH}\nsed -e \"s/\\([1234567890]*\\)\\.\\([1234567890]*\\)\\.\\([1234567890abrc]*\\)/${MAJOR_VERSION}\\.${MINOR_VERSION}\\.${SUBMINOR_VERSION}/g\" -e \"s/PropertyList-.*dtd/PropertyList-1.0.dtd/\" ${TMP_SUBST_FILE_PATH} > ${INFOPLIST_FILE}\nrm -f ${TMP_SUBST_FILE_PATH}\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
