@@ -165,8 +165,10 @@ static NSValue        *appendValueForKeyToBufferValue = nil;
   NSMutableArray *components = [[NSMutableArray alloc] initWithCapacity:count];
   for (i = 0; i < count; i++) {
     NSString *rc = [rawComponents objectAtIndex:i];
-    NSString *c  = [[rc stringByTrimmingCharactersInSet:wsSet]
-                        properlyEscapedFSRepresentation];
+    if ([rc isEqualToString:@"/"])
+      continue;
+    NSString *c = [[rc stringByTrimmingCharactersInSet:wsSet]
+                       properlyEscapedFSRepresentation];
     if ([c length])
       [components addObject:c];
   }

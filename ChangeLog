@@ -1,3 +1,7 @@
+2011-02-25  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* iTunesFSFormatter.m: fixed bug with leading "/" in path components
+
 2011-02-21  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* v1.2.1
