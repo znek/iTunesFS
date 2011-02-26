@@ -162,7 +162,7 @@ static NSString *trackFormatFileName = @"PlaylistsTrackFormat.txt";
 /* private */
 
 - (BOOL)hasTrackFormatFile {
-  return self->persistentId != nil;
+  return self->persistentId != nil && self->trackFormatFile;
 }
 - (BOOL)showTrackFormatFile {
   if (![self hasTrackFormatFile])

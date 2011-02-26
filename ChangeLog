@@ -1,3 +1,8 @@
+2011-02-26  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* iTunesPlaylist.m: only show PlaylistsTrackFormat file if it really
+	  exists (isn't true for real Playlist folders)
+
 2011-02-25  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* iTunesFSFormatter.m: fixed bug with leading "/" in path components
