@@ -13,10 +13,15 @@ if [ "$#" = "1" ]; then
   RELEASE=$1
 fi
 
-VOLUME_NAME="iTunesFS ${RELEASE}"
-
-
 echo "Making release: $RELEASE"
+
+CFBundleShortVersionString=`defaults read "${BIN_DIR}/Contents/Info" CFBundleShortVersionString`
+
+if [ "$RELEASE" != "$CFBundleShortVersionString" ]; then
+  echo "[ERROR] CFBundleShortVersionString in ${BIN_DIR}/Contents/Info.plist is ${CFBundleShortVersionString}, SHOULD BE ${RELEASE}!"
+  exit 1
+fi
+
 mkdir $DST_DIR
 if [ ! -d $DST_DIR ]; then
   echo "Couldn't create intermediary dir $DST_DIR"
@@ -45,6 +50,7 @@ SIZE_KB=`expr $SIZE_KB + 4096`
 hdiutil create -size ${SIZE_KB}k ${DST_IMG} -layout NONE
 #hdiutil create -size 15m ${DST_IMG} -layout NONE
 DISK=`hdid -nomount ${DST_IMG} | awk '{print $1}'`
+VOLUME_NAME="iTunesFS ${RELEASE}"
 newfs_hfs -v "${VOLUME_NAME}" $DISK
 hdiutil eject ${DISK}
 DISK=`hdid ${DST_IMG} | awk '{print $1}'`
