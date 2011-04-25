@@ -8,10 +8,22 @@
 # %(name)
 # %(album)
 # %(artist)
+# %(albumArtist)
+# %(composer)
 # %(genre)
 # %(grouping)
 # %(extension) OR %(ext)
 # %(trackNumber)
+# %(year)
+# %(rating)
+# %(playCount)
+# %(discNumber)
+# %(discCount)
+# %(bitRate)
+# %(sampleRate)
+# %(series)
+# %(seasonNumber)
+# %(episodeNumber)
 #
 # EXAMPLES
 #

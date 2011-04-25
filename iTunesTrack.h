@@ -35,34 +35,89 @@
 
 #import <Foundation/Foundation.h>
 
+#define kTrackID            @"Track ID"
+#define kTrackArtist        @"Artist"
+#define kTrackAlbum         @"Album"
+#define kTrackNumber        @"Track Number"
+#define kTrackName          @"Name"
+#define kTrackLocation      @"Location"
+#define kTrackSize          @"Size"
+#define kTrackDateAdded     @"Date Added"
+#define kTrackDateModified  @"Date Modified"
+#define kTrackPlayDateUTC   @"Play Date UTC"
+#define kTrackGenre         @"Genre"
+#define kTrackGrouping      @"Grouping"
+#define kTrackAlbumArtist   @"Album Artist"
+#define kTrackComposer      @"Composer"
+#define kTrackRating        @"Rating"
+#define kTrackSeries        @"Series"
+#define kTrackDiscNumber    @"Disc Number"
+#define kTrackDiscCount     @"Disc Count"
+#define kTrackPlayCount     @"Play Count"
+#define kTrackYear          @"Year"
+#define kTrackBitRate       @"Bit Rate"
+#define kTrackSampleRate    @"Sample Rate"
+#define kTrackSeasonNumber  @"Season"
+#define kTrackEpisodeID     @"Episode"
+#define kTrackEpisodeNumber @"Episode Order"
+#define kTrackDateReleased  @"Date Released"
+
 @interface iTunesTrack : NSObject
 {
   NSString     *prettyName;
   NSString     *album;
   NSString     *artist;
+  NSString     *albumArtist;
+  NSString     *composer;
+  NSString     *genre;
+  NSString     *grouping;
+  NSString     *series;
+
   NSURL        *url;
   NSDictionary *attributes;
   NSString     *ext;
-  NSString     *genre;
-  NSString     *grouping;
+
+  unsigned     rating;
+  unsigned     discNumber;
+  unsigned     discCount;
+  unsigned     playCount;
+  unsigned     year;
+  unsigned     bitRate;
+  unsigned     sampleRate;
+  unsigned     seasonNumber;
+  unsigned     episodeNumber;
+
   unsigned     trackNumber;
   unsigned     playlistNumber; // transient
 }
 
-- (id)initWithITunesLibraryRepresentation:(NSDictionary *)_track;
-- (id)initWithIPodLibraryRepresentation:(NSDictionary *)_track;
+- (id)initWithLibraryRepresentation:(NSDictionary *)_rep;
 
 - (NSString *)name;
 - (NSString *)album;
 - (NSString *)artist;
+- (NSString *)albumArtist;
+- (NSString *)composer;
+- (NSString *)genre;
+- (NSString *)grouping;
+
+- (NSString *)series;
+- (unsigned)seasonNumber;
+- (unsigned)episodeNumber;
+
+- (unsigned)rating;
+- (unsigned)discNumber;
+- (unsigned)discCount;
+- (unsigned)playCount;
+- (unsigned)year;
+- (unsigned)bitRate;
+- (unsigned)sampleRate;
 
 - (NSString *)extension;
 - (NSString *)ext;
 
-- (NSString *)genre;
-- (NSString *)grouping;
-
 - (unsigned)trackNumber;
+
 
 /* this is transient information, set by every playlist that needs this
  * track to format itself according to the context of the calling playlist

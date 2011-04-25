@@ -1,3 +1,18 @@
+2011-04-23  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v1.2.2b1
+
+	* iPodLibrary.m: extract a lot more properties from track items,
+	  persistentID from playlists
+
+	* iTunesTrack.[hm], iTunesPlaylist.[hm]: merged init methods, provide
+	  "keys" for representations
+
+	* iTunesTrack.[hm]: also added quite a lot new properties
+
+	* English.lproj/{AlbumsTrackFormat.txt,PlaylistsTrackFormat.txt}:
+	  documented new properties
+
 2011-02-26  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* iTunesPlaylist.m: only show PlaylistsTrackFormat file if it really

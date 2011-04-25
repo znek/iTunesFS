@@ -39,6 +39,13 @@
 @class iTunesLibrary;
 @class iTunesTrack;
 
+#define kPlaylistName @"Name"
+#define kPlaylistPersistentID @"Playlist Persistent ID"
+#define kPlaylistParentPersistentID @"Parent Persistent ID"
+#define kPlaylistIsFolder @"Folder"
+#define kPlaylistItems @"Playlist Items"
+#define kPlaylistTrackIDs @"trackIDs"
+
 @interface iTunesPlaylist : NSObject
 {
   NSString *persistentId;
@@ -52,9 +59,7 @@
   id shadowFolder;
 }
 
-- (id)initWithITunesLibraryRepresentation:(NSDictionary *)_list
-  lib:(iTunesLibrary *)_lib;
-- (id)initWithIPodLibraryRepresentation:(NSDictionary *)_list
+- (id)initWithLibraryRepresentation:(NSDictionary *)_rep
   lib:(iTunesLibrary *)_lib;
 
 - (NSString *)name;

@@ -201,7 +201,7 @@ static NSString *kAll            = @"All";
 
     trackID = [trackIDs objectAtIndex:i];
     rep     = [tracks objectForKey:trackID];
-    track   = [[iTunesTrack alloc] initWithITunesLibraryRepresentation:rep];
+    track   = [[iTunesTrack alloc] initWithLibraryRepresentation:rep];
     [self->trackMap setObject:track forKey:trackID];
     [track release];
   }
@@ -217,7 +217,7 @@ static NSString *kAll            = @"All";
     NSString       *plId;
   
     plRep = [playlists objectAtIndex:i];
-    pl    = [[iTunesPlaylist alloc] initWithITunesLibraryRepresentation:plRep
+    pl    = [[iTunesPlaylist alloc] initWithLibraryRepresentation:plRep
                                     lib:self];
 
     // only record top-level playlist, if playlist isn't a folder itself

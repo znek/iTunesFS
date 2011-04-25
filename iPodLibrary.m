@@ -45,8 +45,10 @@
 
 #if __LP64__ || NS_BUILD_32_LIKE_64
   typedef unsigned int ITDBUInt32;
+  typedef unsigned long ITDBUInt64;
 #else
   typedef unsigned long ITDBUInt32;
+  typedef unsigned long long ITDBUInt64;
 #endif
 
 @interface iPodLibrary (Private)
@@ -61,8 +63,22 @@
 
 - (void)setFileLength:(id)_value;
 - (void)setTrackNumber:(id)_value;
+
+- (void)setRating:(id)_value;
+- (void)setDiscNumber:(id)_value;
+- (void)setDiscCount:(id)_value;
+- (void)setPlayCount:(id)_value;
+- (void)setYear:(id)_value;
+- (void)setBitRate:(id)_value;
+- (void)setSampleRate:(id)_value;
+- (void)setSeasonNumber:(id)_value;
+- (void)setEpisodeNumber:(id)_value;
+
 - (void)setDateAdded:(NSNumber *)_timestamp;
 - (void)setDateModified:(NSNumber *)_timestamp;
+- (void)setDateReleased:(NSNumber *)_timestamp;
+- (void)setDateLastPlayed:(NSNumber *)_timestamp;
+
 @end
 
 /* NOTE:
@@ -73,6 +89,8 @@
  *
  * Information on iTunesDB can be found at:
  * http://ipodlinux.org/wiki/ITunesDB
+ * - OR -
+ * http://ipl.derpapst.eu/wiki/ITunesDB
  */
 
 typedef struct {
@@ -84,32 +102,100 @@ typedef struct {
 } fsbbStruct;
 
 typedef struct {
-  ITDBUInt32  uniqueID;
-  ITDBUInt32  visible;
-  ITDBUInt32  fileType;
+  ITDBUInt32 uniqueID;
+  ITDBUInt32 visible;
+  ITDBUInt32 fileType;
   unsigned short type;
   unsigned char  isCompilation;
   unsigned char  rating;
-  ITDBUInt32  dateModified;
-  ITDBUInt32  size;
-  ITDBUInt32  length;
-  ITDBUInt32  trackNumber;
-  ITDBUInt32  totalTracks;
-  ITDBUInt32  year;
-  ITDBUInt32  bitrate;
-  ITDBUInt32  sampleRate;
-  ITDBUInt32  volume;
-  ITDBUInt32  startTime;
-  ITDBUInt32  stopTime;
-  ITDBUInt32  soundcheck;
-  ITDBUInt32  playCount;
-  ITDBUInt32  playCountBackup;
-  ITDBUInt32  dateLastPlayed;
-  ITDBUInt32  discNumber;
-  ITDBUInt32  totalDiscs;
-  ITDBUInt32  userID;
-  ITDBUInt32  dateAdded;
+  ITDBUInt32 dateModified;
+  ITDBUInt32 size;
+  ITDBUInt32 length;
+  ITDBUInt32 trackNumber;
+  ITDBUInt32 totalTracks;
+  ITDBUInt32 year;
+  ITDBUInt32 bitRate;
+  ITDBUInt32 sampleRate;
+  ITDBUInt32 volume;
+  ITDBUInt32 startTime;
+  ITDBUInt32 stopTime;
+  ITDBUInt32 soundcheck;
+  ITDBUInt32 playCount;
+  ITDBUInt32 playCountBackup;
+  ITDBUInt32 dateLastPlayed;
+  ITDBUInt32 discNumber;
+  ITDBUInt32 totalDiscs;
+  ITDBUInt32 userID;
+  ITDBUInt32 dateAdded;
+  ITDBUInt32 bookmarkTime;
+  ITDBUInt64 dbid;
+  unsigned char isChecked;
+  unsigned char applicationRating;
+  unsigned short bpm;
+  unsigned short artworkCount;
+  unsigned short unk9;
+  ITDBUInt32 artworkSize;
+  ITDBUInt32 unk11;
+  ITDBUInt32 sampleRate2;
+  ITDBUInt32 dateReleased;
+  unsigned short unk14_1;
+  unsigned short explicitFlag;
+  ITDBUInt32 unk15;
+  ITDBUInt32 unk16;
+  ITDBUInt32 skipCount;
+  ITDBUInt32 lastSkipped;
+  unsigned char hasArtwork; // 0x02 for tracks without artwork
+  unsigned char skipWhenShuffling;
+  unsigned char rememberPlaybackPosition;
+  unsigned char flag4;
+  ITDBUInt64 dbid2;
+  unsigned char hasLyrics;
+  unsigned char isMovieFile;
+  unsigned char isPlayed; // 0x02 not played, 0x01 played
+  unsigned char unk17;
+  ITDBUInt32 unk21;
+  ITDBUInt32 pregap;
+  ITDBUInt64 sampleCount;
+  ITDBUInt32 unk25;
+  ITDBUInt32 postgap;
+  ITDBUInt32 unk27;
+  ITDBUInt32 mediaType; // 0 audio/video, 1 audio, 2 video, 4 podcast, 6 video podcast, 8 audiobook, 0x20 music video, 0x40 tv show, 0x60 tv show
+  ITDBUInt32 seasonNumber;
+  ITDBUInt32 episodeNumber;
+  ITDBUInt32 unk31;
+  ITDBUInt32 unk32;
+  ITDBUInt32 unk33;
+  ITDBUInt32 unk34;
+  ITDBUInt32 unk35;
+  ITDBUInt32 unk36;
+  ITDBUInt32 unk37;
+  ITDBUInt32 gaplessData;
+  ITDBUInt32 unk38;
+  unsigned short gaplessTrackFlag; // 0x0001 has gapless playback data
+  unsigned short gaplessAlbumFlag; // 0x0001 no crossfading
+  unsigned char  unk39[20]; // hash?
+  ITDBUInt32 unk40;
+  ITDBUInt32 unk41;
+  ITDBUInt32 unk42;
+  ITDBUInt32 unk43;
+  unsigned short unk44;
+  unsigned short albumID;
+  ITDBUInt32 mhiiLink;
+  ITDBUInt32 artistID;
 } mhitExtra;
+
+typedef struct {
+  ITDBUInt32 itemCount;
+  unsigned char isMasterPlaylist;
+  unsigned char unk[3];
+  ITDBUInt32 dateCreated;
+  ITDBUInt64 persistentID;
+  ITDBUInt32 unk3;
+  unsigned short stringMhodsCount;
+  unsigned char isPodcastPlaylist;
+  unsigned char isGroup;
+  ITDBUInt32 sortOrderField;
+} mhypExtra;
 
 typedef struct {
   ITDBUInt32 res1;
@@ -129,6 +215,7 @@ typedef struct {
 } playlistParam;
 
 #define ULongNum(ul) [NSNumber numberWithUnsignedLong:(ul)]
+#define ULongLongNum(ull) [NSNumber numberWithUnsignedLongLong:(ull)]
 
 @implementation iPodLibrary
 
@@ -147,15 +234,18 @@ static NSMutableDictionary *codeSelMap = nil;
   debugIsVerbose = [ud boolForKey:@"iPodLibraryDebugVerbose"];
 
   codeSelMap = [[NSMutableDictionary alloc] initWithCapacity:4];
-  [codeSelMap setObject:@"setName:"     forKey:[NSNumber numberWithInt:1]];
-  [codeSelMap setObject:@"setLocation:" forKey:[NSNumber numberWithInt:2]];
-  [codeSelMap setObject:@"setAlbum:"    forKey:[NSNumber numberWithInt:3]];
-  [codeSelMap setObject:@"setArtist:"   forKey:[NSNumber numberWithInt:4]];
+  [codeSelMap setObject:@"setName:"        forKey:[NSNumber numberWithInt:1]];
+  [codeSelMap setObject:@"setLocation:"    forKey:[NSNumber numberWithInt:2]];
+  [codeSelMap setObject:@"setAlbum:"       forKey:[NSNumber numberWithInt:3]];
+  [codeSelMap setObject:@"setArtist:"      forKey:[NSNumber numberWithInt:4]];
+  [codeSelMap setObject:@"setGenre:"       forKey:[NSNumber numberWithInt:5]];
+  [codeSelMap setObject:@"setComposer:"    forKey:[NSNumber numberWithInt:12]];
+  [codeSelMap setObject:@"setGrouping:"    forKey:[NSNumber numberWithInt:13]];
+  [codeSelMap setObject:@"setSeries:"      forKey:[NSNumber numberWithInt:19]];
+  [codeSelMap setObject:@"setAlbumArtist:" forKey:[NSNumber numberWithInt:22]];
 #if 0
-  [codeSelMap setObject:@"setGenre:"    forKey:[NSNumber numberWithInt:5]];
-  [codeSelMap setObject:@"setFiletype:" forKey:[NSNumber numberWithInt:6]];
-  [codeSelMap setObject:@"setComment:"  forKey:[NSNumber numberWithInt:8]];
-  [codeSelMap setObject:@"setComposer:" forKey:[NSNumber numberWithInt:12]];
+  [codeSelMap setObject:@"setFiletype:"    forKey:[NSNumber numberWithInt:6]];
+  [codeSelMap setObject:@"setComment:"     forKey:[NSNumber numberWithInt:8]];
 #endif
 }
 
@@ -210,7 +300,7 @@ static NSMutableDictionary *codeSelMap = nil;
     
     trackID = [trackIDs objectAtIndex:i];
     rep     = [tracks objectForKey:trackID];
-    track   = [[iTunesTrack alloc] initWithIPodLibraryRepresentation:rep];
+    track   = [[iTunesTrack alloc] initWithLibraryRepresentation:rep];
     [self->trackMap setObject:track forKey:trackID];
     [track release];
   }
@@ -221,7 +311,7 @@ static NSMutableDictionary *codeSelMap = nil;
     iTunesPlaylist *pl;
     
     plRep = [playlists objectAtIndex:i];
-    pl    = [[iTunesPlaylist alloc] initWithIPodLibraryRepresentation:plRep
+    pl    = [[iTunesPlaylist alloc] initWithLibraryRepresentation:plRep
                                     lib:self];
     [self->plMap setObject:pl
                  forKey:[self burnFolderNameFromFolderName:[pl name]]];
@@ -310,8 +400,8 @@ static NSMutableDictionary *codeSelMap = nil;
     else if (memcmp(fsbb->code, "sd", 2) == 0) { // a list type header
       if (fsbb->count != 1 && fsbb->count != 2) {
         if (doDebug) {
-          NSLog(@"WARN: [0x%08lx] unknown list type header '%lu, "
-                "jump:0x%lulength:0x%lu",
+          NSLog(@"WARN: [0x%08lx] unknown list type header '%lu', "
+                "jump:0x%lu length:0x%lu",
                 filePos, fsbb->count, fsbb->jump, fsbb->myLen);
         }
       }
@@ -331,13 +421,19 @@ static NSMutableDictionary *codeSelMap = nil;
         playlists = [[NSMutableArray alloc] initWithCapacity:fsbb->myLen];
     }
     else if (memcmp(fsbb->code, "yp", 2) == 0) { // a playlist
-      NSMutableArray *trackIDs;
-
       if (doDebug && debugIsVerbose)
         NSLog(@"[0x%08lx] playlist:", filePos);
 
-      trackIDs            = [[NSMutableArray alloc]      initWithCapacity:12];
-      self->currentObject = [[NSMutableDictionary alloc] initWithCapacity:1];
+      data = [sr readDataOfLength:sizeof(mhypExtra)];
+      mhypExtra *prop = (mhypExtra *)[data bytes];
+      prop->persistentID = NSSwapLittleLongLongToHost(prop->persistentID);
+      NSString *persistentID = [NSString stringWithFormat:@"%llX",
+                                         prop->persistentID];
+
+      self->currentObject = [[NSMutableDictionary alloc] initWithCapacity:2];
+      [self->currentObject setObject:persistentID forKey:kPlaylistPersistentID];
+
+      NSMutableArray *trackIDs = [[NSMutableArray alloc] initWithCapacity:12];
       [self->currentObject setObject:trackIDs forKey:@"trackIDs"];
       [trackIDs release];
       [playlists addObject:self->currentObject];
@@ -369,17 +465,26 @@ static NSMutableDictionary *codeSelMap = nil;
       }
     }
     else if (memcmp(fsbb->code, "it", 2) == 0) { // a track item
-      mhitExtra *prop;
-      NSString  *trackID;
+      data = [sr readDataOfLength:sizeof(mhitExtra)];
+      mhitExtra *prop = (mhitExtra *)[data bytes];
 
-      data               = [sr readDataOfLength:sizeof(mhitExtra)];
-      prop               = (mhitExtra *)[data bytes];
-      prop->uniqueID     = NSSwapLittleIntToHost(prop->uniqueID);
-      prop->size         = NSSwapLittleIntToHost(prop->size);
-      prop->trackNumber  = NSSwapLittleIntToHost(prop->trackNumber);
-      prop->dateModified = NSSwapLittleIntToHost(prop->dateModified);
-      prop->dateAdded    = NSSwapLittleIntToHost(prop->dateAdded);
-      trackID            = [ULongNum(prop->uniqueID) description];
+      prop->uniqueID       = NSSwapLittleIntToHost(prop->uniqueID);
+      prop->size           = NSSwapLittleIntToHost(prop->size);
+      prop->trackNumber    = NSSwapLittleIntToHost(prop->trackNumber);
+      prop->dateModified   = NSSwapLittleIntToHost(prop->dateModified);
+      prop->dateAdded      = NSSwapLittleIntToHost(prop->dateAdded);
+      prop->dateLastPlayed = NSSwapLittleIntToHost(prop->dateLastPlayed);
+      prop->dateReleased   = NSSwapLittleIntToHost(prop->dateReleased);
+      prop->discNumber     = NSSwapLittleIntToHost(prop->discNumber);
+      prop->totalDiscs     = NSSwapLittleIntToHost(prop->totalDiscs);
+      prop->playCount      = NSSwapLittleIntToHost(prop->playCount);
+      prop->year           = NSSwapLittleIntToHost(prop->year);
+      prop->bitRate        = NSSwapLittleIntToHost(prop->bitRate);
+      prop->sampleRate     = NSSwapLittleIntToHost(prop->sampleRate);
+      prop->seasonNumber   = NSSwapLittleIntToHost(prop->seasonNumber);
+      prop->episodeNumber  = NSSwapLittleIntToHost(prop->episodeNumber);
+
+      NSString *trackID = [ULongNum(prop->uniqueID) description];
 
       self->currentObject = [[NSMutableDictionary alloc] initWithCapacity:2];
       [tmap setObject:self->currentObject forKey:trackID];
@@ -388,6 +493,19 @@ static NSMutableDictionary *codeSelMap = nil;
       [self setTrackNumber:ULongNum(prop->trackNumber)];
       [self setDateAdded:ULongNum(prop->dateAdded)];
       [self setDateModified:ULongNum(prop->dateModified)];
+      [self setDateLastPlayed:ULongNum(prop->dateLastPlayed)];
+      [self setRating:[NSNumber numberWithChar:prop->rating]];
+      [self setDiscNumber:ULongNum(prop->discNumber)];
+      [self setDiscCount:ULongNum(prop->totalDiscs)];
+      [self setPlayCount:ULongNum(prop->playCount)];
+      [self setYear:ULongNum(prop->year)];
+      [self setBitRate:ULongNum(prop->bitRate)];
+      [self setSampleRate:ULongNum(prop->sampleRate / 0x10000)];
+      [self setSeasonNumber:ULongNum(prop->seasonNumber)];
+      [self setEpisodeNumber:ULongNum(prop->episodeNumber)];
+#if 0
+      [self setDateReleased:ULongNum(prop->dateReleased)];
+#endif
 
       [self->currentObject release];
 
@@ -415,15 +533,12 @@ static NSMutableDictionary *codeSelMap = nil;
       if ((sp->strlength != 0) &&
           ([self selectorNameForCode:fsbb->count] != nil))
       {
-        NSString *selectorName, *value;
-        
-        data         = [sr readDataOfLength:sp->strlength];
-        selectorName = [self selectorNameForCode:fsbb->count];
+        data = [sr readDataOfLength:sp->strlength];
+        NSString *selectorName = [self selectorNameForCode:fsbb->count];
         if (selectorName) {
-          SEL selector;
-
-          selector = NSSelectorFromString(selectorName);
-          value    = [[NSString alloc] initWithLittleEndianUnicodeData:data];
+          SEL      selector = NSSelectorFromString(selectorName);
+          NSString *value   = [[NSString alloc]
+                                         initWithLittleEndianUnicodeData:data];
           [self performSelector:selector withObject:value];
         }
       }
@@ -465,7 +580,7 @@ static NSMutableDictionary *codeSelMap = nil;
 /* iTunesDB code / selectors */
 
 - (void)setName:(NSString *)_value {
-  [self->currentObject setValue:_value forKey:@"name"];
+  [self->currentObject setValue:_value forKey:kTrackName];
 }
 
 - (void)setLocation:(NSString *)_value {
@@ -485,23 +600,62 @@ static NSMutableDictionary *codeSelMap = nil;
   path = [NSString pathWithComponents:pc];
   path = [[self iTunesMusicFolderPath] stringByAppendingPathComponent:path];
   url  = [NSURL fileURLWithPath:path];
-  [self->currentObject setValue:url forKey:@"location"];
+  [self->currentObject setValue:[url description] forKey:kTrackLocation];
 }
 
 - (void)setAlbum:(NSString *)_value {
-  [self->currentObject setValue:_value forKey:@"Album"];
+  [self->currentObject setValue:_value forKey:kTrackAlbum];
 }
-
 - (void)setArtist:(NSString *)_value {
-  [self->currentObject setValue:_value forKey:@"Artist"];
+  [self->currentObject setValue:_value forKey:kTrackArtist];
 }
-
+- (void)setAlbumArtist:(NSString *)_value {
+  [self->currentObject setValue:_value forKey:kTrackAlbumArtist];
+}
+- (void)setGenre:(NSString *)_value {
+  [self->currentObject setValue:_value forKey:kTrackGenre];
+}
+- (void)setComposer:(NSString *)_value {
+  [self->currentObject setValue:_value forKey:kTrackComposer];
+}
+- (void)setGrouping:(NSString *)_value {
+  [self->currentObject setValue:_value forKey:kTrackGrouping];
+}
+- (void)setSeries:(NSString *)_value {
+  [self->currentObject setValue:_value forKey:kTrackSeries];
+}
 - (void)setFileLength:(id)_value {
-  [self->currentObject setValue:_value forKey:@"Size"];
+  [self->currentObject setValue:_value forKey:kTrackSize];
 }
-
 - (void)setTrackNumber:(id)_value {
-  [self->currentObject setValue:_value forKey:@"Track Number"];
+  [self->currentObject setValue:_value forKey:kTrackNumber];
+}
+- (void)setRating:(id)_value {
+  [self->currentObject setValue:_value forKey:kTrackRating];
+}
+- (void)setDiscNumber:(id)_value {
+  [self->currentObject setValue:_value forKey:kTrackDiscNumber];
+}
+- (void)setDiscCount:(id)_value {
+  [self->currentObject setValue:_value forKey:kTrackDiscCount];
+}
+- (void)setPlayCount:(id)_value {
+  [self->currentObject setValue:_value forKey:kTrackPlayCount];
+}
+- (void)setYear:(id)_value {
+  [self->currentObject setValue:_value forKey:kTrackYear];
+}
+- (void)setBitRate:(id)_value {
+  [self->currentObject setValue:_value forKey:kTrackBitRate];
+}
+- (void)setSampleRate:(id)_value {
+  [self->currentObject setValue:_value forKey:kTrackSampleRate];
+}
+- (void)setSeasonNumber:(id)_value {
+  [self->currentObject setValue:_value forKey:kTrackSeasonNumber];
+}
+- (void)setEpisodeNumber:(id)_value {
+  [self->currentObject setValue:_value forKey:kTrackEpisodeNumber];
 }
 
 #define macTimeOffset 2082844800
@@ -515,12 +669,19 @@ static NSMutableDictionary *codeSelMap = nil;
 
 - (void)setDateAdded:(NSNumber *)_timestamp {
   [self->currentObject setValue:[self dateFromMacTimestamp:_timestamp]
-                       forKey:@"Date Added"];
+                       forKey:kTrackDateAdded];
 }
-
 - (void)setDateModified:(NSNumber *)_timestamp {
   [self->currentObject setValue:[self dateFromMacTimestamp:_timestamp]
-                       forKey:@"Date Modified"];
+                       forKey:kTrackDateModified];
+}
+- (void)setDateReleased:(NSNumber *)_timestamp {
+  [self->currentObject setValue:[self dateFromMacTimestamp:_timestamp]
+                       forKey:kTrackDateReleased];
+}
+- (void)setDateLastPlayed:(NSNumber *)_timestamp {
+  [self->currentObject setValue:[self dateFromMacTimestamp:_timestamp]
+                       forKey:kTrackPlayDateUTC];
 }
 
 /* accessors */

@@ -80,33 +80,43 @@ static NSString *trackFormatFileName = @"PlaylistsTrackFormat.txt";
   return self;
 }
 
-- (id)initWithITunesLibraryRepresentation:(NSDictionary *)_list
+- (id)initWithLibraryRepresentation:(NSDictionary *)_list
   lib:(iTunesLibrary *)_lib
 {
   self = [self init];
   if (self) {
     BOOL isFolder;
 
-    self->persistentId = [[_list objectForKey:@"Playlist Persistent ID"] copy];
-    self->parentId     = [[_list objectForKey:@"Parent Persistent ID"] copy];
-    [self setName:[_list objectForKey:@"Name"]];
+    self->persistentId = [[_list objectForKey:kPlaylistPersistentID] copy];
+    self->parentId     = [[_list objectForKey:kPlaylistParentPersistentID] copy];
+    [self setName:[_list objectForKey:kPlaylistName]];
 
-    isFolder = [[_list objectForKey:@"Folder"] boolValue];
+    isFolder = [[_list objectForKey:kPlaylistIsFolder] boolValue];
 
     if (!isFolder) {
-      NSArray  *items   = [_list objectForKey:@"Playlist Items"];
-      unsigned i, count = [items count];
+      BOOL itemIsDictionary = YES;
+      NSArray *items = [_list objectForKey:kPlaylistItems];
+      if (!items) {
+        items = [_list objectForKey:kPlaylistTrackIDs];
+        itemIsDictionary = NO;
+      }
 
+      unsigned i, count = [items count];
       for (i = 0; i < count; i++) {
-        NSDictionary *item    = [items objectAtIndex:i];
-        NSString     *trackID = [[item objectForKey:@"Track ID"] description];
-        iTunesTrack  *trk     = [_lib trackWithID:trackID];
+        id item = [items objectAtIndex:i];
+        NSString *trackID;
+        if (itemIsDictionary)
+          trackID = [[item objectForKey:kTrackID] description];
+        else
+          trackID = (NSString *)item;
+
+        iTunesTrack *trk = [_lib trackWithID:trackID];
         if (!trk) {
           /* NOTE: Rolf's library really sports these effects, seems to be
            * limited to Podcasts only.
            */
           if (doDebug)
-            NSLog(@"INFO Playlist[%@]: found no track item for #%@",
+            NSLog(@"Playlist[%@]: found no track item for #%@",
                   self->name, trackID);
           continue;
         }
@@ -114,34 +124,6 @@ static NSString *trackFormatFileName = @"PlaylistsTrackFormat.txt";
       }
       [self generatePrettyTrackNames];
     }
-  }
-  return self;
-}
-
-- (id)initWithIPodLibraryRepresentation:(NSDictionary *)_list
-  lib:(iTunesLibrary *)_lib
-{
-  self = [self init];
-  if (self) {
-    [self setName:[_list objectForKey:@"name"]];
-
-    NSArray  *items   = [_list objectForKey:@"trackIDs"];
-    unsigned i, count = [items count];
-    for (i = 0; i < count; i++) {
-      NSString    *trackID = [items objectAtIndex:i];
-      iTunesTrack *trk     = [_lib trackWithID:trackID];
-      if (!trk) {
-        /* NOTE: Rolf's library really sports these effects, seems to be
-        * limited to Podcasts only.
-        */
-        if (doDebug)
-          NSLog(@"INFO Playlist[%@]: found no track item for #%@",
-                self->name, trackID);
-        continue;
-      }
-      [self->savedTracks addObject:trk];
-    }
-    [self generatePrettyTrackNames];
   }
   return self;
 }

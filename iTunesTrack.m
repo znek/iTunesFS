@@ -70,18 +70,51 @@ static NSString *locationDestinationPrefix = nil;
 
 /* init & dealloc */
 
-- (id)initWithITunesLibraryRepresentation:(NSDictionary *)_track {
+- (id)initWithLibraryRepresentation:(NSDictionary *)_track {
   self = [super init];
   if (self) {
-    self->artist = [[[_track objectForKey:@"Artist"]
+    self->artist = [[[_track objectForKey:kTrackArtist]
                              properlyEscapedFSRepresentation] copy];
-    self->album  = [[[_track objectForKey:@"Album"]
+    self->album  = [[[_track objectForKey:kTrackAlbum]
                              properlyEscapedFSRepresentation] copy];
 
-    NSNumber *tn = [_track objectForKey:@"Track Number"];
-    [self setTrackNumber:[tn unsignedIntValue]];
+    self->albumArtist   = [[[_track objectForKey:kTrackAlbumArtist]
+                                    properlyEscapedFSRepresentation] copy];
+    self->composer      = [[[_track objectForKey:kTrackComposer]
+                                    properlyEscapedFSRepresentation] copy];
+    self->genre         = [[[_track objectForKey:kTrackGenre]
+                                    properlyEscapedFSRepresentation] copy];
+    self->grouping      = [[[_track objectForKey:kTrackGrouping]
+                                    properlyEscapedFSRepresentation] copy];
+    self->series        = [[[_track objectForKey:kTrackSeries]
+                                    properlyEscapedFSRepresentation] copy];
 
-    NSString *name = [_track objectForKey:@"Name"];
+    self->rating        = [[_track objectForKey:kTrackRating]
+                                   unsignedIntValue];
+    self->discNumber    = [[_track objectForKey:kTrackDiscNumber]
+                                   unsignedIntValue];
+    if (self->discNumber == 0)
+      self->discNumber = 1;
+    self->discCount     = [[_track objectForKey:kTrackDiscCount]
+                                   unsignedIntValue];
+    if (self->discCount == 0)
+      self->discCount = 1;
+    self->playCount     = [[_track objectForKey:kTrackPlayCount]
+                                   unsignedIntValue];
+    self->year          = [[_track objectForKey:kTrackYear]
+                                   unsignedIntValue];
+    self->bitRate       = [[_track objectForKey:kTrackBitRate]
+                                   unsignedIntValue];
+    self->sampleRate    = [[_track objectForKey:kTrackSampleRate]
+                                   unsignedIntValue];
+    self->seasonNumber  = [[_track objectForKey:kTrackSeasonNumber]
+                                   unsignedIntValue];
+    self->episodeNumber = [[_track objectForKey:kTrackEpisodeNumber]
+                                   unsignedIntValue];
+
+    [self setTrackNumber:[[_track objectForKey:kTrackNumber] unsignedIntValue]];
+
+    NSString *name = [_track objectForKey:kTrackName];
     if (name) {
       [self setPrettyName:[name properlyEscapedFSRepresentation]];
     }
@@ -89,7 +122,7 @@ static NSString *locationDestinationPrefix = nil;
       NSLog(@"WARN: track without name! REP:%@", _track);
       [self setPrettyName:@"Empty"];
     }
-    NSString *location = [_track objectForKey:@"Location"];
+    NSString *location = [_track objectForKey:kTrackLocation];
     if (location) {
       if ([location hasPrefix:@"file"]) {
         self->ext = [[location pathExtension] copy];
@@ -116,19 +149,19 @@ static NSString *locationDestinationPrefix = nil;
     id tmp;
 
     if ([[self url] isFileURL]) {
-      tmp = [_track objectForKey:@"Size"];
+      tmp = [_track objectForKey:kTrackSize];
       if (tmp)
         [attrs setObject:tmp forKey:NSFileSize];
     }
-    tmp = [_track objectForKey:@"Date Added"];
+    tmp = [_track objectForKey:kTrackDateAdded];
     if (tmp)
       [attrs setObject:tmp forKey:NSFileCreationDate];
-    tmp = [_track objectForKey:@"Date Modified"];
+    tmp = [_track objectForKey:kTrackDateModified];
     if (tmp) {
       [attrs setObject:tmp forKey:NSFileModificationDate];
     }
     else {
-      tmp = [_track objectForKey:@"Play Date UTC"];
+      tmp = [_track objectForKey:kTrackPlayDateUTC];
       if (tmp)
         [attrs setObject:tmp forKey:NSFileModificationDate];
     }
@@ -139,79 +172,22 @@ static NSString *locationDestinationPrefix = nil;
 
     [self setAttributes:attrs];
     [attrs release];
-    
-    self->genre    = [[_track objectForKey:@"Genre"]    copy];
-    self->grouping = [[_track objectForKey:@"Grouping"] copy];
-  }
-  return self;
-}
-
-- (id)initWithIPodLibraryRepresentation:(NSDictionary *)_track {
-  self = [super init];
-  if (self) {
-    NSString            *name;
-    NSNumber            *tn;
-    NSURL               *location;
-    NSMutableDictionary *attrs;
-    id                  tmp;
-
-    self->artist = [[[_track objectForKey:@"Artist"]
-                             properlyEscapedFSRepresentation] copy];
-    self->album  = [[[_track objectForKey:@"Album"]
-                             properlyEscapedFSRepresentation] copy];
-
-    tn = [_track objectForKey:@"Track Number"];
-    [self setTrackNumber:[tn unsignedIntValue]];
-
-    name = [_track objectForKey:@"name"];
-    if (name) {
-      [self setPrettyName:[name properlyEscapedFSRepresentation]];
-    }
-    else {
-      NSLog(@"WARN: track without name! REP:%@", _track);
-      [self setPrettyName:@"Empty"];
-    }
-    location = [_track objectForKey:@"location"];
-    if (location) {
-      if ([location isFileURL]) {
-        self->ext = [[[location path] pathExtension] copy];
-      }
-      else {
-        self->ext = @"webloc";
-      }
-      [self setUrl:location];
-    }
-
-    attrs = [[NSMutableDictionary alloc] initWithCapacity:3];
-    if ([[self url] isFileURL]) {
-      tmp = [_track objectForKey:@"Size"];
-      if (tmp)
-        [attrs setObject:tmp forKey:NSFileSize];
-    }
-    tmp = [_track objectForKey:@"Date Added"];
-    if (tmp)
-      [attrs setObject:tmp forKey:NSFileCreationDate];
-    tmp = [_track objectForKey:@"Date Modified"];
-    if (tmp)
-      [attrs setObject:tmp forKey:NSFileModificationDate];
-    if (useSymbolicLinks)
-      [attrs setObject:NSFileTypeSymbolicLink forKey:NSFileType];
-
-    [self setAttributes:attrs];
-    [attrs release];
   }
   return self;
 }
 
 - (void)dealloc {
-  [self->prettyName release];
-  [self->album      release];
-  [self->artist     release];
-  [self->url        release];
-  [self->attributes release];
-  [self->ext        release];
-  [self->genre		  release];
-  [self->grouping   release];
+  [self->prettyName  release];
+  [self->album       release];
+  [self->artist      release];
+  [self->albumArtist release];
+  [self->composer    release];
+  [self->series      release];
+  [self->url         release];
+  [self->attributes  release];
+  [self->ext         release];
+  [self->genre       release];
+  [self->grouping    release];
   [super dealloc];
 }
 
@@ -234,6 +210,15 @@ static NSString *locationDestinationPrefix = nil;
 }
 - (NSString *)artist {
   return self->artist;
+}
+- (NSString *)albumArtist {
+  return self->albumArtist;
+}
+- (NSString *)composer {
+  return self->composer;
+}
+- (NSString *)series {
+  return self->series;
 }
 - (NSString *)genre {
   return self->genre;
@@ -282,6 +267,33 @@ static NSString *locationDestinationPrefix = nil;
   return self->playlistNumber;
 }
 
+- (unsigned)rating {
+  return self->rating;
+}
+- (unsigned)seasonNumber {
+  return self->seasonNumber;
+}
+- (unsigned)episodeNumber {
+  return self->episodeNumber;
+}
+- (unsigned)discNumber {
+  return self->discNumber;
+}
+- (unsigned)discCount {
+  return self->discCount;
+}
+- (unsigned)playCount {
+  return self->playCount;
+}
+- (unsigned)year {
+  return self->year;
+}
+- (unsigned)bitRate {
+  return self->bitRate;
+}
+- (unsigned)sampleRate {
+  return self->sampleRate;
+}
 
 /* FUSEOFS */
 
