@@ -1,6 +1,6 @@
 2011-04-23  Marcus Mueller  <znek@mulle-kybernetik.com>
 
-	* v1.2.2b1
+	* v1.2.2
 
 	* iPodLibrary.m: extract a lot more properties from track items,
 	  persistentID from playlists
