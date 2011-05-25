@@ -24,6 +24,7 @@
 # %(series)
 # %(seasonNumber)
 # %(episodeNumber)
+# %(comments)
 #
 # EXAMPLES
 #

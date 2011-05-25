@@ -88,6 +88,8 @@ static NSString *locationDestinationPrefix = nil;
                                     properlyEscapedFSRepresentation] copy];
     self->series        = [[[_track objectForKey:kTrackSeries]
                                     properlyEscapedFSRepresentation] copy];
+    self->comments      = [[[_track objectForKey:kTrackComments]
+                                    properlyEscapedFSRepresentation] copy];
 
     self->rating        = [[_track objectForKey:kTrackRating]
                                    unsignedIntValue];
@@ -188,6 +190,7 @@ static NSString *locationDestinationPrefix = nil;
   [self->ext         release];
   [self->genre       release];
   [self->grouping    release];
+  [self->comments    release];
   [super dealloc];
 }
 
@@ -225,6 +228,9 @@ static NSString *locationDestinationPrefix = nil;
 }
 - (NSString *)grouping {
   return self->grouping;
+}
+- (NSString *)comments {
+  return self->comments;
 }
 
 - (void)setUrl:(NSURL *)_url {

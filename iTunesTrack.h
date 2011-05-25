@@ -61,6 +61,7 @@
 #define kTrackEpisodeID     @"Episode"
 #define kTrackEpisodeNumber @"Episode Order"
 #define kTrackDateReleased  @"Date Released"
+#define kTrackComments      @"Comments"
 
 @interface iTunesTrack : NSObject
 {
@@ -72,6 +73,7 @@
   NSString     *genre;
   NSString     *grouping;
   NSString     *series;
+  NSString     *comments;
 
   NSURL        *url;
   NSDictionary *attributes;
@@ -100,6 +102,7 @@
 - (NSString *)composer;
 - (NSString *)genre;
 - (NSString *)grouping;
+- (NSString *)comments;
 
 - (NSString *)series;
 - (unsigned)seasonNumber;

@@ -1,3 +1,13 @@
+2011-05-25  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v1.2.3b1
+
+	* iTunesTrack.[hm]: extract "Comments" from iTunes library and expose
+	  as "comments" property
+
+	* English.lproj/{AlbumsTrackFormat.txt, PlaylistsTrackFormat.txt}:
+	  documented %(comments)
+
 2011-04-23  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* v1.2.2
