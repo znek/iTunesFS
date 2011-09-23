@@ -1,3 +1,11 @@
+2011-09-23  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v1.3.0
+
+	* Link against OSXFUSE (http://osxfuse.github.com/) on MacOS X as of
+	  now. As a consequence of the OSXFUSE build process, PPC support
+	  is removed.
+
 2011-05-25  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* v1.2.3b1
