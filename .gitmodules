@@ -1,0 +1,3 @@
+[submodule "FUSEOFS"]
+	path = FUSEOFS
+	url = git@creutzfeld.mulle-kybernetik.com:FUSEOFS
