@@ -1,7 +1,7 @@
 #!/bin/sh
 
 
-SOURCE_DIR=~/Projects/mulle-svn/iTunesFS/
+SOURCE_DIR=${0%/*}
 BIN_DIR=~/Applications/iTunesFS.app
 DST_DIR=/tmp/iTunesFS.$$
 DST_IMG=${DST_DIR}.dmg
@@ -29,8 +29,9 @@ if [ ! -d $DST_DIR ]; then
 fi
 
 # copy binaries
-cd $BIN_DIR/..
+pushd $BIN_DIR/.. > /dev/null
 gnutar cf - ${BIN_DIR##*/} | ( cd $DST_DIR ; gnutar xf - )
+popd > /dev/null
 
 # copy READMEs
 cd $SOURCE_DIR
