@@ -1,3 +1,11 @@
+2012-02-19  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v1.3.1
+
+	* iTunesFS.xcodeproj: reenabled ppc for Release builds, as ppc also
+	  returned in OSXFUSE 2.3.9 user libraries (which we link against and
+	  hence need ppc in order to support ppc binaries).
+
 2011-09-23  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* v1.3.0

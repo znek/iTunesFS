@@ -1,5 +1,5 @@
 {
-	NSHumanReadableCopyright = "Copyright 2007-2011 Mulle kybernetiK.";
+	NSHumanReadableCopyright = "Copyright 2007-2012 Mulle kybernetiK.";
 	NSUserDefaults = {
 		FUSEMountName			  		= "iTunesFS";
 		FUSEMountPath             		= "/tmp/iTunesFS";
