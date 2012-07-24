@@ -11,10 +11,15 @@ endif
 include $(GNUSTEP_MAKEFILES)/common.make
 
 
+GNUSTEP_HOST_OS := $(shell gnustep-config --variable=GNUSTEP_HOST_OS 2>/dev/null)
+
 ifneq ($(FOUNDATION_LIB),apple)
 ADDITIONAL_CPPFLAGS += -DNO_OSX_ADDITIONS
 endif
 
+ifeq ($(GNUSTEP_HOST_OS),linux-gnu)
+ADDITIONAL_CPPFLAGS += -DNO_WATCHDOG
+endif
 
 GNUSTEP_INSTALLATION_DOMAIN = LOCAL
 
@@ -41,12 +46,15 @@ iTunesFS_OBJC_FILES +=				\
 	iTunesFormatFile.m			\
 	iTunesFSFormatter.m			\
 						\
-	Watchdog.m				\
-						\
 	StreamReader.m				\
 	NSString+Extensions.m			\
 	NSURL+Extensions.m			\
 	NSData+ZlibDecompression.m		\
+
+ifneq ($(GNUSTEP_HOST_OS),linux-gnu)
+iTunesFS_OBJC_FILES +=				\
+	Watchdog.m
+endif
 
 iTunesFS_LOCALIZED_RESOURCE_FILES +=		\
 	MainMenu.gorm				\

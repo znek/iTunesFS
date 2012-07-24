@@ -36,11 +36,13 @@
 #import "NSString+Extensions.h"
 #import "iTunesPlaylist.h"
 #import "iTunesTrack.h"
-#import "Watchdog.h"
 #import "NSObject+FUSEOFS.h"
 #import "iTunesFSFormatter.h"
 #ifndef GNU_GUI_LIBRARY
 #import "NSImage+IconData.h"
+#endif
+#ifndef NO_WATCHDOG
+#import "Watchdog.h"
 #endif
 
 @implementation iTunesLibrary
@@ -147,7 +149,9 @@ static NSString *kAll            = @"All";
       [tmp release];
     }
     [self reload];
+#ifndef NO_WATCHDOG
     [[Watchdog sharedWatchdog] watchLibrary:self];
+#endif
   }
   return self;
 }
@@ -417,7 +421,9 @@ static NSString *kAll            = @"All";
   if (doDebug)
     NSLog(@"closing library: %@", self);
 
+#ifndef NO_WATCHDOG
   [[Watchdog sharedWatchdog] forgetLibrary:self];
+#endif
 }
 
 /* accessors */

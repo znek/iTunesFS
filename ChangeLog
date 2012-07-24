@@ -1,3 +1,7 @@
+2012-07-25  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* GNUmakefile, iPodLibrary.m, iTunesLibrary.m: ported to Linux
+
 2012-02-19  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* v1.3.1

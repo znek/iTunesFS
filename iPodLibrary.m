@@ -691,7 +691,7 @@ static NSMutableDictionary *codeSelMap = nil;
     NSString *devInfoPath;
     NSData   *devInfo, *leData;
     NSString *devName;
-    ushort   nameLen;
+    uint16_t nameLen;
 
     devInfoPath = [self iTunesDeviceInfoPath];
     if (devInfoPath &&
