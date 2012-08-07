@@ -1,5 +1,7 @@
 2012-08-07  Marcus Mueller  <znek@mulle-kybernetik.com>
 
+	* v1.3.2
+
 	* iTunesFormatFile.m: fixed formatter retrieval bugs in -getFormatter
 
 	* iTunesPlaylist.[hm]: added NSFileCreationDate and
