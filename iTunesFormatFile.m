@@ -83,7 +83,7 @@ static NSCharacterSet *trimSet = nil;
 - (void)_setup {
   static NSMutableDictionary *helpTextMap = nil;
   if (!helpTextMap)
-    helpTextMap = [[NSMutableDictionary alloc] initWithCapacity:2];
+    helpTextMap = [[NSMutableDictionary alloc] initWithCapacity:3];
   
   NSString *helpText = [helpTextMap objectForKey:self->defaultTemplate];
   if (!helpText) {
@@ -141,31 +141,36 @@ static NSCharacterSet *trimSet = nil;
 /* accessors */
 
 - (iTunesFSFormatter *)getFormatter {
-  NSString *fmt;
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  NSString       *fmtKey;
+  NSString       *fmt = nil;
 
   if (self->defaultKey) {
-    NSUserDefaults *ud     = [NSUserDefaults standardUserDefaults];
-    NSString       *fmtKey = self->defaultKey;
-    if ((fmt = [ud stringForKey:fmtKey])) {
-      // is it an alias?
-      if ([fmt hasPrefix:@"@"] && ([fmt length] > 1)) {
-        fmt = [fmt substringFromIndex:1];
-        if (doDebug)
-          NSLog(@"%@ is an alias to %@", self->defaultKey, fmt);
-        fmtKey = [self defaultKeyForTemplateId:fmt];
-        fmt    = [ud stringForKey:fmtKey];
-      }
-      if (fmt) {
-        return [[[iTunesFSFormatter alloc] initWithFormatString:fmt]
-                                           autorelease];
-      }
-      else {
-        if (doDebug)
-          NSLog(@"WARN: no format found for reference %@", fmtKey);
-      }
-    }
+    fmtKey = self->defaultKey;
+    fmt    = [ud stringForKey:fmtKey];
+    if (doDebug && fmt)
+      NSLog(@"INFO: format found for reference %@", fmtKey);
   }
-  fmt = [self templateDefaultFormatString];
+  if (!fmt)
+    fmt = [self templateDefaultFormatString];
+
+  // is it an alias?
+  if ([fmt hasPrefix:@"@"] && ([fmt length] > 1)) {
+    fmt = [fmt substringFromIndex:1];
+    if (doDebug)
+      NSLog(@"%@ is an alias to %@", self->defaultKey, fmt);
+    fmtKey = [self defaultKeyForTemplateId:fmt];
+    fmt    = [ud stringForKey:fmtKey];
+    if (doDebug && !fmt)
+      NSLog(@"WARN: no format found for reference %@ -> alias failed!", fmtKey);
+  }
+  if (fmt) {
+    return [[[iTunesFSFormatter alloc] initWithFormatString:fmt]
+                                       autorelease];
+  }
+
+  // fallback - hopefully indicates failure appropriately
+  fmt = fmtKey;
   return [[[iTunesFSFormatter alloc] initWithFormatString:fmt] autorelease];
 }
 

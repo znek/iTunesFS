@@ -1,5 +1,7 @@
 2012-08-07  Marcus Mueller  <znek@mulle-kybernetik.com>
 
+	* iTunesFormatFile.m: fixed formatter retrieval bugs in -getFormatter
+
 	* iTunesPlaylist.[hm]: added NSFileCreationDate and
 	  NSFileModificationDate fileAttributes to improve Finder cache flushes
 	  (folders are updated faster in Finder)
