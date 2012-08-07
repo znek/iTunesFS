@@ -24,6 +24,12 @@
 #
 # EXAMPLES
 #
+# %(playlistNumber#00) %(artist) - %(album) - %(name).%(ext.lowercaseString)
 # %(playlistNumber#00) %(name).%(ext.lowercaseString)
+#
+# %(trackNumber#00) %(name).%(ext.lowercaseString)
+#
 # %(artist) / %(album) / %(trackNumber#00) %(name).%(ext.lowercaseString)
+# %(album) / %(trackNumber#00) %(name).%(ext.lowercaseString)
+#
 # @folders

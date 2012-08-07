@@ -1,3 +1,7 @@
+2012-08-07  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* PlaylistsTrackFormat.txt: more examples added
+
 2012-07-25  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* GNUmakefile, iPodLibrary.m, iTunesLibrary.m: ported to Linux
