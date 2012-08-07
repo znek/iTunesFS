@@ -1,5 +1,9 @@
 2012-08-07  Marcus Mueller  <znek@mulle-kybernetik.com>
 
+	* iTunesPlaylist.[hm]: added NSFileCreationDate and
+	  NSFileModificationDate fileAttributes to improve Finder cache flushes
+	  (folders are updated faster in Finder)
+
 	* PlaylistsTrackFormat.txt: more examples added
 
 2012-07-25  Marcus Mueller  <znek@mulle-kybernetik.com>

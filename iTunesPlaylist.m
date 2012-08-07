@@ -76,6 +76,7 @@ static NSString *trackFormatFileName = @"PlaylistsTrackFormat.txt";
     self->childrenMap  = [[NSMutableDictionary alloc] initWithCapacity:5];
     // NOTE: cannot initialize trackFormatFile here, needs lazy init
     self->shadowFolder = [[FUSEOFSMemoryContainer alloc] init];
+    self->modificationDate = [[NSDate date] retain];
   }
   return self;
 }
@@ -137,7 +138,8 @@ static NSString *trackFormatFileName = @"PlaylistsTrackFormat.txt";
   [self->trackNames   release];
   [self->childrenMap  release];
   [self->shadowFolder release];
-  [self->trackFormatFile release];
+  [self->trackFormatFile  release];
+  [self->modificationDate release];
   [super dealloc];
 }
 
@@ -160,6 +162,9 @@ static NSString *trackFormatFileName = @"PlaylistsTrackFormat.txt";
   }
   [self->tracks     removeAllObjects];
   [self->trackNames removeAllObjects];
+
+  [self->modificationDate release];
+  self->modificationDate = [[NSDate date] retain];
 
   NSArray *childrenKeys = [self->childrenMap allKeys];
   unsigned i, count     = [childrenKeys count];
@@ -326,7 +331,9 @@ static NSString *trackFormatFileName = @"PlaylistsTrackFormat.txt";
 #endif
 
 - (NSDictionary *)fileAttributes {
-  NSMutableDictionary *attrs = [NSMutableDictionary dictionaryWithCapacity:3];
+  NSMutableDictionary *attrs = [NSMutableDictionary dictionaryWithCapacity:5];
+  [attrs setObject:self->modificationDate forKey:NSFileCreationDate];
+  [attrs setObject:self->modificationDate forKey:NSFileModificationDate];
   [attrs setObject:NSFileTypeDirectory forKey:NSFileType];
   [attrs setObject:[NSNumber numberWithBool:YES] forKey:NSFileExtensionHidden];
   NSNumber *perm = [NSNumber numberWithInt:[self isMutable] ? 0777 : 0555];

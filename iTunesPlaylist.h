@@ -57,6 +57,7 @@
   NSMutableDictionary *childrenMap;
   iTunesFormatFile *trackFormatFile;
   id shadowFolder;
+  NSDate *modificationDate;
 }
 
 - (id)initWithLibraryRepresentation:(NSDictionary *)_rep
