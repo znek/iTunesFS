@@ -379,7 +379,7 @@ static NSMutableDictionary *codeSelMap = nil;
         if (version >= 0x28) {
           if (doDebug && debugIsVerbose) {
             NSLog(@"[0x%08lx] database is compressed (version: 0x%lu), "
-                  "decompressing", filePos, version);
+                  "decompressing", filePos, (unsigned long)version);
           }
 
           // read compressed stream into data
@@ -402,20 +402,21 @@ static NSMutableDictionary *codeSelMap = nil;
         if (doDebug) {
           NSLog(@"WARN: [0x%08lx] unknown list type header '%lu', "
                 "jump:0x%lu length:0x%lu",
-                filePos, fsbb->count, fsbb->jump, fsbb->myLen);
+                filePos, (unsigned long)fsbb->count,
+                (unsigned long)fsbb->jump, (unsigned long)fsbb->myLen);
         }
       }
     }
     else if (memcmp(fsbb->code, "lt", 2) == 0) { // list of tracks
       if (doDebug && debugIsVerbose)
-        NSLog(@"[0x%08lx] %ld-item list:", filePos, fsbb->myLen);
+        NSLog(@"[0x%08lx] %ld-item list:", filePos, (unsigned long)fsbb->myLen);
       if (!tmap) {
         tmap = [[NSMutableDictionary alloc] initWithCapacity:fsbb->myLen];
       }
     }
     else if (memcmp(fsbb->code, "lp", 2) == 0) { // list of playlists
       if (doDebug && debugIsVerbose)
-        NSLog(@"[0x%08lx] %ld-item list:", filePos, fsbb->myLen);
+        NSLog(@"[0x%08lx] %lu-item list:", filePos, (unsigned long)fsbb->myLen);
 
       if (!playlists)
         playlists = [[NSMutableArray alloc] initWithCapacity:fsbb->myLen];
@@ -451,7 +452,7 @@ static NSMutableDictionary *codeSelMap = nil;
       track              = [tmap objectForKey:trackID];
       if (!track && doDebug) {
         NSLog(@"ERROR: [0x%08lx] referenced unknown track with id '%ld'",
-              filePos, playlist->item_ref);
+              filePos, (long)playlist->item_ref);
       }
       else {
         NSMutableArray *trackIDs;
@@ -461,7 +462,7 @@ static NSMutableDictionary *codeSelMap = nil;
       }
       if (doDebug && debugIsVerbose) {
         NSLog(@"[0x%08lx] itemref (%ld): %@",
-              filePos, playlist->item_ref, track);
+              filePos, (long)playlist->item_ref, track);
       }
     }
     else if (memcmp(fsbb->code, "it", 2) == 0) { // a track item
@@ -511,7 +512,7 @@ static NSMutableDictionary *codeSelMap = nil;
 
       if (doDebug && debugIsVerbose) {
         NSLog(@"[0x%08lx] %ld-property item (%ld):",
-              filePos, fsbb->count, prop->uniqueID);
+              filePos, (long)fsbb->count, (long)prop->uniqueID);
       }
     }
     else if (memcmp(fsbb->code, "od", 2) == 0) { // unicode string
@@ -549,7 +550,8 @@ static NSMutableDictionary *codeSelMap = nil;
         NSLog(@"WARN: [0x%08lx] unknown code '%c%c', "
               "jump:0x%lu length:0x%lu count:0x%lu",
               filePos, fsbb->code[0], fsbb->code[1],
-              fsbb->jump, fsbb->myLen, fsbb->count);
+              (unsigned long)fsbb->jump, (unsigned long)fsbb->myLen,
+              (unsigned long)fsbb->count);
       }
     }
     
