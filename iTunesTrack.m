@@ -337,8 +337,8 @@ static NSString *locationDestinationPrefix = nil;
 /* debugging */
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"<%@ 0x%x: name:%@ attrs:%@>",
-                                    NSStringFromClass(self->isa), self,
+  return [NSString stringWithFormat:@"<%s 0x%x: name:%@ attrs:%@>",
+                                    object_getClassName(self), self,
                                     [self prettyName], [self attributes]];
 }
 

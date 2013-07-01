@@ -495,8 +495,8 @@ static NSString *kAll            = @"All";
 /* debugging */
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"<%@ 0x%x: name:%@ path:%@>",
-                                    NSStringFromClass(self->isa), self,
+  return [NSString stringWithFormat:@"<%s 0x%x: name:%@ path:%@>",
+                                    object_getClassName(self), self,
                                     [self name], [self libraryPath]];
 }
 

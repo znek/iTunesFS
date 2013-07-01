@@ -387,8 +387,8 @@ static NSString *trackFormatFileName = @"PlaylistsTrackFormat.txt";
 /* debugging */
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"<%@ 0x%x: name:%@ #tracks:%d>",
-                                    NSStringFromClass(self->isa), self,
+  return [NSString stringWithFormat:@"<%s 0x%x: name:%@ #tracks:%d>",
+                                    object_getClassName(self), self,
                                     [self name], [self count]];
 }
 
