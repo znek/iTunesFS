@@ -339,7 +339,7 @@ static NSMutableDictionary *codeSelMap = nil;
   NSDictionary  *fileAttrs;
   
 #if MAC_OS_X_VERSION_10_6 <= MAC_OS_X_VERSION_MAX_ALLOWED
-  fileAttrs = [fm attributesOfItemAtPath:_path error:nil];
+  fileAttrs = [fm attributesOfItemAtPath:_path error:NULL];
 #else
   fileAttrs = [fm fileAttributesAtPath:_path traverseLink:YES];
 #endif

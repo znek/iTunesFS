@@ -12,6 +12,8 @@
 	  Replaced all occurrences of NSStringFromClass(self->isa) [deprecated]
 	  with object_getClassName(self)
 
+	* iPodLibrary.m: fixed incompatible pointer type
+
 2012-08-07  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* v1.3.2
