@@ -25,7 +25,7 @@ iTunesFS_OBJC_PRECOMPILED_HEADERS = common.h
 
 ADDITIONAL_CPPFLAGS     += -std=c99
 ADDITIONAL_INCLUDE_DIRS += -IFUSEOFS -IFUSEOFS/GSFUSE
-ADDITIONAL_GUI_LIBS     += -lfuse
+ADDITIONAL_GUI_LIBS     += -lfuse -lz
 
 
 GNUSTEP_HOST_OS := $(shell gnustep-config --variable=GNUSTEP_HOST_OS 2>/dev/null)
@@ -41,7 +41,6 @@ endif
 ifeq ($(FOUNDATION_LIB),apple)
 iTunesFS_INCLUDE_DIRS  += -Ifilesystems-objc-support
 ADDITIONAL_NATIVE_LIBS += OSXFUSE Accelerate
-ADDITIONAL_GUI_LIBS    += -lz
 endif
 
 iTunesFS_OBJC_FILES +=				\
