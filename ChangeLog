@@ -1,3 +1,17 @@
+2013-07-01  Marcus Mueller <znek@mulle-kybernetik.com>
+
+	* iTunesFS.xcodeproj: LastUpgradeCheck bumped to 0450
+
+	* iTunesFS.xcodeproj: HIDPI images build flag added.
+	  I don't have HIDPI images, though.
+
+	* iTunesFS.xcodeproj: SDKROOT syntax did change a while
+	  ago
+
+	* iTunesFileSystem.m, iTunesLibrary.m, iTunesPlaylist.m, iTunesTrack.m:
+	  Replaced all occurrences of NSStringFromClass(self->isa) [deprecated]
+	  with object_getClassName(self)
+
 2012-08-07  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* v1.3.2
