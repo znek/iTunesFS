@@ -52,6 +52,8 @@
 		<string>%(playlistNumber#000) %(name).%(ext.lowercaseString)</string>
 		<key>PlaylistsTrackFormat[folders]</key>
 		<string>%(artist) / %(album) / %(trackNumber#00) %(name).%(ext.lowercaseString)</string>
+		<key>M3UTrackFormat</key>
+		<string>%(name)</string>
 		<key>ShowFormatFiles</key>
 		<true/>
 		<key>SymbolicLinks</key>

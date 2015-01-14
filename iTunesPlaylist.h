@@ -63,6 +63,8 @@
 - (id)initWithLibraryRepresentation:(NSDictionary *)_rep
   lib:(iTunesLibrary *)_lib;
 
+- (NSDate *)modificationDate;
+
 - (NSString *)name;
 - (NSString *)persistentId;
 - (NSString *)parentId;

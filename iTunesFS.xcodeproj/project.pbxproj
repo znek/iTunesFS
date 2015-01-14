@@ -36,6 +36,7 @@
 		ADBDA9CC0C02E7A5004CF795 /* iTunesFS.icns in Resources */ = {isa = PBXBuildFile; fileRef = ADBDA9CB0C02E7A5004CF795 /* iTunesFS.icns */; };
 		ADBDABA90C02FF10004CF795 /* NSString+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = ADBDABA80C02FF10004CF795 /* NSString+Extensions.m */; };
 		ADD11F3A0CD7A26000E7A5C2 /* JBiPodLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = ADD11F390CD7A26000E7A5C2 /* JBiPodLibrary.m */; };
+		ADDCCB511A6673480035EEB7 /* iTunesM3UPlaylist.m in Sources */ = {isa = PBXBuildFile; fileRef = ADDCCB501A6673480035EEB7 /* iTunesM3UPlaylist.m */; };
 		ADF74EC2102F2AF300FED3EA /* NSData+ZlibDecompression.m in Sources */ = {isa = PBXBuildFile; fileRef = ADF74EC1102F2AF300FED3EA /* NSData+ZlibDecompression.m */; };
 		ADF74ED1102F601C00FED3EA /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = ADF74ED0102F601C00FED3EA /* libz.dylib */; };
 /* End PBXBuildFile section */
@@ -121,6 +122,8 @@
 		ADBDABA80C02FF10004CF795 /* NSString+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = "NSString+Extensions.m"; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		ADD11F380CD7A21E00E7A5C2 /* JBiPodLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = JBiPodLibrary.h; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		ADD11F390CD7A26000E7A5C2 /* JBiPodLibrary.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = JBiPodLibrary.m; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
+		ADDCCB4F1A6673480035EEB7 /* iTunesM3UPlaylist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTunesM3UPlaylist.h; sourceTree = "<group>"; };
+		ADDCCB501A6673480035EEB7 /* iTunesM3UPlaylist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTunesM3UPlaylist.m; sourceTree = "<group>"; };
 		ADDCD76C0C26A6640031B215 /* GNUmakefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = GNUmakefile; sourceTree = "<group>"; tabWidth = 8; };
 		ADF74EC0102F2AF300FED3EA /* NSData+ZlibDecompression.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+ZlibDecompression.h"; sourceTree = "<group>"; };
 		ADF74EC1102F2AF300FED3EA /* NSData+ZlibDecompression.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+ZlibDecompression.m"; sourceTree = "<group>"; };
@@ -179,6 +182,8 @@
 				ADD11F390CD7A26000E7A5C2 /* JBiPodLibrary.m */,
 				AD15A2170C03208500345C9E /* iTunesPlaylist.h */,
 				AD15A2180C03208500345C9E /* iTunesPlaylist.m */,
+				ADDCCB4F1A6673480035EEB7 /* iTunesM3UPlaylist.h */,
+				ADDCCB501A6673480035EEB7 /* iTunesM3UPlaylist.m */,
 				AD15A22A0C03248C00345C9E /* iTunesTrack.h */,
 				AD15A22B0C03248C00345C9E /* iTunesTrack.m */,
 				AD6A7DB712C0BB770038FF7E /* iTunesFormatFile.h */,
@@ -428,6 +433,7 @@
 				AD8118720F093DAB000786C9 /* NSImage+IconData.m in Sources */,
 				AD8119700F095144000786C9 /* FUSEOFSLookupContext.m in Sources */,
 				ADF74EC2102F2AF300FED3EA /* NSData+ZlibDecompression.m in Sources */,
+				ADDCCB511A6673480035EEB7 /* iTunesM3UPlaylist.m in Sources */,
 				ADB59B751033716B002A2998 /* StreamReader.m in Sources */,
 				AD6A7C8912BFA7320038FF7E /* FUSEOFSMemoryContainer.m in Sources */,
 				AD6A7CA212BFB0D50038FF7E /* FUSEOFSMemoryFile.m in Sources */,

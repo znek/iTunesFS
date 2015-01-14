@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2007-2010, Marcus Müller <znek@mulle-kybernetik.com>.
+  Copyright (c) 2007-2015, Marcus Müller <znek@mulle-kybernetik.com>.
   All rights reserved.
 
 
@@ -30,45 +30,23 @@
   POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef	__iTunesFS_iTunesLibrary_H
-#define	__iTunesFS_iTunesLibrary_H
+#ifndef	__iTunesFS_iTunesM3UPlaylist_H
+#define	__iTunesFS_iTunesM3UPlaylist_H
 
 #import <Foundation/Foundation.h>
 
-@class NSImage;
 @class iTunesPlaylist;
-@class iTunesTrack;
 
-@interface iTunesLibrary : NSObject
+@interface iTunesM3UPlaylist : NSObject
 {
-  NSString            *name;
-  NSMutableDictionary *plMap;
-  NSMutableDictionary *m3uMap;
-  NSMutableDictionary *trackMap;
-  NSMutableDictionary *virtMap;
+	iTunesPlaylist *playlist;
 }
 
+- (id)initWithPlaylist:(iTunesPlaylist *)_playlist;
+
 - (NSString *)name;
-- (NSData *)iconData;
+- (NSString *)fileName;
 
-- (void)reload;
-- (void)reloadVirtualMaps; // for subclassers - called by -reload
-- (void)close;
+@end /* iTunesM3UPlaylist */
 
-- (NSString *)libraryPath;
-- (NSString *)mountPoint;
-
-- (NSArray *)playlistNames;
-- (iTunesPlaylist *)playlistNamed:(NSString *)_plName;
-
-/* helpers */
-
-- (iTunesTrack *)trackWithID:(NSString *)_trackID;
-
-/* burn folder helpers */
-
-- (id)burnFolderNameFromFolderName:(NSString *)_s;
-
-@end /* iTunesLibrary */
-
-#endif	/* __iTunesFS_iTunesLibrary_H */
+#endif	/* __iTunesFS_iTunesM3UPlaylist_H */

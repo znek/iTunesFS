@@ -121,6 +121,7 @@
 
 - (unsigned)trackNumber;
 
+- (NSURL *)url;
 
 /* this is transient information, set by every playlist that needs this
  * track to format itself according to the context of the calling playlist

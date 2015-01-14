@@ -35,6 +35,7 @@
 #import <AppKit/AppKit.h>
 #import "NSString+Extensions.h"
 #import "iTunesPlaylist.h"
+#import "iTunesM3UPlaylist.h"
 #import "iTunesTrack.h"
 #import "NSObject+FUSEOFS.h"
 #import "iTunesFSFormatter.h"
@@ -51,16 +52,18 @@ static BOOL doDebug       = NO;
 static BOOL useCategories = NO;
 static BOOL mimicIPodNav  = NO;
 static BOOL useBurnFolderNames = YES;
+static BOOL useM3UPlaylists = NO;
 
 static NSString *libraryPath     = nil;
 static NSData   *libraryIconData = nil;
 static NSString *kPlaylists      = @"Playlists";
-static NSString	*kCompilations	 = @"Compilations";
+static NSString *kCompilations   = @"Compilations";
 static NSString *kArtists        = @"Artists";
 static NSString *kAlbums         = @"Albums";
 static NSString *kSongs          = @"Songs";
 static NSString *kUnknown        = @"Unknown";
 static NSString *kAll            = @"All";
+static NSString *kM3UPlaylists   = @"M3UPlaylists";
 
 + (void)initialize {
   static BOOL didInit = NO;
@@ -71,6 +74,7 @@ static NSString *kAll            = @"All";
   doDebug            = [ud boolForKey:@"iTunesFileSystemDebugEnabled"];
   useCategories      = [ud boolForKey:@"UseCategories"];
   useBurnFolderNames = [ud boolForKey:@"UseBurnFoldersInFinder"];
+  useM3UPlaylists    = [ud boolForKey:@"UseM3UPlaylists"];
   libraryPath        = [[[ud stringForKey:@"Library"] stringByStandardizingPath]
                                                       copy];
   if (!libraryPath) {
@@ -124,6 +128,8 @@ static NSString *kAll            = @"All";
                                       properlyEscapedFSRepresentation] copy];
   kAll          = [[NSLocalizedString(@"All",       "All")
                                       properlyEscapedFSRepresentation] copy];
+  kM3UPlaylists = [[NSLocalizedString(@"M3U Playlists", "M3UPlaylists")
+                                      properlyEscapedFSRepresentation] copy];
 
   if (doDebug && useCategories)
     NSLog(@"Using categories (virtual folder hierarchy)");
@@ -133,6 +139,7 @@ static NSString *kAll            = @"All";
   self = [super init];
   if (self) {
     self->plMap    = [[NSMutableDictionary alloc] initWithCapacity:128];
+    self->m3uMap   = [[NSMutableDictionary alloc] initWithCapacity:128];
     self->trackMap = [[NSMutableDictionary alloc] initWithCapacity:10000];
     if (useCategories) {
       NSMutableDictionary *tmp;
@@ -160,6 +167,7 @@ static NSString *kAll            = @"All";
   [self close];
   [self->name     release];
   [self->plMap    release];
+  [self->m3uMap   release];
   [self->trackMap release];
   [self->virtMap  release];
   [super dealloc];
@@ -179,7 +187,9 @@ static NSString *kAll            = @"All";
     NSLog(@"%s", __PRETTY_FUNCTION__);
 
   [self->plMap    removeAllObjects];
+  [self->m3uMap   removeAllObjects];
   [self->trackMap removeAllObjects];
+
   plist = [NSData dataWithContentsOfFile:[self libraryPath]];
   NSAssert1(plist != nil, @"Couldn't read contents of %@!",
                           [self libraryPath]);
@@ -264,8 +274,20 @@ static NSString *kAll            = @"All";
       }
     }
   }
-  [idPlMap release];
 
+  if (useM3UPlaylists) {
+    for (iTunesPlaylist *pl in [idPlMap allValues]) {
+      if (![pl count])
+        continue;
+
+      iTunesM3UPlaylist *m3uPl = [[iTunesM3UPlaylist alloc]
+                                                     initWithPlaylist:pl];
+      [self->m3uMap setObject:m3uPl forKey:[m3uPl fileName]];
+      [m3uPl release];
+    }
+  }
+
+  [idPlMap release];
   [self reloadVirtualMaps];
 }
 
@@ -273,6 +295,7 @@ static NSString *kAll            = @"All";
   if (!useCategories) return;
 
   [self->virtMap removeObjectForKey:kPlaylists];
+  [self->virtMap removeObjectForKey:kM3UPlaylists];
   [self->virtMap removeObjectForKey:kSongs];
 
   if ([self->plMap count] == 1) {
@@ -281,6 +304,8 @@ static NSString *kAll            = @"All";
   }
   else {
     [self->virtMap setObject:self->plMap forKey:kPlaylists];
+    if (useM3UPlaylists)
+      [self->virtMap setObject:self->m3uMap forKey:kM3UPlaylists];
   }
 
   NSString *fmt = [[NSUserDefaults standardUserDefaults]

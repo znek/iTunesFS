@@ -235,6 +235,10 @@ static NSString *trackFormatFileName = @"PlaylistsTrackFormat.txt";
   return [NSString stringWithFormat:@"%@[%@]", self->name, self->persistentId];
 }
 
+- (NSDate *)modificationDate {
+  return self->modificationDate;
+}
+
 - (NSString *)persistentId {
   return self->persistentId;
 }
