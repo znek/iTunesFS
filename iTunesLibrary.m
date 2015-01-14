@@ -277,7 +277,7 @@ static NSString *kM3UPlaylists   = @"M3UPlaylists";
 
   if (useM3UPlaylists) {
     for (iTunesPlaylist *pl in [idPlMap allValues]) {
-      if (![pl count])
+      if (![[pl allTracks] count])
         continue;
 
       iTunesM3UPlaylist *m3uPl = [[iTunesM3UPlaylist alloc]

@@ -91,7 +91,7 @@
 
 	NSMutableString *rep = [[NSMutableString alloc] init];
 	[rep appendString:@"#EXTM3U\n"];
-	for (iTunesTrack *track in [self->playlist tracks]) {
+	for (iTunesTrack *track in [self->playlist allTracks]) {
 		NSString *title = [formatter stringValueByFormattingObject:track];
 		NSURL *url = [track url];
 		NSString *location = [url isFileURL] ? [url path] : [url description];

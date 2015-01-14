@@ -75,6 +75,10 @@
 - (NSArray *)trackNames;
 
 - (void)addChild:(iTunesPlaylist *)_child withName:(NSString *)_name;
+- (NSArray *)children;
+
+// original iTunes list of all tracks in correct order
+- (NSArray *)allTracks;
 
 @end /* iTunesPlaylist */
 

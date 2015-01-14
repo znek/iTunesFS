@@ -246,6 +246,10 @@ static NSString *trackFormatFileName = @"PlaylistsTrackFormat.txt";
   return self->parentId;
 }
 
+- (NSArray *)allTracks {
+  return self->savedTracks;
+}
+
 - (void)addTrack:(iTunesTrack *)_track withName:(NSString *)_name {
   [self->tracks addObject:_track];
   [self->trackNames addObject:_name];
@@ -270,6 +274,9 @@ static NSString *trackFormatFileName = @"PlaylistsTrackFormat.txt";
 - (void)addChild:(iTunesPlaylist *)_child withName:(NSString *)_name {
   [self->childrenMap setObject:_child
                      forKey:[_name properlyEscapedFSRepresentation]];
+}
+- (NSArray *)children {
+  return [self->childrenMap allValues];
 }
 
 /* FUSEOFS */
