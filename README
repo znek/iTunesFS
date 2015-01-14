@@ -4,12 +4,11 @@ What is it?
 iTunesFS allows you to mount your local iTunes library and locally mounted
 iPods/iPhones as a single file system mount point, exposing all the details
 like artists, albums and playlists as separate directories with their
-respective entries. The naming of tracks within these directories is
-configurable and playlist order can be maintained by prefixing tracks with
-their respective playlist index. 
+respective entries. The naming of tracks and playlists within these directories
+is highly configurable.
 
-Please note that you have to install MacFUSE Core before you can use iTunesFS!
-MacFUSE Core is available at http://code.google.com/p/macfuse/.
+Please note that you have to install OSXFUSE before you can use iTunesFS!
+OSXFUSE is available at http://osxfuse.github.com/.
 
 As of version 1.1.3, you can also build this application using GNUstep on any
 supported unix-like system (i.e. FreeBSD). Please read README-GNUstep for
@@ -19,29 +18,17 @@ further information regarding FUSE and GNUstep.
 Further information
 ===================
 
-The iTunesFS homepage is at
-http://www.mulle-kybernetik.com/software/iTunesFS.
+The iTunesFS homepage is at http://www.mulle-kybernetik.com/software/iTunesFS/.
 
-Sourcecode is available via anonymous Subversion (svn) access at
-http://svn.mulle-kybernetik.com/iTunesFS. For license information have a
-look at the 'COPYING' file.
+Binaries and source can be downloaded from the homepage.
+For license information have a look at the 'COPYING' file.
 In case you have further questions, feel free to write an email to
 Marcus Mueller <znek@mulle-kybernetik.com>.
 
-
-TODO / IDEAS
-============
-
-- expose iTunesTrack metadata to Spotlight
-  - would need to gather that metadata (Artist, Album, etc.) first
-    (but that's trivial)
-  - spotlight metadata format is subject to change between OS revisions,
-    not trivial to reverse engineer
-- create .fseventsd folder?
 
 
 References
 ==========
 
-iTunesFS - http://www.mulle-kybernetik.com/software/iTunesFS
-MacFUSE  - http://code.google.com/p/macfuse/
+iTunesFS - http://www.mulle-kybernetik.com/software/iTunesFS/
+OSXFUSE  - http://osxfuse.github.com/

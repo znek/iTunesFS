@@ -30,12 +30,12 @@ fi
 
 # copy binaries
 pushd $BIN_DIR/.. > /dev/null
-gnutar cf - ${BIN_DIR##*/} | ( cd $DST_DIR ; gnutar xf - )
+tar cf - ${BIN_DIR##*/} | ( cd $DST_DIR ; tar xf - )
 popd > /dev/null
 
 # copy READMEs
 cd $SOURCE_DIR
-gnutar cf - README AUTHORS COPYING COPYRIGHT | ( cd $DST_DIR; gnutar xf - )
+tar cf - README AUTHORS COPYING COPYRIGHT | ( cd $DST_DIR; tar xf - )
 
 # remove extra garbage
 cd $DST_DIR
@@ -57,7 +57,7 @@ hdiutil eject ${DISK}
 DISK=`hdid ${DST_IMG} | awk '{print $1}'`
 
 #copy package to .dmg
-gnutar cf - . | ( cd "/Volumes/${VOLUME_NAME}" ; gnutar xf - )
+tar cf - . | ( cd "/Volumes/${VOLUME_NAME}" ; tar xf - )
 
 # once again eject, to synchronize
 hdiutil eject ${DISK}

@@ -1,5 +1,5 @@
 {
-	NSHumanReadableCopyright = "Copyright 2007-2012 Mulle kybernetiK.";
+	NSHumanReadableCopyright = "Copyright 2007-2015 Mulle kybernetiK.";
 	NSUserDefaults = {
 		FUSEMountName			  		= "iTunesFS";
 		FUSEMountPath             		= "/tmp/iTunesFS";
@@ -8,6 +8,7 @@
 		AlbumsTrackFormat         		= "%(name).%(ext)";
 		PlaylistsTrackFormat      	    = "%(playlistNumber#000) %(name).%(ext)";
         "PlaylistsTrackFormat[folders]" = "%(artist) / %(album) / %(trackNumber#00) %(name).%(ext.lowercaseString)";
+        M3UTrackFormat                 = "%(name)";
 		ShowFormatFiles           		= YES;
 	};
 }
