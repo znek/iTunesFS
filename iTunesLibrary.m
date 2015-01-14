@@ -57,13 +57,13 @@ static BOOL useM3UPlaylists = NO;
 static NSString *libraryPath     = nil;
 static NSData   *libraryIconData = nil;
 static NSString *kPlaylists      = @"Playlists";
+static NSString *kM3UPlaylists   = @"M3UPlaylists";
 static NSString *kCompilations   = @"Compilations";
 static NSString *kArtists        = @"Artists";
 static NSString *kAlbums         = @"Albums";
 static NSString *kSongs          = @"Songs";
 static NSString *kUnknown        = @"Unknown";
 static NSString *kAll            = @"All";
-static NSString *kM3UPlaylists   = @"M3UPlaylists";
 
 + (void)initialize {
   static BOOL didInit = NO;
@@ -114,21 +114,21 @@ static NSString *kM3UPlaylists   = @"M3UPlaylists";
                                     icnsDataWithWidth:512] copy];
 #endif
 
-  kPlaylists    = [[NSLocalizedString(@"Playlists", "Playlists")
+  kPlaylists    = [[NSLocalizedString(@"Playlists",    "Playlists")
                                       properlyEscapedFSRepresentation] copy];
-  kAlbums       = [[NSLocalizedString(@"Albums",    "Albums")
+  kM3UPlaylists = [[NSLocalizedString(@"M3UPlaylists", "M3UPlaylists")
+                                      properlyEscapedFSRepresentation] copy];
+  kAlbums       = [[NSLocalizedString(@"Albums",       "Albums")
                                       properlyEscapedFSRepresentation] copy];
   kCompilations = [[NSLocalizedString(@"Compilations", "Compilations")
 								                      properlyEscapedFSRepresentation] copy];
-  kArtists      = [[NSLocalizedString(@"Artists",   "Artists")
+  kArtists      = [[NSLocalizedString(@"Artists",      "Artists")
                                       properlyEscapedFSRepresentation] copy];
-  kSongs        = [[NSLocalizedString(@"Songs",     "Songs")
+  kSongs        = [[NSLocalizedString(@"Songs",        "Songs")
                                       properlyEscapedFSRepresentation] copy];
-  kUnknown      = [[NSLocalizedString(@"Unknown",   "Unknown")
+  kUnknown      = [[NSLocalizedString(@"Unknown",      "Unknown")
                                       properlyEscapedFSRepresentation] copy];
-  kAll          = [[NSLocalizedString(@"All",       "All")
-                                      properlyEscapedFSRepresentation] copy];
-  kM3UPlaylists = [[NSLocalizedString(@"M3U Playlists", "M3UPlaylists")
+  kAll          = [[NSLocalizedString(@"All",          "All")
                                       properlyEscapedFSRepresentation] copy];
 
   if (doDebug && useCategories)
