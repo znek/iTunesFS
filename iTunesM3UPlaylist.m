@@ -39,10 +39,13 @@
 
 @implementation iTunesM3UPlaylist
 
-- (id)initWithPlaylist:(iTunesPlaylist *)_playlist {
+- (id)initWithPlaylist:(iTunesPlaylist *)_playlist
+  useRelativePaths:(BOOL)_useRelativePaths
+{
 	self = [super init];
 	if (self) {
 		self->playlist = [_playlist retain];
+		self->useRelativePaths = _useRelativePaths;
 	}
 	return self;
 }
@@ -60,6 +63,10 @@
 - (NSString *)fileName {
 	return [[[self name] stringByAppendingPathExtension:@"m3u"]
 			             properlyEscapedFSRepresentation];
+}
+- (NSArray *)tracks {
+	return self->useRelativePaths ? [self->playlist tracks]
+	                              : [self->playlist allTracks];
 }
 
 /* FUSEOFS */
@@ -91,12 +98,26 @@
 
 	NSMutableString *rep = [[NSMutableString alloc] init];
 	[rep appendString:@"#EXTM3U\n"];
-	for (iTunesTrack *track in [self->playlist allTracks]) {
-		NSString *title = [formatter stringValueByFormattingObject:track];
-		NSURL *url = [track url];
-		NSString *location = [url isFileURL] ? [url path] : [url description];
 
+	NSArray *tracks = [self tracks];
+	unsigned i, count = [tracks count];
+	for (i = 0; i < count; i++) {
+		iTunesTrack *track =  [tracks objectAtIndex:i];
+		NSString *title = [formatter stringValueByFormattingObject:track];
 		[rep appendFormat:@"#EXTINF:-1,%@\n", title];
+
+		NSURL *url = [track url];
+		NSString *location;
+
+		if ([url isFileURL]) {
+			if (!self->useRelativePaths)
+				location = [url path];
+			else
+				location = [[self->playlist trackNames] objectAtIndex:i];
+		}
+		else {
+			location = [url description];
+		}
 		[rep appendString:location];
 		[rep appendString:@"\n"];
 	}

@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2007-2010, Marcus Müller <znek@mulle-kybernetik.com>.
+  Copyright (c) 2007-2015, Marcus Müller <znek@mulle-kybernetik.com>.
   All rights reserved.
 
 
@@ -38,6 +38,7 @@
 @class iTunesFormatFile;
 @class iTunesLibrary;
 @class iTunesTrack;
+@class iTunesM3UPlaylist;
 
 #define kPlaylistName @"Name"
 #define kPlaylistPersistentID @"Playlist Persistent ID"
@@ -56,6 +57,7 @@
   NSMutableArray *trackNames;
   NSMutableDictionary *childrenMap;
   iTunesFormatFile *trackFormatFile;
+  iTunesM3UPlaylist *m3uPlaylist;
   id shadowFolder;
   NSDate *modificationDate;
 }

@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2007-2010, Marcus Müller <znek@mulle-kybernetik.com>.
+  Copyright (c) 2007-2015, Marcus Müller <znek@mulle-kybernetik.com>.
   All rights reserved.
 
 
@@ -32,6 +32,7 @@
 
 #import "common.h"
 #import "iTunesPlaylist.h"
+#import "iTunesM3UPlaylist.h"
 #import "iTunesLibrary.h"
 #import "iTunesTrack.h"
 #import "iTunesFSFormatter.h"
@@ -53,6 +54,7 @@
 static BOOL doDebug = NO;
 static BOOL showPersistentID    = NO;
 static BOOL showTrackFormatFile = YES;
+static BOOL showM3UPlaylistFile = NO;
 static NSString *trackFormatFileName = @"PlaylistsTrackFormat.txt";
 
 + (void)initialize {
@@ -65,6 +67,7 @@ static NSString *trackFormatFileName = @"PlaylistsTrackFormat.txt";
   doDebug  = [ud boolForKey:@"iTunesFileSystemDebugEnabled"];
   showPersistentID    = [ud boolForKey:@"ShowPersistentIDs"];
   showTrackFormatFile = [ud boolForKey:@"ShowFormatFiles"];
+  showM3UPlaylistFile = [ud boolForKey:@"ShowM3UPlaylistFiles"];
 }
 
 - (id)init {
@@ -139,6 +142,7 @@ static NSString *trackFormatFileName = @"PlaylistsTrackFormat.txt";
   [self->childrenMap  release];
   [self->shadowFolder release];
   [self->trackFormatFile  release];
+  [self->m3uPlaylist  release];
   [self->modificationDate release];
   [super dealloc];
 }
@@ -253,6 +257,10 @@ static NSString *trackFormatFileName = @"PlaylistsTrackFormat.txt";
 - (void)addTrack:(iTunesTrack *)_track withName:(NSString *)_name {
   [self->tracks addObject:_track];
   [self->trackNames addObject:_name];
+  if (showM3UPlaylistFile && !self->m3uPlaylist) {
+      self->m3uPlaylist = [[iTunesM3UPlaylist alloc] initWithPlaylist:self
+                                                     useRelativePaths:YES];
+  }
 }
 
 - (NSArray *)tracks {
@@ -287,6 +295,10 @@ static NSString *trackFormatFileName = @"PlaylistsTrackFormat.txt";
   {
     return self->trackFormatFile;
   }
+  if (self->m3uPlaylist && [_pc isEqualToString:[self->m3uPlaylist fileName]])
+  {
+    return self->m3uPlaylist;
+  }
 
   id result = [self->childrenMap objectForKey:_pc];
   if (result)
@@ -301,7 +313,7 @@ static NSString *trackFormatFileName = @"PlaylistsTrackFormat.txt";
 }
 
 - (NSArray *)containerContents {
-  if (![self showTrackFormatFile]) {
+  if (![self showTrackFormatFile] && !self->m3uPlaylist) {
     // in this case, we can possibly eliminate an unnecessary copy
     if ([self->childrenMap count] && ![[self trackNames] count])
       return [self->childrenMap allKeys];
@@ -318,6 +330,9 @@ static NSString *trackFormatFileName = @"PlaylistsTrackFormat.txt";
     [names addObjectsFromArray:[self->shadowFolder containerContents]];
 #endif
   }
+  if (self->m3uPlaylist)
+    [names addObject:[self->m3uPlaylist fileName]];
+
   return [names autorelease];
 }
 

@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2007-2011, Marcus Müller <znek@mulle-kybernetik.com>.
+  Copyright (c) 2007-2015, Marcus Müller <znek@mulle-kybernetik.com>.
   All rights reserved.
 
 
@@ -281,7 +281,8 @@ static NSString *kM3UPlaylists   = @"M3UPlaylists";
         continue;
 
       iTunesM3UPlaylist *m3uPl = [[iTunesM3UPlaylist alloc]
-                                                     initWithPlaylist:pl];
+                                                     initWithPlaylist:pl
+                                                     useRelativePaths:NO];
       [self->m3uMap setObject:m3uPl forKey:[m3uPl fileName]];
       [m3uPl release];
     }

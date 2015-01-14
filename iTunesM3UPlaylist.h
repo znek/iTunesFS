@@ -40,9 +40,11 @@
 @interface iTunesM3UPlaylist : NSObject
 {
 	iTunesPlaylist *playlist;
+	BOOL useRelativePaths;
 }
 
-- (id)initWithPlaylist:(iTunesPlaylist *)_playlist;
+- (id)initWithPlaylist:(iTunesPlaylist *)_playlist
+  useRelativePaths:(BOOL)_useRelativePaths;
 
 - (NSString *)name;
 - (NSString *)fileName;
