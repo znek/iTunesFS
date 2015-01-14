@@ -9,6 +9,7 @@
 		PlaylistsTrackFormat      	    = "%(playlistNumber#000) %(name).%(ext)";
         "PlaylistsTrackFormat[folders]" = "%(artist) / %(album) / %(trackNumber#00) %(name).%(ext.lowercaseString)";
         M3UTrackFormat                 = "%(name)";
+        UseM3U8                        = NO;
 		ShowFormatFiles           		= YES;
 	};
 }

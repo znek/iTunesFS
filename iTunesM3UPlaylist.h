@@ -49,6 +49,9 @@
 - (NSString *)name;
 - (NSString *)fileName;
 
+- (NSString *)fileExtension;
+- (NSStringEncoding)fileEncoding;
+
 @end /* iTunesM3UPlaylist */
 
 #endif	/* __iTunesFS_iTunesM3UPlaylist_H */

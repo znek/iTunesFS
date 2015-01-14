@@ -39,6 +39,19 @@
 
 @implementation iTunesM3UPlaylist
 
+static BOOL useM3U8 = NO;
+static NSString *fileExt = nil;
+
++ (void)initialize {
+	static BOOL didInit = NO;
+	if (didInit) return;
+	didInit = YES;
+
+	NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+	useM3U8 = [ud boolForKey:@"UseM3U8"];
+	fileExt = [ud stringForKey:@"M3UPlaylistFileExtension"];
+}
+
 - (id)initWithPlaylist:(iTunesPlaylist *)_playlist
   useRelativePaths:(BOOL)_useRelativePaths
 {
@@ -61,9 +74,18 @@
 	return [self->playlist name];
 }
 - (NSString *)fileName {
-	return [[[self name] stringByAppendingPathExtension:@"m3u"]
+	return [[[self name] stringByAppendingPathExtension:[self fileExtension]]
 			             properlyEscapedFSRepresentation];
 }
+- (NSString *)fileExtension {
+	if (fileExt)
+		return fileExt;
+	return useM3U8 ? @"m3u8" : @"m3u";
+}
+- (NSStringEncoding)fileEncoding {
+	return useM3U8 ? NSUTF8StringEncoding : NSWindowsCP1252StringEncoding;
+}
+
 - (NSArray *)tracks {
 	return self->useRelativePaths ? [self->playlist tracks]
 	                              : [self->playlist allTracks];
@@ -121,7 +143,7 @@
 		[rep appendString:location];
 		[rep appendString:@"\n"];
 	}
-	NSData *d = [rep dataUsingEncoding:NSUTF8StringEncoding];
+	NSData *d = [rep dataUsingEncoding:[self fileEncoding]];
 	[rep release];
 	[formatter release];
 	return d;
