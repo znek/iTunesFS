@@ -413,9 +413,9 @@ static NSString *trackFormatFileName = @"PlaylistsTrackFormat.txt";
 /* debugging */
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"<%s 0x%x: name:%@ #tracks:%d>",
+  return [NSString stringWithFormat:@"<%s %p: name:%@ #tracks:%ld>",
                                     object_getClassName(self), self,
-                                    [self name], [self count]];
+                                    [self name], (unsigned long)[self count]];
 }
 
 @end /* iTunesPlaylist */

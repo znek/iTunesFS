@@ -473,12 +473,12 @@ static NSString *albumsTrackFormatFileName    = @"AlbumsTrackFormat.txt";
   
   ms = [[NSMutableString alloc] initWithCapacity:60];
   [ms appendString:@"<"];
-  [ms appendFormat:@"%s 0x%x", object_getClassName(self), self];
+  [ms appendFormat:@"%s %p", object_getClassName(self), self];
   [ms appendString:@": #libs:"];
-  [ms appendFormat:@"%d", [self->libMap count]];
+  [ms appendFormat:@"%ld", (long)[self->libMap count]];
   if (!ignoreIPods) {
     [ms appendString:@" #iPods:"];
-    [ms appendFormat:@"%d", [self->volMap count]];
+    [ms appendFormat:@"%ld", (long)[self->volMap count]];
   }
   [ms appendString:@">"];
   return [ms autorelease];

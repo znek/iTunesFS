@@ -429,7 +429,7 @@ static NSMutableDictionary *codeSelMap = nil;
       mhypExtra *prop = (mhypExtra *)[data bytes];
       prop->persistentID = NSSwapLittleLongLongToHost(prop->persistentID);
       NSString *persistentID = [NSString stringWithFormat:@"%llX",
-                                         prop->persistentID];
+                                         (unsigned long long)prop->persistentID];
 
       self->currentObject = [[NSMutableDictionary alloc] initWithCapacity:2];
       [self->currentObject setObject:persistentID forKey:kPlaylistPersistentID];
