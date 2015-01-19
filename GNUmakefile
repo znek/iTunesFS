@@ -52,6 +52,7 @@ iTunesFS_OBJC_FILES +=				\
 	iPodLibrary.m				\
 	JBiPodLibrary.m				\
 	iTunesPlaylist.m			\
+	iTunesM3UPlaylist.m			\
 	iTunesTrack.m				\
 	iTunesFormatFile.m			\
 	iTunesFSFormatter.m			\
