@@ -59,6 +59,7 @@ iTunesFS_OBJC_FILES +=				\
 						\
 	StreamReader.m				\
 	NSString+Extensions.m			\
+	NSMutableArray+Extensions.m		\
 	NSURL+Extensions.m			\
 	NSData+ZlibDecompression.m		\
 

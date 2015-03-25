@@ -39,6 +39,7 @@
 #import "NSObject+FUSEOFS.h"
 #import "FUSEOFSMemoryContainer.h"
 #import "iTunesFormatFile.h"
+#import "NSMutableArray+Extensions.h"
 
 @interface iTunesFileSystem (Private)
 - (void)addLibrary:(iTunesLibrary *)_lib;
@@ -69,7 +70,6 @@ static BOOL useCategories    = YES;
 
 static NSString *fsIconPath      = nil;
 static NSArray  *fakeVolumePaths = nil;
-static NSString *iPhoneDiskPath  = @"/Volumes/iPhoneDisk";
 static NSString *playlistsTrackFormatFileName = @"PlaylistsTrackFormat.txt";
 static NSString *albumsTrackFormatFileName    = @"AlbumsTrackFormat.txt";
 
@@ -126,17 +126,15 @@ static NSString *albumsTrackFormatFileName    = @"AlbumsTrackFormat.txt";
     [lib release];
   }
   if (!ignoreIPods) {
+    NSWorkspace *ws = [NSWorkspace sharedWorkspace];
+
     // add mounted iPods
-    NSArray *volPaths = [[NSWorkspace sharedWorkspace] mountedRemovableMedia];
+    NSMutableArray *volPaths =
+      [NSMutableArray arrayWithArray:[ws mountedLocalVolumePaths]];
+    [volPaths addObjectsFromArrayIfAbsent:[ws mountedRemovableMedia]];
 
     if (fakeVolumePaths)
-      volPaths = [volPaths arrayByAddingObjectsFromArray:fakeVolumePaths];
-
-    // workaround for Finder's inability to treat FUSE filesystems as
-    // removable media
-    if (![volPaths containsObject:iPhoneDiskPath]) {
-      volPaths = [volPaths arrayByAddingObject:iPhoneDiskPath];
-    }
+       [volPaths addObjectsFromArrayIfAbsent:fakeVolumePaths];
 
     lib = nil;
     unsigned count = [volPaths count];
