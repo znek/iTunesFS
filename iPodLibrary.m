@@ -301,10 +301,11 @@ static NSMutableDictionary *codeSelMap = nil;
     trackID = [trackIDs objectAtIndex:i];
     rep     = [tracks objectForKey:trackID];
     track   = [[iTunesTrack alloc] initWithLibraryRepresentation:rep];
-    [self->trackMap setObject:track forKey:trackID];
+    if ([track url])
+      [self->trackMap setObject:track forKey:trackID];
     [track release];
   }
-  
+
   count     = [playlists count];
   for (i = 0; i < count; i++) {
     NSDictionary   *plRep;

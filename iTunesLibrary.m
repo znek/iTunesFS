@@ -216,10 +216,11 @@ static NSString *kAll            = @"All";
     trackID = [trackIDs objectAtIndex:i];
     rep     = [tracks objectForKey:trackID];
     track   = [[iTunesTrack alloc] initWithLibraryRepresentation:rep];
-    [self->trackMap setObject:track forKey:trackID];
+    if ([track url])
+      [self->trackMap setObject:track forKey:trackID];
     [track release];
   }
-  
+
   NSMutableDictionary *idPlMap;
   playlists = [lib objectForKey:@"Playlists"];
   count     = [playlists count];
