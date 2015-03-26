@@ -33,10 +33,23 @@ PROBLEMS
   have a tool instead (similar to sshfs and the like).
 
 - On FreeBSD 8.2rc3 I needed to grant permissions for /dev/fuse0:
-  $ sudo chmod o+rw /dev/fuse0 
+root@fbsd8:~ # chmod o+rw /dev/fuse0
+
+- On FreeBSD 10.x I need to do the following:
+root@fbsd10:~ # cat << EOF >> /etc.fuse.conf
+user_allow_other
+EOF
+root@fbsd10:~ # cat << EOF >> /etc/devfs.conf
+own     fuse    root:operator
+perm    fuse    0666
+EOF
+root@fbsd10:~ # cat << EOF >> /etc/sysctl.conf
+vfs.usermount=1
+EOF
+root@fbsd10:~ # sysctl vfs.usermount=1
 
 - Writing to *TrackFormatFiles.txt doesn't work, yet. This needs investigation,
-  probably something in GMUserFileSystem.m is broken.
+  most probably something in GMUserFileSystem.m is broken.
 
 
 EXAMPLE
