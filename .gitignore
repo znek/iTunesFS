@@ -3,4 +3,8 @@ iTunesFS.xcodeproj/xcuserdata/
 iTunesFS.xcodeproj/znek.pbxuser
 iTunesFS.xcodeproj/znek.perspectivev3
 obj
-iTunesFS.app
+Resources
+*.core
+*.app
+*.sh
+*.gdb
