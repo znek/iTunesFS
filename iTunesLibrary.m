@@ -39,6 +39,7 @@
 #import "iTunesTrack.h"
 #import "NSObject+FUSEOFS.h"
 #import "iTunesFSFormatter.h"
+#import "FUSEOFSMemoryContainer.h"
 #ifndef GNU_GUI_LIBRARY
 #import "NSImage+IconData.h"
 #endif
@@ -138,22 +139,14 @@ static NSString *kAll            = @"All";
 - (id)init {
   self = [super init];
   if (self) {
-    self->plMap    = [[NSMutableDictionary alloc] initWithCapacity:128];
-    self->m3uMap   = [[NSMutableDictionary alloc] initWithCapacity:128];
+    self->plMap    = [[FUSEOFSMemoryContainer alloc] initWithCapacity:128];
+    self->m3uMap   = [[FUSEOFSMemoryContainer alloc] initWithCapacity:128];
     self->trackMap = [[NSMutableDictionary alloc] initWithCapacity:10000];
     if (useCategories) {
-      NSMutableDictionary *tmp;
-
-      self->virtMap = [[NSMutableDictionary alloc] initWithCapacity:4];
-      tmp = [[NSMutableDictionary alloc] initWithCapacity:1000];
-      [self->virtMap setObject:tmp forKey:kAlbums];
-      [tmp release];
-      tmp = [[NSMutableDictionary alloc] initWithCapacity:1000];
-      [self->virtMap setObject:tmp forKey:kArtists];
-      [tmp release];
-      tmp = [[NSMutableDictionary alloc] initWithCapacity:1000];
-      [self->virtMap setObject:tmp forKey:kCompilations];
-      [tmp release];
+      self->virtMap = [[FUSEOFSMemoryContainer alloc] init];
+      [self->virtMap createContainerNamed:kAlbums  withAttributes:nil];
+      [self->virtMap createContainerNamed:kArtists withAttributes:nil];
+      [self->virtMap createContainerNamed:kCompilations withAttributes:nil];
     }
     [self reload];
 #ifndef NO_WATCHDOG
@@ -216,7 +209,7 @@ static NSString *kAll            = @"All";
     trackID = [trackIDs objectAtIndex:i];
     rep     = [tracks objectForKey:trackID];
     track   = [[iTunesTrack alloc] initWithLibraryRepresentation:rep];
-    if ([track url])
+    if ([track isUsable])
       [self->trackMap setObject:track forKey:trackID];
     [track release];
   }
@@ -237,8 +230,8 @@ static NSString *kAll            = @"All";
 
     // only record top-level playlist, if playlist isn't a folder itself
     if (![pl parentId]) {
-      [self->plMap setObject:pl
-                   forKey:[self burnFolderNameFromFolderName:[pl name]]];
+      [self->plMap setItem:pl
+                   forName:[self burnFolderNameFromFolderName:[pl name]]];
     }
 
     plId = [pl persistentId];
@@ -284,7 +277,7 @@ static NSString *kAll            = @"All";
       iTunesM3UPlaylist *m3uPl = [[iTunesM3UPlaylist alloc]
                                                      initWithPlaylist:pl
                                                      useRelativePaths:NO];
-      [self->m3uMap setObject:m3uPl forKey:[m3uPl fileName]];
+      [self->m3uMap setItem:m3uPl forName:[m3uPl fileName]];
       [m3uPl release];
     }
   }
@@ -296,18 +289,18 @@ static NSString *kAll            = @"All";
 - (void)reloadVirtualMaps {
   if (!useCategories) return;
 
-  [self->virtMap removeObjectForKey:kPlaylists];
-  [self->virtMap removeObjectForKey:kM3UPlaylists];
-  [self->virtMap removeObjectForKey:kSongs];
+  [self->virtMap removeItemNamed:kPlaylists];
+  [self->virtMap removeItemNamed:kM3UPlaylists];
+  [self->virtMap removeItemNamed:kSongs];
 
   if ([self->plMap count] == 1) {
-    [self->virtMap setObject:[[self->plMap allValues] lastObject]
-                   forKey:kSongs];
+    [self->virtMap setItem:[[self->plMap allItems] lastObject]
+                   forName:kSongs];
   }
   else {
-    [self->virtMap setObject:self->plMap forKey:kPlaylists];
+    [self->virtMap setItem:self->plMap forName:kPlaylists];
     if (useM3UPlaylists)
-      [self->virtMap setObject:self->m3uMap forKey:kM3UPlaylists];
+      [self->virtMap setItem:self->m3uMap forName:kM3UPlaylists];
   }
 
   NSString *fmt = [[NSUserDefaults standardUserDefaults]
@@ -315,75 +308,71 @@ static NSString *kAll            = @"All";
   iTunesFSFormatter *formatter = [[iTunesFSFormatter alloc]
                                                      initWithFormatString:fmt];
 
-  NSMutableDictionary *albums, *artists, *compilations;
-  albums       = [self->virtMap objectForKey:kAlbums];
-  artists      = [self->virtMap objectForKey:kArtists];
-  compilations = [self->virtMap objectForKey:kCompilations];
 
-  [albums       removeAllObjects];
-  [artists      removeAllObjects];
+  FUSEOFSMemoryContainer *albums  = [self->virtMap lookupPathComponent:kAlbums
+                                                   inContext:self];
+  FUSEOFSMemoryContainer *artists = [self->virtMap lookupPathComponent:kArtists
+                                                   inContext:self];
+  FUSEOFSMemoryContainer *compilations = [self->virtMap lookupPathComponent:kCompilations
+                                                        inContext:self];
+
+  [albums  removeAllObjects];
+  [artists removeAllObjects];
   [compilations removeAllObjects];
 
   NSArray *tracks = [self->trackMap allValues];
-  unsigned count  = [tracks count];
-  for (unsigned i = 0; i < count; i++) {
-    iTunesTrack *track;
-    NSString            *artist, *album;
-    NSString            *formattedArtist, *formattedAlbum, *formattedName;
-    NSMutableDictionary *artistAlbums, *albumTracks;
+  NSUInteger count  = [tracks count];
+  for (NSUInteger i = 0; i < count; i++) {
+    iTunesTrack *track = [tracks objectAtIndex:i];
 
-    track  = [tracks objectAtIndex:i];
-    artist = [track artist];
-    if (!artist) artist = kUnknown;
-    album  = [track album];
-    if (!album)  album  = kUnknown;
+    NSString *formattedName = [formatter stringValueByFormattingObject:track];
+    NSString *artist = [track artist];
+    if (!artist)
+      artist = kUnknown;
+    NSString *album  = [track album];
+    if (!album)
+      album  = kUnknown;
 
-    formattedArtist = [self burnFolderNameFromFolderName:artist];
-    formattedAlbum  = [self burnFolderNameFromFolderName:album];
-    artistAlbums    = [artists objectForKey:formattedArtist];
-    if (!artistAlbums) {
-      artistAlbums = [[NSMutableDictionary alloc] initWithCapacity:2];
-      [artists setObject:artistAlbums forKey:formattedArtist];
-      [artistAlbums release];
-    }
-    albumTracks = [artistAlbums objectForKey:formattedAlbum];
-    if (!albumTracks) {
-      albumTracks = [[NSMutableDictionary alloc] initWithCapacity:10];
-      [artistAlbums setObject:albumTracks forKey:formattedAlbum];
-      [albumTracks release];
-    }
-    formattedName = [formatter stringValueByFormattingObject:track];
-    [albumTracks setObject:track forKey:formattedName];
+    NSString *formattedArtist = [self burnFolderNameFromFolderName:artist];
+    NSString *formattedAlbum  = [self burnFolderNameFromFolderName:album];
+
+    BOOL isNew = [artists createContainerNamed:formattedArtist withAttributes:nil];
+    FUSEOFSMemoryContainer *artistAlbums = [artists lookupPathComponent:formattedArtist
+                                                    inContext:self];
+    if (isNew)
+      [artists setItem:artistAlbums forName:formattedArtist];
+
+    isNew = [artistAlbums createContainerNamed:formattedAlbum withAttributes:nil];
+    FUSEOFSMemoryContainer *albumTracks = [artistAlbums lookupPathComponent:formattedAlbum
+                                                        inContext:self];
+    if (isNew)
+      [artistAlbums setItem:albumTracks forName:formattedAlbum];
+    [albumTracks setItem:track forName:formattedName];
 
     // now, for albums only
-    albumTracks = [albums objectForKey:formattedAlbum];
-    if (!albumTracks) {
-      albumTracks = [[NSMutableDictionary alloc] initWithCapacity:10];
-      [albums setObject:albumTracks forKey:formattedAlbum];
-      [albumTracks release];
-    }
-    formattedName = [formatter stringValueByFormattingObject:track];
-    [albumTracks setObject:track forKey:formattedName];
+    isNew = [albums createContainerNamed:formattedAlbum withAttributes:nil];
+    albumTracks = [albums lookupPathComponent:formattedAlbum inContext:self];
+    if (isNew)
+      [albums setItem:albumTracks forName:formattedAlbum];
+    [albumTracks setItem:track forName:formattedName];
   }
 
   [formatter release];
 
   NSArray *allAlbums;
 
-  allAlbums = [albums allValues];
+  allAlbums = [albums allItems];
   count     = [allAlbums count];
-  for (unsigned i = 0; i < count; i++) {
-    NSMutableDictionary *thisAlbum;
-    NSString            *artist, *album;
-
+  for (NSUInteger i = 0; i < count; i++) {
+    FUSEOFSMemoryContainer *thisAlbum;
     thisAlbum = [allAlbums objectAtIndex:i];
-    tracks    = [thisAlbum allValues];
+    tracks    = [thisAlbum allItems];
 
-    artist = [[tracks objectAtIndex:0] artist];
+    NSString *artist = [[tracks objectAtIndex:0] artist];
     if (!artist) artist = kUnknown;
-    album = [[tracks objectAtIndex:0] album];
+    NSString *album = [[tracks objectAtIndex:0] album];
     if (album) {
-      unsigned tCount, j;
+      NSUInteger tCount, j;
 
       tCount = [tracks count];
       if (tCount > 1) {
@@ -396,7 +385,7 @@ static NSString *kAll            = @"All";
           tArtist = [track artist];
           if (!tArtist) tArtist = kUnknown;
           if (![artist isEqualToString:tArtist]) { 
-            [compilations setObject:thisAlbum forKey:formattedAlbum];
+            [compilations setItem:thisAlbum forName:formattedAlbum];
             break;
           }
         }
@@ -408,35 +397,25 @@ static NSString *kAll            = @"All";
     /* optimize artistAlbums hierarchy, insert "All" if there is more than
      * one album per artist
      */
-    NSArray *allAlbums;
-
-    allAlbums = [artists allValues];
-    count     = [allAlbums count];
-    for (unsigned i = 0; i < count; i++) {
-      NSMutableDictionary *artistAlbums;
-      unsigned            aCount, k;
-
-      artistAlbums = [allAlbums objectAtIndex:i];
-      aCount       = [artistAlbums count];
+    NSArray *allAlbums = [artists allItems];
+    count = [allAlbums count];
+    for (NSUInteger i = 0; i < count; i++) {
+      FUSEOFSMemoryContainer *artistAlbums = [allAlbums objectAtIndex:i];
+      NSUInteger aCount = [artistAlbums count];
       if (aCount > 1) {
-        NSArray             *allArtistAlbums;
-        NSMutableDictionary *allTracks;
-
-        allTracks = [[NSMutableDictionary alloc] initWithCapacity:10 * aCount];
-        [artistAlbums setObject:allTracks forKey:kAll];
+        FUSEOFSMemoryContainer *allTracks = [[FUSEOFSMemoryContainer alloc] initWithCapacity:10 * aCount];
+        [artistAlbums setItem:allTracks forName:kAll];
         [allTracks release];
 
-        allArtistAlbums = [artistAlbums allValues];
-        for (k = 0; k < aCount; k++) {
-          NSDictionary *albumTracks;
-
-          albumTracks = [allArtistAlbums objectAtIndex:k];
+        NSArray *allArtistAlbums = [artistAlbums allItems];
+        for (NSUInteger k = 0; k < aCount; k++) {
+          FUSEOFSMemoryContainer *albumTracks = [allArtistAlbums objectAtIndex:k];
           /* NOTE:
            * This doesn't avoid collisions!!
            * It's unsuitable for COPYING content, though browsing does work
            * to some extent...
            */
-          [allTracks addEntriesFromDictionary:albumTracks];
+          [allTracks addEntriesFromContainer:albumTracks];
         }
       }
     }
@@ -467,10 +446,10 @@ static NSString *kAll            = @"All";
 }
 
 - (NSArray *)playlistNames {
-  return [self->plMap allKeys];
+  return [self->plMap containerContents];
 }
 - (iTunesPlaylist *)playlistNamed:(NSString *)_plName {
-  return [self->plMap objectForKey:_plName];
+  return [self->plMap lookupPathComponent:_plName inContext:self];
 }
 
 
@@ -482,12 +461,12 @@ static NSString *kAll            = @"All";
 
 - (id)lookupPathComponent:(NSString *)_pc inContext:(id)_ctx {
   if (!useCategories) {
-    unsigned count = [self->plMap count];
+    NSUInteger count = [self->plMap count];
     if (count == 0) return nil; // no playlists, no entries
     if (count == 1) {
       // hide single playlist altogether (i.e. iPod shuffle)
-      return [[[self->plMap allValues] lastObject] lookupPathComponent:_pc
-                                                   inContext:_ctx];
+      return [[[self->plMap allItems] lastObject] lookupPathComponent:_pc
+                                                  inContext:_ctx];
     }
     return [self playlistNamed:_pc];
   }
@@ -499,7 +478,7 @@ static NSString *kAll            = @"All";
     if ([self->plMap count] != 1)
       return [self playlistNames];
     // return all tracknames in case there's just one playlist (iPod shuffle)
-    return [[[self->plMap allValues] lastObject] containerContents];
+    return [[[self->plMap allItems] lastObject] containerContents];
   }
   return [self->virtMap containerContents];
 }

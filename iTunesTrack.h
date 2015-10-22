@@ -123,6 +123,13 @@
 
 - (NSURL *)url;
 
+// whether object can be used at all in iTunesFS context
+- (BOOL)isUsable;
+
+// is it an application rather than audio/video?
+- (BOOL)isApplication;
+
+
 /* this is transient information, set by every playlist that needs this
  * track to format itself according to the context of the calling playlist
  */

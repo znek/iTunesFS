@@ -301,6 +301,14 @@ static NSString *locationDestinationPrefix = nil;
   return self->sampleRate;
 }
 
+- (BOOL)isUsable {
+  return [self url] != nil ? YES : NO;
+}
+
+- (BOOL)isApplication {
+  return [[self extension] isEqualToString:@"ipa"] ? YES : NO;
+}
+
 /* FUSEOFS */
 
 - (NSDictionary *)fileAttributes {

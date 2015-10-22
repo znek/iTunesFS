@@ -38,14 +38,15 @@
 @class NSImage;
 @class iTunesPlaylist;
 @class iTunesTrack;
+@class FUSEOFSMemoryContainer;
 
 @interface iTunesLibrary : NSObject
 {
   NSString            *name;
-  NSMutableDictionary *plMap;
-  NSMutableDictionary *m3uMap;
   NSMutableDictionary *trackMap;
-  NSMutableDictionary *virtMap;
+  FUSEOFSMemoryContainer *plMap;
+  FUSEOFSMemoryContainer *m3uMap;
+  FUSEOFSMemoryContainer *virtMap;
 }
 
 - (NSString *)name;
