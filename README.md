@@ -30,5 +30,5 @@ Marcus Mueller <znek@mulle-kybernetik.com>.
 References
 ==========
 
-iTunesFS - http://www.mulle-kybernetik.com/software/iTunesFS/
-OSXFUSE  - http://osxfuse.github.com/
+- [iTunesFS](http://www.mulle-kybernetik.com/software/iTunesFS/)
+- [OSXFUSE](http://osxfuse.github.com/)

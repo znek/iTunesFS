@@ -2,7 +2,7 @@ About the GNUstep port
 ======================
 
 This port was done using a recent (2011-01-25) svn trunk revision of
-GNUstep (http://www.gnustep.org), utilizing gnustep-make 2.4.0.
+[GNUstep](http://www.gnustep.org), utilizing gnustep-make 2.4.0.
 
 The system used for the port is running FreeBSD 8.2-RC3,
 which has a native kqueue() implementation.
@@ -32,10 +32,13 @@ PROBLEMS
 - The AppKit requirement isn't something I'm too happy with, I'd prefer to
   have a tool instead (similar to sshfs and the like).
 
-- On FreeBSD 8.2rc3 I needed to grant permissions for /dev/fuse0:
+- On FreeBSD 8.2rc3 I needed to grant permissions for `/dev/fuse0`:
+```
 root@fbsd8:~ # chmod o+rw /dev/fuse0
+```
 
 - On FreeBSD 10.x I need to do the following:
+```
 root@fbsd10:~ # cat << EOF >> /etc.fuse.conf
 user_allow_other
 EOF
@@ -47,10 +50,7 @@ root@fbsd10:~ # cat << EOF >> /etc/sysctl.conf
 vfs.usermount=1
 EOF
 root@fbsd10:~ # sysctl vfs.usermount=1
-
-- Writing to *TrackFormatFiles.txt doesn't work, yet. This needs investigation,
-  most probably something in GMUserFileSystem.m is broken.
-
+```
 
 EXAMPLE
 =======
@@ -59,11 +59,14 @@ There's a tiny, handcrafted (in all senses ;-) version of an iTunes Music
 Library XML file in the "examples" folder. After you have built the
 iTunesFS.app, use this command in a shell for starting the file system:
 
+```
 $ openapp ./iTunesFS.app -Library /tmp/iTunesMusicLibrary.xml \
 						 -iTunesFileSystemDebugEnabled YES
+```
 
 You will then be able to browse the iTunes library, i.e.:
 
+```
 $ ls -l /tmp/iTunesFS/
 total 0
 dr-xr-xr-x  2 znek  wheel  0 Jan  1  1970 Albums
@@ -97,4 +100,4 @@ total 39551
 -r-xr-xr-x  1 znek  wheel  1454902 Mar 27  2006 Salvation Three.m4a
 -r-xr-xr-x  1 znek  wheel  1918854 Mar 27  2006 Salvation Two.m4a
 -r-xr-xr-x  1 znek  wheel  3604444 Mar 27  2006 Samsara.m4a
-
+```

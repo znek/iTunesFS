@@ -75,7 +75,7 @@
 		AD37A1FB0C01C57400DF1291 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		AD37A2950C01C87E00DF1291 /* iTunesLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = iTunesLibrary.h; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		AD37A2960C01C87E00DF1291 /* iTunesLibrary.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = iTunesLibrary.m; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
-		AD37A2BE0C01CFA800DF1291 /* README */ = {isa = PBXFileReference; explicitFileType = text; fileEncoding = 4; lineEnding = 0; path = README; sourceTree = "<group>"; };
+		AD37A2BE0C01CFA800DF1291 /* README.md */ = {isa = PBXFileReference; explicitFileType = text; fileEncoding = 4; lineEnding = 0; path = README.md; sourceTree = "<group>"; };
 		AD37A2C20C01CFB400DF1291 /* NOTES */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; path = NOTES; sourceTree = "<group>"; };
 		AD4C4ED912FDCAF90057C045 /* GMUserFileSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = GMUserFileSystem.h; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		AD4C4EDA12FDCAF90057C045 /* GMUserFileSystem.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = GMUserFileSystem.m; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
@@ -85,7 +85,7 @@
 		AD4C4F2512FF0E050057C045 /* GMDataBackedFileDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = GMDataBackedFileDelegate.h; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		AD4C4F2612FF0E050057C045 /* GMDataBackedFileDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = GMDataBackedFileDelegate.m; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		AD4C4F2712FF0E050057C045 /* GMDTrace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMDTrace.h; sourceTree = "<group>"; };
-		AD5A40700C214A1900B1A000 /* README-GNUstep */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; path = "README-GNUstep"; sourceTree = "<group>"; usesTabs = 0; };
+		AD5A40700C214A1900B1A000 /* README-GNUstep.md */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = net.daringfireball.markdown; path = "README-GNUstep.md"; sourceTree = "<group>"; usesTabs = 0; };
 		AD5A40820C214FCB00B1A000 /* GNUmakefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = GNUmakefile; sourceTree = "<group>"; tabWidth = 8; };
 		AD5B5E7A0C0C1A70003B1650 /* NSObject+FUSEOFS.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = "NSObject+FUSEOFS.h"; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		AD5B5E7B0C0C1A70003B1650 /* NSObject+FUSEOFS.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = "NSObject+FUSEOFS.m"; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
@@ -151,8 +151,8 @@
 		08FB7794FE84155DC02AAC07 /* QSFuse */ = {
 			isa = PBXGroup;
 			children = (
-				AD37A2BE0C01CFA800DF1291 /* README */,
-				AD5A40700C214A1900B1A000 /* README-GNUstep */,
+				AD37A2BE0C01CFA800DF1291 /* README.md */,
+				AD5A40700C214A1900B1A000 /* README-GNUstep.md */,
 				AD37A2C20C01CFB400DF1291 /* NOTES */,
 				ADBDA9170C02CF28004CF795 /* AUTHORS */,
 				ADBDA9310C02CFA0004CF795 /* COPYING */,
