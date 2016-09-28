@@ -1,0 +1,49 @@
+// base.xcconfig
+// default settings for all targets
+
+// NOTE:
+// for i386 and ppc to work, you need to have the Mulle kybernetiK "edocx"
+// backwards compatibility tweaks installed and properly setup.
+// If you can't use old compilers and linkers on a recent OS, you'll have
+// to adjust the settings appropriately.
+
+VALID_ARCHS = x86_64 i386 ppc
+ARCHS = x86_64 i386 ppc
+
+
+// most recent platform SDK
+SDKROOT = macosx
+SDKROOT[arch=i386] = macosx10.6
+SDKROOT[arch=ppc]  = macosx10.5
+
+MACOSX_DEPLOYMENT_TARGET = 10.10
+MACOSX_DEPLOYMENT_TARGET[arch=i386] = 10.6
+MACOSX_DEPLOYMENT_TARGET[arch=ppc]  = 10.5
+
+GCC_VERSION = com.apple.compilers.llvm.clang.1_0
+GCC_VERSION[arch=i386] = com.apple.compilers.llvmgcc42
+GCC_VERSION[arch=ppc]  = com.apple.compilers.llvmgcc42
+
+
+OTHER_CFLAGS = -D_FILE_OFFSET_BITS=64
+
+GCC_PREFIX_HEADER = common.h
+GCC_PRECOMPILE_PREFIX_HEADER = YES
+
+GCC_C_LANGUAGE_STANDARD = c99
+GCC_ENABLE_OBJC_EXCEPTIONS = YES
+GCC_MODEL_TUNING = G5
+
+// special case: ignore 10.8 deprecations until we have a proper workaround
+GCC_TREAT_WARNINGS_AS_ERRORS = NO
+GCC_TREAT_WARNINGS_AS_ERRORS[sdk=macosx10.5] = YES
+GCC_TREAT_WARNINGS_AS_ERRORS[sdk=macosx10.6] = YES
+
+GCC_WARN_ABOUT_RETURN_TYPE = YES
+GCC_WARN_UNUSED_VARIABLE = YES
+
+CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES
+
+INFOPLIST_FILE = Info.plist
+
+FRAMEWORK_SEARCH_PATHS = $(LOCAL_LIBRARY_DIR)/Frameworks
