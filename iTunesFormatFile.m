@@ -244,7 +244,7 @@ static NSCharacterSet *trimSet = nil;
         CFStringConvertEncodingToIANACharSetName(kCFStringEncodingUTF8);
       
       NSString *attr = [NSString stringWithFormat:@"%@;%d", ianaCharSetName,
-                                                  kCFStringEncodingUTF8];
+                                                  (unsigned int)kCFStringEncodingUTF8];
       attrVal = [[attr dataUsingEncoding:NSASCIIStringEncoding] copy];
     }
     self->extAttrs = [[NSMutableDictionary alloc] initWithCapacity:2];
