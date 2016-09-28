@@ -126,19 +126,34 @@ static NSString *albumsTrackFormatFileName    = @"AlbumsTrackFormat.txt";
     [lib release];
   }
   if (!ignoreIPods) {
+#if __MAC_OS_X_VERSION_MAX_ALLOWED < 101000
     NSWorkspace *ws = [NSWorkspace sharedWorkspace];
 
-    // add mounted iPods
     NSMutableArray *volPaths =
       [NSMutableArray arrayWithArray:[ws mountedLocalVolumePaths]];
     [volPaths addObjectsFromArrayIfAbsent:[ws mountedRemovableMedia]];
+    NSUInteger count;
+#else
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSMutableArray *volPaths = [NSMutableArray array];
+
+    NSArray *urls = [fm mountedVolumeURLsIncludingResourceValuesForKeys:nil
+                        options:0];
+    NSUInteger count = [urls count];
+    for (NSUInteger i = 0; i < count; i++) {
+      NSURL *url = [urls objectAtIndex:i];
+      if ([url isFileURL]) {
+        [volPaths addObjectIfAbsent:[url path]];
+      }
+    }
+#endif
 
     if (fakeVolumePaths)
        [volPaths addObjectsFromArrayIfAbsent:fakeVolumePaths];
 
     lib = nil;
-    unsigned count = [volPaths count];
-    for (unsigned i = 0; i < count; i++) {
+    count = [volPaths count];
+    for (NSUInteger i = 0; i < count; i++) {
       NSString *path = [volPaths objectAtIndex:i];
       if (doDebug)
         NSLog(@"testing volPath '%@'", path);

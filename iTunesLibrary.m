@@ -187,10 +187,17 @@ static NSString *kAll            = @"All";
   NSAssert1(plist != nil, @"Couldn't read contents of %@!",
                           [self libraryPath]);
 
+#if __MAC_OS_X_VERSION_MAX_ALLOWED < 101000
   lib = [NSPropertyListSerialization propertyListFromData:plist
                                      mutabilityOption:NSPropertyListImmutable
                                      format:NULL
                                      errorDescription:NULL];
+#else
+  lib = [NSPropertyListSerialization propertyListWithData:plist
+                                     options:NSPropertyListImmutable
+                                     format:NULL
+                                     error:NULL];
+#endif
   NSAssert1(lib != nil, @"Couldn't parse contents of %@ - wrong format?!",
                         [self libraryPath]);
 
