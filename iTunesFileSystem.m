@@ -78,11 +78,9 @@ static NSString *albumsTrackFormatFileName    = @"AlbumsTrackFormat.txt";
 
   if (didInit) return;
 
-  NSUserDefaults *ud;
-  NSBundle       *mb;
+  didInit = YES;
 
-  didInit          = YES;
-  ud               = [NSUserDefaults standardUserDefaults];
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   doDebug          = [ud boolForKey:@"iTunesFileSystemDebugEnabled"];
   ignoreITunes     = [ud boolForKey:@"NoITunes"];
   ignoreIPods      = [ud boolForKey:@"NoIPods"];
@@ -93,9 +91,9 @@ static NSString *albumsTrackFormatFileName    = @"AlbumsTrackFormat.txt";
   if (ignoreITunes && ignoreIPods)
     NSLog(@"ERROR: ignoring iTunes and iPods doesn't make sense at all.");
   fakeVolumePaths = [[ud arrayForKey:@"iPodMountPoints"] copy];
-  mb              = [NSBundle mainBundle];
 #ifndef GNU_GUI_LIBRARY
-  fsIconPath      = [[mb pathForResource:@"iTunesFS" ofType:@"icns"] copy];
+  NSBundle *mb = [NSBundle mainBundle];
+  fsIconPath = [[mb pathForResource:@"iTunesFS" ofType:@"icns"] copy];
   NSAssert(fsIconPath != nil, @"Couldn't find iTunesFS.icns!");
 #endif
 }

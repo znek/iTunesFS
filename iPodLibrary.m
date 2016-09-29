@@ -32,6 +32,7 @@
 
 #import "common.h"
 #import "iPodLibrary.h"
+#import "FUSEOFSMemoryContainer.h"
 #import <AppKit/AppKit.h>
 #import "NSString+Extensions.h"
 #import "NSObject+FUSEOFS.h"
@@ -314,8 +315,8 @@ static NSMutableDictionary *codeSelMap = nil;
     plRep = [playlists objectAtIndex:i];
     pl    = [[iTunesPlaylist alloc] initWithLibraryRepresentation:plRep
                                     lib:self];
-    [self->plMap setObject:pl
-                 forKey:[self burnFolderNameFromFolderName:[pl name]]];
+    [self->plMap setItem:pl
+                 forName:[self burnFolderNameFromFolderName:[pl name]]];
     [pl release];
   }
   [self reloadVirtualMaps];

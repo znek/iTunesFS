@@ -142,8 +142,8 @@ static NSCharacterSet *trimSet = nil;
 
 - (iTunesFSFormatter *)getFormatter {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  NSString       *fmtKey;
-  NSString       *fmt = nil;
+  NSString *fmtKey = nil;
+  NSString *fmt = nil;
 
   if (self->defaultKey) {
     fmtKey = self->defaultKey;
