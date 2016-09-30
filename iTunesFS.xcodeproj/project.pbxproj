@@ -31,9 +31,6 @@
 		AD8118720F093DAB000786C9 /* NSImage+IconData.m in Sources */ = {isa = PBXBuildFile; fileRef = AD8118710F093DAB000786C9 /* NSImage+IconData.m */; };
 		AD8118830F093EA4000786C9 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD8118820F093EA4000786C9 /* Accelerate.framework */; };
 		AD8119700F095144000786C9 /* FUSEOFSLookupContext.m in Sources */ = {isa = PBXBuildFile; fileRef = AD81196F0F095144000786C9 /* FUSEOFSLookupContext.m */; };
-		AD8B18A11D9BE56700923F83 /* base.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = AD8B189E1D9BE56700923F83 /* base.xcconfig */; };
-		AD8B18A21D9BE56700923F83 /* debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = AD8B189F1D9BE56700923F83 /* debug.xcconfig */; };
-		AD8B18A31D9BE56700923F83 /* release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = AD8B18A01D9BE56700923F83 /* release.xcconfig */; };
 		AD9316AF142C9D0A0012CDFC /* OSXFUSE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD9316AE142C9D0A0012CDFC /* OSXFUSE.framework */; };
 		ADAADA9B0C2111390024D899 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = ADAADA9A0C2111390024D899 /* Localizable.strings */; };
 		ADB59B751033716B002A2998 /* StreamReader.m in Sources */ = {isa = PBXBuildFile; fileRef = ADB59B741033716B002A2998 /* StreamReader.m */; };
@@ -410,12 +407,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AD8B18A31D9BE56700923F83 /* release.xcconfig in Resources */,
 				AD37A2040C01C58000DF1291 /* MainMenu.nib in Resources */,
 				ADAADA9B0C2111390024D899 /* Localizable.strings in Resources */,
 				ADBDA9CC0C02E7A5004CF795 /* iTunesFS.icns in Resources */,
-				AD8B18A21D9BE56700923F83 /* debug.xcconfig in Resources */,
-				AD8B18A11D9BE56700923F83 /* base.xcconfig in Resources */,
 				AD6A806D12C11C110038FF7E /* PlaylistsTrackFormat.txt in Resources */,
 				AD6A830712C1AF530038FF7E /* AlbumsTrackFormat.txt in Resources */,
 			);
