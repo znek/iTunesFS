@@ -14,8 +14,8 @@ Prerequisites
 OSX / macOS
 -----------
 
-Please note that you have to install ~~OSXFUSE~~
-[macFUSE](http://osxfuse.github.com/) before you can use iTunesFS!
+Please note that you have to install [macFUSE](http://osxfuse.github.com/)
+before you can use iTunesFS!
 Please read [README-OSX](README-OSX.md) for further information regarding
 development on OSX / macOS.
 
