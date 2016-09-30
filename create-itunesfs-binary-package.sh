@@ -6,7 +6,7 @@ BIN_DIR=~/Applications/iTunesFS.app
 DST_DIR=/tmp/iTunesFS.$$
 DST_IMG=${DST_DIR}.dmg
 
-. ${SOURCE_DIR}/Version
+. "${SOURCE_DIR}/Version"
 RELEASE=${MAJOR_VERSION}.${MINOR_VERSION}.${SUBMINOR_VERSION}
 
 if [ "$#" = "1" ]; then
@@ -15,46 +15,47 @@ fi
 
 echo "Making release: $RELEASE"
 
-CFBundleShortVersionString=`defaults read "${BIN_DIR}/Contents/Info" CFBundleShortVersionString`
+CFBundleShortVersionString=$(defaults read "${BIN_DIR}/Contents/Info" CFBundleShortVersionString)
 
 if [ "$RELEASE" != "$CFBundleShortVersionString" ]; then
   echo "[ERROR] CFBundleShortVersionString in ${BIN_DIR}/Contents/Info.plist is ${CFBundleShortVersionString}, SHOULD BE ${RELEASE}!"
   exit 1
 fi
 
-mkdir $DST_DIR
-if [ ! -d $DST_DIR ]; then
-  echo "Couldn't create intermediary dir $DST_DIR"
+mkdir ${DST_DIR}
+if [ ! -d "${DST_DIR}" ]; then
+  echo "Couldn't create intermediary dir ${DST_DIR}"
   exit 1
 fi
 
 # copy binaries
-pushd $BIN_DIR/.. > /dev/null
-tar cf - ${BIN_DIR##*/} | ( cd $DST_DIR ; tar xf - )
+pushd "${BIN_DIR}/.." > /dev/null
+tar cf - "${BIN_DIR##*/}" | ( cd "${DST_DIR}" ; tar xf - )
 popd > /dev/null
 
 # copy READMEs
-cd $SOURCE_DIR
-tar cf - README AUTHORS COPYING COPYRIGHT | ( cd $DST_DIR; tar xf - )
+cd "${SOURCE_DIR}"
+cp "README-DMG.md" "${DST_DIR}/README.txt"
+cp "COPYING" "${DST_DIR}/COPYING.txt"
 
 # remove extra garbage
-cd $DST_DIR
+cd "${DST_DIR}"
 # some build artifact
 rm -f iTunesFS.app/iTunesFS.app
-find . -type d -name .svn -exec rm -rf {} \; > /dev/null 2>&1
+find . -type d -name .svn -name .git -exec rm -rf {} \; > /dev/null 2>&1
 
 # compute size for .dmg
-SIZE_KB=`du -sk ${DST_DIR} | awk '{print $1}'`
+SIZE_KB=$(du -sk ${DST_DIR} | awk '{print $1}')
 # add some extra
-SIZE_KB=`expr $SIZE_KB + 4096`
+SIZE_KB=$(expr $SIZE_KB + 4096)
 
-hdiutil create -size ${SIZE_KB}k ${DST_IMG} -layout NONE
+hdiutil create -size ${SIZE_KB}k "${DST_IMG}" -layout NONE
 #hdiutil create -size 15m ${DST_IMG} -layout NONE
-DISK=`hdid -nomount ${DST_IMG} | awk '{print $1}'`
+DISK=$(hdid -nomount ${DST_IMG} | awk '{print $1}')
 VOLUME_NAME="iTunesFS ${RELEASE}"
 newfs_hfs -v "${VOLUME_NAME}" $DISK
 hdiutil eject ${DISK}
-DISK=`hdid ${DST_IMG} | awk '{print $1}'`
+DISK=$(hdid ${DST_IMG} | awk '{print $1}')
 
 #copy package to .dmg
 tar cf - . | ( cd "/Volumes/${VOLUME_NAME}" ; tar xf - )
@@ -69,18 +70,18 @@ REL_IMG="${DST_DIR%%.*}-${RELEASE}.dmg"
 rm -f ${REL_IMG}
 
 # convert .dmg into read-only zlib (-9) compressed release version
-hdiutil convert -format UDZO ${DST_IMG} -o ${REL_IMG} -imagekey zlib-level=9
+hdiutil convert -format UDZO "${DST_IMG}" -o "${REL_IMG}" -imagekey zlib-level=9
 
 # internet-enable the release .dmg. for details see
 # http://developer.apple.com/ue/files/iedi.html
-hdiutil internet-enable -yes ${REL_IMG}
+hdiutil internet-enable -yes "${REL_IMG}"
 
 # clean up
-rm -rf ${DST_DIR}
-rm -rf ${DST_IMG}
+rm -rf "${DST_DIR}"
+rm -rf "${DST_IMG}"
 
-MD5SUM=`md5 -q ${REL_IMG}`
-REL_IMG_SIZE_B=`ls -l ${REL_IMG} | awk '{print $5}'`
+MD5SUM=$(md5 -q ${REL_IMG})
+REL_IMG_SIZE_B=$(ls -l ${REL_IMG} | awk '{print $5}')
 
 echo "Image ready at: ${REL_IMG}"
 echo "=== MAINTAINER UPLOAD ==="
