@@ -10,16 +10,15 @@ is highly configurable.
 Before you launch the application!
 ----------------------------------
 
-Note that ==you have to install ~~OSXFUSE~~
+Note that ==you have to install
 [macFUSE](http://osxfuse.github.com/)== before you can use iTunesFS!
 
 
 Further information
 ===================
 
-The iTunesFS homepage is at http://www.mulle-kybernetik.com/software/iTunesFS/.
-You can find a lot of information regarding customization and tricks and a FAQ
-there.
+Visit the [iTunesFS homepage](http://www.mulle-kybernetik.com/software/iTunesFS/)
+for news, tricks, FAQ, source code and more.
 
 
 Questions?
