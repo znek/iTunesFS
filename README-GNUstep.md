@@ -2,7 +2,7 @@ About the GNUstep port
 ======================
 
 This port was done using a recent (2011-01-25) svn trunk revision of
-[GNUstep](http://www.gnustep.org), utilizing gnustep-make 2.4.0.
+[GNUstep](http://www.gnustep.org/), utilizing gnustep-make 2.4.0.
 
 The system used for the port is running FreeBSD 8.2-RC3,
 which has a native kqueue() implementation.
