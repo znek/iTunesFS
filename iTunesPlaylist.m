@@ -105,7 +105,7 @@ static NSString *trackFormatFileName = @"PlaylistsTrackFormat.txt";
         itemIsDictionary = NO;
       }
 
-      unsigned i, count = [items count];
+      NSUInteger i, count = [items count];
       for (i = 0; i < count; i++) {
         id item = [items objectAtIndex:i];
         NSString *trackID;
@@ -171,7 +171,7 @@ static NSString *trackFormatFileName = @"PlaylistsTrackFormat.txt";
   self->modificationDate = [[NSDate date] retain];
 
   NSArray *childrenKeys = [self->childrenMap allKeys];
-  unsigned i, count     = [childrenKeys count];
+  NSUInteger i, count     = [childrenKeys count];
   for (i = 0; i < count; i++) {
     NSString       *childKey = [childrenKeys objectAtIndex:i];
     iTunesPlaylist *child    = [self->childrenMap objectForKey:childKey];
@@ -190,16 +190,16 @@ static NSString *trackFormatFileName = @"PlaylistsTrackFormat.txt";
     // formatter path and possibly create and add any virtual playlists
     // necessary in that process.
 
-    unsigned i, count = [self->savedTracks count];
+    NSUInteger i, count = [self->savedTracks count];
     for (i = 0; i < count; i++) {
       iTunesTrack *trk     = [self->savedTracks objectAtIndex:i];
-      unsigned    trkIndex = i + 1;
+      NSUInteger    trkIndex = i + 1;
       [trk setPlaylistNumber:trkIndex];
       NSArray *pathComponents = [formatter
                                    pathComponentsByFormattingObject:trk];
       iTunesPlaylist *pl = self;
       NSString *pc;
-      unsigned k, pcCount = [pathComponents count];
+      NSUInteger k, pcCount = [pathComponents count];
       for (k = 0; k < (pcCount - 1); k++) {
         pc = [pathComponents objectAtIndex:k];
         iTunesPlaylist *nextPl = [pl lookupPathComponent:pc inContext:nil];
@@ -215,10 +215,10 @@ static NSString *trackFormatFileName = @"PlaylistsTrackFormat.txt";
     }
   }
   else {
-    unsigned i, count  = [self->savedTracks count];
+    NSUInteger i, count  = [self->savedTracks count];
     for (i = 0; i < count; i++) {
       iTunesTrack *trk     = [self->savedTracks objectAtIndex:i];
-      unsigned    trkIndex = i + 1;
+      NSUInteger trkIndex = i + 1;
       [trk setPlaylistNumber:trkIndex];
       NSString *tn = [formatter stringValueByFormattingObject:trk];
       [self addTrack:trk withName:tn];
@@ -267,11 +267,11 @@ static NSString *trackFormatFileName = @"PlaylistsTrackFormat.txt";
   return self->tracks;
 }
 
-- (unsigned)count {
+- (NSUInteger)count {
   return [self->tracks count];
 }
 
-- (iTunesTrack *)trackAtIndex:(unsigned)_idx {
+- (iTunesTrack *)trackAtIndex:(NSUInteger)_idx {
   return [self->tracks objectAtIndex:_idx];
 }
 

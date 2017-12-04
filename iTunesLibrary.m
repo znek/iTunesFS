@@ -174,7 +174,7 @@ static NSString *kAll            = @"All";
   NSArray       *playlists;
   NSDictionary  *tracks;
   NSArray       *trackIDs;
-  unsigned      i, count;
+  NSUInteger    i, count;
 
   if (doDebug)
     NSLog(@"%s", __PRETTY_FUNCTION__);

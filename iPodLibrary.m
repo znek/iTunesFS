@@ -283,7 +283,7 @@ static NSMutableDictionary *codeSelMap = nil;
   NSArray      *playlists;
   NSDictionary *tracks;
   NSArray      *trackIDs;
-  unsigned     i, count;
+  NSUInteger   i, count;
 
   [self parseITunesDBAtPath:[self libraryPath]
         playlists:&playlists
@@ -588,22 +588,17 @@ static NSMutableDictionary *codeSelMap = nil;
 }
 
 - (void)setLocation:(NSString *)_value {
-  NSArray  *pc;
-  unsigned count;
-  NSString *path;
-  NSURL    *url;
-
-  pc    = [_value componentsSeparatedByString:@":"];
-  count = [pc count];
+  NSArray *pc = [_value componentsSeparatedByString:@":"];
+  NSUInteger count = [pc count];
   if (count < 2) {
     NSLog(@"%s -- illegal value for location, got '%@'",
           __PRETTY_FUNCTION__, _value);
     return;
   }
   pc   = [pc subarrayWithRange:NSMakeRange(count - 2, 2)];
-  path = [NSString pathWithComponents:pc];
+  NSString *path = [NSString pathWithComponents:pc];
   path = [[self iTunesMusicFolderPath] stringByAppendingPathComponent:path];
-  url  = [NSURL fileURLWithPath:path];
+  NSURL *url = [NSURL fileURLWithPath:path];
   [self->currentObject setValue:[url description] forKey:kTrackLocation];
 }
 

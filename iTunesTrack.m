@@ -42,7 +42,7 @@
 - (NSURL *)url;
 - (void)setAttributes:(NSDictionary *)_attributes;
 - (NSDictionary *)attributes;
-- (void)setTrackNumber:(unsigned)_trackNumber;
+- (void)setTrackNumber:(NSUInteger)_trackNumber;
 @end
 
 @implementation iTunesTrack
@@ -259,45 +259,45 @@ static NSString *locationDestinationPrefix = nil;
   return self->attributes;
 }
 
-- (void)setTrackNumber:(unsigned)_trackNumber {
+- (void)setTrackNumber:(NSUInteger)_trackNumber {
   self->trackNumber = _trackNumber;
 }
-- (unsigned)trackNumber {
+- (NSUInteger)trackNumber {
   return self->trackNumber;
 }
 
-- (void)setPlaylistNumber:(unsigned)_playlistNumber {
+- (void)setPlaylistNumber:(NSUInteger)_playlistNumber {
   self->playlistNumber = _playlistNumber;
 }
-- (unsigned)playlistNumber {
+- (NSUInteger)playlistNumber {
   return self->playlistNumber;
 }
 
-- (unsigned)rating {
+- (NSUInteger)rating {
   return self->rating;
 }
-- (unsigned)seasonNumber {
+- (NSUInteger)seasonNumber {
   return self->seasonNumber;
 }
-- (unsigned)episodeNumber {
+- (NSUInteger)episodeNumber {
   return self->episodeNumber;
 }
-- (unsigned)discNumber {
+- (NSUInteger)discNumber {
   return self->discNumber;
 }
-- (unsigned)discCount {
+- (NSUInteger)discCount {
   return self->discCount;
 }
-- (unsigned)playCount {
+- (NSUInteger)playCount {
   return self->playCount;
 }
-- (unsigned)year {
+- (NSUInteger)year {
   return self->year;
 }
-- (unsigned)bitRate {
+- (NSUInteger)bitRate {
   return self->bitRate;
 }
-- (unsigned)sampleRate {
+- (NSUInteger)sampleRate {
   return self->sampleRate;
 }
 

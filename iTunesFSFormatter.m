@@ -38,7 +38,7 @@
 {
   id              target;
   NSMutableString *buffer;
-  unsigned        rewindIndex;
+  NSUInteger      rewindIndex;
 }
 
 - (id)initWithTarget:(id)_obj;
@@ -97,8 +97,8 @@ static NSValue        *appendValueForKeyToBufferValue = nil;
 }
 
 - (void)setupFormattingOps {
-  NSRange         r, sr;
-  unsigned        len, lastMark;
+  NSRange r, sr;
+  NSUInteger len, lastMark;
 
   [self->formattingOps removeAllObjects];
 
@@ -110,8 +110,8 @@ static NSValue        *appendValueForKeyToBufferValue = nil;
                             options:0
                             range:sr]).length > 0)
   {
-    NSRange  lr, kr;
-    unsigned start;
+    NSRange lr, kr;
+    NSUInteger start;
     NSString *key;
     
     /* first copy what's missing */
@@ -161,7 +161,7 @@ static NSValue        *appendValueForKeyToBufferValue = nil;
 - (NSArray *)pathComponentsByFormattingObject:(id)_obj {
   NSString *path          = [self _stringValueByFormattingObject:_obj];
   NSArray  *rawComponents = [path pathComponents];
-  int      i, count       = [rawComponents count];
+  NSUInteger i, count     = [rawComponents count];
   NSMutableArray *components = [[NSMutableArray alloc] initWithCapacity:count];
   for (i = 0; i < count; i++) {
     NSString *rc = [rawComponents objectAtIndex:i];
@@ -177,7 +177,7 @@ static NSValue        *appendValueForKeyToBufferValue = nil;
 
 - (NSString *)_stringValueByFormattingObject:(id)_obj {
   iTunesFSFormattingResult *result;
-  unsigned i, count;
+  NSUInteger i, count;
   NSString *formattedString;
 
   result = [[iTunesFSFormattingResult alloc] initWithTarget:_obj];

@@ -196,8 +196,8 @@ static NSCharacterSet *trimSet = nil;
   rawDefault = [rawDefault stringByTrimmingCharactersInSet:trimSet];
 
   NSString *newDefault = nil;
-  NSArray  *lines      = [rawDefault componentsSeparatedByString:@"\n"];
-  int      i, count    = [lines count];
+  NSArray *lines = [rawDefault componentsSeparatedByString:@"\n"];
+  NSInteger i, count = [lines count];
   for (i = count - 1; i >= 0; i--) {
     NSString *line = [lines objectAtIndex:i];
     if (![line hasPrefix:@"#"]) {

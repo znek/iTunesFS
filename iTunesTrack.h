@@ -79,18 +79,18 @@
   NSDictionary *attributes;
   NSString     *ext;
 
-  unsigned     rating;
-  unsigned     discNumber;
-  unsigned     discCount;
-  unsigned     playCount;
-  unsigned     year;
-  unsigned     bitRate;
-  unsigned     sampleRate;
-  unsigned     seasonNumber;
-  unsigned     episodeNumber;
+  NSUInteger   rating;
+  NSUInteger   discNumber;
+  NSUInteger   discCount;
+  NSUInteger   playCount;
+  NSUInteger   year;
+  NSUInteger   bitRate;
+  NSUInteger   sampleRate;
+  NSUInteger   seasonNumber;
+  NSUInteger   episodeNumber;
 
-  unsigned     trackNumber;
-  unsigned     playlistNumber; // transient
+  NSUInteger   trackNumber;
+  NSUInteger   playlistNumber; // transient
 }
 
 - (id)initWithLibraryRepresentation:(NSDictionary *)_rep;
@@ -105,21 +105,21 @@
 - (NSString *)comments;
 
 - (NSString *)series;
-- (unsigned)seasonNumber;
-- (unsigned)episodeNumber;
+- (NSUInteger)seasonNumber;
+- (NSUInteger)episodeNumber;
 
-- (unsigned)rating;
-- (unsigned)discNumber;
-- (unsigned)discCount;
-- (unsigned)playCount;
-- (unsigned)year;
-- (unsigned)bitRate;
-- (unsigned)sampleRate;
+- (NSUInteger)rating;
+- (NSUInteger)discNumber;
+- (NSUInteger)discCount;
+- (NSUInteger)playCount;
+- (NSUInteger)year;
+- (NSUInteger)bitRate;
+- (NSUInteger)sampleRate;
 
 - (NSString *)extension;
 - (NSString *)ext;
 
-- (unsigned)trackNumber;
+- (NSUInteger)trackNumber;
 
 - (NSURL *)url;
 
@@ -133,8 +133,8 @@
 /* this is transient information, set by every playlist that needs this
  * track to format itself according to the context of the calling playlist
  */
-- (void)setPlaylistNumber:(unsigned)_playlistNumber;
-- (unsigned)playlistNumber;
+- (void)setPlaylistNumber:(NSUInteger)_playlistNumber;
+- (NSUInteger)playlistNumber;
 
 @end /* iTunesTrack */
 

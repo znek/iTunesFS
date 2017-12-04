@@ -86,7 +86,7 @@ NSString *ZlibDecompressionBlockSize = @"ZlibDecompressionBlockSize";
   z_stream stream;
   memset(&stream, 0, sizeof(stream)); // initialize stream
   stream.next_in   = (unsigned char *)[self bytes];
-  stream.avail_in  = [self length];
+  stream.avail_in  = (unsigned)[self length];
   stream.avail_out = blocksize;
   stream.next_out  = (unsigned char *)[decompressedData mutableBytes];
   
@@ -153,7 +153,7 @@ NSString *ZlibDecompressionBlockSize = @"ZlibDecompressionBlockSize";
                            initWithLength:blocksize] autorelease];
       memset(&stream, 0, sizeof(stream)); // initialize stream
       stream.next_in   = (unsigned char *)[self bytes];
-      stream.avail_in  = [self length];
+      stream.avail_in  = (unsigned)[self length];
       stream.avail_out = blocksize;
       stream.next_out  = (unsigned char *)[decompressedData mutableBytes];
       
