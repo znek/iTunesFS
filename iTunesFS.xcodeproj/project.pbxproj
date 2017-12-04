@@ -380,6 +380,12 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0800;
+				TargetAttributes = {
+					7F3DBD040B4422C200A48059 = {
+						DevelopmentTeam = 7C9PUY33H6;
+						ProvisioningStyle = Automatic;
+					};
+				};
 			};
 			buildConfigurationList = 1DEB927808733DD40010E9CD /* Build configuration list for PBXProject "iTunesFS" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -527,6 +533,8 @@
 		7F3DBD090B4422C300A48059 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				DEVELOPMENT_TEAM = 7C9PUY33H6;
 				PRODUCT_NAME = iTunesFS;
 				WRAPPER_EXTENSION = app;
 			};
@@ -535,6 +543,8 @@
 		7F3DBD0A0B4422C300A48059 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				DEVELOPMENT_TEAM = 7C9PUY33H6;
 				PRODUCT_NAME = iTunesFS;
 				WRAPPER_EXTENSION = app;
 			};
