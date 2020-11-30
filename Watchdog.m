@@ -45,6 +45,8 @@
 
 - (id)clientForPath:(NSString *)_path;
 
+- (void)run:(id)_sender;
+
 - (void)receiveMessage:(NSDictionary *)_ui;
 @end
 
@@ -105,7 +107,7 @@ NSString *WatchdogFlagsKey = @"WatchdogFlags";
 /* Private API */
 
 - (void)watchPaths:(NSArray *)_paths ofClient:(id)_client {
-  unsigned count, i;
+  NSUInteger count, i;
   
   for (i = 0, count = [_paths count]; i < count; i++)
     [self watchPath:[_paths objectAtIndex:i] ofClient:_client];
@@ -134,7 +136,7 @@ NSString *WatchdogFlagsKey = @"WatchdogFlags";
 }
 
 - (void)forgetPaths:(NSArray *)_paths {
-  unsigned count, i;
+  NSUInteger count, i;
   
   for (i = 0, count = [_paths count]; i < count; i++)
     [self forgetPath:[_paths objectAtIndex:i]];
@@ -148,7 +150,7 @@ NSString *WatchdogFlagsKey = @"WatchdogFlags";
   if (idx == NSNotFound) return;
 
   fd = [[self->fds objectAtIndex:idx] intValue];
-  close(fd);
+  close((int)fd);
 
   [self->fds     removeObjectAtIndex:idx];
   [self->paths   removeObjectAtIndex:idx];

@@ -72,8 +72,8 @@
 - (NSString *)parentId;
 - (NSArray *)tracks;
 
-- (unsigned)count;
-- (iTunesTrack *)trackAtIndex:(unsigned)_idx;
+- (NSUInteger)count;
+- (iTunesTrack *)trackAtIndex:(NSUInteger)_idx;
 - (NSArray *)trackNames;
 
 - (void)addChild:(iTunesPlaylist *)_child withName:(NSString *)_name;

@@ -111,7 +111,7 @@
 }
 
 - (NSData *)readDataOfLength:(NSUInteger)_length {
-  NSData *d = [self->data subdataWithRange:NSMakeRange(self->offset, _length)];
+  NSData *d = [self->data subdataWithRange:NSMakeRange((NSUInteger)self->offset, _length)];
   self->offset += _length;
   return d;
 }

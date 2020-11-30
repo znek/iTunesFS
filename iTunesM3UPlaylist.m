@@ -122,7 +122,7 @@ static NSString *fileExt = nil;
 	[rep appendString:@"#EXTM3U\n"];
 
 	NSArray *tracks = [self tracks];
-	unsigned i, count = [tracks count];
+	NSUInteger i, count = [tracks count];
 	for (i = 0; i < count; i++) {
 		iTunesTrack *track =  [tracks objectAtIndex:i];
 		NSString *title = [formatter stringValueByFormattingObject:track];

@@ -88,7 +88,7 @@
   [NSGraphicsContext setCurrentContext:context];
   NSImageInterpolation interpolation = [context imageInterpolation];
   [context setImageInterpolation:NSImageInterpolationHigh];
-  [self drawInRect:rect fromRect:NSZeroRect operation:NSCompositeCopy fraction:1.0];
+  [self drawInRect:rect fromRect:NSZeroRect operation:NSCompositeCopy fraction:(CGFloat)1.0];
   [context setImageInterpolation:interpolation];
   [NSGraphicsContext restoreGraphicsState];
 

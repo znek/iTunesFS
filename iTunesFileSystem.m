@@ -45,6 +45,7 @@
 - (void)addLibrary:(iTunesLibrary *)_lib;
 - (void)removeLibrary:(iTunesLibrary *)_lib;
 - (void)didMountRemovableDevice:(NSNotification *)_notif;
+- (void)willUnmountRemovableDevice:(NSNotification *)_notif;
 - (void)didUnmountRemovableDevice:(NSNotification *)_notif;
 
 - (BOOL)showLibraries;
