@@ -32,7 +32,7 @@
 		AD6A830712C1AF530038FF7E /* AlbumsTrackFormat.txt in Resources */ = {isa = PBXBuildFile; fileRef = AD6A830512C1AF530038FF7E /* AlbumsTrackFormat.txt */; };
 		AD8118720F093DAB000786C9 /* NSImage+IconData.m in Sources */ = {isa = PBXBuildFile; fileRef = AD8118710F093DAB000786C9 /* NSImage+IconData.m */; };
 		AD8119700F095144000786C9 /* FUSEOFSLookupContext.m in Sources */ = {isa = PBXBuildFile; fileRef = AD81196F0F095144000786C9 /* FUSEOFSLookupContext.m */; };
-		AD9316AF142C9D0A0012CDFC /* OSXFUSE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD9316AE142C9D0A0012CDFC /* OSXFUSE.framework */; };
+		AD9316AF142C9D0A0012CDFC /* macFUSE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD9316AE142C9D0A0012CDFC /* macFUSE.framework */; };
 		ADAADA9B0C2111390024D899 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = ADAADA9A0C2111390024D899 /* Localizable.strings */; };
 		ADB59B751033716B002A2998 /* StreamReader.m in Sources */ = {isa = PBXBuildFile; fileRef = ADB59B741033716B002A2998 /* StreamReader.m */; };
 		ADBDA9CC0C02E7A5004CF795 /* iTunesFS.icns in Resources */ = {isa = PBXBuildFile; fileRef = ADBDA9CB0C02E7A5004CF795 /* iTunesFS.icns */; };
@@ -110,7 +110,7 @@
 		AD8B18A01D9BE56700923F83 /* release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = release.xcconfig; path = xcconfig/release.xcconfig; sourceTree = "<group>"; };
 		AD8B18E21D9E59AE00923F83 /* README-OSX.md */ = {isa = PBXFileReference; explicitFileType = net.daringfireball.markdown; fileEncoding = 4; lineEnding = 0; path = "README-OSX.md"; sourceTree = "<group>"; usesTabs = 0; };
 		AD8B18E31D9E637900923F83 /* README-DMG.md */ = {isa = PBXFileReference; explicitFileType = net.daringfireball.markdown; fileEncoding = 4; lineEnding = 0; path = "README-DMG.md"; sourceTree = "<group>"; usesTabs = 0; };
-		AD9316AE142C9D0A0012CDFC /* OSXFUSE.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OSXFUSE.framework; path = /Library/Frameworks/OSXFUSE.framework; sourceTree = "<absolute>"; };
+		AD9316AE142C9D0A0012CDFC /* macFUSE.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = macFUSE.framework; path = /Library/Frameworks/macFUSE.framework; sourceTree = "<absolute>"; };
 		AD95D3AA0C21BBDA00B96A36 /* iTunesFSInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = iTunesFSInfo.plist; sourceTree = "<group>"; usesTabs = 0; };
 		AD95D40A0C21C7C500B96A36 /* iTunesMusicLibrary.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = iTunesMusicLibrary.xml; sourceTree = "<group>"; };
 		ADAADA6B0C2110C00024D899 /* English */ = {isa = PBXFileReference; explicitFileType = text.plist.strings; fileEncoding = 10; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -145,7 +145,7 @@
 			files = (
 				AD2FC2651FD5934800923F83 /* Accelerate.framework in Frameworks */,
 				AD2FC2601FD5928400923F83 /* Cocoa.framework in Frameworks */,
-				AD9316AF142C9D0A0012CDFC /* OSXFUSE.framework in Frameworks */,
+				AD9316AF142C9D0A0012CDFC /* macFUSE.framework in Frameworks */,
 				AD2FC2631FD592C800923F83 /* libz.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -212,7 +212,7 @@
 			children = (
 				AD2FC2641FD5934800923F83 /* Accelerate.framework */,
 				AD2FC25F1FD5928400923F83 /* Cocoa.framework */,
-				AD9316AE142C9D0A0012CDFC /* OSXFUSE.framework */,
+				AD9316AE142C9D0A0012CDFC /* macFUSE.framework */,
 				AD2FC2621FD592C800923F83 /* libz.tbd */,
 			);
 			name = "External Frameworks and Libraries";
