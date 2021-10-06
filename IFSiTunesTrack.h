@@ -30,8 +30,8 @@
   POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef	__iTunesFS_iTunesTrack_H
-#define	__iTunesFS_iTunesTrack_H
+#ifndef	__iTunesFS_IFSiTunesTrack_H
+#define	__iTunesFS_IFSiTunesTrack_H
 
 #import <Foundation/Foundation.h>
 
@@ -63,7 +63,7 @@
 #define kTrackDateReleased  @"Date Released"
 #define kTrackComments      @"Comments"
 
-@interface iTunesTrack : NSObject
+@interface IFSiTunesTrack : NSObject
 {
   NSString     *prettyName;
   NSString     *album;
@@ -136,6 +136,6 @@
 - (void)setPlaylistNumber:(NSUInteger)_playlistNumber;
 - (NSUInteger)playlistNumber;
 
-@end /* iTunesTrack */
+@end /* IFSiTunesTrack */
 
-#endif	/* __iTunesFS_iTunesTrack_H */
+#endif	/* __iTunesFS_IFSiTunesTrack_H */

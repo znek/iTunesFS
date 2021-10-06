@@ -31,13 +31,13 @@
 */
 
 #import "common.h"
-#import "iPodLibrary.h"
+#import "IFSiPodLibrary.h"
 #import "FUSEOFSMemoryContainer.h"
 #import <AppKit/AppKit.h>
 #import "NSString+Extensions.h"
 #import "NSObject+FUSEOFS.h"
-#import "iTunesPlaylist.h"
-#import "iTunesTrack.h"
+#import "IFSiTunesPlaylist.h"
+#import "IFSiTunesTrack.h"
 #import "NSData+ZlibDecompression.h"
 #import "StreamReader.h"
 #ifndef GNU_GUI_LIBRARY
@@ -52,7 +52,7 @@
   typedef unsigned long long ITDBUInt64;
 #endif
 
-@interface iPodLibrary (Private)
+@interface IFSiPodLibrary (Private)
 - (NSString *)selectorNameForCode:(ITDBUInt32)_code;
 - (void)parseITunesDBAtPath:(NSString *)_path
   playlists:(NSArray **)_playlists
@@ -218,7 +218,7 @@ typedef struct {
 #define ULongNum(ul) [NSNumber numberWithUnsignedLong:(ul)]
 #define ULongLongNum(ull) [NSNumber numberWithUnsignedLongLong:(ull)]
 
-@implementation iPodLibrary
+@implementation IFSiPodLibrary
 
 static BOOL doDebug        = NO;
 static BOOL debugIsVerbose = NO;
@@ -231,8 +231,8 @@ static NSMutableDictionary *codeSelMap = nil;
   if (didInit) return;
   didInit        = YES;
   ud             = [NSUserDefaults standardUserDefaults];
-  doDebug        = [ud boolForKey:@"iPodLibraryDebugEnabled"];
-  debugIsVerbose = [ud boolForKey:@"iPodLibraryDebugVerbose"];
+  doDebug        = [ud boolForKey:@"IFSiPodLibraryDebugEnabled"];
+  debugIsVerbose = [ud boolForKey:@"IFSiPodLibraryDebugVerbose"];
 
   codeSelMap = [[NSMutableDictionary alloc] initWithCapacity:4];
   [codeSelMap setObject:@"setName:"        forKey:[NSNumber numberWithInt:1]];
@@ -297,11 +297,11 @@ static NSMutableDictionary *codeSelMap = nil;
   for (i = 0; i < count; i++) {
     NSString     *trackID;
     NSDictionary *rep;
-    iTunesTrack  *track;
+    IFSiTunesTrack  *track;
     
     trackID = [trackIDs objectAtIndex:i];
     rep     = [tracks objectForKey:trackID];
-    track   = [[iTunesTrack alloc] initWithLibraryRepresentation:rep];
+    track   = [[IFSiTunesTrack alloc] initWithLibraryRepresentation:rep];
     if ([track url])
       [self->trackMap setObject:track forKey:trackID];
     [track release];
@@ -310,10 +310,10 @@ static NSMutableDictionary *codeSelMap = nil;
   count     = [playlists count];
   for (i = 0; i < count; i++) {
     NSDictionary   *plRep;
-    iTunesPlaylist *pl;
+    IFSiTunesPlaylist *pl;
     
     plRep = [playlists objectAtIndex:i];
-    pl    = [[iTunesPlaylist alloc] initWithLibraryRepresentation:plRep
+    pl    = [[IFSiTunesPlaylist alloc] initWithLibraryRepresentation:plRep
                                     lib:self];
     [self->plMap setItem:pl
                  forName:[self burnFolderNameFromFolderName:[pl name]]];
@@ -739,4 +739,4 @@ static NSMutableDictionary *codeSelMap = nil;
 #endif
 }
 
-@end /* iPodLibrary */
+@end /* IFSiPodLibrary */

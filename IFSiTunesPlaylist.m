@@ -31,25 +31,25 @@
 */
 
 #import "common.h"
-#import "iTunesPlaylist.h"
-#import "iTunesM3UPlaylist.h"
-#import "iTunesLibrary.h"
-#import "iTunesTrack.h"
-#import "iTunesFSFormatter.h"
+#import "IFSiTunesPlaylist.h"
+#import "IFSM3UPlaylist.h"
+#import "IFSiTunesLibrary.h"
+#import "IFSiTunesTrack.h"
+#import "IFSFormatter.h"
 #import "NSObject+FUSEOFS.h"
 #import "FUSEOFSMemoryContainer.h"
-#import "iTunesFormatFile.h"
+#import "IFSFormatFile.h"
 
-@interface iTunesPlaylist (Private)
+@interface IFSiTunesPlaylist (Private)
 - (BOOL)hasTrackFormatFile;
 - (BOOL)showTrackFormatFile;
 - (NSString *)trackFormatFileName;
 - (void)generatePrettyTrackNames;
 - (void)setName:(NSString *)_name;
-- (void)addTrack:(iTunesTrack *)_track withName:(NSString *)_name;
+- (void)addTrack:(IFSiTunesTrack *)_track withName:(NSString *)_name;
 @end
 
-@implementation iTunesPlaylist
+@implementation IFSiTunesPlaylist
 
 static BOOL doDebug = NO;
 static BOOL showPersistentID    = NO;
@@ -85,7 +85,7 @@ static NSString *trackFormatFileName = @"PlaylistsTrackFormat.txt";
 }
 
 - (id)initWithLibraryRepresentation:(NSDictionary *)_list
-  lib:(iTunesLibrary *)_lib
+  lib:(IFSiTunesLibrary *)_lib
 {
   self = [self init];
   if (self) {
@@ -114,7 +114,7 @@ static NSString *trackFormatFileName = @"PlaylistsTrackFormat.txt";
         else
           trackID = (NSString *)item;
 
-        iTunesTrack *trk = [_lib trackWithID:trackID];
+        IFSiTunesTrack *trk = [_lib trackWithID:trackID];
         if (!trk) {
           /* NOTE: Rolf's library really sports these effects, seems to be
            * limited to Podcasts only.
@@ -160,7 +160,7 @@ static NSString *trackFormatFileName = @"PlaylistsTrackFormat.txt";
 
 - (void)generatePrettyTrackNames {
   if (!self->trackFormatFile) {
-    self->trackFormatFile = [[iTunesFormatFile alloc]
+    self->trackFormatFile = [[IFSFormatFile alloc]
                                initWithDefaultTemplate:@"PlaylistsTrackFormat"
                                templateId:self->persistentId];
   }
@@ -174,14 +174,14 @@ static NSString *trackFormatFileName = @"PlaylistsTrackFormat.txt";
   NSUInteger i, count     = [childrenKeys count];
   for (i = 0; i < count; i++) {
     NSString       *childKey = [childrenKeys objectAtIndex:i];
-    iTunesPlaylist *child    = [self->childrenMap objectForKey:childKey];
+    IFSiTunesPlaylist *child    = [self->childrenMap objectForKey:childKey];
     if (![child persistentId]) {
       // remove virtual child
       [self->childrenMap removeObjectForKey:childKey];
     }
   }
   
-  iTunesFSFormatter *formatter = [self->trackFormatFile getFormatter];
+  IFSFormatter *formatter = [self->trackFormatFile getFormatter];
   if ([formatter isPathFormat]) {
 
     // formatter describes a path, which can lead to a whole hierarchy
@@ -192,19 +192,19 @@ static NSString *trackFormatFileName = @"PlaylistsTrackFormat.txt";
 
     NSUInteger i, count = [self->savedTracks count];
     for (i = 0; i < count; i++) {
-      iTunesTrack *trk     = [self->savedTracks objectAtIndex:i];
+      IFSiTunesTrack *trk     = [self->savedTracks objectAtIndex:i];
       NSUInteger    trkIndex = i + 1;
       [trk setPlaylistNumber:trkIndex];
       NSArray *pathComponents = [formatter
                                    pathComponentsByFormattingObject:trk];
-      iTunesPlaylist *pl = self;
+      IFSiTunesPlaylist *pl = self;
       NSString *pc;
       NSUInteger k, pcCount = [pathComponents count];
       for (k = 0; k < (pcCount - 1); k++) {
         pc = [pathComponents objectAtIndex:k];
-        iTunesPlaylist *nextPl = [pl lookupPathComponent:pc inContext:nil];
+        IFSiTunesPlaylist *nextPl = [pl lookupPathComponent:pc inContext:nil];
         if (!nextPl || ![nextPl isContainer]) {
-          nextPl = [[iTunesPlaylist alloc] init];
+          nextPl = [[IFSiTunesPlaylist alloc] init];
           [nextPl setName:pc];
           [pl addChild:nextPl withName:pc];
           [nextPl release];
@@ -217,7 +217,7 @@ static NSString *trackFormatFileName = @"PlaylistsTrackFormat.txt";
   else {
     NSUInteger i, count  = [self->savedTracks count];
     for (i = 0; i < count; i++) {
-      iTunesTrack *trk     = [self->savedTracks objectAtIndex:i];
+      IFSiTunesTrack *trk     = [self->savedTracks objectAtIndex:i];
       NSUInteger trkIndex = i + 1;
       [trk setPlaylistNumber:trkIndex];
       NSString *tn = [formatter stringValueByFormattingObject:trk];
@@ -254,11 +254,11 @@ static NSString *trackFormatFileName = @"PlaylistsTrackFormat.txt";
   return self->savedTracks;
 }
 
-- (void)addTrack:(iTunesTrack *)_track withName:(NSString *)_name {
+- (void)addTrack:(IFSiTunesTrack *)_track withName:(NSString *)_name {
   [self->tracks addObject:_track];
   [self->trackNames addObject:_name];
   if (showM3UPlaylistFile && !self->m3uPlaylist) {
-      self->m3uPlaylist = [[iTunesM3UPlaylist alloc] initWithPlaylist:self
+      self->m3uPlaylist = [[IFSM3UPlaylist alloc] initWithPlaylist:self
                                                      useRelativePaths:YES];
   }
 }
@@ -271,7 +271,7 @@ static NSString *trackFormatFileName = @"PlaylistsTrackFormat.txt";
   return [self->tracks count];
 }
 
-- (iTunesTrack *)trackAtIndex:(NSUInteger)_idx {
+- (IFSiTunesTrack *)trackAtIndex:(NSUInteger)_idx {
   return [self->tracks objectAtIndex:_idx];
 }
 
@@ -279,7 +279,7 @@ static NSString *trackFormatFileName = @"PlaylistsTrackFormat.txt";
   return self->trackNames;
 }
 
-- (void)addChild:(iTunesPlaylist *)_child withName:(NSString *)_name {
+- (void)addChild:(IFSiTunesPlaylist *)_child withName:(NSString *)_name {
   [self->childrenMap setObject:_child
                      forKey:[_name properlyEscapedFSRepresentation]];
 }
@@ -418,4 +418,4 @@ static NSString *trackFormatFileName = @"PlaylistsTrackFormat.txt";
                                     [self name], (unsigned long)[self count]];
 }
 
-@end /* iTunesPlaylist */
+@end /* IFSiTunesPlaylist */

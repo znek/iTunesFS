@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2007-2010, Marcus Müller <znek@mulle-kybernetik.com>.
+  Copyright (c) 2007-2015, Marcus Müller <znek@mulle-kybernetik.com>.
   All rights reserved.
 
 
@@ -30,24 +30,58 @@
   POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef	__iTunesFS_iTunesFSFormatter_H
-#define	__iTunesFS_iTunesFSFormatter_H
+#ifndef	__iTunesFS_IFSiTunesPlaylist_H
+#define	__iTunesFS_IFSiTunesPlaylist_H
 
 #import <Foundation/Foundation.h>
 
-@interface iTunesFSFormatter : NSObject
+@class IFSFormatFile;
+@class IFSiTunesLibrary;
+@class IFSiTunesTrack;
+@class IFSM3UPlaylist;
+
+#define kPlaylistName @"Name"
+#define kPlaylistPersistentID @"Playlist Persistent ID"
+#define kPlaylistParentPersistentID @"Parent Persistent ID"
+#define kPlaylistIsFolder @"Folder"
+#define kPlaylistItems @"Playlist Items"
+#define kPlaylistTrackIDs @"trackIDs"
+
+@interface IFSiTunesPlaylist : NSObject
 {
-  NSString       *format;
-  NSMutableArray *formattingOps;
+  NSString *persistentId;
+  NSString *parentId;
+  NSString *name;
+  NSMutableArray *savedTracks;
+  NSMutableArray *tracks;
+  NSMutableArray *trackNames;
+  NSMutableDictionary *childrenMap;
+  IFSFormatFile *trackFormatFile;
+  IFSM3UPlaylist *m3uPlaylist;
+  id shadowFolder;
+  NSDate *modificationDate;
 }
 
-- (id)initWithFormatString:(NSString *)_format;
-- (NSString *)formatString;
+- (id)initWithLibraryRepresentation:(NSDictionary *)_rep
+  lib:(IFSiTunesLibrary *)_lib;
 
-- (NSString *)stringValueByFormattingObject:(id)_obj;
-- (BOOL)isPathFormat;
-- (NSArray *)pathComponentsByFormattingObject:(id)_obj;
+- (NSDate *)modificationDate;
 
-@end /* iTunesFSFormatter */
+- (NSString *)name;
+- (NSString *)persistentId;
+- (NSString *)parentId;
+- (NSArray *)tracks;
 
-#endif	/* __iTunesFS_iTunesFSFormatter_H */
+- (NSUInteger)count;
+- (IFSiTunesTrack *)trackAtIndex:(NSUInteger)_idx;
+- (NSArray *)trackNames;
+
+- (void)addChild:(IFSiTunesPlaylist *)_child withName:(NSString *)_name;
+- (NSArray *)children;
+
+// original iTunes list of all tracks in correct order
+- (NSArray *)allTracks;
+
+@end /* IFSiTunesPlaylist */
+
+#endif	/* __iTunesFS_IFSiTunesPlaylist_H */

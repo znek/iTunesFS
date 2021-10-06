@@ -33,17 +33,18 @@
 #import "common.h"
 #import "iTunesFileSystem.h"
 #import "AppKit/AppKit.h"
-#import "iTunesLibrary.h"
-#import "iPodLibrary.h"
-#import "JBiPodLibrary.h"
+#import "IFSiTunesLibrary.h"
+#import "IFSiPodLibrary.h"
+#import "IFSJBiPodLibrary.h"
+
 #import "NSObject+FUSEOFS.h"
 #import "FUSEOFSMemoryContainer.h"
-#import "iTunesFormatFile.h"
+#import "IFSFormatFile.h"
 #import "NSMutableArray+Extensions.h"
 
 @interface iTunesFileSystem (Private)
-- (void)addLibrary:(iTunesLibrary *)_lib;
-- (void)removeLibrary:(iTunesLibrary *)_lib;
+- (void)addLibrary:(IFSiTunesLibrary *)_lib;
+- (void)removeLibrary:(IFSiTunesLibrary *)_lib;
 - (void)didMountRemovableDevice:(NSNotification *)_notif;
 - (void)willUnmountRemovableDevice:(NSNotification *)_notif;
 - (void)didUnmountRemovableDevice:(NSNotification *)_notif;
@@ -109,18 +110,18 @@ static NSString *albumsTrackFormatFileName    = @"AlbumsTrackFormat.txt";
   self->volMap = [[NSMutableDictionary alloc] initWithCapacity:3];
 
   self->playlistsTrackFormatFile =
-    [[iTunesFormatFile alloc] initWithDefaultTemplate:@"PlaylistsTrackFormat"
+    [[IFSFormatFile alloc] initWithDefaultTemplate:@"PlaylistsTrackFormat"
                               templateId:nil];
   self->albumsTrackFormatFile =
-    [[iTunesFormatFile alloc] initWithDefaultTemplate:@"AlbumsTrackFormat"
+    [[IFSFormatFile alloc] initWithDefaultTemplate:@"AlbumsTrackFormat"
                               templateId:nil];
   self->shadowFolder = [[FUSEOFSMemoryContainer alloc] init];
 
-  iTunesLibrary *lib;
+  IFSiTunesLibrary *lib;
 
   // add default library
   if (!ignoreITunes) {
-    lib = [[iTunesLibrary alloc] init];
+    lib = [[IFSiTunesLibrary alloc] init];
     [self addLibrary:lib];
     [lib release];
   }
@@ -157,11 +158,11 @@ static NSString *albumsTrackFormatFileName    = @"AlbumsTrackFormat.txt";
       if (doDebug)
         NSLog(@"testing volPath '%@'", path);
 
-      if ([iPodLibrary isIPodAtMountPoint:path]) {
-        lib = [[iPodLibrary alloc] initWithMountPoint:path];
+      if ([IFSiPodLibrary isIPodAtMountPoint:path]) {
+        lib = [[IFSiPodLibrary alloc] initWithMountPoint:path];
       }
-      else if ([JBiPodLibrary isIPodAtMountPoint:path]) {
-        lib = [[JBiPodLibrary alloc] initWithMountPoint:path];
+      else if ([IFSJBiPodLibrary isIPodAtMountPoint:path]) {
+        lib = [[IFSJBiPodLibrary alloc] initWithMountPoint:path];
       }
       else if ([IPhoneDiskIPodLibrary isIPodAtMountPoint:path]) {
         lib = [[IPhoneDiskIPodLibrary alloc] initWithMountPoint:path];
@@ -230,18 +231,17 @@ static NSString *albumsTrackFormatFileName    = @"AlbumsTrackFormat.txt";
   NSString *path;
 
   path = [[_notif userInfo] objectForKey:@"NSDevicePath"];
-  if ([iPodLibrary isIPodAtMountPoint:path] ||
-      [JBiPodLibrary isIPodAtMountPoint:path]) 
+  if ([IFSiPodLibrary isIPodAtMountPoint:path] ||
+      [IFSJBiPodLibrary isIPodAtMountPoint:path]) 
   {
-    iTunesLibrary *lib;
-    BOOL          prevShowLibraries;
-
-    prevShowLibraries = [self showLibraries];
+    BOOL prevShowLibraries = [self showLibraries];
     if (doDebug) NSLog(@"Will add library for iPod at path: %@", path);
-    if ([iPodLibrary isIPodAtMountPoint:path])
-      lib = [[iPodLibrary alloc] initWithMountPoint:path];
+
+    IFSiTunesLibrary *lib;
+    if ([IFSiPodLibrary isIPodAtMountPoint:path])
+      lib = [[IFSiPodLibrary alloc] initWithMountPoint:path];
     else
-      lib = [[JBiPodLibrary alloc] initWithMountPoint:path];
+      lib = [[IFSJBiPodLibrary alloc] initWithMountPoint:path];
     [self addLibrary:lib];
     [lib release];
 
@@ -254,11 +254,8 @@ static NSString *albumsTrackFormatFileName    = @"AlbumsTrackFormat.txt";
 }
 
 - (void)willUnmountRemovableDevice:(NSNotification *)_notif {
-  NSString      *path;
-  iTunesLibrary *lib;
-  
-  path = [[_notif userInfo] objectForKey:@"NSDevicePath"];
-  lib  = [self->volMap objectForKey:path];
+  NSString *path = [[_notif userInfo] objectForKey:@"NSDevicePath"];
+  IFSiTunesLibrary *lib  = [self->volMap objectForKey:path];
   if (lib) {
     if (doDebug)
       NSLog(@"Will close library for unmounting iPod at path: %@", path);
@@ -267,11 +264,8 @@ static NSString *albumsTrackFormatFileName    = @"AlbumsTrackFormat.txt";
 }
 
 - (void)didUnmountRemovableDevice:(NSNotification *)_notif {
-  NSString      *path;
-  iTunesLibrary *lib;
-
-  path = [[_notif userInfo] objectForKey:@"NSDevicePath"];
-  lib  = [self->volMap objectForKey:path];
+  NSString *path = [[_notif userInfo] objectForKey:@"NSDevicePath"];
+  IFSiTunesLibrary *lib = [self->volMap objectForKey:path];
   if (lib) {
     BOOL prevShowLibraries = [self showLibraries];
 
@@ -289,7 +283,7 @@ static NSString *albumsTrackFormatFileName    = @"AlbumsTrackFormat.txt";
 
 /* adding/removing libraries */
 
-- (void)addLibrary:(iTunesLibrary *)_lib {
+- (void)addLibrary:(IFSiTunesLibrary *)_lib {
   NSString *path = [_lib mountPoint];
   if (path) {
     if ([self->volMap objectForKey:path])
@@ -302,7 +296,7 @@ static NSString *albumsTrackFormatFileName    = @"AlbumsTrackFormat.txt";
     NSLog(@"did add library %@", _lib);
 }
 
-- (void)removeLibrary:(iTunesLibrary *)_lib {
+- (void)removeLibrary:(IFSiTunesLibrary *)_lib {
   if (doDebug)
     NSLog(@"will remove library %@", _lib);
 

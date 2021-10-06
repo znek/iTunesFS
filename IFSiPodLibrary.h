@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2007-2015, Marcus Müller <znek@mulle-kybernetik.com>.
+  Copyright (c) 2007-2010, Marcus Müller <znek@mulle-kybernetik.com>.
   All rights reserved.
 
 
@@ -30,46 +30,26 @@
   POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef	__iTunesFS_iTunesLibrary_H
-#define	__iTunesFS_iTunesLibrary_H
+#ifndef	__iTunesFS_IFSiPodLibrary_H
+#define	__iTunesFS_IFSiPodLibrary_H
 
-#import <Foundation/Foundation.h>
+#import "IFSiTunesLibrary.h"
 
-@class NSImage;
-@class iTunesPlaylist;
-@class iTunesTrack;
-@class FUSEOFSMemoryContainer;
-
-@interface iTunesLibrary : NSObject
+@interface IFSiPodLibrary : IFSiTunesLibrary
 {
-  NSString            *name;
-  NSMutableDictionary *trackMap;
-  FUSEOFSMemoryContainer *plMap;
-  FUSEOFSMemoryContainer *m3uMap;
-  FUSEOFSMemoryContainer *virtMap;
+  NSString *mountPoint;
+
+  /* required by iTunesDB parsing */
+  id currentObject; // not retained
 }
 
-- (NSString *)name;
-- (NSData *)iconData;
++ (BOOL)isIPodAtMountPoint:(NSString *)_path;
++ (NSString *)iTunesControlPathComponent;
 
-- (void)reload;
-- (void)reloadVirtualMaps; // for subclassers - called by -reload
-- (void)close;
+- (id)initWithMountPoint:(NSString *)_path;
 
-- (NSString *)libraryPath;
 - (NSString *)mountPoint;
 
-- (NSArray *)playlistNames;
-- (iTunesPlaylist *)playlistNamed:(NSString *)_plName;
+@end /* IFSiPodLibrary */
 
-/* helpers */
-
-- (iTunesTrack *)trackWithID:(NSString *)_trackID;
-
-/* burn folder helpers */
-
-- (id)burnFolderNameFromFolderName:(NSString *)_s;
-
-@end /* iTunesLibrary */
-
-#endif	/* __iTunesFS_iTunesLibrary_H */
+#endif	/* __iTunesFS_IFSiPodLibrary_H */

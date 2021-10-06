@@ -31,9 +31,9 @@
 */
 
 #import "common.h"
-#import "JBiPodLibrary.h"
+#import "IFSJBiPodLibrary.h"
 
-@implementation JBiPodLibrary
+@implementation IFSJBiPodLibrary
 
 /* NOTE:
  * This used to be true for old 1.1.x iPhones mounted via SSH
@@ -46,7 +46,7 @@
   return nil;
 }
 
-@end /* JBiPodLibrary */
+@end /* IFSJBiPodLibrary */
 
 @implementation IPhoneDiskIPodLibrary
 

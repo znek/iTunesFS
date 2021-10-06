@@ -34,7 +34,7 @@
 #import <unistd.h>
 #import <fcntl.h>
 #import <sys/event.h>
-#import "iTunesLibrary.h"
+#import "IFSiTunesLibrary.h"
 
 @interface Watchdog (Private)
 
@@ -96,11 +96,11 @@ NSString *WatchdogFlagsKey = @"WatchdogFlags";
 
 /* Public API */
 
-- (void)watchLibrary:(iTunesLibrary *)_lib {
+- (void)watchLibrary:(IFSiTunesLibrary *)_lib {
   [self watchPath:[_lib libraryPath] ofClient:_lib];
 }
 
-- (void)forgetLibrary:(iTunesLibrary *)_lib {
+- (void)forgetLibrary:(IFSiTunesLibrary *)_lib {
   [self forgetPath:[_lib libraryPath]];
 }
 

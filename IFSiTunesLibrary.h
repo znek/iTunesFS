@@ -30,28 +30,45 @@
   POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef	__iTunesFS_iTunesM3UPlaylist_H
-#define	__iTunesFS_iTunesM3UPlaylist_H
+#ifndef	__iTunesFS_IFSiTunesLibrary_H
+#define	__iTunesFS_IFSiTunesLibrary_H
 
 #import <Foundation/Foundation.h>
 
-@class iTunesPlaylist;
+@class IFSiTunesPlaylist;
+@class IFSiTunesTrack;
+@class FUSEOFSMemoryContainer;
 
-@interface iTunesM3UPlaylist : NSObject
+@interface IFSiTunesLibrary : NSObject
 {
-	iTunesPlaylist *playlist;
-	BOOL useRelativePaths;
+  NSString            *name;
+  NSMutableDictionary *trackMap;
+  FUSEOFSMemoryContainer *plMap;
+  FUSEOFSMemoryContainer *m3uMap;
+  FUSEOFSMemoryContainer *virtMap;
 }
 
-- (id)initWithPlaylist:(iTunesPlaylist *)_playlist
-  useRelativePaths:(BOOL)_useRelativePaths;
-
 - (NSString *)name;
-- (NSString *)fileName;
+- (NSData *)iconData;
 
-- (NSString *)fileExtension;
-- (NSStringEncoding)fileEncoding;
+- (void)reload;
+- (void)reloadVirtualMaps; // for subclassers - called by -reload
+- (void)close;
 
-@end /* iTunesM3UPlaylist */
+- (NSString *)libraryPath;
+- (NSString *)mountPoint;
 
-#endif	/* __iTunesFS_iTunesM3UPlaylist_H */
+- (NSArray *)playlistNames;
+- (IFSiTunesPlaylist *)playlistNamed:(NSString *)_plName;
+
+/* helpers */
+
+- (IFSiTunesTrack *)trackWithID:(NSString *)_trackID;
+
+/* burn folder helpers */
+
+- (id)burnFolderNameFromFolderName:(NSString *)_s;
+
+@end /* IFSiTunesLibrary */
+
+#endif	/* __iTunesFS_IFSiTunesLibrary_H */

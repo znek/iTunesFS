@@ -30,18 +30,18 @@
   POSSIBILITY OF SUCH DAMAGE.
 */
 
-#import "iTunesFormatFile.h"
-#import "iTunesFSFormatter.h"
+#import "IFSFormatFile.h"
+#import "IFSFormatter.h"
 #import "NSObject+FUSEOFS.h"
 
-@interface iTunesFormatFile (Private)
+@interface IFSFormatFile (Private)
 - (void)_setup;
 - (NSString *)defaultKeyForTemplateId:(NSString *)_id;
 - (NSString *)templateDefaultFormatString;
 - (NSString *)templateFormatString;
 @end
 
-@implementation iTunesFormatFile
+@implementation IFSFormatFile
 
 static BOOL           doDebug  = NO;
 static NSCharacterSet *trimSet = nil;
@@ -53,7 +53,7 @@ static NSCharacterSet *trimSet = nil;
   if (didInit) return;
   didInit = YES;
   ud      = [NSUserDefaults standardUserDefaults];
-  doDebug = [ud boolForKey:@"iTunesFormatFileDebugEnabled"];
+  doDebug = [ud boolForKey:@"IFSFormatFileDebugEnabled"];
   trimSet = [[NSCharacterSet characterSetWithCharactersInString:@"\n\r\t "]
                              copy];
 }
@@ -140,7 +140,7 @@ static NSCharacterSet *trimSet = nil;
 
 /* accessors */
 
-- (iTunesFSFormatter *)getFormatter {
+- (IFSFormatter *)getFormatter {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   NSString *fmtKey = nil;
   NSString *fmt = nil;
@@ -165,13 +165,13 @@ static NSCharacterSet *trimSet = nil;
       NSLog(@"WARN: no format found for reference %@ -> alias failed!", fmtKey);
   }
   if (fmt) {
-    return [[[iTunesFSFormatter alloc] initWithFormatString:fmt]
+    return [[[IFSFormatter alloc] initWithFormatString:fmt]
                                        autorelease];
   }
 
   // fallback - hopefully indicates failure appropriately
   fmt = fmtKey;
-  return [[[iTunesFSFormatter alloc] initWithFormatString:fmt] autorelease];
+  return [[[IFSFormatter alloc] initWithFormatString:fmt] autorelease];
 }
 
 - (void)remove {
@@ -254,4 +254,4 @@ static NSCharacterSet *trimSet = nil;
 }
 #endif
 
-@end /* iTunesFormatFile */
+@end /* IFSFormatFile */

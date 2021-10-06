@@ -31,14 +31,14 @@
 */
 
 #import "common.h"
-#import "iTunesLibrary.h"
+#import "IFSiTunesLibrary.h"
 #import <AppKit/AppKit.h>
 #import "NSString+Extensions.h"
-#import "iTunesPlaylist.h"
-#import "iTunesM3UPlaylist.h"
-#import "iTunesTrack.h"
+#import "IFSiTunesPlaylist.h"
+#import "IFSM3UPlaylist.h"
+#import "IFSiTunesTrack.h"
 #import "NSObject+FUSEOFS.h"
-#import "iTunesFSFormatter.h"
+#import "IFSFormatter.h"
 #import "FUSEOFSMemoryContainer.h"
 #ifndef GNU_GUI_LIBRARY
 #import "NSImage+IconData.h"
@@ -47,7 +47,7 @@
 #import "Watchdog.h"
 #endif
 
-@implementation iTunesLibrary
+@implementation IFSiTunesLibrary
 
 static BOOL doDebug       = NO;
 static BOOL useCategories = NO;
@@ -211,11 +211,11 @@ static NSString *kAll            = @"All";
   for (i = 0; i < count; i++) {
     NSString     *trackID;
     NSDictionary *rep;
-    iTunesTrack  *track;
+    IFSiTunesTrack  *track;
 
     trackID = [trackIDs objectAtIndex:i];
     rep     = [tracks objectForKey:trackID];
-    track   = [[iTunesTrack alloc] initWithLibraryRepresentation:rep];
+    track   = [[IFSiTunesTrack alloc] initWithLibraryRepresentation:rep];
     if ([track isUsable])
       [self->trackMap setObject:track forKey:trackID];
     [track release];
@@ -228,11 +228,11 @@ static NSString *kAll            = @"All";
 
   for (i = 0; i < count; i++) {
     NSDictionary   *plRep;
-    iTunesPlaylist *pl;
+    IFSiTunesPlaylist *pl;
     NSString       *plId;
   
     plRep = [playlists objectAtIndex:i];
-    pl    = [[iTunesPlaylist alloc] initWithLibraryRepresentation:plRep
+    pl    = [[IFSiTunesPlaylist alloc] initWithLibraryRepresentation:plRep
                                     lib:self];
 
     // only record top-level playlist, if playlist isn't a folder itself
@@ -255,14 +255,14 @@ static NSString *kAll            = @"All";
     count = [ids count];
     for (i = 0; i < count; i++) {
       NSString       *plId;
-      iTunesPlaylist *pl;
+      IFSiTunesPlaylist *pl;
       NSString       *parentId;
 
       plId     = [ids objectAtIndex:i];
       pl       = [idPlMap objectForKey:plId];
       parentId = [pl parentId];
       if (parentId) {
-        iTunesPlaylist *parent;
+        IFSiTunesPlaylist *parent;
         
         parent = [idPlMap objectForKey:parentId];
         if (parent) {
@@ -277,11 +277,11 @@ static NSString *kAll            = @"All";
   }
 
   if (useM3UPlaylists) {
-    for (iTunesPlaylist *pl in [idPlMap allValues]) {
+    for (IFSiTunesPlaylist *pl in [idPlMap allValues]) {
       if (![[pl allTracks] count])
         continue;
 
-      iTunesM3UPlaylist *m3uPl = [[iTunesM3UPlaylist alloc]
+      IFSM3UPlaylist *m3uPl = [[IFSM3UPlaylist alloc]
                                                      initWithPlaylist:pl
                                                      useRelativePaths:NO];
       [self->m3uMap setItem:m3uPl forName:[m3uPl fileName]];
@@ -312,7 +312,7 @@ static NSString *kAll            = @"All";
 
   NSString *fmt = [[NSUserDefaults standardUserDefaults]
                                    stringForKey:@"AlbumsTrackFormat"];
-  iTunesFSFormatter *formatter = [[iTunesFSFormatter alloc]
+  IFSFormatter *formatter = [[IFSFormatter alloc]
                                                      initWithFormatString:fmt];
 
 
@@ -330,7 +330,7 @@ static NSString *kAll            = @"All";
   NSArray *tracks = [self->trackMap allValues];
   NSUInteger count  = [tracks count];
   for (NSUInteger i = 0; i < count; i++) {
-    iTunesTrack *track = [tracks objectAtIndex:i];
+    IFSiTunesTrack *track = [tracks objectAtIndex:i];
 
     NSString *formattedName = [formatter stringValueByFormattingObject:track];
     NSString *artist = [track artist];
@@ -385,7 +385,7 @@ static NSString *kAll            = @"All";
       if (tCount > 1) {
         NSString *formattedAlbum = [self burnFolderNameFromFolderName:album];
         for (j = 1; j < tCount; j++) {
-          iTunesTrack *track;
+          IFSiTunesTrack *track;
           NSString    *tArtist;
 
           track   = [tracks objectAtIndex:j];
@@ -455,12 +455,12 @@ static NSString *kAll            = @"All";
 - (NSArray *)playlistNames {
   return [self->plMap containerContents];
 }
-- (iTunesPlaylist *)playlistNamed:(NSString *)_plName {
+- (IFSiTunesPlaylist *)playlistNamed:(NSString *)_plName {
   return [self->plMap lookupPathComponent:_plName inContext:self];
 }
 
 
-- (iTunesTrack *)trackWithID:(NSString *)_trackID {
+- (IFSiTunesTrack *)trackWithID:(NSString *)_trackID {
   return [self->trackMap objectForKey:_trackID];
 }
 
@@ -513,4 +513,4 @@ static NSString *kAll            = @"All";
                                     [self name], [self libraryPath]];
 }
 
-@end /* iTunesLibrary */
+@end /* IFSiTunesLibrary */
