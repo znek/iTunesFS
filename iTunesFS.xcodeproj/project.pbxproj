@@ -18,6 +18,7 @@
 		AD20DB530C259F6F00DB2A42 /* FUSEObjectFileSystem.m in Sources */ = {isa = PBXBuildFile; fileRef = AD20DB520C259F6F00DB2A42 /* FUSEObjectFileSystem.m */; };
 		AD2186D50C0D4805008FB568 /* NSURL+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = AD2186D40C0D4805008FB568 /* NSURL+Extensions.m */; };
 		AD21E2FF0C32D49800D827BE /* IFSFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = AD21E2FE0C32D49800D827BE /* IFSFormatter.m */; };
+		AD26ADC2270E01F30071A9F7 /* IFSiTunesFrameworkLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = AD26ADC1270E01F30071A9F7 /* IFSiTunesFrameworkLibrary.m */; };
 		AD2FC2601FD5928400923F83 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD2FC25F1FD5928400923F83 /* Cocoa.framework */; };
 		AD2FC2631FD592C800923F83 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = AD2FC2621FD592C800923F83 /* libz.tbd */; };
 		AD2FC2651FD5934800923F83 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD2FC2641FD5934800923F83 /* Accelerate.framework */; };
@@ -72,6 +73,8 @@
 		AD2186D40C0D4805008FB568 /* NSURL+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = "NSURL+Extensions.m"; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		AD21E2FD0C32D49800D827BE /* IFSFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = IFSFormatter.h; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		AD21E2FE0C32D49800D827BE /* IFSFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = IFSFormatter.m; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
+		AD26ADC0270E01F20071A9F7 /* IFSiTunesFrameworkLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFSiTunesFrameworkLibrary.h; sourceTree = "<group>"; };
+		AD26ADC1270E01F30071A9F7 /* IFSiTunesFrameworkLibrary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFSiTunesFrameworkLibrary.m; sourceTree = "<group>"; };
 		AD2FC25F1FD5928400923F83 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		AD2FC2621FD592C800923F83 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		AD2FC2641FD5934800923F83 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
@@ -88,6 +91,7 @@
 		AD4C4F2512FF0E050057C045 /* GMDataBackedFileDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = GMDataBackedFileDelegate.h; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		AD4C4F2612FF0E050057C045 /* GMDataBackedFileDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = GMDataBackedFileDelegate.m; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		AD4C4F2712FF0E050057C045 /* GMDTrace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMDTrace.h; sourceTree = "<group>"; };
+		AD51C2B1270DB24F0071A9F7 /* iTunesLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iTunesLibrary.framework; path = System/Library/Frameworks/iTunesLibrary.framework; sourceTree = SDKROOT; };
 		AD5A40700C214A1900B1A000 /* README-GNUstep.md */ = {isa = PBXFileReference; explicitFileType = net.daringfireball.markdown; fileEncoding = 4; lineEnding = 0; path = "README-GNUstep.md"; sourceTree = "<group>"; usesTabs = 0; };
 		AD5A40820C214FCB00B1A000 /* GNUmakefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = GNUmakefile; sourceTree = "<group>"; tabWidth = 8; };
 		AD5B5E7A0C0C1A70003B1650 /* NSObject+FUSEOFS.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = "NSObject+FUSEOFS.h"; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
@@ -144,6 +148,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AD51C2B2270DB24F0071A9F7 /* iTunesLibrary.framework in Frameworks */,
 				AD2FC2651FD5934800923F83 /* Accelerate.framework in Frameworks */,
 				AD2FC2601FD5928400923F83 /* Cocoa.framework in Frameworks */,
 				AD9316AF142C9D0A0012CDFC /* macFUSE.framework in Frameworks */,
@@ -176,6 +181,7 @@
 				AD95D4090C21C7AF00B96A36 /* examples */,
 				08FB779DFE84155DC02AAC07 /* External Frameworks and Libraries */,
 				1AB674ADFE9D54B511CA2CBB /* Products */,
+				AD51C2AE270DAE4C0071A9F7 /* Frameworks */,
 			);
 			name = QSFuse;
 			sourceTree = "<group>";
@@ -186,10 +192,10 @@
 				32A70AAB03705E1F00C91783 /* common.h */,
 				7F74EF2B0B4C1BEC00CFA0C0 /* iTunesFileSystem.h */,
 				7F74EF2C0B4C1BEC00CFA0C0 /* iTunesFileSystem.m */,
-				AD51C2AB270DA76A0071A9F7 /* IFSiTunesFrameworkLibrary.h */,
-				AD51C2AC270DA76A0071A9F7 /* IFSiTunesFrameworkLibrary.m */,
 				AD37A2950C01C87E00DF1291 /* IFSiTunesLibrary.h */,
 				AD37A2960C01C87E00DF1291 /* IFSiTunesLibrary.m */,
+				AD26ADC0270E01F20071A9F7 /* IFSiTunesFrameworkLibrary.h */,
+				AD26ADC1270E01F30071A9F7 /* IFSiTunesFrameworkLibrary.m */,
 				AD15AA5C0C05BC7400345C9E /* IFSiPodLibrary.h */,
 				AD15AA5D0C05BC7400345C9E /* IFSiPodLibrary.m */,
 				ADD11F380CD7A21E00E7A5C2 /* IFSJBiPodLibrary.h */,
@@ -283,6 +289,14 @@
 			path = GSFUSE;
 			sourceTree = "<group>";
 		};
+		AD51C2AE270DAE4C0071A9F7 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AD51C2B1270DB24F0071A9F7 /* iTunesLibrary.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		AD5A407C0C214FAA00B1A000 /* GNUstep */ = {
 			isa = PBXGroup;
 			children = (
@@ -363,6 +377,7 @@
 			buildConfigurationList = 7F3DBD080B4422C300A48059 /* Build configuration list for PBXNativeTarget "iTunesFS" */;
 			buildPhases = (
 				7F3DBE0B0B44325A00A48059 /* Update Version Information */,
+				AD26ADC3270E06F10071A9F7 /* Execute clever FRAMEWORKS_SEARCH_PATHS workaround */,
 				7F3DBD010B4422C200A48059 /* Resources */,
 				7F3DBD020B4422C200A48059 /* Sources */,
 				7F3DBD030B4422C200A48059 /* Frameworks */,
@@ -442,6 +457,25 @@
 			shellScript = "TMP_SUBST_FILE_PATH=/tmp/${INFOPLIST_FILE}.$$\n\n# retrieve the current version information\n. Version\n\necho \"Version --> v${MAJOR_VERSION}.${MINOR_VERSION}.${SUBMINOR_VERSION}\"\n\ncp ${INFOPLIST_FILE} ${TMP_SUBST_FILE_PATH}\nsed -e \"s/\\([1234567890]*\\)\\.\\([1234567890]*\\)\\.\\([1234567890abrc]*\\)/${MAJOR_VERSION}\\.${MINOR_VERSION}\\.${SUBMINOR_VERSION}/g\" -e \"s/PropertyList-.*dtd/PropertyList-1.0.dtd/\" ${TMP_SUBST_FILE_PATH} > ${INFOPLIST_FILE}\nrm -f ${TMP_SUBST_FILE_PATH}\n";
 			showEnvVarsInLog = 0;
 		};
+		AD26ADC3270E06F10071A9F7 /* Execute clever FRAMEWORKS_SEARCH_PATHS workaround */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Execute clever FRAMEWORKS_SEARCH_PATHS workaround";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Create ${USER_LIBRARY_DIR}/Frameworks if it doesn't already exist and link\n# to installed macFUSE.framework in /Library/Frameworks\n\nmkdir -p \"${USER_LIBRARY_DIR}/Frameworks\" && cd \"${USER_LIBRARY_DIR}/Frameworks\" && ln -s \"${LOCAL_LIBRARY_DIR}/Frameworks/macFUSE.framework\"\nexit 0\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -452,6 +486,7 @@
 				7F74EF2D0B4C1BEC00CFA0C0 /* iTunesFileSystem.m in Sources */,
 				AD0272621AC32AAC00B63416 /* NSMutableArray+Extensions.m in Sources */,
 				AD37A2970C01C87E00DF1291 /* IFSiTunesLibrary.m in Sources */,
+				AD26ADC2270E01F30071A9F7 /* IFSiTunesFrameworkLibrary.m in Sources */,
 				ADBDABA90C02FF10004CF795 /* NSString+Extensions.m in Sources */,
 				AD15A2190C03208500345C9E /* IFSiTunesPlaylist.m in Sources */,
 				AD15A22C0C03248C00345C9E /* IFSiTunesTrack.m in Sources */,

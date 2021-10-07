@@ -16,7 +16,7 @@ SDKROOT = macosx
 SDKROOT[arch=i386] = macosx10.6
 SDKROOT[arch=ppc]  = macosx10.5
 
-MACOSX_DEPLOYMENT_TARGET = 10.12
+MACOSX_DEPLOYMENT_TARGET = 10.13
 MACOSX_DEPLOYMENT_TARGET[arch=i386] = 10.6
 MACOSX_DEPLOYMENT_TARGET[arch=ppc]  = 10.5
 
@@ -24,8 +24,10 @@ GCC_VERSION = com.apple.compilers.llvm.clang.1_0
 GCC_VERSION[arch=i386] = com.apple.compilers.llvmgcc42
 GCC_VERSION[arch=ppc]  = com.apple.compilers.llvmgcc42
 
+ALWAYS_SEARCH_USER_PATHS = NO
 
-OTHER_CFLAGS = -D_FILE_OFFSET_BITS=64
+OTHER_CFLAGS = $(inherited) -D_FILE_OFFSET_BITS=64
+// OTHER_LDFLAGS = $(inherited) -framework iTunesLibrary
 
 GCC_PREFIX_HEADER = common.h
 GCC_PRECOMPILE_PREFIX_HEADER = YES
@@ -46,4 +48,7 @@ CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES
 
 INFOPLIST_FILE = Info.plist
 
-FRAMEWORK_SEARCH_PATHS = $(LOCAL_LIBRARY_DIR)/Frameworks
+// Using USER_LIBRARY_DIR is a hack to pick up macFUSE.framework but *skip*
+// iTunesLibrary.framework as copy in /System/Library/Frameworks has
+// no headers!
+FRAMEWORK_SEARCH_PATHS = $(inherited) $(USER_LIBRARY_DIR)/Frameworks

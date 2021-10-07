@@ -499,3 +499,13 @@ static NSString *kAll            = @"All";
 }
 
 @end /* IFSiTunesLibrary */
+
+// FIXME
+@implementation IFSiTunesLibrary (Private)
+- (BOOL)doDebug {
+  return doDebug;
+}
+- (BOOL)useM3UPlaylists {
+  return useM3UPlaylists;
+}
+@end
