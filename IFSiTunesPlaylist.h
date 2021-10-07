@@ -49,8 +49,8 @@
 
 @interface IFSiTunesPlaylist : NSObject
 {
-  NSString *persistentId;
-  NSString *parentId;
+  id persistentId;
+  id parentId;
   NSString *name;
   NSMutableArray *savedTracks;
   NSMutableArray *tracks;
@@ -68,8 +68,8 @@
 - (NSDate *)modificationDate;
 
 - (NSString *)name;
-- (NSString *)persistentId;
-- (NSString *)parentId;
+- (id)persistentId;
+- (id)parentId;
 - (NSArray *)tracks;
 
 - (NSUInteger)count;

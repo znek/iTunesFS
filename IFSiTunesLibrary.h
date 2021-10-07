@@ -63,7 +63,7 @@
 
 /* helpers */
 
-- (IFSiTunesTrack *)trackWithID:(NSString *)_trackID;
+- (IFSiTunesTrack *)trackWithID:(id)_trackID;
 
 /* burn folder helpers */
 

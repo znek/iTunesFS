@@ -31,13 +31,15 @@
 */
 
 #import "common.h"
-#import "IFSiTunesLibrary.h"
 #import <AppKit/AppKit.h>
+#import "IFSiTunesLibrary.h"
+
+#import "NSObject+FUSEOFS.h"
 #import "NSString+Extensions.h"
+
 #import "IFSiTunesPlaylist.h"
 #import "IFSM3UPlaylist.h"
 #import "IFSiTunesTrack.h"
-#import "NSObject+FUSEOFS.h"
 #import "IFSFormatter.h"
 #import "FUSEOFSMemoryContainer.h"
 #ifndef GNU_GUI_LIBRARY
@@ -169,13 +171,6 @@ static NSString *kAll            = @"All";
 /* setup */
 
 - (void)reload {
-  NSData        *plist;
-  NSDictionary  *lib;
-  NSArray       *playlists;
-  NSDictionary  *tracks;
-  NSArray       *trackIDs;
-  NSUInteger    i, count;
-
   if (doDebug)
     NSLog(@"%s", __PRETTY_FUNCTION__);
 
@@ -183,10 +178,11 @@ static NSString *kAll            = @"All";
   [self->m3uMap   removeAllObjects];
   [self->trackMap removeAllObjects];
 
-  plist = [NSData dataWithContentsOfFile:[self libraryPath]];
+  NSData *plist = [NSData dataWithContentsOfFile:[self libraryPath]];
   NSAssert1(plist != nil, @"Couldn't read contents of %@!",
                           [self libraryPath]);
 
+  NSDictionary  *lib;
 #if __MAC_OS_X_VERSION_MAX_ALLOWED < 101000
   lib = [NSPropertyListSerialization propertyListFromData:plist
                                      mutabilityOption:NSPropertyListImmutable
@@ -205,10 +201,10 @@ static NSString *kAll            = @"All";
   self->name = [[NSString stringWithFormat:@"iTunes (v%@)",
                           [lib objectForKey:@"Application Version"]] copy];
 
-  tracks    = [lib objectForKey:@"Tracks"];
-  trackIDs  = [tracks allKeys];
-  count     = [trackIDs count];
-  for (i = 0; i < count; i++) {
+  NSDictionary *tracks   = [lib objectForKey:@"Tracks"];
+  NSArray      *trackIDs = [tracks allKeys];
+  NSUInteger   count     = [trackIDs count];
+  for (NSUInteger i = 0; i < count; i++) {
     NSString     *trackID;
     NSDictionary *rep;
     IFSiTunesTrack  *track;
@@ -221,19 +217,16 @@ static NSString *kAll            = @"All";
     [track release];
   }
 
-  NSMutableDictionary *idPlMap;
-  playlists = [lib objectForKey:@"Playlists"];
-  count     = [playlists count];
-  idPlMap   = [[NSMutableDictionary alloc] initWithCapacity:count];
+  NSArray *playlists = [lib objectForKey:@"Playlists"];
+  count = [playlists count];
+  NSMutableDictionary *idPlMap = [[NSMutableDictionary alloc]
+                                                       initWithCapacity:count];
 
-  for (i = 0; i < count; i++) {
-    NSDictionary   *plRep;
-    IFSiTunesPlaylist *pl;
-    NSString       *plId;
-  
-    plRep = [playlists objectAtIndex:i];
-    pl    = [[IFSiTunesPlaylist alloc] initWithLibraryRepresentation:plRep
-                                    lib:self];
+  for (NSUInteger i = 0; i < count; i++) {
+    NSDictionary *plRep = [playlists objectAtIndex:i];
+    IFSiTunesPlaylist *pl = [[IFSiTunesPlaylist alloc]
+                                                initWithLibraryRepresentation:plRep
+                                                lib:self];
 
     // only record top-level playlist, if playlist isn't a folder itself
     if (![pl parentId]) {
@@ -241,7 +234,7 @@ static NSString *kAll            = @"All";
                    forName:[self burnFolderNameFromFolderName:[pl name]]];
     }
 
-    plId = [pl persistentId];
+    id plId = [pl persistentId];
     if (plId)
       [idPlMap setObject:pl forKey:plId];
     [pl release];
@@ -249,22 +242,14 @@ static NSString *kAll            = @"All";
 
   // connect children to their parents
   if ([idPlMap count]) {
-    NSArray *ids;
-    
-    ids   = [idPlMap allKeys];
+    NSArray *ids = [idPlMap allKeys];
     count = [ids count];
-    for (i = 0; i < count; i++) {
-      NSString       *plId;
-      IFSiTunesPlaylist *pl;
-      NSString       *parentId;
-
-      plId     = [ids objectAtIndex:i];
-      pl       = [idPlMap objectForKey:plId];
-      parentId = [pl parentId];
+    for (NSUInteger i = 0; i < count; i++) {
+      id plId = [ids objectAtIndex:i];
+      IFSiTunesPlaylist *pl = [idPlMap objectForKey:plId];
+      id parentId = [pl parentId];
       if (parentId) {
-        IFSiTunesPlaylist *parent;
-        
-        parent = [idPlMap objectForKey:parentId];
+        IFSiTunesPlaylist *parent = [idPlMap objectForKey:parentId];
         if (parent) {
           [parent addChild:pl
                   withName:[self burnFolderNameFromFolderName:[pl name]]];
@@ -282,8 +267,8 @@ static NSString *kAll            = @"All";
         continue;
 
       IFSM3UPlaylist *m3uPl = [[IFSM3UPlaylist alloc]
-                                                     initWithPlaylist:pl
-                                                     useRelativePaths:NO];
+                                               initWithPlaylist:pl
+                                               useRelativePaths:NO];
       [self->m3uMap setItem:m3uPl forName:[m3uPl fileName]];
       [m3uPl release];
     }
@@ -460,7 +445,7 @@ static NSString *kAll            = @"All";
 }
 
 
-- (IFSiTunesTrack *)trackWithID:(NSString *)_trackID {
+- (IFSiTunesTrack *)trackWithID:(id)_trackID {
   return [self->trackMap objectForKey:_trackID];
 }
 

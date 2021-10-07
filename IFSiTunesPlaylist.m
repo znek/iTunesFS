@@ -243,10 +243,10 @@ static NSString *trackFormatFileName = @"PlaylistsTrackFormat.txt";
   return self->modificationDate;
 }
 
-- (NSString *)persistentId {
+- (id)persistentId {
   return self->persistentId;
 }
-- (NSString *)parentId {
+- (id)parentId {
   return self->parentId;
 }
 
