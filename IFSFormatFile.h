@@ -30,14 +30,14 @@
   POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef	__iTunesFS_iTunesFormatFile_H
-#define	__iTunesFS_iTunesFormatFile_H
+#ifndef	__iTunesFS_IFSFormatFile_H
+#define	__iTunesFS_IFSFormatFile_H
 
 #import "FUSEOFSMemoryFile.h"
 
-@class iTunesFSFormatter;
+@class IFSFormatter;
 
-@interface iTunesFormatFile : FUSEOFSMemoryFile
+@interface IFSFormatFile : FUSEOFSMemoryFile
 {
 	NSString *defaultTemplate;
   NSString *defaultKey;
@@ -49,8 +49,8 @@
 
 - (void)remove;
 
-- (iTunesFSFormatter *)getFormatter;
+- (IFSFormatter *)getFormatter;
 
-@end /* iTunesFormatFile */
+@end /* IFSFormatFile */
 
-#endif	/* __iTunesFS_iTunesFormatFile_H */
+#endif	/* __iTunesFS_IFSFormatFile_H */

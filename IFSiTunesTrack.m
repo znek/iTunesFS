@@ -31,11 +31,11 @@
 */
 
 #import "common.h"
-#import "iTunesTrack.h"
+#import "IFSiTunesTrack.h"
 #import "NSURL+Extensions.h"
 #import "NSObject+FUSEOFS.h"
 
-@interface iTunesTrack (Private)
+@interface IFSiTunesTrack (Private)
 - (NSString *)prettyName;
 - (void)setPrettyName:(NSString *)_prettyName;
 - (void)setUrl:(NSURL *)_url;
@@ -45,7 +45,7 @@
 - (void)setTrackNumber:(NSUInteger)_trackNumber;
 @end
 
-@implementation iTunesTrack
+@implementation IFSiTunesTrack
 
 static BOOL     doDebug                    = NO;
 static BOOL     useSymbolicLinks           = NO;
@@ -350,4 +350,4 @@ static NSString *locationDestinationPrefix = nil;
                                     [self prettyName], [self attributes]];
 }
 
-@end /* iTunesTrack */
+@end /* IFSiTunesTrack */

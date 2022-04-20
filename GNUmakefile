@@ -48,14 +48,14 @@ iTunesFS_OBJC_FILES +=				\
 						\
 	iTunesFileSystem.m			\
 						\
-	iTunesLibrary.m				\
-	iPodLibrary.m				\
-	JBiPodLibrary.m				\
-	iTunesPlaylist.m			\
-	iTunesM3UPlaylist.m			\
-	iTunesTrack.m				\
-	iTunesFormatFile.m			\
-	iTunesFSFormatter.m			\
+	IFSiTunesLibrary.m			\
+	IFSiPodLibrary.m			\
+	IFSJBiPodLibrary.m			\
+	IFSiTunesPlaylist.m			\
+	IFSM3UPlaylist.m			\
+	IFSiTunesTrack.m			\
+	IFSFormatFile.m				\
+	IFSFormatter.m				\
 						\
 	StreamReader.m				\
 	NSString+Extensions.m			\

@@ -31,7 +31,7 @@
 */
 
 #import "common.h"
-#import "iTunesFSFormatter.h"
+#import "IFSFormatter.h"
 #import "NSObject+FUSEOFS.h"
 
 @interface iTunesFSFormattingResult : NSObject
@@ -48,13 +48,13 @@
 
 @end
 
-@interface iTunesFSFormatter (Private)
+@interface IFSFormatter (Private)
 - (void)setupFormattingOps;
 - (void)appendStringToFormattingOps:(NSString *)_s;
 - (NSString *)_stringValueByFormattingObject:(id)_obj;
 @end
 
-@implementation iTunesFSFormatter
+@implementation IFSFormatter
 
 static NSCharacterSet *wsSet                          = nil;
 static NSValue        *appendToBufferValue            = nil;
@@ -202,7 +202,7 @@ static NSValue        *appendValueForKeyToBufferValue = nil;
   [self->formattingOps addObject:_s];
 }
 
-@end /* iTunesFSFormatter */
+@end /* IFSFormatter */
 
 @implementation iTunesFSFormattingResult
 

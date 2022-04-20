@@ -30,58 +30,45 @@
   POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef	__iTunesFS_iTunesPlaylist_H
-#define	__iTunesFS_iTunesPlaylist_H
+#ifndef	__iTunesFS_IFSiTunesLibrary_H
+#define	__iTunesFS_IFSiTunesLibrary_H
 
 #import <Foundation/Foundation.h>
 
-@class iTunesFormatFile;
-@class iTunesLibrary;
-@class iTunesTrack;
-@class iTunesM3UPlaylist;
+@class IFSiTunesPlaylist;
+@class IFSiTunesTrack;
+@class FUSEOFSMemoryContainer;
 
-#define kPlaylistName @"Name"
-#define kPlaylistPersistentID @"Playlist Persistent ID"
-#define kPlaylistParentPersistentID @"Parent Persistent ID"
-#define kPlaylistIsFolder @"Folder"
-#define kPlaylistItems @"Playlist Items"
-#define kPlaylistTrackIDs @"trackIDs"
-
-@interface iTunesPlaylist : NSObject
+@interface IFSiTunesLibrary : NSObject
 {
-  NSString *persistentId;
-  NSString *parentId;
-  NSString *name;
-  NSMutableArray *savedTracks;
-  NSMutableArray *tracks;
-  NSMutableArray *trackNames;
-  NSMutableDictionary *childrenMap;
-  iTunesFormatFile *trackFormatFile;
-  iTunesM3UPlaylist *m3uPlaylist;
-  id shadowFolder;
-  NSDate *modificationDate;
+  NSString            *name;
+  NSMutableDictionary *trackMap;
+  FUSEOFSMemoryContainer *plMap;
+  FUSEOFSMemoryContainer *m3uMap;
+  FUSEOFSMemoryContainer *virtMap;
 }
 
-- (id)initWithLibraryRepresentation:(NSDictionary *)_rep
-  lib:(iTunesLibrary *)_lib;
-
-- (NSDate *)modificationDate;
-
 - (NSString *)name;
-- (NSString *)persistentId;
-- (NSString *)parentId;
-- (NSArray *)tracks;
+- (NSData *)iconData;
 
-- (NSUInteger)count;
-- (iTunesTrack *)trackAtIndex:(NSUInteger)_idx;
-- (NSArray *)trackNames;
+- (void)reload;
+- (void)reloadVirtualMaps; // for subclassers - called by -reload
+- (void)close;
 
-- (void)addChild:(iTunesPlaylist *)_child withName:(NSString *)_name;
-- (NSArray *)children;
+- (NSString *)libraryPath;
+- (NSString *)mountPoint;
 
-// original iTunes list of all tracks in correct order
-- (NSArray *)allTracks;
+- (NSArray *)playlistNames;
+- (IFSiTunesPlaylist *)playlistNamed:(NSString *)_plName;
 
-@end /* iTunesPlaylist */
+/* helpers */
 
-#endif	/* __iTunesFS_iTunesPlaylist_H */
+- (IFSiTunesTrack *)trackWithID:(id)_trackID;
+
+/* burn folder helpers */
+
+- (id)burnFolderNameFromFolderName:(NSString *)_s;
+
+@end /* IFSiTunesLibrary */
+
+#endif	/* __iTunesFS_IFSiTunesLibrary_H */

@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2007-2010, Marcus Müller <znek@mulle-kybernetik.com>.
+  Copyright (c) 2007-2015, Marcus Müller <znek@mulle-kybernetik.com>.
   All rights reserved.
 
 
@@ -30,26 +30,28 @@
   POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef	__iTunesFS_iPodLibrary_H
-#define	__iTunesFS_iPodLibrary_H
+#ifndef	__iTunesFS_IFSM3UPlaylist_H
+#define	__iTunesFS_IFSM3UPlaylist_H
 
-#import "iTunesLibrary.h"
+#import <Foundation/Foundation.h>
 
-@interface iPodLibrary : iTunesLibrary
+@class IFSiTunesPlaylist;
+
+@interface IFSM3UPlaylist : NSObject
 {
-  NSString *mountPoint;
-
-  /* required by iTunesDB parsing */
-  id currentObject; // not retained
+	IFSiTunesPlaylist *playlist;
+	BOOL useRelativePaths;
 }
 
-+ (BOOL)isIPodAtMountPoint:(NSString *)_path;
-+ (NSString *)iTunesControlPathComponent;
+- (id)initWithPlaylist:(IFSiTunesPlaylist *)_playlist
+  useRelativePaths:(BOOL)_useRelativePaths;
 
-- (id)initWithMountPoint:(NSString *)_path;
+- (NSString *)name;
+- (NSString *)fileName;
 
-- (NSString *)mountPoint;
+- (NSString *)fileExtension;
+- (NSStringEncoding)fileEncoding;
 
-@end /* iPodLibrary */
+@end /* IFSM3UPlaylist */
 
-#endif	/* __iTunesFS_iPodLibrary_H */
+#endif	/* __iTunesFS_IFSM3UPlaylist_H */

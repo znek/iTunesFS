@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2007-2015, Marcus Müller <znek@mulle-kybernetik.com>.
+  Copyright (c) 2007-2021, Marcus Müller <znek@mulle-kybernetik.com>.
   All rights reserved.
 
 
@@ -30,28 +30,25 @@
   POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef	__iTunesFS_iTunesM3UPlaylist_H
-#define	__iTunesFS_iTunesM3UPlaylist_H
+#ifndef	__iTunesFS_IFSiTunesFrameworkLibrary_H
+#define	__iTunesFS_IFSiTunesFrameworkLibrary_H
 
 #import <Foundation/Foundation.h>
+#import "IFSiTunesLibrary.h"
 
-@class iTunesPlaylist;
+@class IFSiTunesPlaylist;
+@class ITLibrary;
 
-@interface iTunesM3UPlaylist : NSObject
+@interface IFSiTunesFrameworkLibrary : IFSiTunesLibrary
 {
-	iTunesPlaylist *playlist;
-	BOOL useRelativePaths;
+	ITLibrary *lib;
 }
 
-- (id)initWithPlaylist:(iTunesPlaylist *)_playlist
-  useRelativePaths:(BOOL)_useRelativePaths;
-
 - (NSString *)name;
-- (NSString *)fileName;
 
-- (NSString *)fileExtension;
-- (NSStringEncoding)fileEncoding;
+- (void)reload;
+- (void)close;
 
-@end /* iTunesM3UPlaylist */
+@end
 
-#endif	/* __iTunesFS_iTunesM3UPlaylist_H */
+#endif	/* __iTunesFS_IFSiTunesFrameworkLibrary_H */

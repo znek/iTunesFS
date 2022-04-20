@@ -31,13 +31,13 @@
 */
 
 #import "common.h"
-#import "iTunesM3UPlaylist.h"
+#import "IFSM3UPlaylist.h"
 #import "NSObject+FUSEOFS.h"
-#import "iTunesPlaylist.h"
-#import "iTunesTrack.h"
-#import "iTunesFSFormatter.h"
+#import "IFSiTunesPlaylist.h"
+#import "IFSiTunesTrack.h"
+#import "IFSFormatter.h"
 
-@implementation iTunesM3UPlaylist
+@implementation IFSM3UPlaylist
 
 static BOOL useM3U8 = NO;
 static NSString *fileExt = nil;
@@ -52,7 +52,7 @@ static NSString *fileExt = nil;
 	fileExt = [ud stringForKey:@"M3UPlaylistFileExtension"];
 }
 
-- (id)initWithPlaylist:(iTunesPlaylist *)_playlist
+- (id)initWithPlaylist:(IFSiTunesPlaylist *)_playlist
   useRelativePaths:(BOOL)_useRelativePaths
 {
 	self = [super init];
@@ -115,7 +115,7 @@ static NSString *fileExt = nil;
 - (NSData *)fileContents {
 	NSString *fmt = [[NSUserDefaults standardUserDefaults]
 									  stringForKey:@"M3UTrackFormat"];
-	iTunesFSFormatter *formatter = [[iTunesFSFormatter alloc]
+	IFSFormatter *formatter = [[IFSFormatter alloc]
 									                    initWithFormatString:fmt];
 
 	NSMutableString *rep = [[NSMutableString alloc] init];
@@ -124,7 +124,7 @@ static NSString *fileExt = nil;
 	NSArray *tracks = [self tracks];
 	NSUInteger i, count = [tracks count];
 	for (i = 0; i < count; i++) {
-		iTunesTrack *track =  [tracks objectAtIndex:i];
+		IFSiTunesTrack *track =  [tracks objectAtIndex:i];
 		NSString *title = [formatter stringValueByFormattingObject:track];
 		[rep appendFormat:@"#EXTINF:-1,%@\n", title];
 

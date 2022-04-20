@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2007-2010, Marcus Müller <znek@mulle-kybernetik.com>.
+  Copyright (c) 2007-2015, Marcus Müller <znek@mulle-kybernetik.com>.
   All rights reserved.
 
 
@@ -30,26 +30,58 @@
   POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef	__iTunesFS_Watchdog__H
-#define	__iTunesFS_Watchdog__H
+#ifndef	__iTunesFS_IFSiTunesPlaylist_H
+#define	__iTunesFS_IFSiTunesPlaylist_H
 
 #import <Foundation/Foundation.h>
 
+@class IFSFormatFile;
 @class IFSiTunesLibrary;
+@class IFSiTunesTrack;
+@class IFSM3UPlaylist;
 
-@interface Watchdog : NSObject
+#define kPlaylistName @"Name"
+#define kPlaylistPersistentID @"Playlist Persistent ID"
+#define kPlaylistParentPersistentID @"Parent Persistent ID"
+#define kPlaylistIsFolder @"Folder"
+#define kPlaylistItems @"Playlist Items"
+#define kPlaylistTrackIDs @"trackIDs"
+
+@interface IFSiTunesPlaylist : NSObject
 {
-  NSMutableArray *paths;
-  NSMutableArray *fds;
-  NSMutableArray *clients;
-  int            kqueueHandle;
+  id persistentId;
+  id parentId;
+  NSString *name;
+  NSMutableArray *savedTracks;
+  NSMutableArray *tracks;
+  NSMutableArray *trackNames;
+  NSMutableDictionary *childrenMap;
+  IFSFormatFile *trackFormatFile;
+  IFSM3UPlaylist *m3uPlaylist;
+  id shadowFolder;
+  NSDate *modificationDate;
 }
 
-+ (id)sharedWatchdog;
+- (id)initWithLibraryRepresentation:(NSDictionary *)_rep
+  lib:(IFSiTunesLibrary *)_lib;
 
-- (void)watchLibrary:(IFSiTunesLibrary *)_lib;
-- (void)forgetLibrary:(IFSiTunesLibrary *)_lib;
+- (NSDate *)modificationDate;
 
-@end
+- (NSString *)name;
+- (id)persistentId;
+- (id)parentId;
+- (NSArray *)tracks;
 
-#endif	/* __iTunesFS_Watchdog__H */
+- (NSUInteger)count;
+- (IFSiTunesTrack *)trackAtIndex:(NSUInteger)_idx;
+- (NSArray *)trackNames;
+
+- (void)addChild:(IFSiTunesPlaylist *)_child withName:(NSString *)_name;
+- (NSArray *)children;
+
+// original iTunes list of all tracks in correct order
+- (NSArray *)allTracks;
+
+@end /* IFSiTunesPlaylist */
+
+#endif	/* __iTunesFS_IFSiTunesPlaylist_H */
