@@ -7,8 +7,8 @@
 // If you can't use old compilers and linkers on a recent OS, you'll have
 // to adjust the settings appropriately.
 
-VALID_ARCHS = x86_64 i386 ppc
-ARCHS = x86_64 i386 ppc
+VALID_ARCHS = x86_64 arm64
+ARCHS = x86_64 arm64
 
 
 // most recent platform SDK
@@ -16,9 +16,10 @@ SDKROOT = macosx
 SDKROOT[arch=i386] = macosx10.6
 SDKROOT[arch=ppc]  = macosx10.5
 
-MACOSX_DEPLOYMENT_TARGET = 10.13
-MACOSX_DEPLOYMENT_TARGET[arch=i386] = 10.6
-MACOSX_DEPLOYMENT_TARGET[arch=ppc]  = 10.5
+MACOSX_DEPLOYMENT_TARGET[arch=x86_64] = 10.15
+MACOSX_DEPLOYMENT_TARGET[arch=i386]   = 10.6
+MACOSX_DEPLOYMENT_TARGET[arch=ppc]    = 10.5
+MACOSX_DEPLOYMENT_TARGET[arch=arm64]  = 11.0
 
 GCC_VERSION = com.apple.compilers.llvm.clang.1_0
 GCC_VERSION[arch=i386] = com.apple.compilers.llvmgcc42
