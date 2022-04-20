@@ -36,6 +36,9 @@
 #import "IFSiTunesLibrary.h"
 #import "IFSiPodLibrary.h"
 #import "IFSJBiPodLibrary.h"
+#ifndef NO_OSX_ADDITIONS
+#import "IFSiTunesFrameworkLibrary.h"
+#endif
 
 #import "NSObject+FUSEOFS.h"
 #import "FUSEOFSMemoryContainer.h"
@@ -65,6 +68,7 @@
 
 static BOOL doDebug          = NO;
 static BOOL ignoreITunes     = NO;
+static BOOL ignoreAppleMusic = NO;
 static BOOL ignoreIPods      = NO;
 static BOOL allowOtherOption = NO;
 static BOOL showFormatFiles  = YES;
@@ -85,6 +89,7 @@ static NSString *albumsTrackFormatFileName    = @"AlbumsTrackFormat.txt";
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   doDebug          = [ud boolForKey:@"iTunesFileSystemDebugEnabled"];
   ignoreITunes     = [ud boolForKey:@"NoITunes"];
+  ignoreAppleMusic = [ud boolForKey:@"NoAppleMusic"];
   ignoreIPods      = [ud boolForKey:@"NoIPods"];
   allowOtherOption = [ud boolForKey:@"FUSEOptionAllowOther"];
   showFormatFiles  = [ud boolForKey:@"ShowFormatFiles"];
@@ -120,11 +125,19 @@ static NSString *albumsTrackFormatFileName    = @"AlbumsTrackFormat.txt";
   IFSiTunesLibrary *lib;
 
   // add default library
-  if (!ignoreITunes) {
+  if ([self useIFSiTunesLibrary]) {
     lib = [[IFSiTunesLibrary alloc] init];
     [self addLibrary:lib];
     [lib release];
   }
+#ifndef NO_OSX_ADDITIONS
+  if ([self useITunesFrameworkLibrary]) {
+    lib = [[IFSiTunesFrameworkLibrary alloc] init];
+    [self addLibrary:lib];
+    [lib release];
+  }
+#endif
+
   if (!ignoreIPods) {
 #if __MAC_OS_X_VERSION_MAX_ALLOWED < 101000
     NSWorkspace *ws = [NSWorkspace sharedWorkspace];
@@ -310,6 +323,36 @@ static NSString *albumsTrackFormatFileName    = @"AlbumsTrackFormat.txt";
 
 /* private */
 
+#ifndef NO_OSX_ADDITIONS
+
+- (BOOL)hasAppleMusic {
+#if __MAC_OS_X_VERSION_MAX_ALLOWED >= 101000
+  NSOperatingSystemVersion vinfo = [[NSProcessInfo processInfo] operatingSystemVersion];
+  const double version = (double)vinfo.majorVersion + 0.01 * (double)vinfo.minorVersion + 0.0001 * (double)vinfo.patchVersion;
+  return (version >= 10.15) ? YES : NO;
+#else
+  return NO;
+#endif
+}
+
+- (BOOL)useITunesFrameworkLibrary {
+  return (!ignoreAppleMusic && [self hasAppleMusic]) ? YES : NO;
+}
+- (BOOL)useIFSiTunesLibrary {
+  if (ignoreITunes)
+    return NO;
+  return ![self hasAppleMusic] || ignoreAppleMusic;
+}
+
+#else
+
+- (BOOL)useIFSiTunesLibrary {
+  return !ignoreITunes;
+}
+
+#endif
+
+
 - (void)reload {
   NSArray    *libs    = [self->libMap allValues];
   NSUInteger i, count = [libs count];
@@ -424,10 +467,22 @@ static NSString *albumsTrackFormatFileName    = @"AlbumsTrackFormat.txt";
  */
 - (BOOL)needsLocalOption {
 #ifndef NO_OSX_ADDITIONS
+
+#if __MAC_OS_X_VERSION_MAX_ALLOWED >= 101000
+
+  NSOperatingSystemVersion vinfo = [[NSProcessInfo processInfo] operatingSystemVersion];
+  const double version = (double)vinfo.majorVersion + 0.01 * (double)vinfo.minorVersion + 0.0001 * (double)vinfo.patchVersion;
+  return (version > 10.04) ? YES : NO;
+
+#else
+
   NSString *osVer = [[NSProcessInfo processInfo] operatingSystemVersionString];
   
   if ([osVer rangeOfString:@"10.4"].length != 0) return NO;
   return YES;
+
+#endif
+
 #else
   return NO;
 #endif
