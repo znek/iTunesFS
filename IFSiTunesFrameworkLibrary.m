@@ -203,12 +203,25 @@
 		ITLibAlbum *_album = [_item album];
 		ITLibMediaItemVideoInfo *_info = [_item videoInfo];
 
-		self->artist = [[[[_item artist] name] properlyEscapedFSRepresentation] copy];
-		self->album  = [[[_album title] properlyEscapedFSRepresentation] copy];
+		NSString *name = [[_item artist] name];
+		if (name && [name length] > 0)
+			self->artist = [[name properlyEscapedFSRepresentation] copy];
+		name = [_album title];
+		if (name && [name length] > 0)
+			self->album  = [[name properlyEscapedFSRepresentation] copy];
 
-		self->albumArtist   = [[[_album albumArtist] properlyEscapedFSRepresentation] copy];
-		self->composer      = [[[_item composer] properlyEscapedFSRepresentation] copy];
-		self->genre         = [[[_item genre] properlyEscapedFSRepresentation] copy];
+		name = [_album albumArtist];
+		if (name && [name length] > 0)
+			self->albumArtist = [[name properlyEscapedFSRepresentation] copy];
+
+		name = [_item composer];
+		if (name && [name length] > 0)
+			self->composer = [[name properlyEscapedFSRepresentation] copy];
+
+		name = [_item genre];
+		if (name && [name length] > 0)
+			self->genre = [[name properlyEscapedFSRepresentation] copy];
+
 		self->grouping      = [[[_item grouping] properlyEscapedFSRepresentation] copy];
 		// FIXME
 		self->series        = [[[_info series] properlyEscapedFSRepresentation] copy];
@@ -230,8 +243,8 @@
 
 		[self setTrackNumber:[_item trackNumber]];
 
-		NSString *name = [_item title];
-		if (name) {
+		name = [_item title];
+		if (name && [name length] > 0) {
 		  [self setPrettyName:[name properlyEscapedFSRepresentation]];
 		}
 		else {
