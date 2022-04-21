@@ -16,6 +16,8 @@ SDKROOT = macosx
 SDKROOT[arch=i386] = macosx10.6
 SDKROOT[arch=ppc]  = macosx10.5
 
+// default minimum target - will be set in Info.plist
+MACOSX_DEPLOYMENT_TARGET              = 10.15
 MACOSX_DEPLOYMENT_TARGET[arch=x86_64] = 10.15
 MACOSX_DEPLOYMENT_TARGET[arch=i386]   = 10.6
 MACOSX_DEPLOYMENT_TARGET[arch=ppc]    = 10.5
