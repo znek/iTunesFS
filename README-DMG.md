@@ -11,7 +11,7 @@ Before you launch the application!
 ----------------------------------
 
 Note that ==you have to install
-[macFUSE](http://osxfuse.github.com/)== before you can use iTunesFS!
+[macFUSE](https://osxfuse.github.io/)== before you can use iTunesFS!
 
 
 Further information
@@ -33,4 +33,4 @@ References
 ==========
 
 - [iTunesFS](http://www.mulle-kybernetik.com/software/iTunesFS/)
-- [macFUSE](http://osxfuse.github.com/)
+- [macFUSE](https://osxfuse.github.io/)

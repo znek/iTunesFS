@@ -10,7 +10,7 @@ It linked against MacFUSE and was developed on a G5
 using Xcode 2.x in a couple of days.
 Later, I got an Intel Mac and subsequently added Intel support to iTunesFS.
 In the meantime, MacFUSE was abandoned and other projects took over, with
-[macFUSE](http://osxfuse.github.com/) (then called *OSXFUSE*) prevailing.
+[macFUSE](https://osxfuse.github.io/) (then called *OSXFUSE*) prevailing.
 Also, Apple dropped the PowerPC platform and recent Xcode versions lost their
 backwards compatibility for older SDKs (usually only supporting the previous
 platform SDK). At the time of writing (September 2016) Xcode 8 and macOS 10.12
@@ -24,7 +24,7 @@ Prerequisites
 macFUSE
 -------
 
-You have to install [macFUSE](http://osxfuse.github.com/).
+You have to install [macFUSE](https://osxfuse.github.io/).
 macFUSE provides a framework and headers that iTunesFS uses.
 
 Xcode
@@ -60,5 +60,5 @@ References
 ==========
 
 - [Xcode](https://developer.apple.com/xcode/)
-- [macFUSE (current version, renamed from OSXFUSE)](http://osxfuse.github.com/)
+- [macFUSE (current version, renamed from OSXFUSE)](https://osxfuse.github.io/)
 - [MacFUSE (original version, archived)](https://code.google.com/archive/p/macfuse/)

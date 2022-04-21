@@ -14,7 +14,7 @@ Prerequisites
 OSX / macOS
 -----------
 
-Please note that you have to install [macFUSE](http://osxfuse.github.com/)
+Please note that you have to install [macFUSE](https://osxfuse.github.io/)
 before you can use iTunesFS!
 Please read [README-OSX](README-OSX.md) for further information regarding
 development on OSX / macOS.
@@ -43,6 +43,6 @@ References
 ==========
 
 - [iTunesFS](http://www.mulle-kybernetik.com/software/iTunesFS/)
-- [macFUSE](http://osxfuse.github.com/)
+- [macFUSE](https://osxfuse.github.io/)
 - [Filesystem in Userspace (FUSE)](https://en.wikipedia.org/wiki/Filesystem_in_Userspace)
 - [GNUstep](http://www.gnustep.org/)
