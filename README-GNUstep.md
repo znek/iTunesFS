@@ -1,20 +1,18 @@
-About the GNUstep port
-======================
+# About the GNUstep port
 
 This port was done using a recent (2011-01-25) svn trunk revision of
 [GNUstep](http://www.gnustep.org/), utilizing gnustep-make 2.4.0.
 
 The system used for the port is running FreeBSD 8.2-RC3,
-which has a native kqueue() implementation.
+which has a native `kqueue()` implementation.
 
-I used the fusefs-libs BSD port from the ports collection, fusefs-libs-2.7.4.
+I used the `fusefs-libs` BSD port from the ports collection,
+`fusefs-libs-2.7.4`.
 
 It's probably a good idea to include autoconf magic for figuring out all
 compile time requirements, but for the time being it's just not here.
 
-
-FUSEOFS/GSFUSE
-==============
+## FUSEOFS/GSFUSE
 
 This is a fork of sdk-objc from MacFUSE which allows conditional compilation
 of Mac OS X "extensions" (HFS+ and Finder related methods).
@@ -25,20 +23,18 @@ I'm still a bit undecided whether to base the Mac OS X version on this fork,
 but at the moment this just hasn't happened and probably won't in the near
 future.
 
-
-PROBLEMS
-========
+## PROBLEMS
 
 - The AppKit requirement isn't something I'm too happy with, I'd prefer to
-  have a tool instead (similar to sshfs and the like).
+  have a tool instead (similar to `sshfs` and the like).
 
 - On FreeBSD 8.2rc3 I needed to grant permissions for `/dev/fuse0`:
-```
+```sh
 root@fbsd8:~ # chmod o+rw /dev/fuse0
 ```
 
 - On FreeBSD 10.x I need to do the following:
-```
+```sh
 root@fbsd10:~ # cat << EOF >> /etc.fuse.conf
 user_allow_other
 EOF
@@ -52,21 +48,20 @@ EOF
 root@fbsd10:~ # sysctl vfs.usermount=1
 ```
 
-EXAMPLE
-=======
+## EXAMPLE
 
 There's a tiny, handcrafted (in all senses ;-) version of an iTunes Music
 Library XML file in the "examples" folder. After you have built the
 iTunesFS.app, use this command in a shell for starting the file system:
 
-```
+```sh
 $ openapp ./iTunesFS.app -Library /tmp/iTunesMusicLibrary.xml \
 						 -iTunesFileSystemDebugEnabled YES
 ```
 
 You will then be able to browse the iTunes library, i.e.:
 
-```
+```sh
 $ ls -l /tmp/iTunesFS/
 total 0
 dr-xr-xr-x  2 znek  wheel  0 Jan  1  1970 Albums

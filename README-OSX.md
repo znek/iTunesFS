@@ -1,8 +1,6 @@
-About the OSX / macOS port
-==========================
+# About the OSX / macOS port
 
-History
--------
+## History
 
 iTunesFS has come a long way since its first inception in 2007.
 It linked against MacFUSE and was developed on a G5
@@ -17,25 +15,21 @@ platform SDK). At the time of writing (September 2016) Xcode 8 and macOS 10.12
 were just released - and iTunesFS still has backwards compatibility up to
 OSX 10.5/PowerPC!
 
+## Prerequisites
 
-Prerequisites
-=============
-
-macFUSE
--------
+### macFUSE
 
 You have to install [macFUSE](https://osxfuse.github.io/).
 macFUSE provides a framework and headers that iTunesFS uses.
 
-Xcode
------
+### Xcode
 
 You need to get a recent Xcode from
 [Apple's developer site](https://developer.apple.com/xcode/) in order to compile
 iTunesFS on OSX / macOS.
 There are 2 shared schemes for building iTunesFS, `Debug` and `Release`.
 Both schemes are based on their respective
-[xcconfig](https://pewpewthespells.com/blog/xcconfig_guide.html)
+[`xcconfig`](https://pewpewthespells.com/blog/xcconfig_guide.html)
 files [debug](xcconfig/debug.xcconfig) and [release](xcconfig/release.xcconfig)
 which both include a common [base](xcconfig/base.xcconfig).
 
@@ -45,9 +39,9 @@ which both include a common [base](xcconfig/base.xcconfig).
   won't have on your machine!) and `i386` and `ppc` architectures
   (the latter your Xcode won't probably support!)
 
-In order to *fix* `Release` you have _two_ options:
+In order to *fix* `Release` you have two options:
 
-- edit [release.xcconfig](xcconfig/release.xcconfig) and add
+- edit [`release.xcconfig`](xcconfig/release.xcconfig) and add
   `VALID_ARCHS = $(NATIVE_ARCH_ACTUAL)` and `ARCHS = $(NATIVE_ARCH_ACTUAL)`
   anywhere. Of course you can also provide any other value which will work in
   your development environment.
@@ -55,9 +49,7 @@ In order to *fix* `Release` you have _two_ options:
   linkers. That's what I have done myself, but I can't release such a project
   publicly due to the SDKs and old binaries being copyrighted by Apple.
 
-
-References
-==========
+## References
 
 - [Xcode](https://developer.apple.com/xcode/)
 - [macFUSE (current version, renamed from OSXFUSE)](https://osxfuse.github.io/)
