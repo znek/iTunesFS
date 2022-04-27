@@ -22,6 +22,16 @@ if [ "$RELEASE" != "$CFBundleShortVersionString" ]; then
   exit 1
 fi
 
+lipo -info "${BIN_DIR}/Contents/MacOS/iTunesFS"
+
+CODESIGN_IDENTITY="Apple Development: znek@mulle-kybernetik.com (Z32WJN2ZW2)"
+echo "Signing as: ${CODESIGN_IDENTITY}"
+/usr/bin/codesign --verbose=9 --force --timestamp --sign "${CODESIGN_IDENTITY}" "${BIN_DIR}"
+echo "Verifying signature"
+/usr/bin/codesign -vv "${BIN_DIR}"
+echo "Checking system policy"
+xcrun spctl --assess -v "${BIN_DIR}"
+
 mkdir ${DST_DIR}
 if [ ! -d "${DST_DIR}" ]; then
   echo "Couldn't create intermediary dir ${DST_DIR}"
@@ -57,6 +67,10 @@ newfs_hfs -v "${VOLUME_NAME}" $DISK
 hdiutil eject ${DISK}
 DISK=$(hdid ${DST_IMG} | awk '{print $1}')
 
+# make the top window open itself on mount
+bless --folder "/Volumes/${VOLUME_NAME}"
+bless --openfolder "/Volumes/${VOLUME_NAME}"
+
 #copy package to .dmg
 tar cf - . | ( cd "/Volumes/${VOLUME_NAME}" ; tar xf - )
 
@@ -71,10 +85,6 @@ rm -f ${REL_IMG}
 
 # convert .dmg into read-only zlib (-9) compressed release version
 hdiutil convert -format UDZO "${DST_IMG}" -o "${REL_IMG}" -imagekey zlib-level=9
-
-# internet-enable the release .dmg. for details see
-# http://developer.apple.com/ue/files/iedi.html
-hdiutil internet-enable -yes "${REL_IMG}"
 
 # clean up
 rm -rf "${DST_DIR}"
