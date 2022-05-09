@@ -145,27 +145,28 @@ static NSString *albumsTrackFormatFileName    = @"AlbumsTrackFormat.txt";
     NSMutableArray *volPaths =
       [NSMutableArray arrayWithArray:[ws mountedLocalVolumePaths]];
     [volPaths addObjectsFromArrayIfAbsent:[ws mountedRemovableMedia]];
-    NSUInteger count;
 #else
-    NSFileManager *fm = [NSFileManager defaultManager];
     NSMutableArray *volPaths = [NSMutableArray array];
+#ifndef GNUSTEP_BASE_LIBRARY
+    NSFileManager *fm = [NSFileManager defaultManager];
 
     NSArray *urls = [fm mountedVolumeURLsIncludingResourceValuesForKeys:nil
                         options:0];
-    NSUInteger count = [urls count];
-    for (NSUInteger i = 0; i < count; i++) {
+    NSUInteger uCount = [urls count];
+    for (NSUInteger i = 0; i < uCount; i++) {
       NSURL *url = [urls objectAtIndex:i];
       if ([url isFileURL]) {
         [volPaths addObjectIfAbsent:[url path]];
       }
     }
 #endif
+#endif
 
     if (fakeVolumePaths)
        [volPaths addObjectsFromArrayIfAbsent:fakeVolumePaths];
 
     lib = nil;
-    count = [volPaths count];
+    NSUInteger count = [volPaths count];
     for (NSUInteger i = 0; i < count; i++) {
       NSString *path = [volPaths objectAtIndex:i];
       if (doDebug)
