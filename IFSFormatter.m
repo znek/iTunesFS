@@ -273,7 +273,10 @@ static NSMutableDictionary *fmtCache = nil;
   NS_DURING
 
     value = [self->target valueForKeyPath:_key];
-    if (fmt) {
+    if ([value isKindOfClass:[NSNumber class]] && [value intValue] == 0) {
+      value = nil;
+    }
+    if (fmt && value) {
       NSFormatter *formatter;
       
       formatter = [self getFormatterForValue:value withFormatString:fmt];
@@ -306,7 +309,8 @@ static NSMutableDictionary *fmtCache = nil;
 }
 
 - (NSString *)formattedString {
-  return [[self->buffer copy] autorelease];
+  NSString *formattedString = [[self->buffer copy] autorelease];
+  return [formattedString stringByTrimmingCharactersInSet:wsSet];
 }
 
 @end /* iTunesFSFormattingResult */
